@@ -1,0 +1,39 @@
+import 'package:flutter/material.dart';
+import 'package:passwordfield/passwordfield.dart';
+
+class PasswordInput extends StatelessWidget {
+  final TextEditingController controller;
+  final String hindText;
+  final bool messageadd;
+
+  const PasswordInput({super.key, required this.controller, required this.hindText, required this.messageadd});
+
+  @override
+  Widget build(BuildContext context) {
+    return PasswordField(
+      color: Colors.blue,
+      hintText: hindText,
+      controller: controller,
+      border: PasswordBorder(
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.blue),
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey.shade900),
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: BorderSide(width: 2, color: Colors.grey.shade500),
+        ),
+      ),
+      errorMessage:
+        messageadd
+            ? "Por favor ingrese la contraseña"
+            : "- A uppercase letter\n- A lowercase letter\n- A digit\n- A special character\n- A minimum length of 8 characters",
+    );
+  }
+
+
+}
