@@ -35,6 +35,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ligthBackground,
       body: SafeArea(
           child: Stack(
         children: [
@@ -81,41 +82,51 @@ class LoginPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Login',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  Card(
+                      child:
+                        Padding(padding: const EdgeInsets.all(5.0),
+                        child: Column(
+                          children: [
+                            const Text(
+                              'Login',
+                              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 5.0),
+                            const Text(
+                              'Please write your data',
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                            ),
+                            const SizedBox(height: 50.0),
+                            MyTextfileld(
+                              hindText: 'EMAIL',
+                              icon: const Icon(Icons.email_outlined),
+                              controller: _emailController,
+                              obsecureText: false, keyboardType: TextInputType.emailAddress,
+                            ),
+                            const SizedBox(height: 10.0),
+                            PasswordInput(controller: _passwordController, hindText: "PASSSWORD", messageadd: true, ),
+                            const SizedBox(height: 10.0),
+                            MyButton(
+                              text: 'Iniciar sesión',
+                              onPressed: () => login(context),
+                            ),
+                            const SizedBox(height: 15),
+            ],
+            ),
+          )
+
                   ),
-                  const SizedBox(height: 5.0),
-                  const Text(
-                    'Please write your data',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(height: 50.0),
-                  MyTextfileld(
-                    hindText: 'EMAIL',
-                    icon: const Icon(Icons.email_outlined),
-                    controller: _emailController,
-                    obsecureText: false, keyboardType: TextInputType.emailAddress,
-                  ),
-                  const SizedBox(height: 10.0),
-                  PasswordInput(controller: _passwordController, hindText: "PASSSWORD", messageadd: true, ),
-                  const SizedBox(height: 10.0),
-                  MyButton(
-                    text: 'Iniciar sesión',
-                    onPressed: () => login(context),
-                  ),
-                  const SizedBox(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text('¿No estas registrado? '),
                       GestureDetector(
                         onTap: onTap,
-                        child: Text(
+                        child: const Text(
                           ' Registrate Ahora!!',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.blue.shade400),
+                              color: greenColor),
                         ),
                       )
                     ],

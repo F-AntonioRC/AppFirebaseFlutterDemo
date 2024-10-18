@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/dataConst/constand.dart';
 
 class MyButton extends StatelessWidget {
   final String text;
@@ -13,7 +14,7 @@ class MyButton extends StatelessWidget {
       children: [
         ElevatedButton(
             style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue, foregroundColor: Colors.white),
+                backgroundColor: greenColor, foregroundColor: Colors.white),
             onPressed: onPressed,
             child: Text(text))
       ],
