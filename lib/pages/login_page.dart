@@ -3,6 +3,9 @@ import 'package:testwithfirebase/auth/auth_service.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/components/my_textfileld.dart';
 import 'package:testwithfirebase/components/password_input.dart';
+import 'package:testwithfirebase/dataConst/constand.dart';
+
+import '../dataConst/constand.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -42,7 +45,7 @@ class LoginPage extends StatelessWidget {
                 width: 30,
                 height: 30,
                 decoration: const BoxDecoration(
-                    color: Colors.blue, shape: BoxShape.circle),
+                    color: greenColor, shape: BoxShape.circle),
               )),
           Positioned(
               top: 10,
@@ -51,7 +54,7 @@ class LoginPage extends StatelessWidget {
                 width: 150,
                 height: 150,
                 decoration: const BoxDecoration(
-                    color: Colors.blue, shape: BoxShape.circle),
+                    color: greenColor, shape: BoxShape.circle),
               )),
           Positioned(
               bottom: 100,
@@ -60,7 +63,7 @@ class LoginPage extends StatelessWidget {
                 width: 30,
                 height: 30,
                 decoration: const BoxDecoration(
-                    color: Colors.blue, shape: BoxShape.circle),
+                    color: greenColor, shape: BoxShape.circle),
               )),
           Positioned(
               bottom: 10,
@@ -69,7 +72,7 @@ class LoginPage extends StatelessWidget {
                 width: 100,
                 height: 100,
                 decoration: const BoxDecoration(
-                    color: Colors.blue, shape: BoxShape.circle),
+                    color: greenColor, shape: BoxShape.circle),
               )),
           Center(
             child: Padding(
