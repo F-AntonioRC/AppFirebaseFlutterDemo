@@ -15,7 +15,11 @@ class ScreenEmployee extends StatefulWidget {
 class _ScreenEmployeeState extends State<ScreenEmployee> {
 
   TextEditingController namecontroller = new TextEditingController();
-  TextEditingController emailcontroller = new TextEditingController();
+  TextEditingController sexcontroller = new TextEditingController();
+  TextEditingController rfcController = new TextEditingController();
+  TextEditingController estadoController = new TextEditingController();
+  TextEditingController areaController = new TextEditingController();
+  TextEditingController sareController = new TextEditingController();
 
   String? selectedDependency;
 
@@ -50,14 +54,17 @@ class _ScreenEmployeeState extends State<ScreenEmployee> {
           AllEmployeeDetails(
             employeeStream: EmployeeStream,
             nameController: namecontroller,
-            emailController: emailcontroller,
+            sexController: sexcontroller,
+            RFCcontroller: rfcController,
+            estadoController: estadoController,
+            areaController: areaController,
+            sareController: sareController,
             editEmployeeCallback:
                 (String id, String currentDependency) {
-              editEmployeeDetail(
+               editEmployeeDetail(
                   context: context,
                   id: id,
                   nameController: namecontroller,
-                  emailController: emailcontroller,
                   currentDependency: currentDependency);
             },
           ),)

@@ -16,6 +16,7 @@ class _NavigationItem {
 
 class NavDrawerWidget extends StatefulWidget {
   final String? userEmail;
+
   const NavDrawerWidget({super.key, this.userEmail});
 
   @override
@@ -37,11 +38,15 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
         item: NavItem.emailView,
         title: "Email",
         icon: const Icon(CupertinoIcons.mail_solid)),
+    _NavigationItem(
+        item: NavItem.documentView,
+        title: "SendDocument",
+        icon: const Icon(CupertinoIcons.doc_fill))
   ];
 
   @override
   Widget build(BuildContext context) => Drawer(
-      child: Column(
+          child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           UserAccountsDrawerHeader(
@@ -71,7 +76,7 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
               itemBuilder: (context, i) {
                 return BlocBuilder<NavDrawerBloc, NavDrawerState>(
                   buildWhen: (previous, current) =>
-                  previous.selectedItem != current.selectedItem,
+                      previous.selectedItem != current.selectedItem,
                   builder: (context, state) =>
                       _buildDrawerItem(_drawerItems[i], state),
                 );

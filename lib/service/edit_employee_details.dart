@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/service/database.dart';
 
+//ATRIBUTOS REQUERIDOS PARA EDITAR EL EMPLEADO
 Future editEmployeeDetail({
   required BuildContext context,
   required String id,
   required TextEditingController nameController,
-  required TextEditingController emailController,
+  //required TextEditingController emailController,
   required String currentDependency,
 }) {
+  //DIALOG CON LOS DATOS PARA LA EDICIÓN Y MODIFICACION DEL EMPLEADO
   return showDialog(
     context: context,
     builder: (context) => StatefulBuilder(
@@ -49,9 +51,9 @@ Future editEmployeeDetail({
                 decoration: BoxDecoration(
                     border: Border.all(),
                     borderRadius: BorderRadius.circular(10.0)),
-                child: TextField(
-                  controller: emailController,
-                  decoration: const InputDecoration(border: InputBorder.none),
+                child: const TextField(
+                  //controller: emailController,
+                  decoration: InputDecoration(border: InputBorder.none),
                 ),
               ),
               const SizedBox(height: 15.0),
@@ -88,7 +90,7 @@ Future editEmployeeDetail({
                     Map<String, dynamic> updateInfo = {
                       "Id": id,
                       "Name": nameController.text,
-                      "Email": emailController.text,
+                      //"Email": emailController.text,
                       "Depedency": currentDependency,
                     };
                     await DatabaseMethods()

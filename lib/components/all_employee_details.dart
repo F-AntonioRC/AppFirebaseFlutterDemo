@@ -6,14 +6,22 @@ import 'package:testwithfirebase/service/database.dart';
 class AllEmployeeDetails extends StatelessWidget {
   final Stream? employeeStream;
   final TextEditingController nameController;
-  final TextEditingController emailController;
+  final TextEditingController sexController;
+  final TextEditingController RFCcontroller;
+  final TextEditingController estadoController;
+  final TextEditingController areaController;
+  final TextEditingController sareController;
   final Function(String id, String depedency) editEmployeeCallback;
 
   const AllEmployeeDetails({
     required this.employeeStream,
     required this.nameController,
-    required this.emailController,
     required this.editEmployeeCallback,
+    required this.sexController,
+    required this.RFCcontroller,
+    required this.areaController,
+    required this.sareController,
+    required this.estadoController,
   });
 
   @override
@@ -37,7 +45,8 @@ class AllEmployeeDetails extends StatelessWidget {
                       color: Colors.white,
                       child: Container(
                         margin: const EdgeInsets.all(10),
-                        width: double.infinity, // Aquí se ajusta el ancho al 100%
+                        width: double.infinity,
+                        // Aquí se ajusta el ancho al 100%
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
@@ -59,12 +68,14 @@ class AllEmployeeDetails extends StatelessWidget {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    try{
-                                    nameController.text = ds["Name"];
-                                    emailController.text = ds["Email"];
-                                    editEmployeeCallback(ds["Id"], ds["Depedency"]);
+                                    try {
+                                      nameController.text = ds["Name"];
+                                      //emailController.text = ds["Email"];
+                                      editEmployeeCallback(
+                                          ds["Id"], ds["Depedency"]);
 
-                                    showCustomSnackBar(context, "Empleado editado correctamente");
+                                      showCustomSnackBar(context,
+                                          "Empleado editado correctamente");
                                     } catch (e) {
                                       showCustomSnackBar(context, "Error: $e");
                                     }
@@ -79,26 +90,27 @@ class AllEmployeeDetails extends StatelessWidget {
                             const SizedBox(height: 10.0),
                             Row(
                               children: [
-                                Expanded(child:
-                                Text(
-                                  "Email: " + ds["Email"],
-                                  style: const TextStyle(
-                                    color: Colors.orange,
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
+                                const Expanded(
+                                  child: Text(
+                                    "Email: ",
+                                    style: TextStyle(
+                                      color: Colors.orange,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
                                 ),
                                 const SizedBox(height: 5),
                                 GestureDetector(
                                   onTap: () {
-                                    try{
-                                      DatabaseMethods().deleteEmployeeDetail(ds["Id"]);
-                                      showCustomSnackBar(context, "Empleado eliminado");
+                                    try {
+                                      DatabaseMethods()
+                                          .deleteEmployeeDetail(ds["Id"]);
+                                      showCustomSnackBar(
+                                          context, "Empleado eliminado");
                                     } catch (e) {
                                       showCustomSnackBar(context, "Error $e");
                                     }
-
                                   },
                                   child: const Icon(
                                     Icons.delete_forever_sharp,

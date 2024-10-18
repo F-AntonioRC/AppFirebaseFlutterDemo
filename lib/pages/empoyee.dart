@@ -14,7 +14,11 @@ class Employee extends StatefulWidget {
 
 class _EmployeeState extends State<Employee> {
   TextEditingController namecontroller = new TextEditingController();
-  TextEditingController emailcontroller = new TextEditingController();
+  TextEditingController rfcController = new TextEditingController();
+  TextEditingController sexController = new TextEditingController();
+  TextEditingController estadoController = new TextEditingController();
+  TextEditingController areaController = new TextEditingController();
+  TextEditingController sareController = new TextEditingController();
   final FirebaseDropdownController _dropdownController = FirebaseDropdownController();
 
   @override
@@ -40,7 +44,7 @@ class _EmployeeState extends State<Employee> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Name',
+              'Nombre del empleado',
               style: TextStyle(
                   color: Colors.blue,
                   fontSize: 20.0,
@@ -55,7 +59,7 @@ class _EmployeeState extends State<Employee> {
                 keyboardType: TextInputType.text),
             const SizedBox(height: 15.0),
             const Text(
-              'Email',
+              'Sexo',
               style: TextStyle(
                   color: Colors.blue,
                   fontSize: 20.0,
@@ -63,9 +67,9 @@ class _EmployeeState extends State<Employee> {
             ),
             const SizedBox(height: 10.0),
             MyTextfileld(
-                hindText: "Ingrese un email valido",
+                hindText: "Seleccione uno",
                 icon: const Icon(Icons.email_rounded),
-                controller: emailcontroller,
+                controller: sexController,
                 obsecureText: false,
                 keyboardType: TextInputType.emailAddress),
             const SizedBox(height: 15.0),
@@ -97,7 +101,7 @@ class _EmployeeState extends State<Employee> {
                     Map<String, dynamic> employeeInfoMap = {
                       "Id": id,
                       "Name": namecontroller.text,
-                      "Email": emailcontroller.text,
+                      "Email": sexController.text,
                       "Depedency": dependencyName
                     };
                     await DatabaseMethods()
