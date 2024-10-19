@@ -13,9 +13,15 @@ class Employee extends StatefulWidget {
 }
 
 class _EmployeeState extends State<Employee> {
+  final List<String> dropdownsex = [
+    'Masculino',
+    'Femenino'
+  ]; // VALORES DEL DROPDOWN SEX
+  String? sexdropdownValue;
+
+
   TextEditingController namecontroller = new TextEditingController();
   TextEditingController rfcController = new TextEditingController();
-  TextEditingController sexController = new TextEditingController();
   TextEditingController estadoController = new TextEditingController();
   TextEditingController areaController = new TextEditingController();
   TextEditingController sareController = new TextEditingController();
@@ -66,12 +72,7 @@ class _EmployeeState extends State<Employee> {
                   fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10.0),
-            MyTextfileld(
-                hindText: "Seleccione uno",
-                icon: const Icon(Icons.email_rounded),
-                controller: sexController,
-                obsecureText: false,
-                keyboardType: TextInputType.emailAddress),
+
             const SizedBox(height: 15.0),
             const Text(
               'Depedency',
@@ -101,7 +102,7 @@ class _EmployeeState extends State<Employee> {
                     Map<String, dynamic> employeeInfoMap = {
                       "Id": id,
                       "Name": namecontroller.text,
-                      "Email": sexController.text,
+                      "Email": rfcController.text,
                       "Depedency": dependencyName
                     };
                     await DatabaseMethods()

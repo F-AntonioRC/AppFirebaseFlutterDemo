@@ -9,6 +9,7 @@ import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/pages/courses.dart';
 import 'package:testwithfirebase/pages/dashboard_main.dart';
 import 'package:testwithfirebase/pages/empoyee.dart';
+import 'package:testwithfirebase/pages/screen_cursos.dart';
 import 'package:testwithfirebase/pages/screen_employee.dart';
 import 'package:testwithfirebase/pages/send_document.dart';
 import 'package:testwithfirebase/pages/send_email.dart';
@@ -111,8 +112,10 @@ class _HomePageState extends State<HomePage> {
     switch (selectedItem) {
       case NavItem.homeView:
         return const DashboardMain();
+      case NavItem.employeeView:
+        return const ScreenEmployee();
       case NavItem.courseView:
-        return const Courses();
+        return const ScreenCursos();
       case NavItem.emailView:
         return const SendEmail();
       case NavItem.documentView:
@@ -127,6 +130,8 @@ class _HomePageState extends State<HomePage> {
     switch (selectedItem) {
       case NavItem.homeView:
         return "Home";
+      case NavItem.employeeView:
+        return "Employee";
       case NavItem.courseView:
         return "Courses";
       case NavItem.emailView:

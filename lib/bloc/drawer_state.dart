@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 enum NavItem {
   homeView,
+  employeeView,
   courseView,
   emailView,
   documentView

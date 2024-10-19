@@ -32,7 +32,7 @@ class _DateTextFieldState extends State<DateTextField> {
     return TextField(
       controller: widget.controller,  // Usa el controlador pasado
       decoration: InputDecoration(
-        hintText: 'Select a date',
+        hintText: 'Seleccione una fecha',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
