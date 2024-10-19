@@ -3,6 +3,7 @@ import 'package:testwithfirebase/auth/auth_service.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/components/my_textfileld.dart';
 import 'package:testwithfirebase/components/password_input.dart';
+import 'package:testwithfirebase/dataConst/constand.dart';
 
 class RegisterPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -52,7 +53,7 @@ class RegisterPage extends StatelessWidget {
                 width: 30,
                 height: 30,
                 decoration: const BoxDecoration(
-                    color: Colors.blue, shape: BoxShape.circle),
+                    color: greenColor, shape: BoxShape.circle),
               )),
           Positioned(
               top: 10,
@@ -61,7 +62,7 @@ class RegisterPage extends StatelessWidget {
                 width: 150,
                 height: 150,
                 decoration: const BoxDecoration(
-                    color: Colors.blue, shape: BoxShape.circle),
+                    color: greenColor, shape: BoxShape.circle),
               )),
           Positioned(
               bottom: 100,
@@ -70,7 +71,7 @@ class RegisterPage extends StatelessWidget {
                 width: 30,
                 height: 30,
                 decoration: const BoxDecoration(
-                    color: Colors.blue, shape: BoxShape.circle),
+                    color: greenColor, shape: BoxShape.circle),
               )),
           Positioned(
               bottom: 10,
@@ -79,36 +80,46 @@ class RegisterPage extends StatelessWidget {
                 width: 100,
                 height: 100,
                 decoration: const BoxDecoration(
-                    color: Colors.blue, shape: BoxShape.circle),
+                    color: greenColor, shape: BoxShape.circle),
               )),
           Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Register',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  FractionallySizedBox(
+                    widthFactor: 0.75,
+                    child: Card(
+                      child: Padding(padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        children: [
+                          const Text(
+                            'Register',
+                            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 50),
+                          MyTextfileld(
+                            hindText: 'EMAIL',
+                            icon: const Icon(Icons.email_outlined),
+                            controller: _emailController,
+                            obsecureText: false, keyboardType: TextInputType.emailAddress,
+                          ),
+                          const SizedBox(height: 10),
+                          PasswordInput(controller: _passwordController, hindText: "PASSWORD", messageadd: false),
+                          const SizedBox(height: 10),
+                          PasswordInput(controller: _confirmPasswordController, hindText: "CONFIRM PASSWORD", messageadd: false),
+                          const SizedBox(height: 10.0),
+                          MyButton(
+                            text: 'Registrar',
+                            onPressed: () => register(context), icon: const Icon(Icons.arrow_forward),
+                          ),
+                          const SizedBox(height: 15),
+                        ],
+                      ),),
+                    ),
                   ),
-                  const SizedBox(height: 50),
-                  MyTextfileld(
-                    hindText: 'EMAIL',
-                    icon: const Icon(Icons.email_outlined),
-                    controller: _emailController,
-                    obsecureText: false, keyboardType: TextInputType.emailAddress,
-                  ),
-                  const SizedBox(height: 10),
-                  PasswordInput(controller: _passwordController, hindText: "PASSWORD", messageadd: false),
-                  const SizedBox(height: 10),
-                  PasswordInput(controller: _confirmPasswordController, hindText: "CONFIRM PASSWORD", messageadd: false),
-                  const SizedBox(height: 10.0),
-                  MyButton(
-                    text: 'Registrar',
-                    onPressed: () => register(context),
-                  ),
-                  const SizedBox(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

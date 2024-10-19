@@ -5,7 +5,9 @@ import 'package:testwithfirebase/auth/auth_service.dart';
 import 'package:testwithfirebase/bloc/drawer_bloc.dart';
 import 'package:testwithfirebase/bloc/drawer_state.dart';
 import 'package:testwithfirebase/components/drawer_widget.dart';
+import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/pages/courses.dart';
+import 'package:testwithfirebase/pages/dashboard_main.dart';
 import 'package:testwithfirebase/pages/empoyee.dart';
 import 'package:testwithfirebase/pages/screen_employee.dart';
 import 'package:testwithfirebase/pages/send_document.dart';
@@ -65,22 +67,10 @@ class _HomePageState extends State<HomePage> {
                   title: Text(
                     _getAppbarTitle(state.selectedItem),
                     style: const TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+                        color: Colors.black, fontWeight: FontWeight.bold),
                   ),
-                  backgroundColor: Colors.lightBlue,
-                  shadowColor: Colors.grey,
-                  flexibleSpace: Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xFF4C60AF),
-                          Color.fromARGB(255, 37, 195, 248),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                  ),
+                  backgroundColor: ligth,
+                  shadowColor: Colors.black ,
                   scrolledUnderElevation: 10.0,
                   centerTitle: true,
                   systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -120,7 +110,7 @@ class _HomePageState extends State<HomePage> {
   Widget _getContentForState(NavItem selectedItem) {
     switch (selectedItem) {
       case NavItem.homeView:
-        return const ScreenEmployee();
+        return const DashboardMain();
       case NavItem.courseView:
         return const Courses();
       case NavItem.emailView:
@@ -129,7 +119,7 @@ class _HomePageState extends State<HomePage> {
         return const SendDocument();
 
       default:
-        return const ScreenEmployee();
+        return const DashboardMain();
     }
   }
 

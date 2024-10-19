@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:testwithfirebase/bloc/drawer_bloc.dart';
 import 'package:testwithfirebase/bloc/drawer_event.dart';
 import 'package:testwithfirebase/bloc/drawer_state.dart';
+import 'package:testwithfirebase/dataConst/constand.dart';
 
 class _NavigationItem {
   final NavItem item;
@@ -29,23 +30,24 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
     _NavigationItem(
         item: NavItem.homeView,
         title: "Home",
-        icon: const Icon(CupertinoIcons.house_fill)),
+        icon: const Icon(CupertinoIcons.house_fill, color: Colors.black)),
     _NavigationItem(
         item: NavItem.courseView,
         title: "Courses",
-        icon: const Icon(CupertinoIcons.collections_solid)),
+        icon: const Icon(CupertinoIcons.collections_solid, color: Colors.black,)),
     _NavigationItem(
         item: NavItem.emailView,
         title: "Email",
-        icon: const Icon(CupertinoIcons.mail_solid)),
+        icon: const Icon(CupertinoIcons.mail_solid, color: Colors.black)),
     _NavigationItem(
         item: NavItem.documentView,
         title: "SendDocument",
-        icon: const Icon(CupertinoIcons.doc_fill))
+        icon: const Icon(CupertinoIcons.doc_fill, color: Colors.black))
   ];
 
   @override
   Widget build(BuildContext context) => Drawer(
+    backgroundColor: ligth,
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -93,8 +95,9 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
                 ? FontWeight.bold
                 : FontWeight.w300,
             color: data.item == state.selectedItem
-                ? const Color.fromARGB(255, 112, 119, 249)
-                : Colors.grey[600]),
+                ? darkBackground
+                : Colors.black,
+        ),
       ),
       leading: data.icon,
       onTap: () {
