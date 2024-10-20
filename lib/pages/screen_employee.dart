@@ -1,8 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/components/all_employee_details.dart';
-
-import '../service/database.dart';
 import '../service/edit_employee_details.dart';
 
 class ScreenEmployee extends StatefulWidget {
@@ -28,16 +25,16 @@ class _ScreenEmployeeState extends State<ScreenEmployee> {
 
   get areaController => null;
 
-  getontheload() async {
+//  getontheload() async {
     //EmployeeStream = await DatabaseMethods().getEmployeeDetails();
-    setState(() {});
-  }
+  //  setState(() {});
+  //}
 
-  @override
-  void initState() {
-    super.initState();
-    getontheload();
-  }
+  //@override
+  //void initState() {
+    //super.initState();
+    //getontheload();
+  //}
 
 
   @override

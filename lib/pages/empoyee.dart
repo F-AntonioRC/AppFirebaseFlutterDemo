@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 import 'package:testwithfirebase/components/custom_snackbar.dart';
 import 'package:testwithfirebase/components/dropdown_list.dart';
-import 'package:testwithfirebase/components/firebase_dropdown.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/components/my_textfileld.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
@@ -54,7 +53,7 @@ class _EmployeeState extends State<Employee> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const Text("Añadir Curso", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+                const Text("Añadir Empleado", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
               Row(
                 children: [
                   Expanded(child: Column(children: [

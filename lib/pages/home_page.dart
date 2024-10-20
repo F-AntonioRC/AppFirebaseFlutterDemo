@@ -10,7 +10,6 @@ import 'package:testwithfirebase/pages/dashboard_main.dart';
 import 'package:testwithfirebase/pages/empoyee.dart';
 import 'package:testwithfirebase/pages/pantalla_empleado.dart';
 import 'package:testwithfirebase/pages/screen_cursos.dart';
-import 'package:testwithfirebase/pages/screen_employee.dart';
 import 'package:testwithfirebase/pages/send_document.dart';
 import 'package:testwithfirebase/pages/send_email.dart';
 

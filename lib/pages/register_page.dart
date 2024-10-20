@@ -6,6 +6,7 @@ import 'package:testwithfirebase/components/password_input.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 
 class RegisterPage extends StatelessWidget {
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
@@ -96,12 +97,19 @@ class RegisterPage extends StatelessWidget {
                       child: Column(
                         children: [
                           const Text(
-                            'Register',
-                            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                            'Registrar',
+                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(height: 50),
+                          const SizedBox(height: 30),
                           MyTextfileld(
-                            hindText: 'EMAIL',
+                            hindText: 'Nombre Completo',
+                            icon: const Icon(Icons.person),
+                            controller: _nameController,
+                            obsecureText: false, keyboardType: TextInputType.emailAddress,
+                          ),
+                          const SizedBox(height: 10),
+                          MyTextfileld(
+                            hindText: 'Correo',
                             icon: const Icon(Icons.email_outlined),
                             controller: _emailController,
                             obsecureText: false, keyboardType: TextInputType.emailAddress,
@@ -110,12 +118,11 @@ class RegisterPage extends StatelessWidget {
                           PasswordInput(controller: _passwordController, hindText: "PASSWORD", messageadd: false),
                           const SizedBox(height: 10),
                           PasswordInput(controller: _confirmPasswordController, hindText: "CONFIRM PASSWORD", messageadd: false),
-                          const SizedBox(height: 10.0),
+                          const SizedBox(height: 20.0),
                           MyButton(
                             text: 'Registrar',
                             onPressed: () => register(context), icon: const Icon(Icons.arrow_forward),
                           ),
-                          const SizedBox(height: 15),
                         ],
                       ),),
                     ),
@@ -123,14 +130,13 @@ class RegisterPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('¿Ya tienes una cuenta? '),
+                      const Text('¿Ya tienes una cuenta? ', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
                       GestureDetector(
                         onTap: onTap,
                         child: Text(
                           ' Inicia sesión',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue.shade400),
+                          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: greenColor),
+
                         ),
                       )
                     ],
