@@ -12,8 +12,9 @@ class DatabaseMethods {
   }
 
   //OBTENER TODOS LOS EMPLEADOS
-  Future<Stream<QuerySnapshot>> getEmployeeDetails() async {
-    return await FirebaseFirestore.instance.collection('Employee').snapshots();
+  Future<List<Map<String, dynamic>>> getEmployeeDetails() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Employee').where('Estado', isEqualTo: 'Activo').get();
+    return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
 
   //ACTUALIZAR

@@ -6,9 +6,9 @@ import 'package:testwithfirebase/bloc/drawer_bloc.dart';
 import 'package:testwithfirebase/bloc/drawer_state.dart';
 import 'package:testwithfirebase/components/drawer_widget.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
-import 'package:testwithfirebase/pages/courses.dart';
 import 'package:testwithfirebase/pages/dashboard_main.dart';
 import 'package:testwithfirebase/pages/empoyee.dart';
+import 'package:testwithfirebase/pages/pantalla_empleado.dart';
 import 'package:testwithfirebase/pages/screen_cursos.dart';
 import 'package:testwithfirebase/pages/screen_employee.dart';
 import 'package:testwithfirebase/pages/send_document.dart';
@@ -80,11 +80,10 @@ class _HomePageState extends State<HomePage> {
                       splashRadius: 35.0,
                       iconSize: 30.0,
                       tooltip: 'Salir',
-                      onPressed: logout,
                       icon: const Icon(
-                        Icons.logout_outlined,
-                        color: Colors.red,
-                      ),
+                        Icons.notifications_rounded,
+                        color: Colors.black,
+                      ), onPressed: () {  },
                     ),
                   ],
                 ),
@@ -113,7 +112,7 @@ class _HomePageState extends State<HomePage> {
       case NavItem.homeView:
         return const DashboardMain();
       case NavItem.employeeView:
-        return const ScreenEmployee();
+        return const PantallaEmpleado();
       case NavItem.courseView:
         return const ScreenCursos();
       case NavItem.emailView:

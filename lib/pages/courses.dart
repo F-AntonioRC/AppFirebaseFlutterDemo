@@ -166,7 +166,8 @@ class _CoursesState extends State<Courses> {
                             showCustomSnackBar(context, "Error: $e");
                           }
                         },
-                      )),
+                      )
+                  ),
                 ],
               ),
             ),

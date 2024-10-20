@@ -14,19 +14,22 @@ class ScreenEmployee extends StatefulWidget {
 
 class _ScreenEmployeeState extends State<ScreenEmployee> {
 
-  TextEditingController namecontroller = new TextEditingController();
-  TextEditingController sexcontroller = new TextEditingController();
-  TextEditingController rfcController = new TextEditingController();
-  TextEditingController estadoController = new TextEditingController();
-  TextEditingController areaController = new TextEditingController();
-  TextEditingController sareController = new TextEditingController();
-
   String? selectedDependency;
 
   Stream? EmployeeStream;
 
+  get namecontroller => null;
+
+  get sexcontroller => null;
+
+  get rfcController => null;
+
+  get estadoController => null;
+
+  get areaController => null;
+
   getontheload() async {
-    EmployeeStream = await DatabaseMethods().getEmployeeDetails();
+    //EmployeeStream = await DatabaseMethods().getEmployeeDetails();
     setState(() {});
   }
 
@@ -58,7 +61,7 @@ class _ScreenEmployeeState extends State<ScreenEmployee> {
             RFCcontroller: rfcController,
             estadoController: estadoController,
             areaController: areaController,
-            sareController: sareController,
+            sareController: areaController,
             editEmployeeCallback:
                 (String id, String currentDependency) {
                editEmployeeDetail(
