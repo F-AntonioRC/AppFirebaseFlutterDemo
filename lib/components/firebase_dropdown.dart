@@ -59,7 +59,15 @@ class _FirebaseDropdownState extends State<FirebaseDropdown> {
     return Center(
       child: documentsList.isEmpty
           ? const CircularProgressIndicator()
-          : DropdownButton<Map<String, dynamic>>(
+          : DropdownButtonFormField<Map<String, dynamic>>(
+        decoration: InputDecoration(
+            contentPadding:  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+            border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.shade500), borderRadius: BorderRadius.circular(12.0)
+            ),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.shade900), borderRadius: BorderRadius.circular(12.0))
+        ),
         value: widget.controller.selectedDocument,
         hint: Text(widget.textHint),
         isExpanded: true,

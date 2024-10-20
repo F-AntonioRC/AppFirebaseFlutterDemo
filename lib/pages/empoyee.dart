@@ -50,7 +50,7 @@ class _EmployeeState extends State<Employee> {
       margin: const EdgeInsets.all(10.0),
       child: Card(
         color: ligth,
-        child: Padding(padding: EdgeInsets.all(10.0),
+        child: Padding(padding: const EdgeInsets.all(10.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
