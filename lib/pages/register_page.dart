@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:random_string/random_string.dart';
 import 'package:testwithfirebase/auth/auth_service.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/components/my_textfileld.dart';
@@ -21,8 +23,25 @@ class RegisterPage extends StatelessWidget {
 
     if (_passwordController.text == _confirmPasswordController.text) {
       try {
-        await auth.signUpWithEmailAndPassword(
+        //await auth.signUpWithEmailAndPassword(
+            //_emailController.text, _passwordController.text);
+
+        // Registro del usuario en Firebase Auth
+        final userCredential = await auth.signUpWithEmailAndPassword(
             _emailController.text, _passwordController.text);
+
+        String UID = userCredential.user!.uid;
+        String Id = randomAlphaNumeric(3);
+
+        // Guarda los datos del empleado en Firestore
+        await FirebaseFirestore.instance.collection('Employee').doc(UID).set({
+          
+          'Nombre': _nameController.text,
+          'email': _emailController.text,
+          'uid': UID,
+          'Estado': 'Activo'
+        });
+
       } catch (e) {
         showDialog(
           context: context,
@@ -133,7 +152,7 @@ class RegisterPage extends StatelessWidget {
                       const Text('¿Ya tienes una cuenta? ', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
                       GestureDetector(
                         onTap: onTap,
-                        child: Text(
+                        child: const Text(
                           ' Inicia sesión',
                           style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: greenColor),
 

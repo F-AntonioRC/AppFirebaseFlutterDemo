@@ -160,9 +160,9 @@ class _EmployeeState extends State<Employee> {
                   icon: const Icon(Icons.person_add_alt_rounded),
                   onPressed: () async {
                     try {
-                      String id = randomAlphaNumeric(5);
+                      String id = randomAlphaNumeric(3);
                       Map<String, dynamic> employeeInfoMap = {
-                        "Id": id,
+                        "IdEmployee": id,
                         "Nombre": namecontroller.text,
                         "Sexo": sexdropdownValue,
                         "RFC": rfcController.text,

@@ -15,6 +15,14 @@ class MethodsCourses {
     return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
 
+  //OBTENER LOS ATRIBUTOS DE UN CURSO
+  Future<DocumentSnapshot<Map<String, dynamic>>> getCourseEspecific(String? id) async {
+    return await FirebaseFirestore.instance
+        .collection("Courses")
+        .doc(id)
+        .get();
+  }
+
   //ACTULIZAR
   Future<void> updateCourse(String id, Map<String, dynamic> updateInfo) async {
     return await FirebaseFirestore.instance

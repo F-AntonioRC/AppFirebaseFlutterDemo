@@ -45,9 +45,11 @@ class _FirebaseDropdownState extends State<FirebaseDropdown> {
     QuerySnapshot querySnapshot =
     await FirebaseFirestore.instance.collection(widget.collection).get();
 
-    List<Map<String, dynamic>> fetchedDocuments = querySnapshot.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
+    List<Map<String, dynamic>> fetchedDocuments = querySnapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      data['Id'] = doc.id; //Añadir el Id del documento a los datos
+      return data;
+    }).toList();
 
     setState(() {
       documentsList = fetchedDocuments;

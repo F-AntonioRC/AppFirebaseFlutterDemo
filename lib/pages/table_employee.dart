@@ -32,7 +32,7 @@ class _TableEmployeeState extends State<TableEmployee> {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('No courses found.'));
+                  return const Center(child: Text('No employees found.'));
                 } else {
                   final data = snapshot.data!;
                   return Expanded(child: MyTable(headers: headers,
