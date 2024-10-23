@@ -5,8 +5,6 @@ import 'package:testwithfirebase/components/my_textfileld.dart';
 import 'package:testwithfirebase/components/password_input.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 
-import '../dataConst/constand.dart';
-
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();

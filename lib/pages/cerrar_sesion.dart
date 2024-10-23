@@ -3,7 +3,6 @@ import 'package:testwithfirebase/auth/auth_gate.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/pages/home_page.dart';
-import 'package:testwithfirebase/pages/login_page.dart';
 import '../auth/auth_service.dart';
 
 class CerrarSesion extends StatefulWidget {
