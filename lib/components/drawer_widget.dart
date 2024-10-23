@@ -46,7 +46,8 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
     _NavigationItem(
         item: NavItem.documentView,
         title: "SendDocument",
-        icon: const Icon(CupertinoIcons.doc_fill, color: Colors.black))
+        icon: const Icon(CupertinoIcons.doc_fill, color: Colors.black)),
+    _NavigationItem(item: NavItem.logout, title: "Cerrar Sesion", icon: const Icon(Icons.logout, color: Colors.red,))
   ];
 
   @override

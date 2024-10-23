@@ -21,9 +21,11 @@ class _CardGraphicsState extends State<CardGraphics> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25.0),  // Bordes redondeados
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: widget.cardWidget,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: widget.cardWidget,
+          ),
         ),
       ),
     );

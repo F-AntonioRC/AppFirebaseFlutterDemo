@@ -6,6 +6,7 @@ import 'package:testwithfirebase/bloc/drawer_bloc.dart';
 import 'package:testwithfirebase/bloc/drawer_state.dart';
 import 'package:testwithfirebase/components/drawer_widget.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
+import 'package:testwithfirebase/pages/cerrar_sesion.dart';
 import 'package:testwithfirebase/pages/dashboard_main.dart';
 import 'package:testwithfirebase/pages/empoyee.dart';
 import 'package:testwithfirebase/pages/pantalla_empleado.dart';
@@ -25,17 +26,17 @@ class _HomePageState extends State<HomePage> {
   late NavDrawerBloc _bloc;
   late Widget _content;
 
+  void logout() {
+    final auth = AuthService();
+    auth.signOut();
+  }
+
   @override
   void initState() {
     super.initState();
     authService = AuthService();
     _bloc = NavDrawerBloc();
     _content = _getContentForState(_bloc.state.selectedItem);
-  }
-
-  void logout() {
-    final auth = AuthService();
-    auth.signOut();
   }
 
   @override
@@ -118,7 +119,8 @@ class _HomePageState extends State<HomePage> {
         return const SendEmail();
       case NavItem.documentView:
         return const SendDocument();
-
+      case NavItem.logout:
+        return const CerrarSesion();
       default:
         return const DashboardMain();
     }
@@ -136,6 +138,8 @@ class _HomePageState extends State<HomePage> {
         return "Email";
       case NavItem.documentView:
         return "Documents";
+      case NavItem.logout:
+        return "Cerrar Sesión";
       default:
         return "Navigation Drawer Demo";
     }
