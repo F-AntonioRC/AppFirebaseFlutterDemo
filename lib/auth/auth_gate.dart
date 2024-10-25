@@ -4,6 +4,7 @@ import 'package:testwithfirebase/auth/login_or_register.dart';
 import 'package:testwithfirebase/pages/home_page.dart';
 
 class AuthGate extends StatelessWidget {
+
   const AuthGate({super.key});
 
   @override

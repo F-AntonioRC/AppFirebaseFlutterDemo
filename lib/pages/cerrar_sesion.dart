@@ -22,10 +22,14 @@ class _CerrarSesionState extends State<CerrarSesion> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(
+      margin: const EdgeInsets.all(50.0),
+      color: darkBackground,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.8,
         child: Card(
           color: ligth,
-          child: Column(
+          child: Padding(
+            padding: const EdgeInsets.all(50.0), child: Column(
             children: [
               const ListTile(
                 leading: Icon(
@@ -70,7 +74,7 @@ class _CerrarSesionState extends State<CerrarSesion> {
                 ],
               )
             ],
-          ),
+          ),),
         ),
       ),
     );

@@ -7,6 +7,7 @@ import 'package:testwithfirebase/bloc/drawer_state.dart';
 import 'package:testwithfirebase/components/drawer_widget.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/pages/cerrar_sesion.dart';
+import 'package:testwithfirebase/pages/configuration.dart';
 import 'package:testwithfirebase/pages/dashboard_main.dart';
 import 'package:testwithfirebase/pages/empoyee.dart';
 import 'package:testwithfirebase/pages/pantalla_empleado.dart';
@@ -93,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     if (isLargeScreen)
                       SizedBox(
-                        width: 250, // Ancho del Drawer en pantallas grandes
+                        width: 300, // Ancho del Drawer en pantallas grandes
                         child: NavDrawerWidget(userEmail: userEmail),
                       ),
                     Expanded(child: _content),
@@ -121,6 +122,8 @@ class _HomePageState extends State<HomePage> {
         return const SendDocument();
       case NavItem.logout:
         return const CerrarSesion();
+      case NavItem.configuration:
+        return const Configuration();
       default:
         return const DashboardMain();
     }
@@ -131,13 +134,15 @@ class _HomePageState extends State<HomePage> {
       case NavItem.homeView:
         return "Home";
       case NavItem.employeeView:
-        return "Employee";
+        return "Empleados";
       case NavItem.courseView:
-        return "Courses";
+        return "Cursos";
       case NavItem.emailView:
-        return "Email";
+        return "Correos";
       case NavItem.documentView:
         return "Documents";
+      case NavItem.configuration:
+        return "Configuración";
       case NavItem.logout:
         return "Cerrar Sesión";
       default:

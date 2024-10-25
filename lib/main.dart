@@ -10,15 +10,42 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool isDarkMode = false;
+
+  // Función para cambiar el tema
+  void toggleTheme(bool isDark) {
+    setState(() {
+      isDarkMode = isDark;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
-        theme: ThemeData(scaffoldBackgroundColor: ligthBackground, primaryColor: ligth,
-            primaryColorDark: darkBackground),
+        theme: ThemeData(
+            scaffoldBackgroundColor: ligthBackground,
+          primaryColor: ligth,
+          appBarTheme: const AppBarTheme(
+            backgroundColor: ligth
+          ),
+        ),
+        darkTheme: ThemeData(
+          scaffoldBackgroundColor: dark,
+          primaryColor: darkBackground,
+          appBarTheme: const AppBarTheme(
+            backgroundColor: dark
+          ),
+        ),
+        themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light, //CAMBIAR EL TEMA
         debugShowCheckedModeBanner: false, home: const AuthGate());
   }
 }

@@ -31,14 +31,20 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
         item: NavItem.homeView,
         title: "Home",
         icon: const Icon(CupertinoIcons.house_fill, color: Colors.black)),
-    _NavigationItem(item: NavItem.employeeView,
+    _NavigationItem(
+        item: NavItem.employeeView,
         title: "Employee",
-        icon: const Icon(CupertinoIcons.person_3_fill, color: Colors.black,)),
+        icon: const Icon(
+          CupertinoIcons.person_3_fill,
+          color: Colors.black,
+        )),
     _NavigationItem(
         item: NavItem.courseView,
         title: "Courses",
         icon: const Icon(
-          CupertinoIcons.collections_solid, color: Colors.black,)),
+          CupertinoIcons.collections_solid,
+          color: Colors.black,
+        )),
     _NavigationItem(
         item: NavItem.emailView,
         title: "Email",
@@ -47,51 +53,62 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
         item: NavItem.documentView,
         title: "SendDocument",
         icon: const Icon(CupertinoIcons.doc_fill, color: Colors.black)),
-    _NavigationItem(item: NavItem.logout, title: "Cerrar Sesion", icon: const Icon(Icons.logout, color: Colors.red,))
+    _NavigationItem(
+        item: NavItem.configuration,
+        title: "Configuración",
+        icon: const Icon(
+          Icons.settings,
+          color: Colors.black,
+        )),
+    _NavigationItem(
+        item: NavItem.logout,
+        title: "Cerrar Sesion",
+        icon: const Icon(
+          Icons.logout,
+          color: Colors.red,
+        )),
   ];
 
   @override
-  Widget build(BuildContext context) =>
-      Drawer(
-          backgroundColor: ligth,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              UserAccountsDrawerHeader(
-                accountName: const Text(
-                  'Bienvenido',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.0),
-                ),
-                accountEmail: Text(widget.userEmail ?? 'No Email',
-                    style: const TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage(
-                            'assets/images/backgroundProfile.jpeg'))),
-                currentAccountPicture: const CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/profile.jpeg'),
-                ),
-              ),
-              // Drawer items
-              ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: _drawerItems.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, i) {
-                    return BlocBuilder<NavDrawerBloc, NavDrawerState>(
-                      buildWhen: (previous, current) =>
+  Widget build(BuildContext context) => Drawer(
+      backgroundColor: ligth,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          UserAccountsDrawerHeader(
+            accountName: const Text(
+              'Bienvenido',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0),
+            ),
+            accountEmail: Text(widget.userEmail ?? 'No Email',
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold)),
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage('assets/images/backgroundProfile.jpeg'))),
+            currentAccountPicture: const CircleAvatar(
+              backgroundImage: AssetImage('assets/images/profile.jpeg'),
+            ),
+          ),
+          // Drawer items
+          ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: _drawerItems.length,
+              shrinkWrap: true,
+              itemBuilder: (context, i) {
+                return BlocBuilder<NavDrawerBloc, NavDrawerState>(
+                  buildWhen: (previous, current) =>
                       previous.selectedItem != current.selectedItem,
-                      builder: (context, state) =>
-                          _buildDrawerItem(_drawerItems[i], state),
-                    );
-                  }),
-            ],
-          ));
+                  builder: (context, state) =>
+                      _buildDrawerItem(_drawerItems[i], state),
+                );
+              }),
+        ],
+      ));
 
   Widget _buildDrawerItem(_NavigationItem data, NavDrawerState state) {
     return ListTile(
@@ -101,9 +118,8 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
           fontWeight: data.item == state.selectedItem
               ? FontWeight.bold
               : FontWeight.w300,
-          color: data.item == state.selectedItem
-              ? darkBackground
-              : Colors.black,
+          color:
+              data.item == state.selectedItem ? darkBackground : Colors.black,
         ),
       ),
       leading: data.icon,
