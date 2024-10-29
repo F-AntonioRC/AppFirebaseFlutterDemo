@@ -94,10 +94,10 @@ class LoginPage extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 10.0),
                                     const Text(
-                                      'Please write your data',
+                                      'Por favor ingresa tus datos',
                                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                                     ),
-                                    const SizedBox(height: 40.0),
+                                    const SizedBox(height: 30.0),
                                     MyTextfileld(
                                       hindText: 'EMAIL',
                                       icon: const Icon(Icons.email_outlined),

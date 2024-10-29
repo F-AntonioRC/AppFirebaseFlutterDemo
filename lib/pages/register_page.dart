@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:random_string/random_string.dart';
 import 'package:testwithfirebase/auth/auth_service.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/components/my_textfileld.dart';
@@ -8,7 +7,7 @@ import 'package:testwithfirebase/components/password_input.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 
 class RegisterPage extends StatelessWidget {
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _cupoController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
@@ -23,20 +22,17 @@ class RegisterPage extends StatelessWidget {
 
     if (_passwordController.text == _confirmPasswordController.text) {
       try {
-        //await auth.signUpWithEmailAndPassword(
-            //_emailController.text, _passwordController.text);
 
         // Registro del usuario en Firebase Auth
         final userCredential = await auth.signUpWithEmailAndPassword(
             _emailController.text, _passwordController.text);
 
         String UID = userCredential.user!.uid;
-        String Id = randomAlphaNumeric(3);
 
         // Guarda los datos del empleado en Firestore
         await FirebaseFirestore.instance.collection('Employee').doc(UID).set({
           
-          'Nombre': _nameController.text,
+          'CUPO': _cupoController.text,
           'email': _emailController.text,
           'uid': UID,
           'Estado': 'Activo'
@@ -119,11 +115,16 @@ class RegisterPage extends StatelessWidget {
                             'Registrar',
                             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 10),
+                          const Text(
+                            'Por favor ingresa tus datos',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          const SizedBox(height: 20),
                           MyTextfileld(
-                            hindText: 'Nombre Completo',
+                            hindText: 'CUPO',
                             icon: const Icon(Icons.person),
-                            controller: _nameController,
+                            controller: _cupoController,
                             obsecureText: false, keyboardType: TextInputType.emailAddress,
                           ),
                           const SizedBox(height: 10),

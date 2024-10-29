@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/components/circle_color.dart';
-import 'package:testwithfirebase/components/theme_color.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 
 class CardColors extends StatefulWidget {

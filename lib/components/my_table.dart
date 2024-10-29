@@ -7,6 +7,8 @@ class MyTable extends StatelessWidget {
   final List<Map<String, dynamic>> data; // Datos almacenados
   final Function(String id) onEdit;  // Función para editar
   final Function(String id) onDelete;  // Función para eliminar
+  final Function(String id)? onAssign;
+
 
   const MyTable({
     super.key,
@@ -15,6 +17,7 @@ class MyTable extends StatelessWidget {
     required this.fieldKeys,
     required this.onEdit,
     required this.onDelete,
+    this.onAssign
   });
 
   @override
@@ -30,7 +33,7 @@ class MyTable extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             );
-          }).toList(),
+          }),
           const DataColumn(  // Columna para las acciones
             label: Text(
               'Acciones',
@@ -43,12 +46,12 @@ class MyTable extends StatelessWidget {
             cells: [
               ...fieldKeys.map((key) {
                 return DataCell(Text(rowData[key]?.toString() ?? ''));
-              }).toList(),
+              }),
               DataCell(
                 Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.edit_note_rounded),
+                      icon: const Icon(Icons.edit),
                       color: greenColor,
                       onPressed: () {
                         onEdit(rowData['id']);  // Llamar a la función de editar
@@ -61,6 +64,10 @@ class MyTable extends StatelessWidget {
                         onDelete(rowData['id']);  // Llamar a la función de eliminar
                       },
                     ),
+                    if( onAssign !=null )
+                      IconButton(onPressed: () {
+                        onAssign!(rowData['id']);
+                      }, icon: const Icon(Icons.manage_accounts, color: Colors.blue,))
                   ],
                 ),
               ),

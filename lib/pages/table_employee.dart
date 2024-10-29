@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/custom_dialog.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/service/database.dart';
 
@@ -39,10 +39,16 @@ class _TableEmployeeState extends State<TableEmployee> {
                     data: data,
                     fieldKeys: fieldKeys,
                     onEdit: (String id) {  },
-                    onDelete: (String id) {  },));
+                    onDelete: (String id) {  },
+                  onAssign: (String id) {
+                    showDialog(context: context,
+                        builder: (BuildContext) {
+                      return CustomDialog(employeeId: id);
+                        });
+                  },));
                 }
               })),
       ),
     );
-  }
+}
 }

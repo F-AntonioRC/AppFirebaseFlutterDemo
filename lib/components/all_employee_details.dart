@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testwithfirebase/components/custom_snackbar.dart';
-import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/service/database.dart';
 
 class AllEmployeeDetails extends StatelessWidget {
   final Stream? employeeStream;
-  final TextEditingController nameController;
-  final TextEditingController sexController;
-  final TextEditingController RFCcontroller;
-  final TextEditingController estadoController;
-  final TextEditingController areaController;
-  final TextEditingController sareController;
-  final Function(String id, String depedency) editEmployeeCallback;
+  final TextEditingController? nameController;
+  final TextEditingController? sexController;
+  final TextEditingController? rfcController;
+  final TextEditingController? estadoController;
+  final TextEditingController? areaController;
+  final TextEditingController? sareController;
+  final Function(String id, String depedency)? editEmployeeCallback;
 
   const AllEmployeeDetails({
-    required this.employeeStream,
-    required this.nameController,
-    required this.editEmployeeCallback,
-    required this.sexController,
-    required this.RFCcontroller,
-    required this.areaController,
-    required this.sareController,
-    required this.estadoController,
+     this.employeeStream,
+     this.nameController,
+     this.editEmployeeCallback,
+     this.sexController,
+     this.rfcController,
+     this.areaController,
+     this.sareController,
+     this.estadoController, required RFCcontroller,
   });
 
   @override
@@ -70,9 +69,9 @@ class AllEmployeeDetails extends StatelessWidget {
                                 GestureDetector(
                                   onTap: () {
                                     try {
-                                      nameController.text = ds["Name"];
+                                      nameController?.text = ds["Name"];
                                       //emailController.text = ds["Email"];
-                                      editEmployeeCallback(
+                                      editEmployeeCallback!(
                                           ds["Id"], ds["Depedency"]);
 
                                       showCustomSnackBar(context,

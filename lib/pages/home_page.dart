@@ -58,13 +58,6 @@ class _HomePageState extends State<HomePage> {
               bool isLargeScreen = constraints.maxWidth > 800;
 
               return Scaffold(
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const Employee()));
-                  },
-                  child: const Icon(Icons.person_add_alt_rounded),
-                ),
                 appBar: AppBar(
                   title: Text(
                     _getAppbarTitle(state.selectedItem),
