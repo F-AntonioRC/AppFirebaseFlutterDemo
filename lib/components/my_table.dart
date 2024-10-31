@@ -7,7 +7,7 @@ class MyTable extends StatelessWidget {
   final List<Map<String, dynamic>> data; // Datos almacenados
   final Function(String id) onEdit;  // Función para editar
   final Function(String id) onDelete;  // Función para eliminar
-  final Function(String id)? onAssign;
+  final Function(String id)? onAssign; //Función no necesaria
 
 
   const MyTable({

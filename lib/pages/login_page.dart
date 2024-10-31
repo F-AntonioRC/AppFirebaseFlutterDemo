@@ -5,6 +5,8 @@ import 'package:testwithfirebase/components/my_textfileld.dart';
 import 'package:testwithfirebase/components/password_input.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 
+import '../util/responsive.dart';
+
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -76,8 +78,7 @@ class LoginPage extends StatelessWidget {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: SingleChildScrollView(
-                    child: Column(
+                  child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -86,32 +87,34 @@ class LoginPage extends StatelessWidget {
                           child: Card(
                               child:
                               Padding(padding: const EdgeInsets.all(20.0),
-                                child: Column(
-                                  children: [
-                                    const Text(
-                                      'Login',
-                                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(height: 10.0),
-                                    const Text(
-                                      'Por favor ingresa tus datos',
-                                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                                    ),
-                                    const SizedBox(height: 30.0),
-                                    MyTextfileld(
-                                      hindText: 'EMAIL',
-                                      icon: const Icon(Icons.email_outlined),
-                                      controller: _emailController,
-                                      obsecureText: false, keyboardType: TextInputType.emailAddress,
-                                    ),
-                                    const SizedBox(height: 20.0),
-                                    PasswordInput(controller: _passwordController, hindText: "PASSSWORD", messageadd: true, ),
-                                    const SizedBox(height: 20.0),
-                                    MyButton(
-                                      text: 'Iniciar sesión',
-                                      onPressed: () => login(context), icon: const Icon(Icons.arrow_forward),
-                                    ),
-                                  ],
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        'Iniciar Sesión',
+                                        style: TextStyle(fontSize: responsiveFontSize(context, 24), fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(height: 10.0),
+                                      Text(
+                                        'Por favor ingresa tus datos',
+                                        style: TextStyle(fontSize: responsiveFontSize(context, 20), fontWeight: FontWeight.w500),
+                                      ),
+                                      const SizedBox(height: 30.0),
+                                      MyTextfileld(
+                                        hindText: 'Correo',
+                                        icon: const Icon(Icons.email_outlined),
+                                        controller: _emailController,
+                                        obsecureText: false, keyboardType: TextInputType.emailAddress,
+                                      ),
+                                      const SizedBox(height: 20.0),
+                                      PasswordInput(controller: _passwordController, hindText: "Contraseña", messageadd: true, ),
+                                      const SizedBox(height: 20.0),
+                                      MyButton(
+                                        text: 'Login',
+                                        onPressed: () => login(context), icon: const Icon(Icons.arrow_forward),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               )
                           ),
@@ -120,13 +123,13 @@ class LoginPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const SizedBox(height: 40.0),
-                            const Text('¿No estas registrado? ', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
+                            Text('¿No estas registrado? ', style: TextStyle(fontSize: responsiveFontSize(context, 20), fontWeight: FontWeight.bold),),
                             GestureDetector(
                               onTap: onTap,
-                              child: const Text(
-                                ' Registrate Ahora!!',
+                              child: Text(
+                                ' Registrate Ahora',
                                 style: TextStyle(
-                                    fontSize: 20.0,
+                                  fontSize: responsiveFontSize(context, 20),
                                     fontWeight: FontWeight.bold,
                                     color: greenColor),
                               ),
@@ -135,7 +138,6 @@ class LoginPage extends StatelessWidget {
                         )
                       ],
                     ),
-                  ),
                 ),
               )
             ],

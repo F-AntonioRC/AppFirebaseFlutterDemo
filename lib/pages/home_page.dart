@@ -9,7 +9,6 @@ import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/pages/cerrar_sesion.dart';
 import 'package:testwithfirebase/pages/configuration.dart';
 import 'package:testwithfirebase/pages/dashboard_main.dart';
-import 'package:testwithfirebase/pages/empoyee.dart';
 import 'package:testwithfirebase/pages/pantalla_empleado.dart';
 import 'package:testwithfirebase/pages/screen_cursos.dart';
 import 'package:testwithfirebase/pages/send_document.dart';

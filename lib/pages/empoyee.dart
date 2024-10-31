@@ -6,6 +6,7 @@ import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/components/my_textfileld.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/service/database.dart';
+import 'package:testwithfirebase/util/responsive.dart';
 
 class Employee extends StatefulWidget {
   const Employee({super.key});
@@ -40,8 +41,8 @@ class _EmployeeState extends State<Employee> {
   ];
   String? sareDropdownValue;
 
-  TextEditingController namecontroller = new TextEditingController();
-  TextEditingController rfcController = new TextEditingController();
+  TextEditingController namecontroller = TextEditingController();
+  TextEditingController rfcController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,14 +54,15 @@ class _EmployeeState extends State<Employee> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const Text("Añadir Empleado", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+                Text("Añadir Empleado", style: TextStyle(fontSize: responsiveFontSize(context, 24),
+                    fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
               Row(
                 children: [
                   Expanded(child: Column(children: [
-                    const Text(
+                    Text(
                       'Nombre del empleado',
                       style: TextStyle(
-                          fontSize: 20.0,
+                          fontSize: responsiveFontSize(context, 20),
                           fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 10.0),
@@ -73,10 +75,10 @@ class _EmployeeState extends State<Employee> {
                   ],)),
                   const SizedBox(width: 20.0),
                   Expanded(child: Column(children: [
-                    const Text(
+                    Text(
                       'Sexo',
                       style: TextStyle(
-                          fontSize: 20.0,
+                          fontSize: responsiveFontSize(context, 20),
                           fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 10.0),
@@ -92,10 +94,10 @@ class _EmployeeState extends State<Employee> {
             Row(children: [
               Expanded(child: Column(
               children: [
-                const Text(
+                Text(
                   'RFC del empleado',
                   style: TextStyle(
-                      fontSize: 20.0,
+                      fontSize: responsiveFontSize(context, 20),
                       fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10.0),
@@ -110,10 +112,10 @@ class _EmployeeState extends State<Employee> {
               const SizedBox(width: 20.0),
               Expanded(child: Column(
                 children: [
-                const Text(
+                Text(
                   'Estado',
                   style: TextStyle(
-                      fontSize: 20.0,
+                      fontSize: responsiveFontSize(context, 20),
                       fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10.0),
@@ -126,10 +128,10 @@ class _EmployeeState extends State<Employee> {
             const SizedBox(height: 15.0),
             Row(children: [
               Expanded(child: Column(children: [
-                const Text(
+                Text(
                   'Area',
                   style: TextStyle(
-                      fontSize: 20.0,
+                      fontSize: responsiveFontSize(context, 20),
                       fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(width: 20.0),
@@ -140,10 +142,10 @@ class _EmployeeState extends State<Employee> {
               ],)),
               const SizedBox(width: 20.0),
               Expanded(child: Column(children: [
-                const Text(
+                Text(
                   'Sare',
                   style: TextStyle(
-                      fontSize: 20.0,
+                      fontSize: responsiveFontSize(context, 20),
                       fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(width: 20.0),

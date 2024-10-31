@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/util/responsive.dart';
 
 class ThemeColor extends StatelessWidget {
   final Function(bool) toggleTheme;
@@ -18,9 +19,9 @@ class ThemeColor extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               "Activar/Desactivar modo oscuro",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: responsiveFontSize(context, 20), fontWeight: FontWeight.bold),
             ),
             const SizedBox(width: 10.0),
             const Icon(Icons.sunny),

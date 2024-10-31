@@ -3,6 +3,7 @@ import 'package:testwithfirebase/auth/auth_gate.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/pages/home_page.dart';
+import 'package:testwithfirebase/util/responsive.dart';
 import '../auth/auth_service.dart';
 
 class CerrarSesion extends StatefulWidget {
@@ -22,25 +23,21 @@ class _CerrarSesionState extends State<CerrarSesion> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(50.0),
+      margin: const EdgeInsets.all(10.0),
       color: darkBackground,
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.8,
         child: Card(
           color: ligth,
           child: Padding(
-            padding: const EdgeInsets.all(50.0), child: Column(
+            padding: const EdgeInsets.all(10.0), child: Column(
             children: [
-              const ListTile(
-                leading: Icon(
-                  Icons.logout_outlined,
-                  color: Colors.red,
-                ),
+              ListTile(
                 title: Text(
                   "¿Esta seguro que desea cerrar la Sesión?",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontSize: 24,
+                      fontSize: responsiveFontSize(context, 20),
                       color: Colors.red,
                       fontWeight: FontWeight.bold),
                 ),

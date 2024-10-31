@@ -6,6 +6,7 @@ import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/components/my_textfileld.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/service/database_courses.dart';
+import 'package:testwithfirebase/util/responsive.dart';
 
 class Courses extends StatefulWidget {
   const Courses({super.key});
@@ -33,16 +34,17 @@ class _CoursesState extends State<Courses> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const Text("Añadir Curso", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+                  Text("Añadir Curso", style: TextStyle(fontSize: responsiveFontSize(context, 24),
+                      fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
                   Row(
                     children: [
                       Expanded(child: Column(
                         children: [
-                          const Text(
+                          Text(
                             "Nombre del curso",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 20.0, fontWeight: FontWeight.bold),
+                                fontSize: responsiveFontSize(context, 20), fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 10.0),
                           MyTextfileld(
@@ -59,11 +61,11 @@ class _CoursesState extends State<Courses> {
                       const SizedBox(width: 20.0),
                       Expanded(child: Column(
                         children: [
-                          const Text(
+                          Text(
                             "Nomenclatura del Documento",
                             textAlign: TextAlign.start,
                             style: TextStyle(
-                                fontSize: 20.0, fontWeight: FontWeight.bold),
+                                fontSize: responsiveFontSize(context, 20), fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 10.0),
                           MyTextfileld(
@@ -82,11 +84,11 @@ class _CoursesState extends State<Courses> {
                     children: [
                       Expanded(child: Column(
                         children: [
-                          const Text(
+                          Text(
                             "Link del curso",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 20.0, fontWeight: FontWeight.bold),
+                                fontSize: responsiveFontSize(context, 20), fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 10.0),
                           MyTextfileld(
@@ -100,11 +102,11 @@ class _CoursesState extends State<Courses> {
                       const SizedBox(width: 20.0),
                       Expanded(child: Column(
                         children: [
-                          const Text(
+                          Text(
                             "Fecha de inicio del curso",
                             textAlign: TextAlign.start,
                             style: TextStyle(
-                                fontSize: 20.0, fontWeight: FontWeight.bold),
+                                fontSize: responsiveFontSize(context, 20), fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 10.0),
                           DateTextField(controller: dateController),
@@ -117,11 +119,11 @@ class _CoursesState extends State<Courses> {
                     children: [
                       Expanded(child: Column(
                         children: [
-                          const Text(
+                          Text(
                             "Fecha de registro",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 20.0, fontWeight: FontWeight.bold),
+                                fontSize: responsiveFontSize(context, 20), fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 10.0),
                           DateTextField(controller: registroController)
@@ -130,11 +132,11 @@ class _CoursesState extends State<Courses> {
                       const SizedBox(width: 15.0),
                       Expanded(child: Column(
                         children: [
-                          const Text(
+                          Text(
                             "Fecha de envio de constancia",
                             textAlign: TextAlign.start,
                             style: TextStyle(
-                                fontSize: 20.0, fontWeight: FontWeight.bold),
+                                fontSize: responsiveFontSize(context, 20), fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 10.0),
                           DateTextField(controller: envioConstanciaController),

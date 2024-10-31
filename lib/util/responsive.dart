@@ -11,3 +11,14 @@ class Responsive {
   static bool isDesktop(BuildContext context) =>
       MediaQuery.of(context).size.width >= 1100;
 }
+
+double responsiveFontSize(BuildContext context, double fontSize) {
+  double width = MediaQuery.of(context).size.width;
+  if (Responsive.isMobile(context)) {
+    return fontSize * 0.9;
+  } else if (Responsive.isTablet(context)) {
+    return fontSize * 1.1;
+  } else {
+    return fontSize * 1.3;
+  }
+}

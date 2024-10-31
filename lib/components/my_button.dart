@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
+import 'package:testwithfirebase/util/responsive.dart';
 
 class MyButton extends StatelessWidget {
   final String text;
@@ -26,7 +27,7 @@ class MyButton extends StatelessWidget {
           iconAlignment: IconAlignment.end,
           label: Text(
             text,
-            style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: responsiveFontSize(context, 20), fontWeight: FontWeight.bold),
           ),
         )
       ],

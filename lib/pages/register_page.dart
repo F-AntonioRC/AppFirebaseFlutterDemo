@@ -5,6 +5,7 @@ import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/components/my_textfileld.dart';
 import 'package:testwithfirebase/components/password_input.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
+import 'package:testwithfirebase/util/responsive.dart';
 
 class RegisterPage extends StatelessWidget {
   final TextEditingController _cupoController = TextEditingController();
@@ -111,14 +112,14 @@ class RegisterPage extends StatelessWidget {
                       child: Padding(padding: const EdgeInsets.all(20.0),
                       child: Column(
                         children: [
-                          const Text(
+                          Text(
                             'Registrar',
-                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: responsiveFontSize(context, 24), fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 10),
-                          const Text(
+                          Text(
                             'Por favor ingresa tus datos',
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(fontSize: responsiveFontSize(context, 20)),
                           ),
                           const SizedBox(height: 20),
                           MyTextfileld(
@@ -150,12 +151,13 @@ class RegisterPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('¿Ya tienes una cuenta? ', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
+                      Text('¿Ya tienes una cuenta? ', style: TextStyle(fontSize: responsiveFontSize(context, 20),
+                          fontWeight: FontWeight.bold),),
                       GestureDetector(
                         onTap: onTap,
-                        child: const Text(
+                        child: Text(
                           ' Inicia sesión',
-                          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: greenColor),
+                          style: TextStyle(fontSize: responsiveFontSize(context, 20), fontWeight: FontWeight.bold, color: greenColor),
 
                         ),
                       )
