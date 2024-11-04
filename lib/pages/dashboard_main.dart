@@ -14,10 +14,11 @@ class DashboardMain extends StatelessWidget {
         children: [
           Row(
             children: [
-              Expanded( child: CardGraphics(cardWidget: CustomPieChart(title: 'Cursos completados',)),),
-              Expanded( child: CardGraphics(cardWidget: CustomPieChart(title: 'Cursos Añadidos',)),),
-              Expanded(child: CardGraphics(cardWidget: CustomPieChart(title: 'Curso uso de facebook',)),)
-            ],
+                Expanded( child: CardGraphics(cardWidget: CustomPieChart(title: 'Cursos completados',)),),
+                Expanded( child: CardGraphics(cardWidget: CustomPieChart(title: 'Cursos Añadidos',)),),
+                Expanded(child: CardGraphics(cardWidget: CustomPieChart(title: 'Curso uso de facebook',)),)
+              ],
+
           ),
           Row(
             children: [

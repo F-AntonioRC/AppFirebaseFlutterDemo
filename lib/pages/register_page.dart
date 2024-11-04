@@ -31,12 +31,11 @@ class RegisterPage extends StatelessWidget {
         String UID = userCredential.user!.uid;
 
         // Guarda los datos del empleado en Firestore
-        await FirebaseFirestore.instance.collection('Employee').doc(UID).set({
+        await FirebaseFirestore.instance.collection('User').doc(UID).set({
           
           'CUPO': _cupoController.text,
           'email': _emailController.text,
           'uid': UID,
-          'Estado': 'Activo'
         });
 
       } catch (e) {
@@ -101,15 +100,15 @@ class RegisterPage extends StatelessWidget {
               )),
           Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   FractionallySizedBox(
-                    widthFactor: 0.75,
+                    widthFactor: 0.80,
                     child: Card(
-                      child: Padding(padding: const EdgeInsets.all(20.0),
+                      child: Padding(padding: const EdgeInsets.all(10.0),
                       child: Column(
                         children: [
                           Text(
@@ -130,15 +129,15 @@ class RegisterPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 10),
                           MyTextfileld(
-                            hindText: 'Correo',
+                            hindText: 'CORREO ELECTRONICO',
                             icon: const Icon(Icons.email_outlined),
                             controller: _emailController,
                             obsecureText: false, keyboardType: TextInputType.emailAddress,
                           ),
                           const SizedBox(height: 10),
-                          PasswordInput(controller: _passwordController, hindText: "PASSWORD", messageadd: false),
+                          PasswordInput(controller: _passwordController, hindText: "CONTRASEÑA", messageadd: false),
                           const SizedBox(height: 10),
-                          PasswordInput(controller: _confirmPasswordController, hindText: "CONFIRM PASSWORD", messageadd: false),
+                          PasswordInput(controller: _confirmPasswordController, hindText: "CONFIRMAR CONTRASEÑA", messageadd: false),
                           const SizedBox(height: 20.0),
                           MyButton(
                             text: 'Registrar',

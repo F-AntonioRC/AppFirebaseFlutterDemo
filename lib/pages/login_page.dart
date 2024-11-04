@@ -77,7 +77,7 @@ class LoginPage extends StatelessWidget {
                   )),
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -86,7 +86,7 @@ class LoginPage extends StatelessWidget {
                           widthFactor: 0.75,
                           child: Card(
                               child:
-                              Padding(padding: const EdgeInsets.all(20.0),
+                              Padding(padding: const EdgeInsets.all(10.0),
                                 child: SingleChildScrollView(
                                   child: Column(
                                     children: [
@@ -123,11 +123,11 @@ class LoginPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const SizedBox(height: 40.0),
-                            Text('¿No estas registrado? ', style: TextStyle(fontSize: responsiveFontSize(context, 20), fontWeight: FontWeight.bold),),
+                            Text('¿No tienes una cuenta? ', style: TextStyle(fontSize: responsiveFontSize(context, 20), fontWeight: FontWeight.bold),),
                             GestureDetector(
                               onTap: onTap,
                               child: Text(
-                                ' Registrate Ahora',
+                                ' Registrate',
                                 style: TextStyle(
                                   fontSize: responsiveFontSize(context, 20),
                                     fontWeight: FontWeight.bold,

@@ -22,9 +22,6 @@ class _EmployeeState extends State<Employee> {
   ]; // VALORES DEL DROPDOWN
   String? sexdropdownValue;
 
-  final List<String> dropdownState = ["Activo", "Inactivo"];
-  String? stateDropdownValue;
-
   final List<String> dropdownArea = [
     "Jefatura",
     "Analista",
@@ -42,7 +39,6 @@ class _EmployeeState extends State<Employee> {
   String? sareDropdownValue;
 
   TextEditingController namecontroller = TextEditingController();
-  TextEditingController rfcController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -92,41 +88,6 @@ class _EmployeeState extends State<Employee> {
               ),
             const SizedBox(height: 15.0),
             Row(children: [
-              Expanded(child: Column(
-              children: [
-                Text(
-                  'RFC del empleado',
-                  style: TextStyle(
-                      fontSize: responsiveFontSize(context, 20),
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10.0),
-                MyTextfileld(
-                    hindText: "Campo Obligatorio*",
-                    icon: const Icon(Icons.person),
-                    controller: rfcController,
-                    obsecureText: false,
-                    keyboardType: TextInputType.text),
-              ]
-            )),
-              const SizedBox(width: 20.0),
-              Expanded(child: Column(
-                children: [
-                Text(
-                  'Estado',
-                  style: TextStyle(
-                      fontSize: responsiveFontSize(context, 20),
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10.0),
-                DropdownList(
-                  items: dropdownState, icon: const Icon(Icons.arrow_downward_rounded), onChanged: (value) {
-                  stateDropdownValue = value;
-                },),
-              ],)),
-            ],),
-            const SizedBox(height: 15.0),
-            Row(children: [
               Expanded(child: Column(children: [
                 Text(
                   'Area',
@@ -167,8 +128,7 @@ class _EmployeeState extends State<Employee> {
                         "IdEmployee": id,
                         "Nombre": namecontroller.text,
                         "Sexo": sexdropdownValue,
-                        "RFC": rfcController.text,
-                        "Estado": stateDropdownValue,
+                        "Estado": "Activo",
                         "Area": areaDropdownValue,
                         "Sare": sareDropdownValue
                       };

@@ -59,15 +59,38 @@ class _SendEmailState extends State<SendEmail> {
                       textHint: 'Seleccione un curso',
                     ),
                     const SizedBox(height: 10.0),
-                    const Text('Area',
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 10.0),
-                    FirebaseDropdown(
-                        controller: _controllerArea,
-                        collection: "Area",
-                        data: "Nombre",
-                        textHint: "Seleccione un Area"),
+                    Row(
+                      children: [
+                      Expanded(child: Column(
+                        children: [
+                          const Text('SARE',
+                              style: TextStyle(
+                                  fontSize: 20.0, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 10.0),
+                          FirebaseDropdown(
+                              controller: _controllerArea,
+                              collection: "Area",
+                              data: "Nombre",
+                              textHint: "Seleccione un Area"),
+                        ],
+                      ),),
+                        const SizedBox(width: 20.0),
+                        Expanded(child: Column(
+                          children: [
+                            const Text('Area',
+                                style: TextStyle(
+                                    fontSize: 20.0, fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 10.0),
+                            FirebaseDropdown(
+                                controller: _controllerArea,
+                                collection: "Area",
+                                data: "Nombre",
+                                textHint: "Seleccione un Area"),
+                          ],
+                        ),)
+                      ],
+                    ),
+
                     const SizedBox(height: 10.0),
                     MyButton(
                       text: "Previsualizar",

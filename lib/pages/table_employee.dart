@@ -14,8 +14,8 @@ class TableEmployee extends StatefulWidget {
 
 class _TableEmployeeState extends State<TableEmployee> {
   final DatabaseMethods databaseMethods = DatabaseMethods();
-  final List<String> headers = ["Nombre Empleado", "RFC", "Area", "Sare"];
-  final List<String> fieldKeys = ["Nombre", "RFC", "Area", "Sare"];
+  final List<String> headers = ["Nombre", "Estado", "Area", "Sare"];
+  final List<String> fieldKeys = ["Nombre", "Estado", "Area", "Sare"];
 
   @override
   Widget build(BuildContext context) {

@@ -30,7 +30,7 @@ class _CerrarSesionState extends State<CerrarSesion> {
         child: Card(
           color: ligth,
           child: Padding(
-            padding: const EdgeInsets.all(10.0), child: Column(
+            padding: const EdgeInsets.all(5.0), child: Column(
             children: [
               ListTile(
                 title: Text(

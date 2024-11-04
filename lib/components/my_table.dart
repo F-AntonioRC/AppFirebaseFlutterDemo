@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
+import 'package:testwithfirebase/util/responsive.dart';
 
 class MyTable extends StatelessWidget {
   final List<String> headers; // Caberas de la tabla
@@ -30,14 +31,16 @@ class MyTable extends StatelessWidget {
             return DataColumn(
               label: Text(
                 header,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: responsiveFontSize(context, 15), fontWeight: FontWeight.bold),
               ),
             );
           }),
-          const DataColumn(  // Columna para las acciones
+          DataColumn(  // Columna para las acciones
             label: Text(
               'Acciones',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: responsiveFontSize(context, 15),
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -45,7 +48,7 @@ class MyTable extends StatelessWidget {
           return DataRow(
             cells: [
               ...fieldKeys.map((key) {
-                return DataCell(Text(rowData[key]?.toString() ?? ''));
+                return DataCell(Text(rowData[key]?.toString() ?? '', style: TextStyle(fontSize: responsiveFontSize(context, 12)), textAlign: TextAlign.center,)  );
               }),
               DataCell(
                 Row(
