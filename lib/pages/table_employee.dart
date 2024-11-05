@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:testwithfirebase/components/custom_dialog.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/service/database.dart';
 
@@ -14,11 +13,12 @@ class TableEmployee extends StatefulWidget {
 
 class _TableEmployeeState extends State<TableEmployee> {
   final DatabaseMethods databaseMethods = DatabaseMethods();
-  final List<String> headers = ["Nombre", "Estado", "Area", "Sare"];
-  final List<String> fieldKeys = ["Nombre", "Estado", "Area", "Sare"];
+  final List<String> headers = ["Id", "Nombre", "Estado", "Area", "Sare"];
+  final List<String> fieldKeys = ["IdEmployee","Nombre", "Estado", "Area", "Sare"];
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       margin: const EdgeInsets.all(5.0),
       child: Card(
@@ -43,7 +43,9 @@ class _TableEmployeeState extends State<TableEmployee> {
                   onAssign: (String id) {
                     showDialog(context: context,
                         builder: (BuildContext) {
-                      return CustomDialog(employeeId: id);
+                      return Dialog(
+                        child: Text("Id: $id"),
+                      );
                         });
                   },));
                 }

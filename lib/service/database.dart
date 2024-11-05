@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:testwithfirebase/components/custom_snackbar.dart';
 
 class DatabaseMethods {
 
@@ -24,7 +25,12 @@ class DatabaseMethods {
 
   //ELIMINAR
   Future deleteEmployeeDetail(String id) async {
-    return await FirebaseFirestore.instance.collection("Employee").doc(id).delete();
+  try{
+    DocumentReference documentReference = FirebaseFirestore.instance.collection('Employee').doc(id);
+    await documentReference.update({'Estado' : 'Inactivo'});
+  } catch(e) {
+    print("Error: $e");
+  }
   }
 
 }

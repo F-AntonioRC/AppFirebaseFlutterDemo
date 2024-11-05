@@ -12,7 +12,7 @@ class CustomDialog extends StatelessWidget {
       title: const Text("Asignación de empleados"),
       content: Text("Id del empleado: $employeeId"),
       actions: [
-        MyButton(text: "Cancelar", icon: Icon(Icons.cancel_outlined), onPressed: () { Navigator.of(context).pop(); },)
+        MyButton(text: "Cancelar", icon: const Icon(Icons.cancel_outlined), onPressed: () { Navigator.of(context).pop(); },)
       ],
     );
   }
