@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:testwithfirebase/components/custom_snackbar.dart';
 
 class DatabaseMethods {
 

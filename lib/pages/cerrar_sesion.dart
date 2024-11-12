@@ -16,7 +16,11 @@ class CerrarSesion extends StatefulWidget {
 void logout(BuildContext context) {
   final auth = AuthService();
   auth.signOut();
-  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AuthGate()));// Cierra el diálogo después de cerrar sesión
+  Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              const AuthGate())); // Cierra el diálogo después de cerrar sesión
 }
 
 class _CerrarSesionState extends State<CerrarSesion> {
@@ -30,48 +34,49 @@ class _CerrarSesionState extends State<CerrarSesion> {
         child: Card(
           color: ligth,
           child: Padding(
-            padding: const EdgeInsets.all(5.0), child: Column(
-            children: [
-              ListTile(
-                title: Text(
-                  "¿Esta seguro que desea cerrar la Sesión?",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: responsiveFontSize(context, 20),
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  MyButton(
-                    text: "Cancelar",
-                    icon: const Icon(
-                      Icons.cancel_outlined,
-                      color: Colors.red,
-                    ),
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomePage()));
-                    },
+            padding: const EdgeInsets.all(5.0),
+            child: Column(
+              children: [
+                ListTile(
+                  title: Text(
+                    "¿Esta seguro que desea cerrar la Sesión?",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: responsiveFontSize(context, 20),
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(width: 10.0),
-                  MyButton(
-                    text: "Aceptar",
-                    icon: const Icon(
-                      Icons.check_circle_outlined,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    MyButton(
+                      text: "Cancelar",
+                      icon: const Icon(
+                        Icons.cancel_outlined,
+                      ),
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomePage()));
+                      }, buttonColor: Colors.red,
                     ),
-                    onPressed: () {
-                      logout(context);
-                    },
-                  )
-                ],
-              )
-            ],
-          ),),
+                    const SizedBox(width: 10.0),
+                    MyButton(
+                      text: "Aceptar",
+                      icon: const Icon(
+                        Icons.check_circle_outlined,
+                      ),
+                      onPressed: () {
+                        logout(context);
+                      }, buttonColor: greenColor,
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );

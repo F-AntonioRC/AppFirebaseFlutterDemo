@@ -69,9 +69,9 @@ class _SendEmailState extends State<SendEmail> {
                           const SizedBox(height: 10.0),
                           FirebaseDropdown(
                               controller: _controllerArea,
-                              collection: "Area",
-                              data: "Nombre",
-                              textHint: "Seleccione un Area"),
+                              collection: "Sare",
+                              data: "sare",
+                              textHint: "Seleccione una sare"),
                         ],
                       ),),
                         const SizedBox(width: 20.0),
@@ -98,7 +98,7 @@ class _SendEmailState extends State<SendEmail> {
                       onPressed: () {
                         setState(() {
                           // Obtener el curso y área seleccionados y actualizar el estado
-                            selectedCourse = _controllerCourse.selectedDocument?['NameCourse'] ?? 'Curso no seleccionado';
+                          selectedCourse = _controllerCourse.selectedDocument?['NameCourse'] ?? 'Curso no seleccionado';
                           selectedArea = _controllerArea.selectedDocument?['Nombre'] ?? 'Área no seleccionada';
                           idCourse = _controllerCourse.selectedDocument?['Id'] ?? "Id no encontrado";
                           idArea = _controllerArea.selectedDocument?['IdArea'] ?? "Id no encontrado";
@@ -106,7 +106,7 @@ class _SendEmailState extends State<SendEmail> {
                           fechaRegistro = _controllerCourse.selectedDocument?['Fecharegistro'] ?? "Fecha no encontrada";
                           fechaEnvio = _controllerCourse.selectedDocument?['FechaenvioConstancia'] ?? "Fecha no encontrada";
                         });
-                      }
+                      }, buttonColor: greenColor,
                     )
                   ]),
                 ),

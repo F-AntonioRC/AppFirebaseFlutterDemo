@@ -11,7 +11,8 @@ class RegisterPage extends StatelessWidget {
   final TextEditingController _cupoController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   final void Function()? onTap;
 
@@ -23,7 +24,6 @@ class RegisterPage extends StatelessWidget {
 
     if (_passwordController.text == _confirmPasswordController.text) {
       try {
-
         // Registro del usuario en Firebase Auth
         final userCredential = await auth.signUpWithEmailAndPassword(
             _emailController.text, _passwordController.text);
@@ -32,12 +32,10 @@ class RegisterPage extends StatelessWidget {
 
         // Guarda los datos del empleado en Firestore
         await FirebaseFirestore.instance.collection('User').doc(UID).set({
-          
           'CUPO': _cupoController.text,
           'email': _emailController.text,
           'uid': UID,
         });
-
       } catch (e) {
         showDialog(
           context: context,
@@ -108,56 +106,78 @@ class RegisterPage extends StatelessWidget {
                   FractionallySizedBox(
                     widthFactor: 0.80,
                     child: Card(
-                      child: Padding(padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            'Registrar',
-                            style: TextStyle(fontSize: responsiveFontSize(context, 24), fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            'Por favor ingresa tus datos',
-                            style: TextStyle(fontSize: responsiveFontSize(context, 20)),
-                          ),
-                          const SizedBox(height: 20),
-                          MyTextfileld(
-                            hindText: 'CUPO',
-                            icon: const Icon(Icons.person),
-                            controller: _cupoController,
-                            obsecureText: false, keyboardType: TextInputType.emailAddress,
-                          ),
-                          const SizedBox(height: 10),
-                          MyTextfileld(
-                            hindText: 'CORREO ELECTRONICO',
-                            icon: const Icon(Icons.email_outlined),
-                            controller: _emailController,
-                            obsecureText: false, keyboardType: TextInputType.emailAddress,
-                          ),
-                          const SizedBox(height: 10),
-                          PasswordInput(controller: _passwordController, hindText: "CONTRASEÑA", messageadd: false),
-                          const SizedBox(height: 10),
-                          PasswordInput(controller: _confirmPasswordController, hindText: "CONFIRMAR CONTRASEÑA", messageadd: false),
-                          const SizedBox(height: 20.0),
-                          MyButton(
-                            text: 'Registrar',
-                            onPressed: () => register(context), icon: const Icon(Icons.arrow_forward),
-                          ),
-                        ],
-                      ),),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Registrar',
+                              style: TextStyle(
+                                  fontSize: responsiveFontSize(context, 24),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Por favor ingresa tus datos',
+                              style: TextStyle(
+                                  fontSize: responsiveFontSize(context, 20)),
+                            ),
+                            const SizedBox(height: 15),
+                            MyTextfileld(
+                              hindText: 'CUPO',
+                              icon: const Icon(Icons.person),
+                              controller: _cupoController,
+                              obsecureText: false,
+                              keyboardType: TextInputType.emailAddress,
+                            ),
+                            const SizedBox(height: 10),
+                            MyTextfileld(
+                              hindText: 'CORREO ELECTRONICO',
+                              icon: const Icon(Icons.email_outlined),
+                              controller: _emailController,
+                              obsecureText: false,
+                              keyboardType: TextInputType.emailAddress,
+                            ),
+                            const SizedBox(height: 10),
+                            PasswordInput(
+                                controller: _passwordController,
+                                hindText: "CONTRASEÑA",
+                                messageadd: false),
+                            const SizedBox(height: 10),
+                            PasswordInput(
+                                controller: _confirmPasswordController,
+                                hindText: "CONFIRMAR CONTRASEÑA",
+                                messageadd: false),
+                            const SizedBox(height: 10.0),
+                            MyButton(
+                              text: 'Registrar',
+                              onPressed: () => register(context),
+                              icon: const Icon(Icons.arrow_forward), buttonColor: greenColor,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('¿Ya tienes una cuenta? ', style: TextStyle(fontSize: responsiveFontSize(context, 20),
-                          fontWeight: FontWeight.bold),),
+                      Text(
+                        '¿Ya tienes una cuenta? ',
+                        style: TextStyle(
+                            fontSize: responsiveFontSize(context, 20),
+                            fontWeight: FontWeight.bold),
+                      ),
                       GestureDetector(
                         onTap: onTap,
                         child: Text(
-                          ' Inicia sesión',
-                          style: TextStyle(fontSize: responsiveFontSize(context, 20), fontWeight: FontWeight.bold, color: greenColor),
-
+                          'Inicia sesión',
+                          style: TextStyle(
+                              fontSize: responsiveFontSize(context, 20),
+                              fontWeight: FontWeight.bold,
+                              color: greenColor,
+                              decoration: TextDecoration.underline,
+                              decorationColor: greenColor),
                         ),
                       )
                     ],

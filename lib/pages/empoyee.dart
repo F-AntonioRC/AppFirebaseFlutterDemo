@@ -139,7 +139,7 @@ class _EmployeeState extends State<Employee> {
                     } catch (e) {
                       showCustomSnackBar(context, "Error: $e");
                     }
-                  },
+                  }, buttonColor: greenColor,
                 )
             ),
           ],

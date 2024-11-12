@@ -65,7 +65,7 @@ class _CardPreviewState extends State<CardPreview> {
                 MyButton(
                   text: "Enviar Correo",
                   icon: const Icon(Icons.send_rounded),
-                  onPressed: () {},
+                  onPressed: () {}, buttonColor: greenColor,
                 ),
                 const SizedBox(height: 10.0),
               ],

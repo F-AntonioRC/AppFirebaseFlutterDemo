@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/dialogChanges.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/service/database.dart';
 
@@ -35,19 +36,18 @@ class _TableEmployeeState extends State<TableEmployee> {
                   return const Center(child: Text('No employees found.'));
                 } else {
                   final data = snapshot.data!;
-                  return Expanded(child: MyTable(headers: headers,
+                  return MyTable(headers: headers,
                     data: data,
                     fieldKeys: fieldKeys,
                     onEdit: (String id) {  },
                     onDelete: (String id) {  },
-                  onAssign: (String id) {
+                    onAssign: (String id) {
                     showDialog(context: context,
-                        builder: (BuildContext) {
-                      return Dialog(
-                        child: Text("Id: $id"),
-                      );
-                        });
-                  },));
+                        builder: (BuildContext context) {
+                      return const Dialogchanges(dataChange: 'Hola');
+                    });
+                    },
+                    idKey: 'IdEmployee',);
                 }
               })),
       ),

@@ -6,6 +6,7 @@ class MyTable extends StatelessWidget {
   final List<String> headers; // Caberas de la tabla
   final List<String> fieldKeys; //Atributos que se muestran
   final List<Map<String, dynamic>> data; // Datos almacenados
+  final String idKey; //Valor del id
   final Function(String id) onEdit;  // Función para editar
   final Function(String id) onDelete;  // Función para eliminar
   final Function(String id)? onAssign; //Función no necesaria
@@ -18,7 +19,7 @@ class MyTable extends StatelessWidget {
     required this.fieldKeys,
     required this.onEdit,
     required this.onDelete,
-    this.onAssign
+    this.onAssign, required this.idKey
   });
 
   @override
@@ -57,19 +58,19 @@ class MyTable extends StatelessWidget {
                       icon: const Icon(Icons.edit),
                       color: greenColor,
                       onPressed: () {
-                        onEdit(rowData['id']);  // Llamar a la función de editar
+                        onEdit(idKey);  // Llamar a la función de editar
                       },
                     ),
                     IconButton(
                       icon: const Icon(Icons.delete_forever),
                       color: Colors.red,
                       onPressed: () {
-                        onDelete(rowData['id']);  // Llamar a la función de eliminar
+                        onDelete(idKey);  // Llamar a la función de eliminar
                       },
                     ),
                     if( onAssign !=null )
                       IconButton(onPressed: () {
-                        onAssign!(rowData['id']);
+                        onAssign!(idKey);
                       }, icon: const Icon(Icons.manage_accounts, color: Colors.blue,))
                   ],
                 ),

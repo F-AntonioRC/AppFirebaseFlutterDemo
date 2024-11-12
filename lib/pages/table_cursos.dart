@@ -35,22 +35,24 @@ class _TableCursosState extends State<TableCursos> {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: SingleChildScrollView(
-            child: Expanded(
-                child: FutureBuilder(
-                    future: methodsCourses.getAllCourses(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return const Center(child: Text('No courses found.'));
-                      } else {
-                        final data = snapshot.data!;
-                        return MyTable(headers: headers, data: data, fieldKeys: fieldKeys, onEdit: (String id) {  }, onDelete: (String id) {  },);
-                      }
-                    })
-            ),
+            child: FutureBuilder(
+                future: methodsCourses.getAllCourses(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text('No courses found.'));
+                  } else {
+                    final data = snapshot.data!;
+                    return MyTable(
+                      headers: headers,
+                      data: data,
+                      fieldKeys: fieldKeys,
+                      onEdit: (String id) {  }, onDelete: (String id) {  }, idKey: 'Id',);
+                  }
+                }),
           ),
         ),
       ),
