@@ -16,10 +16,7 @@ class Employee extends StatefulWidget {
 }
 
 class _EmployeeState extends State<Employee> {
-  final List<String> dropdownsex = [
-    'M',
-    'F'
-  ]; // VALORES DEL DROPDOWN
+  final List<String> dropdownsex = ['M', 'F']; // VALORES DEL DROPDOWN
   String? sexdropdownValue;
 
   final List<String> dropdownArea = [
@@ -43,110 +40,137 @@ class _EmployeeState extends State<Employee> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(10.0),
-      child: Card(
-        color: ligth,
-        child: Padding(padding: const EdgeInsets.all(10.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Text("Añadir Empleado", style: TextStyle(fontSize: responsiveFontSize(context, 24),
-                    fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
-              Row(
-                children: [
-                  Expanded(child: Column(children: [
+        margin: const EdgeInsets.all(10.0),
+        child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
                     Text(
-                      'Nombre del empleado',
+                      "Añadir Empleado",
                       style: TextStyle(
-                          fontSize: responsiveFontSize(context, 20),
+                          fontSize: responsiveFontSize(context, 24),
                           fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 10.0),
-                    MyTextfileld(
-                        hindText: "Campo Obligatorio*",
-                        icon: const Icon(Icons.person),
-                        controller: namecontroller,
-                        obsecureText: false,
-                        keyboardType: TextInputType.text),
-                  ],)),
-                  const SizedBox(width: 20.0),
-                  Expanded(child: Column(children: [
-                    Text(
-                      'Sexo',
-                      style: TextStyle(
-                          fontSize: responsiveFontSize(context, 20),
-                          fontWeight: FontWeight.bold),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Column(
+                          children: [
+                            Text(
+                              'Nombre del empleado',
+                              style: TextStyle(
+                                  fontSize: responsiveFontSize(context, 20),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 10.0),
+                            MyTextfileld(
+                                hindText: "Campo Obligatorio*",
+                                icon: const Icon(Icons.person),
+                                controller: namecontroller,
+                                obsecureText: false,
+                                keyboardType: TextInputType.text),
+                          ],
+                        )),
+                        const SizedBox(width: 20.0),
+                        Expanded(
+                            child: Column(
+                          children: [
+                            Text(
+                              'Sexo',
+                              style: TextStyle(
+                                  fontSize: responsiveFontSize(context, 20),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 10.0),
+                            DropdownList(
+                              items: dropdownsex,
+                              icon: const Icon(Icons.arrow_downward_rounded),
+                              onChanged: (value) {
+                                sexdropdownValue = value;
+                              },
+                            ),
+                          ],
+                        )),
+                      ],
                     ),
-                    const SizedBox(height: 10.0),
-                    DropdownList(items: dropdownsex,
-                      icon: const Icon(Icons.arrow_downward_rounded),
-                      onChanged: (value) {
-                        sexdropdownValue = value;
-                      },),
-                  ],)),
-                ],
+                    const SizedBox(height: 15.0),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Column(
+                          children: [
+                            Text(
+                              'Area',
+                              style: TextStyle(
+                                  fontSize: responsiveFontSize(context, 20),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(width: 20.0),
+                            DropdownList(
+                              items: dropdownArea,
+                              icon: const Icon(Icons.arrow_downward_rounded),
+                              onChanged: (value) {
+                                areaDropdownValue = value;
+                              },
+                            ),
+                          ],
+                        )),
+                        const SizedBox(width: 20.0),
+                        Expanded(
+                            child: Column(
+                          children: [
+                            Text(
+                              'Sare',
+                              style: TextStyle(
+                                  fontSize: responsiveFontSize(context, 20),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(width: 20.0),
+                            DropdownList(
+                              items: dropdownSare,
+                              icon: const Icon(Icons.arrow_downward_rounded),
+                              onChanged: (value) {
+                                sareDropdownValue = value;
+                              },
+                            ),
+                          ],
+                        ))
+                      ],
+                    ),
+                    const SizedBox(height: 20.0),
+                    Center(
+                      widthFactor: 0.5,
+                      child: MyButton(
+                        text: 'Agregar',
+                        icon: const Icon(Icons.person_add_alt_rounded),
+                        onPressed: () async {
+                          try {
+                            String id = randomAlphaNumeric(3);
+                            Map<String, dynamic> employeeInfoMap = {
+                              "IdEmployee": id,
+                              "Nombre": namecontroller.text,
+                              "Sexo": sexdropdownValue,
+                              "Estado": "Activo",
+                              "Area": areaDropdownValue,
+                              "Sare": sareDropdownValue
+                            };
+                            await DatabaseMethods()
+                                .addEmployeeDetails(employeeInfoMap, id);
+                            showCustomSnackBar(
+                                context, "Empleado agregado correctamente :D", greenColor);
+                          } catch (e) {
+                            showCustomSnackBar(context, "Error: $e", Colors.red);
+                          }
+                        },
+                        buttonColor: greenColor,
+                      ),
+                    )
+                  ],
+                ),
               ),
-            const SizedBox(height: 15.0),
-            Row(children: [
-              Expanded(child: Column(children: [
-                Text(
-                  'Area',
-                  style: TextStyle(
-                      fontSize: responsiveFontSize(context, 20),
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(width: 20.0),
-                DropdownList(
-                  items: dropdownArea, icon: const Icon(Icons.arrow_downward_rounded), onChanged: (value) {
-                  areaDropdownValue = value;
-                },),
-              ],)),
-              const SizedBox(width: 20.0),
-              Expanded(child: Column(children: [
-                Text(
-                  'Sare',
-                  style: TextStyle(
-                      fontSize: responsiveFontSize(context, 20),
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(width: 20.0),
-                DropdownList(
-                  items: dropdownSare, icon: const Icon(Icons.arrow_downward_rounded), onChanged: (value) {
-                  sareDropdownValue = value;
-                },),
-              ],))
-            ],),
-            const SizedBox(height: 20.0),
-            Center(
-                child: MyButton(
-                  text: 'Añadir',
-                  icon: const Icon(Icons.person_add_alt_rounded),
-                  onPressed: () async {
-                    try {
-                      String id = randomAlphaNumeric(3);
-                      Map<String, dynamic> employeeInfoMap = {
-                        "IdEmployee": id,
-                        "Nombre": namecontroller.text,
-                        "Sexo": sexdropdownValue,
-                        "Estado": "Activo",
-                        "Area": areaDropdownValue,
-                        "Sare": sareDropdownValue
-                      };
-                      await DatabaseMethods().addEmployeeDetails(
-                          employeeInfoMap, id);
-                      showCustomSnackBar(
-                          context, "Empleado agregado correctamente :D");
-                    } catch (e) {
-                      showCustomSnackBar(context, "Error: $e");
-                    }
-                  }, buttonColor: greenColor,
-                )
-            ),
-          ],
-        ),
-      ),
-    )
-    )
-    );
+            )));
   }
 }

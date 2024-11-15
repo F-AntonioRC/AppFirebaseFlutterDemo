@@ -9,9 +9,15 @@ class MethodsCourses {
         .set(courseInfoMap);
   }
 
-  //OBTENER TODOS LOS CURSOS
+  //OBTENER TODOS LOS CURSOS ACTIVOS
   Future<List<Map<String, dynamic>>> getAllCourses() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("Courses").get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Courses').where('Estado', isEqualTo: 'Activo').get();
+    return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+  }
+
+  //OBTENER TODOS LOS CURSOS DESACTIVADOS
+  Future<List<Map<String, dynamic>>> getAllCoursesInac() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Courses').where('Estado', isEqualTo: 'Inactivo').get();
     return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
 
@@ -32,10 +38,12 @@ class MethodsCourses {
   }
 
   //ELIMINAR
-  Future<void> deleteCourse(String id) async {
-    return await FirebaseFirestore.instance
-        .collection("Courses")
-        .doc(id)
-        .delete();
+  Future deleteCoursesDetail(String id) async {
+    try{
+      DocumentReference documentReference = FirebaseFirestore.instance.collection('Courses').doc(id);
+      await documentReference.update({'Estado' : 'Inactivo'});
+    } catch(e) {
+      print("Error: $e");
+    }
   }
 }

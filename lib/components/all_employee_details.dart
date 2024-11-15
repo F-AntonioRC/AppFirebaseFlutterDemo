@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testwithfirebase/components/custom_snackbar.dart';
+import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/service/database.dart';
 
 class AllEmployeeDetails extends StatelessWidget {
@@ -75,9 +76,9 @@ class AllEmployeeDetails extends StatelessWidget {
                                           ds["Id"], ds["Depedency"]);
 
                                       showCustomSnackBar(context,
-                                          "Empleado editado correctamente");
+                                          "Empleado editado correctamente", greenColor);
                                     } catch (e) {
-                                      showCustomSnackBar(context, "Error: $e");
+                                      showCustomSnackBar(context, "Error: $e", Colors.red);
                                     }
                                   },
                                   child: const Icon(
@@ -107,9 +108,9 @@ class AllEmployeeDetails extends StatelessWidget {
                                       DatabaseMethods()
                                           .deleteEmployeeDetail(ds["Id"]);
                                       showCustomSnackBar(
-                                          context, "Empleado eliminado");
+                                          context, "Empleado eliminado", greenColor);
                                     } catch (e) {
-                                      showCustomSnackBar(context, "Error $e");
+                                      showCustomSnackBar(context, "Error $e", Colors.red);
                                     }
                                   },
                                   child: const Icon(

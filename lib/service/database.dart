@@ -11,9 +11,35 @@ class DatabaseMethods {
         .set(employeeInfoMap);
   }
 
-  //OBTENER TODOS LOS EMPLEADOS
+  Future<List<DocumentSnapshot>> obtenerSugerencias(String query) async {
+    try {
+      QuerySnapshot resultado = await FirebaseFirestore.instance
+          .collection('Employee')
+          .where('Nombre', isGreaterThanOrEqualTo: query)
+          .where('Nombre', isLessThanOrEqualTo: '$query\uf8ff') // Limitar al rango
+          .limit(5) // Limitar a cinco resultados
+          .get();
+
+      return resultado.docs;
+    } catch (e) {
+      print('Error al obtener sugerencias: $e');
+      return [];
+    }
+  }
+
+  //OBTENER TODOS LOS EMPLEADOS ACTIVOS
   Future<List<Map<String, dynamic>>> getEmployeeDetails() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Employee').where('Estado', isEqualTo: 'Activo').get();
+    QuerySnapshot querySnapshot =
+    await FirebaseFirestore.instance.collection('Employee')
+        .where('Estado', isEqualTo: 'Activo').get();
+    return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+  }
+
+  //OBTENER TODOS LOS EMPLEADOS
+  Future<List<Map<String, dynamic>>> getEmployeeInact() async {
+    QuerySnapshot querySnapshot =
+    await FirebaseFirestore.instance.collection('Employee')
+        .where('Estado', isEqualTo: 'Inactivo').get();
     return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
 

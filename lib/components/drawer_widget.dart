@@ -30,35 +30,32 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
     _NavigationItem(
         item: NavItem.homeView,
         title: "Home",
-        icon: const Icon(CupertinoIcons.house_fill, color: Colors.black)),
+        icon: const Icon(CupertinoIcons.house_fill)),
     _NavigationItem(
         item: NavItem.employeeView,
         title: "Employee",
         icon: const Icon(
           CupertinoIcons.person_3_fill,
-          color: Colors.black,
         )),
     _NavigationItem(
         item: NavItem.courseView,
         title: "Courses",
         icon: const Icon(
           CupertinoIcons.collections_solid,
-          color: Colors.black,
         )),
     _NavigationItem(
         item: NavItem.emailView,
         title: "Email",
-        icon: const Icon(CupertinoIcons.mail_solid, color: Colors.black)),
+        icon: const Icon(CupertinoIcons.mail_solid)),
     _NavigationItem(
         item: NavItem.documentView,
         title: "SendDocument",
-        icon: const Icon(CupertinoIcons.doc_fill, color: Colors.black)),
+        icon: const Icon(CupertinoIcons.doc_fill)),
     _NavigationItem(
         item: NavItem.configuration,
         title: "Configuración",
         icon: const Icon(
           Icons.settings,
-          color: Colors.black,
         )),
     _NavigationItem(
         item: NavItem.logout,
@@ -71,7 +68,6 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
 
   @override
   Widget build(BuildContext context) => Drawer(
-      backgroundColor: ligth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -117,9 +113,9 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
         style: TextStyle(
           fontWeight: data.item == state.selectedItem
               ? FontWeight.bold
-              : FontWeight.w300,
+              : FontWeight.w400,
           color:
-              data.item == state.selectedItem ? darkBackground : Colors.black,
+              data.item == state.selectedItem ? darkBackground : Theme.of(context).textTheme.bodyMedium!.color,
         ),
       ),
       leading: data.icon,

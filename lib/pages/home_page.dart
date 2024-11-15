@@ -60,10 +60,8 @@ class _HomePageState extends State<HomePage> {
                 appBar: AppBar(
                   title: Text(
                     _getAppbarTitle(state.selectedItem),
-                    style: const TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  backgroundColor: ligth,
                   shadowColor: Colors.black ,
                   scrolledUnderElevation: 10.0,
                   centerTitle: true,

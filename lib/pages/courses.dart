@@ -28,7 +28,6 @@ class _CoursesState extends State<Courses> {
     return Container(
         margin: const EdgeInsets.all(10.0),
         child: Card(
-          color: ligth,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: SingleChildScrollView(
@@ -162,10 +161,10 @@ class _CoursesState extends State<Courses> {
                             };
                             await MethodsCourses().addCourse(courseInfoMap, id);
                             showCustomSnackBar(
-                                context, "Curso añadido correctamente :D");
+                                context, "Curso añadido correctamente :D", greenColor);
 
                           } catch (e) {
-                            showCustomSnackBar(context, "Error: $e");
+                            showCustomSnackBar(context, "Error: $e", Colors.red);
                           }
                         }, buttonColor: greenColor,
                       )

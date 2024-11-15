@@ -37,7 +37,6 @@ class _SendEmailState extends State<SendEmail> {
           Column(
             children: [
               Card(
-                color: ligth,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Column(children: [
