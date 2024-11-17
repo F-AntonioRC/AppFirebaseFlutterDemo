@@ -13,9 +13,7 @@ class ThemeColor extends StatelessWidget {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
+        child: Row(
             children: [
               Text(
                 "Activar/Desactivar modo oscuro",
@@ -23,6 +21,7 @@ class ThemeColor extends StatelessWidget {
                   fontSize: responsiveFontSize(context, 20),
                   fontWeight: FontWeight.bold,
                 ),
+                textAlign: TextAlign.center,
               ),
               const SizedBox(width: 10.0),
               const Icon(Icons.sunny),
@@ -37,7 +36,7 @@ class ThemeColor extends StatelessWidget {
               const Icon(Icons.dark_mode),
             ],
           ),
-        ),
+
       ),
     );
   }

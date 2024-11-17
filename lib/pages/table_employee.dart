@@ -32,7 +32,7 @@ class _TableEmployeeState extends State<TableEmployee> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(5.0),
+      margin: const EdgeInsets.all(10.0),
       child: Card(
         child: Padding(padding: const EdgeInsets.all(10.0),
           child:

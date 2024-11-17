@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:testwithfirebase/components/card_colors.dart';
-import 'package:testwithfirebase/components/theme_color.dart';
-import 'package:testwithfirebase/dataConst/constand.dart';
+import 'package:testwithfirebase/pages/card_colors.dart';
+import 'package:testwithfirebase/pages/theme_color.dart';
 
 class Configuration extends StatefulWidget {
   const Configuration({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:testwithfirebase/components/card_preview.dart';
+import 'package:testwithfirebase/pages/card_preview.dart';
 import 'package:testwithfirebase/components/firebase_dropdown.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';

@@ -14,6 +14,7 @@ class ThemeNotifier extends ChangeNotifier {
 
 final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
+  cardColor: dark,
   iconTheme: const IconThemeData(color: Colors.white),
   textTheme: const TextTheme(
     bodySmall: TextStyle(color: Colors.white),
@@ -22,7 +23,7 @@ final ThemeData darkTheme = ThemeData(
   ),
   scaffoldBackgroundColor: darkBackground,
   colorScheme: const ColorScheme.dark(
-    primary: darkBackground,
+    primary: ligth,
     surface: dark,
     secondary: dark
   ),
@@ -36,11 +37,23 @@ final ThemeData darkTheme = ThemeData(
 
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
+  canvasColor: dark,
   iconTheme: const IconThemeData(color: Colors.black),
+  focusColor: dark,
   cardColor: ligth,
   scaffoldBackgroundColor: ligthBackground,
   colorScheme: const ColorScheme.light(
-      surface: ligth, primary: ligth),
+      surface: ligth,
+      primary: darkBackground,
+      onPrimary: dark,
+      onSecondary: dark,
+      tertiary: dark
+  ),
+  textTheme: const TextTheme(
+      bodySmall: TextStyle(color: Colors.black),
+      bodyLarge: TextStyle(color: Colors.black),
+      bodyMedium: TextStyle(color: Colors.black)
+  ),
   appBarTheme: const AppBarTheme(
       backgroundColor: ligth
   ),

@@ -29,9 +29,9 @@ class MyTextfileld extends StatelessWidget {
           prefixIcon: icon,
           prefixIconColor: Colors.grey.shade900,
           enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.shade500), borderRadius: BorderRadius.circular(12.0)),
+              borderRadius: BorderRadius.circular(10.0)),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.shade900), borderRadius: BorderRadius.circular(12.0))),
+              borderRadius: BorderRadius.circular(10.0))),
     );
   }
 }
