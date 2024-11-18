@@ -32,7 +32,6 @@ class _CerrarSesionState extends State<CerrarSesion> {
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.8,
         child: Card(
-          color: ligth,
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Column(

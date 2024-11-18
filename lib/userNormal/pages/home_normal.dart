@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:testwithfirebase/auth/auth_service.dart';
 import 'package:testwithfirebase/pages/cerrar_sesion.dart';
+import 'package:testwithfirebase/pages/configuration.dart';
 import 'package:testwithfirebase/userNormal/blockNormal/drawer_block_normal.dart';
 import 'package:testwithfirebase/userNormal/blockNormal/drawer_state_normal.dart';
 import 'package:testwithfirebase/userNormal/components/drawerNormal/drawer_widget_normal.dart';
@@ -96,7 +97,7 @@ class _HomeNormalState extends State<HomeNormal> {
       case NavItemNormal.cursosView:
       // TODO: Handle this case.
       case NavItemNormal.configuracionUserView:
-      // TODO: Handle this case.
+        return const Configuration();
       case NavItemNormal.cerrarSesionView:
         return const CerrarSesion();
       default:

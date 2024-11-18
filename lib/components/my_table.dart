@@ -57,30 +57,38 @@ class MyTable extends StatelessWidget {
                 DataCell(
                   Row(
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.edit),
-                        color: greenColor,
-                        onPressed: () {
-                          onEdit(idKey);  // Llamar a la función de editar
-                        },
+                      Ink(
+                          decoration: const ShapeDecoration(shape: CircleBorder(  ), color: ligth),
+                        child: IconButton(
+                          icon: const Icon(Icons.edit),
+                          color: greenColor,
+                          onPressed: () {
+                            onEdit(idKey);  // Llamar a la función de editar
+                          },
+                        ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.delete_forever),
-                        color: Colors.red,
-                        onPressed: () {
-                          try{
-                            onDelete(rowData[idKey].toString());
-                            showCustomSnackBar(context, "Empleado eliminado correctamente", greenColor);
-                          } catch (e) {
-                          showCustomSnackBar(context, "Error: $e", Colors.red);
-                          }
-
-                        }
+                      Ink(
+                        decoration: const ShapeDecoration(shape: CircleBorder(), color: ligth),
+                        child: IconButton(
+                            icon: const Icon(Icons.delete_forever),
+                            color: Colors.red,
+                            onPressed: () {
+                              try{
+                                onDelete(rowData[idKey].toString());
+                                showCustomSnackBar(context, "Empleado eliminado correctamente", greenColor);
+                              } catch (e) {
+                                showCustomSnackBar(context, "Error: $e", Colors.red);
+                              }
+                            }
+                        ),
                       ),
                       if( onAssign !=null )
-                        IconButton(onPressed: () {
-                          onAssign!(idKey);
-                        }, icon: const Icon(Icons.manage_accounts, color: Colors.blue,))
+                        Ink(
+                          decoration: const ShapeDecoration(shape: CircleBorder(), color: ligth),
+                          child: IconButton(onPressed: () {
+                            onAssign!(idKey);
+                          }, icon: const Icon(Icons.manage_accounts, color: Colors.blue,)),
+                        ),
                     ],
                   ),
                 ),

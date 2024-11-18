@@ -15,6 +15,10 @@ class ThemeColor extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: Row(
             children: [
+              Text("Ajuste de Interfaz: ", style: TextStyle(
+                fontSize: responsiveFontSize(context, 20),
+                fontWeight: FontWeight.bold,
+              ),),
               Text(
                 "Activar/Desactivar modo oscuro",
                 style: TextStyle(
