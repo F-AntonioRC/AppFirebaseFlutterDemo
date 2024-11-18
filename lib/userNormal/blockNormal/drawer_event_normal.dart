@@ -12,6 +12,6 @@ class NavigationNormalTo extends NavDrawerEventNormal {
 
   @override
   List<Object?> get props => [
-    destination
+    destination,
   ];
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:testwithfirebase/bloc/drawer_bloc.dart';
@@ -28,29 +27,27 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
   // Items del Drawer
   final List<_NavigationItem> _drawerItems = [
     _NavigationItem(
-        item: NavItem.homeView,
-        title: "Home",
-        icon: const Icon(CupertinoIcons.house_fill)),
+        item: NavItem.homeView, title: "Home", icon: const Icon(Icons.home)),
     _NavigationItem(
         item: NavItem.employeeView,
-        title: "Employee",
+        title: "Empleados",
         icon: const Icon(
-          CupertinoIcons.person_3_fill,
+          Icons.people_alt_rounded,
         )),
     _NavigationItem(
         item: NavItem.courseView,
-        title: "Courses",
+        title: "Cursos",
         icon: const Icon(
-          CupertinoIcons.collections_solid,
+          Icons.folder_copy,
         )),
     _NavigationItem(
         item: NavItem.emailView,
-        title: "Email",
-        icon: const Icon(CupertinoIcons.mail_solid)),
+        title: "Asigar Cursos",
+        icon: const Icon(Icons.contact_mail_rounded)),
     _NavigationItem(
         item: NavItem.documentView,
-        title: "SendDocument",
-        icon: const Icon(CupertinoIcons.doc_fill)),
+        title: "Documentos",
+        icon: const Icon(Icons.article_rounded)),
     _NavigationItem(
         item: NavItem.configuration,
         title: "Configuración",
@@ -68,7 +65,7 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
 
   @override
   Widget build(BuildContext context) => Drawer(
-      child: Column(
+          child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           UserAccountsDrawerHeader(
@@ -114,8 +111,9 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
           fontWeight: data.item == state.selectedItem
               ? FontWeight.bold
               : FontWeight.w400,
-          color:
-              data.item == state.selectedItem ? darkBackground : Theme.of(context).textTheme.bodyMedium!.color,
+          color: data.item == state.selectedItem
+              ? darkBackground
+              : Theme.of(context).textTheme.bodyMedium!.color,
         ),
       ),
       leading: data.icon,

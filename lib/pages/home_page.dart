@@ -69,10 +69,9 @@ class _HomePageState extends State<HomePage> {
                     IconButton(
                       splashRadius: 35.0,
                       iconSize: 30.0,
-                      tooltip: 'Salir',
+                      tooltip: 'Notificaciones',
                       icon: const Icon(
                         Icons.notifications_rounded,
-                        color: Colors.black,
                       ), onPressed: () {  },
                     ),
                   ],
@@ -135,7 +134,7 @@ class _HomePageState extends State<HomePage> {
       case NavItem.logout:
         return "Cerrar Sesión";
       default:
-        return "Navigation Drawer Demo";
+        return "Navigation Drawer Admin";
     }
   }
 }
