@@ -24,10 +24,8 @@ class _ViewUploadedFilesPageState extends State<ViewUploadedFilesPage> {
   // Cargar los archivos desde Firebase Storage
   Future<void> _loadFiles() async {
     try {
-      print('Curso seleccionado: ${widget.courseName}');
       FirebaseStorage storage = FirebaseStorage.instance;
       // Acceder a la ruta del curso
-      
       Reference courseRef = storage.ref("2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARE'S/Cursos_2024/TRIMESTRE 1/${widget.courseName}");
 
       // Obtener los archivos en esa ruta
@@ -59,7 +57,9 @@ class _ViewUploadedFilesPageState extends State<ViewUploadedFilesPage> {
       throw 'No se puede abrir el archivo';
     }
   }
-   Future<void> _viewPDF(String fileUrl) async {
+
+  // Función para ver un PDF en el navegador
+  Future<void> _viewPDF(String fileUrl) async {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -67,25 +67,51 @@ class _ViewUploadedFilesPageState extends State<ViewUploadedFilesPage> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Archivos de ${widget.courseName}'),
+        backgroundColor: Colors.deepPurple,
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(child: CircularProgressIndicator())
           : files.isEmpty
-              ? const Center(child: Text('No hay archivos disponibles.'))
+              ? Center(child: Text('No hay archivos disponibles.'))
               : ListView.builder(
                   itemCount: files.length,
                   itemBuilder: (context, index) {
                     final file = files[index];
-                    return ListTile(
-                      title: Text(file['name'] ?? 'Archivo ${index + 1}'),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.download),
-                        onPressed: () => _downloadFile(file['url']!),
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        elevation: 8.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: ListTile(
+                          contentPadding: EdgeInsets.all(16),
+                          title: Text(
+                            file['name'] ?? 'Archivo ${index + 1}',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text('Tamaño del archivo: ${file['name']}'),
+                          trailing: Wrap(
+                            children: [
+                              // Botón para previsualizar el PDF
+                              IconButton(
+                                icon: Icon(Icons.remove_red_eye, color: Colors.blue),
+                                onPressed: () => _viewPDF(file['url']!),
+                              ),
+                              // Botón para descargar el archivo
+                              IconButton(
+                                icon: Icon(Icons.download, color: Colors.green),
+                                onPressed: () => _downloadFile(file['url']!),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     );
                   },
@@ -93,6 +119,7 @@ class _ViewUploadedFilesPageState extends State<ViewUploadedFilesPage> {
     );
   }
 }
+
 class PDFViewerScreen extends StatelessWidget {
   final String pdfUrl;
 
@@ -103,6 +130,7 @@ class PDFViewerScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Previsualizar PDF"),
+        backgroundColor: Colors.deepPurple,
       ),
       body: PDFView(
         filePath: pdfUrl,
