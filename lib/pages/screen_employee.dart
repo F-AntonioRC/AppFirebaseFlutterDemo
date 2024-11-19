@@ -14,12 +14,12 @@ class ScreenEmployee extends StatefulWidget {
 
 class _ScreenEmployeeState extends State<ScreenEmployee> {
 
-  TextEditingController namecontroller = new TextEditingController();
-  TextEditingController sexcontroller = new TextEditingController();
-  TextEditingController rfcController = new TextEditingController();
-  TextEditingController estadoController = new TextEditingController();
-  TextEditingController areaController = new TextEditingController();
-  TextEditingController sareController = new TextEditingController();
+  TextEditingController namecontroller = TextEditingController();
+  TextEditingController sexcontroller = TextEditingController();
+  TextEditingController rfcController = TextEditingController();
+  TextEditingController estadoController = TextEditingController();
+  TextEditingController areaController = TextEditingController();
+  TextEditingController sareController = TextEditingController();
 
   String? selectedDependency;
 

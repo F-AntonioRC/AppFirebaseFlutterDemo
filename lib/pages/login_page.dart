@@ -4,8 +4,8 @@ import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/components/my_textfileld.dart';
 import 'package:testwithfirebase/components/password_input.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
+import 'package:testwithfirebase/user_profile_service.dart';
 
-import '../dataConst/constand.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -17,12 +17,15 @@ class LoginPage extends StatelessWidget {
   void login(BuildContext context) async {
     // auth service
     final authService = AuthService();
-
+    final userProfileService = UserProfileService();
     //try login
     try {
       await authService.signInWithEmailPassword(
-          _emailController.text, _passwordController.text);
-    } catch (e) {
+          _emailController.text,
+           _passwordController.text,
+           );
+     await userProfileService.createUserProfile();       
+    }catch (e) {
       showDialog(
         context: context,
         builder: ((context) => AlertDialog(

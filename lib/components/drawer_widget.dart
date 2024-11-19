@@ -41,7 +41,11 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
     _NavigationItem(
         item: NavItem.documentView,
         title: "SendDocument",
-        icon: const Icon(CupertinoIcons.doc_fill))
+        icon: const Icon(CupertinoIcons.doc_fill)),
+    _NavigationItem(
+        item: NavItem.document,
+        title: "SendDocument",
+        icon: const Icon(CupertinoIcons.doc_fill))    
   ];
 
   @override

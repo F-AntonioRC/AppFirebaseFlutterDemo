@@ -4,7 +4,8 @@ enum NavItem {
   homeView,
   courseView,
   emailView,
-  documentView
+  documentView,
+  document
 }
 
 class NavDrawerState extends Equatable {

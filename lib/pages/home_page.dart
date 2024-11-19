@@ -5,10 +5,12 @@ import 'package:testwithfirebase/auth/auth_service.dart';
 import 'package:testwithfirebase/bloc/drawer_bloc.dart';
 import 'package:testwithfirebase/bloc/drawer_state.dart';
 import 'package:testwithfirebase/components/drawer_widget.dart';
+import 'CourseSelectionPage.dart';
+import 'package:testwithfirebase/pages/ViewUploadedFilesPage.dart';
 import 'package:testwithfirebase/pages/courses.dart';
 import 'package:testwithfirebase/pages/empoyee.dart';
 import 'package:testwithfirebase/pages/screen_employee.dart';
-import 'package:testwithfirebase/pages/send_document.dart';
+//import 'package:testwithfirebase/pages/send_document.dart';
 import 'package:testwithfirebase/pages/send_email.dart';
 
 class HomePage extends StatefulWidget {
@@ -126,8 +128,9 @@ class _HomePageState extends State<HomePage> {
       case NavItem.emailView:
         return const SendEmail();
       case NavItem.documentView:
-        return const SendDocument();
-
+        return  CourseSelectionPage();
+      case NavItem.document:
+      return ViewUploadedFilesPage(courseName: 'CONAPRED');
       default:
         return const ScreenEmployee();
     }
@@ -143,6 +146,8 @@ class _HomePageState extends State<HomePage> {
         return "Email";
       case NavItem.documentView:
         return "Documents";
+      case NavItem.document:
+        return "Descarga";
       default:
         return "Navigation Drawer Demo";
     }

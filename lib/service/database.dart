@@ -13,7 +13,7 @@ class DatabaseMethods {
 
   //OBTENER TODOS LOS EMPLEADOS
   Future<Stream<QuerySnapshot>> getEmployeeDetails() async {
-    return await FirebaseFirestore.instance.collection('Employee').snapshots();
+    return FirebaseFirestore.instance.collection('Employee').snapshots();
   }
 
   //ACTUALIZAR

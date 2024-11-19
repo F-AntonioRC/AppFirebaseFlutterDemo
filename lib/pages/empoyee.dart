@@ -13,12 +13,12 @@ class Employee extends StatefulWidget {
 }
 
 class _EmployeeState extends State<Employee> {
-  TextEditingController namecontroller = new TextEditingController();
-  TextEditingController rfcController = new TextEditingController();
-  TextEditingController sexController = new TextEditingController();
-  TextEditingController estadoController = new TextEditingController();
-  TextEditingController areaController = new TextEditingController();
-  TextEditingController sareController = new TextEditingController();
+  TextEditingController namecontroller = TextEditingController();
+  TextEditingController rfcController = TextEditingController();
+  TextEditingController sexController = TextEditingController();
+  TextEditingController estadoController = TextEditingController();
+  TextEditingController areaController = TextEditingController();
+  TextEditingController sareController = TextEditingController();
   final FirebaseDropdownController _dropdownController = FirebaseDropdownController();
 
   @override

@@ -13,9 +13,9 @@ class Courses extends StatefulWidget {
 }
 
 class _CoursesState extends State<Courses> {
-  TextEditingController nameCourseController = new TextEditingController();
-  TextEditingController linkCourseController = new TextEditingController();
-  TextEditingController dateController = new TextEditingController();
+  TextEditingController nameCourseController = TextEditingController();
+  TextEditingController linkCourseController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

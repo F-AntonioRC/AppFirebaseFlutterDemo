@@ -12,7 +12,7 @@ class MethodsCourses {
 
   //OBTENER TODOS LOS CURSOS
   Future<Stream<QuerySnapshot>> getAllCourses() async {
-    return await FirebaseFirestore.instance.collection("Courses").snapshots();
+    return FirebaseFirestore.instance.collection("Courses").snapshots();
   }
 
   //ACTULIZAR

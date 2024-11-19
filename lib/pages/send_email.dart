@@ -51,13 +51,13 @@ class _SendEmailState extends State<SendEmail> {
                 data: 'Name',
                 textHint: 'Select a Dependency'),
             const SizedBox(height: 10.0),
-            const Text('Preview',
+            const Text('Previews',
                 style: TextStyle(
                     color: Colors.blue,
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold)),
             const SizedBox(height: 10.0),
-            CardPreview(
+            const CardPreview(
               nameCourse: 'Telegram',
               nameDependency: 'Bienestar',
             )

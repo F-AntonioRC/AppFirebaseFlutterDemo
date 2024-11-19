@@ -13,7 +13,7 @@ class AllEmployeeDetails extends StatelessWidget {
   final TextEditingController sareController;
   final Function(String id, String depedency) editEmployeeCallback;
 
-  const AllEmployeeDetails({
+  const AllEmployeeDetails({super.key, 
     required this.employeeStream,
     required this.nameController,
     required this.editEmployeeCallback,
