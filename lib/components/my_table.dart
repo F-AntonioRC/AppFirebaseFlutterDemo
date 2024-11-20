@@ -10,7 +10,9 @@ class MyTable extends StatelessWidget {
   final String idKey; //Valor del id
   final Function(String id) onEdit;  // Función para editar
   final Function(String id) onDelete;  // Función para eliminar
-  final Function(String id)? onAssign; //Función no necesaria
+  final bool onActive; //Estado del boton dinamico
+  final Function(String id) activateFunction;
+  final Function(String id)? onAssign; //Función opcional
 
 
   const MyTable({
@@ -20,7 +22,10 @@ class MyTable extends StatelessWidget {
     required this.fieldKeys,
     required this.onEdit,
     required this.onDelete,
-    this.onAssign, required this.idKey
+    this.onAssign,
+    required this.idKey,
+    required this.onActive,
+    required this.activateFunction
   });
 
   @override
@@ -52,7 +57,9 @@ class MyTable extends StatelessWidget {
             return DataRow(
               cells: [
                 ...fieldKeys.map((key) {
-                  return DataCell(Text(rowData[key]?.toString() ?? '', style: TextStyle(fontSize: responsiveFontSize(context, 12)), textAlign: TextAlign.center,)  );
+                  return DataCell(
+                      Text(rowData[key]?.toString() ?? '',
+                        style: TextStyle(fontSize: responsiveFontSize(context, 12)),)  );
                 }),
                 DataCell(
                   Row(
@@ -60,33 +67,44 @@ class MyTable extends StatelessWidget {
                       Ink(
                           decoration: const ShapeDecoration(shape: CircleBorder(  ), color: ligth),
                         child: IconButton(
+                          tooltip: "Editar",
                           icon: const Icon(Icons.edit),
                           color: greenColor,
                           onPressed: () {
-                            onEdit(idKey);  // Llamar a la función de editar
+                            onEdit(rowData[idKey].toString());  // Llamar a la función de editar
                           },
                         ),
                       ),
+                      //Boton dinamico
                       Ink(
                         decoration: const ShapeDecoration(shape: CircleBorder(), color: ligth),
                         child: IconButton(
-                            icon: const Icon(Icons.delete_forever),
-                            color: Colors.red,
+                            icon: Icon(onActive
+                            ? Icons.delete_forever_sharp
+                            : Icons.power_settings_new),
+                            tooltip: onActive ? "Eliminar" : "Activar",
+                            color: onActive ? Colors.red : Colors.red,
                             onPressed: () {
+                            if(onActive){
                               try{
                                 onDelete(rowData[idKey].toString());
-                                showCustomSnackBar(context, "Empleado eliminado correctamente", greenColor);
                               } catch (e) {
                                 showCustomSnackBar(context, "Error: $e", Colors.red);
                               }
+                            } else {
+                              activateFunction(rowData[idKey].toString());
                             }
-                        ),
+
+                            }
+                        )
                       ),
                       if( onAssign !=null )
                         Ink(
                           decoration: const ShapeDecoration(shape: CircleBorder(), color: ligth),
-                          child: IconButton(onPressed: () {
-                            onAssign!(idKey);
+                          child: IconButton(
+                              tooltip: "Asignar CUPO",
+                              onPressed: () {
+                            onAssign!(rowData[idKey].toString());
                           }, icon: const Icon(Icons.manage_accounts, color: Colors.blue,)),
                         ),
                     ],

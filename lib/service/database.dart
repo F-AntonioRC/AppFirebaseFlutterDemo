@@ -58,4 +58,25 @@ class DatabaseMethods {
   }
   }
 
+  //ACTIVAR
+  Future activateEmployeeDetail(String id) async {
+    try{
+      DocumentReference documentReference = FirebaseFirestore.instance.collection('Employee').doc(id);
+      await documentReference.update({'Estado' : 'Activo'});
+    } catch(e) {
+      print("Error: $e");
+    }
+  }
+
+  //BUSCAR UN EMPLEADO
+  Future<List<Map<String, dynamic>>> searchEmployeesByName(String name) async {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('Employee')
+        .where('Nombre', isGreaterThanOrEqualTo: name)
+        .where('Nombre', isLessThan: '${name}z') // Para búsquedas "que empiezan con minuscula"
+        .get();
+
+    return querySnapshot.docs.map((doc) => doc.data()).toList();
+  }
+
 }

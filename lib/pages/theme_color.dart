@@ -20,14 +20,14 @@ class ThemeColor extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),),
               Text(
-                "Activar/Desactivar modo oscuro",
+                "Activar/Desactivar modo oscuro ",
                 style: TextStyle(
-                  fontSize: responsiveFontSize(context, 20),
+                  fontSize: responsiveFontSize(context, 18),
                   fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(width: 10.0),
+              const SizedBox(width: 5.0),
               const Icon(Icons.sunny),
               const SizedBox(width: 5.0),
               Switch(

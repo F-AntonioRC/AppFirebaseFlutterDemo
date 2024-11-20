@@ -7,6 +7,7 @@ import 'package:testwithfirebase/pages/configuration.dart';
 import 'package:testwithfirebase/userNormal/blockNormal/drawer_block_normal.dart';
 import 'package:testwithfirebase/userNormal/blockNormal/drawer_state_normal.dart';
 import 'package:testwithfirebase/userNormal/components/drawerNormal/drawer_widget_normal.dart';
+import 'package:testwithfirebase/userNormal/pages/cursos_normal.dart';
 import 'package:testwithfirebase/userNormal/pages/dashboard_normal.dart';
 
 class HomeNormal extends StatefulWidget {
@@ -95,7 +96,7 @@ class _HomeNormalState extends State<HomeNormal> {
       case NavItemNormal.homeUserView:
         return const DashboardNormal();
       case NavItemNormal.cursosView:
-      // TODO: Handle this case.
+        return const CursosNormal();
       case NavItemNormal.configuracionUserView:
         return const Configuration();
       case NavItemNormal.cerrarSesionView:

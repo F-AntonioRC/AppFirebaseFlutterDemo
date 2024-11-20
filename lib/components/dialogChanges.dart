@@ -24,11 +24,12 @@ class _DialogchangesState extends State<Dialogchanges> {
         style: TextStyle(fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
       ),
-      content: Column(
+      content: SingleChildScrollView(child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text("Seleccione CUPO",
               style: TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 10.0),
           const SizedBox(height: 10.0),
           FirebaseDropdown(
               controller: _controllerCupo,
@@ -36,7 +37,7 @@ class _DialogchangesState extends State<Dialogchanges> {
               data: 'CUPO',
               textHint: 'Seleccione CUPO del empleado'),
         ],
-      ),
+      ),),
       actions: [
         Row(
           children: [

@@ -21,12 +21,14 @@ class MethodsCourses {
     return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
 
-  //OBTENER LOS ATRIBUTOS DE UN CURSO
-  Future<DocumentSnapshot<Map<String, dynamic>>> getCourseEspecific(String? id) async {
-    return await FirebaseFirestore.instance
-        .collection("Courses")
-        .doc(id)
-        .get();
+  //ACTIVAR
+  Future activateCoursesDetail(String id) async {
+    try{
+      DocumentReference documentReference = FirebaseFirestore.instance.collection('Employee').doc(id);
+      await documentReference.update({'Estado' : 'Activo'});
+    } catch(e) {
+      print("Error: $e");
+    }
   }
 
   //ACTULIZAR
@@ -46,4 +48,16 @@ class MethodsCourses {
       print("Error: $e");
     }
   }
+
+  //BUSCAR UN CURSO
+  Future<List<Map<String, dynamic>>> searchCoursesByName(String name) async {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('Courses')
+        .where('NameCourse', isGreaterThanOrEqualTo: name)
+        .where('NameCourse', isLessThan: '${name}z') // Para búsquedas "que empiezan con minuscula"
+        .get();
+
+    return querySnapshot.docs.map((doc) => doc.data()).toList();
+  }
+
 }

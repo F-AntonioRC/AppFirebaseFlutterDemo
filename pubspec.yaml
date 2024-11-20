@@ -47,6 +47,7 @@ dependencies:
   fl_chart: ^0.69.0
   provider: ^6.1.2
   shared_preferences: ^2.3.3
+  flutter_async_autocomplete: ^0.1.1
 
 dev_dependencies:
   flutter_test:
