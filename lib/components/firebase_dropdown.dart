@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/dataConst/constand.dart';
 
 class FirebaseDropdown extends StatefulWidget {
   final FirebaseDropdownController controller;
@@ -16,7 +17,9 @@ class FirebaseDropdown extends StatefulWidget {
   });
 
   @override
-  _FirebaseDropdownState createState() => _FirebaseDropdownState();
+  _FirebaseDropdownState createState() {
+    return _FirebaseDropdownState();
+  }
 }
 
 class FirebaseDropdownController {
@@ -57,17 +60,22 @@ class _FirebaseDropdownState extends State<FirebaseDropdown> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Center(
       child: documentsList.isEmpty
           ? const CircularProgressIndicator()
           : DropdownButtonFormField<Map<String, dynamic>>(
+        dropdownColor: ligthBackground,
         decoration: InputDecoration(
             contentPadding:  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-            border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.shade500), borderRadius: BorderRadius.circular(12.0)
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: theme.hintColor),
+                borderRadius: BorderRadius.circular(10.0)
             ),
             focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.shade900), borderRadius: BorderRadius.circular(12.0))
+                borderSide: BorderSide(color: theme.hintColor),
+                borderRadius: BorderRadius.circular(10.0))
         ),
         value: widget.controller.selectedDocument,
         hint: Text(widget.textHint),

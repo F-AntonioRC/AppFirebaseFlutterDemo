@@ -70,7 +70,6 @@ class _EmployeeState extends State<Employee> {
                                 hindText: "Campo Obligatorio*",
                                 icon: const Icon(Icons.person),
                                 controller: namecontroller,
-                                obsecureText: false,
                                 keyboardType: TextInputType.text),
                           ],
                         )),

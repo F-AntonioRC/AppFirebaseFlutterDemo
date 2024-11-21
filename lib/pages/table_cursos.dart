@@ -60,7 +60,6 @@ class _TableCursosState extends State<TableCursos> {
         _isLoading = false;
       });
       showCustomSnackBar(context, "Error: $e", Colors.red);
-      print(e);
     }
   }
 
@@ -85,7 +84,7 @@ class _TableCursosState extends State<TableCursos> {
                   children: [
                     Expanded(
                         flex: 3,
-                        child: Text("Lista de empleados", style: TextStyle(
+                        child: Text("Lista de Cursos", style: TextStyle(
                             fontSize: responsiveFontSize(context, 20), fontWeight: FontWeight.bold
                         ),)),
                     Expanded(
@@ -121,8 +120,8 @@ class _TableCursosState extends State<TableCursos> {
                           });
                         },
                         tooltip: viewInactivos
-                            ? "Mostrar Empleados Inactivos"
-                            : "Mostrar Empleados activos",
+                            ? "Mostrar Cursos Inactivos"
+                            : "Mostrar Cursos activos",
                         icon: Icon(
                           viewInactivos ? Icons.visibility_off : Icons.visibility,
                           color: Colors.white,

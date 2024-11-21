@@ -29,13 +29,22 @@ class _DateTextFieldState extends State<DateTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return TextField(
       controller: widget.controller,  // Usa el controlador pasado
       decoration: InputDecoration(
+        prefixIcon: const Icon(Icons.calendar_month),
         hintText: 'Seleccione una fecha',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: theme.hintColor),
+              borderRadius: BorderRadius.circular(10.0)),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: theme.hintColor),
+              borderRadius: BorderRadius.circular(10.0))
       ),
       readOnly: true,  // El campo no es editable directamente
       onTap: () => _selectDate(context),  // Abre el DatePicker al tocar

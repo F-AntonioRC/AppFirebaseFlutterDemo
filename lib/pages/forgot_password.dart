@@ -95,7 +95,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                       hindText: 'Correo',
                                       icon: const Icon(Icons.email_outlined),
                                       controller: _emailController,
-                                      obsecureText: false,
                                       keyboardType: TextInputType.emailAddress,
                                     ),
                                     const SizedBox(height: 15.0),

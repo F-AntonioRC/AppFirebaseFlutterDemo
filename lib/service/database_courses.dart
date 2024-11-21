@@ -24,7 +24,7 @@ class MethodsCourses {
   //ACTIVAR
   Future activateCoursesDetail(String id) async {
     try{
-      DocumentReference documentReference = FirebaseFirestore.instance.collection('Employee').doc(id);
+      DocumentReference documentReference = FirebaseFirestore.instance.collection('Courses').doc(id);
       await documentReference.update({'Estado' : 'Activo'});
     } catch(e) {
       print("Error: $e");

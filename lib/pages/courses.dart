@@ -50,10 +50,8 @@ class _CoursesState extends State<Courses> {
                               hindText: "Campo obligatorio*",
                               icon: const Icon(
                                 Icons.fact_check_sharp,
-                                color: Colors.black,
                               ),
                               controller: nameCourseController,
-                              obsecureText: false,
                               keyboardType: TextInputType.text),
                         ],
                       )),
@@ -69,10 +67,8 @@ class _CoursesState extends State<Courses> {
                           const SizedBox(height: 10.0),
                           MyTextfileld(
                               hindText: "Campo Obligatorio*",
-                              icon: const Icon(Icons.document_scanner_sharp,
-                                  color: Colors.black),
+                              icon: const Icon(Icons.document_scanner_sharp),
                               controller: nomenclaturaController,
-                              obsecureText: false,
                               keyboardType: TextInputType.text)
                         ],
                       )),
@@ -94,7 +90,6 @@ class _CoursesState extends State<Courses> {
                               hindText: "Campo obligatorio*",
                               icon: const Icon(Icons.link),
                               controller: linkCourseController,
-                              obsecureText: false,
                               keyboardType: TextInputType.url),
                         ],
                       )),
