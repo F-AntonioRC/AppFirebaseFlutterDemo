@@ -32,6 +32,11 @@ class FirebaseDropdownController {
   void setDocument(Map<String, dynamic>? document) {
     _selectedDocument = document;
   }
+
+  void clearSelection() {
+    _selectedDocument = null;
+  }
+
 }
 
 class _FirebaseDropdownState extends State<FirebaseDropdown> {
@@ -65,7 +70,7 @@ class _FirebaseDropdownState extends State<FirebaseDropdown> {
     return Center(
       child: documentsList.isEmpty
           ? const CircularProgressIndicator()
-          : DropdownButtonFormField<Map<String, dynamic>>(
+          : DropdownButtonFormField<Map<String, dynamic>?>(
         dropdownColor: ligthBackground,
         decoration: InputDecoration(
             contentPadding:  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
@@ -77,14 +82,19 @@ class _FirebaseDropdownState extends State<FirebaseDropdown> {
                 borderSide: BorderSide(color: theme.hintColor),
                 borderRadius: BorderRadius.circular(10.0))
         ),
-        value: widget.controller.selectedDocument,
+        value: widget.controller.selectedDocument == null
+        ? null
+            : documentsList.firstWhere(
+              (doc) => doc == widget.controller.selectedDocument,
+          orElse: () => documentsList.isNotEmpty ? documentsList[0] : {},
+        ),
         hint: Text(widget.textHint),
         isExpanded: true,
-        items: documentsList.map<DropdownMenuItem<Map<String, dynamic>>>(
+        items: documentsList.map<DropdownMenuItem<Map<String, dynamic>?>>(
                 (Map<String, dynamic> document) {
-              return DropdownMenuItem<Map<String, dynamic>>(
+              return DropdownMenuItem<Map<String, dynamic>?>(
                 value: document,
-                child: Text(document[widget.data]), // Mostrar solo el campo del nombre
+                child: Text(document[widget.data] ?? 'Sin datos'), // Mostrar solo el campo del nombre
               );
             }).toList(),
         onChanged: (Map<String, dynamic>? newValue) {

@@ -21,6 +21,7 @@ class _TableEmployeeState extends State<TableEmployee> {
   final DatabaseMethods databaseMethods = DatabaseMethods();
   final List<String> headers = ["Identificador", "Nombre Completo", "Estado", "Area", "Sare"];
   final List<String> fieldKeys = ["IdEmployee", "Nombre", "Estado", "Area", "Sare"];
+  static const String idKey = "IdEmployee";
 
   bool viewInactivos = false; // Ver empleados inactivos
   bool isActive = true;
@@ -156,14 +157,16 @@ class _TableEmployeeState extends State<TableEmployee> {
                           }
                         },
                         onAssign: (String id) {
+                          final selectedRow = data.firstWhere((row) => row[idKey] == id);
+                          final name = selectedRow["Nombre"];
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return const Dialogchanges(dataChange: 'Hola');
+                              return Dialogchanges(dataChange: name);
                             },
                           );
                         },
-                        idKey: 'IdEmployee',
+                        idKey: idKey,
                         onActive: isActive,
                         activateFunction: (String id) async {
                           try {

@@ -16,17 +16,19 @@ class _DropdownListState extends State<DropdownList> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return DropdownButtonFormField<String>(
         value: selectedValue,
         icon: widget.icon,
         decoration: InputDecoration(
           contentPadding:  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-          border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.shade500), borderRadius: BorderRadius.circular(12.0)
-          ),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: theme.hintColor),
+                borderRadius: BorderRadius.circular(10.0)),
     focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.grey.shade900), borderRadius: BorderRadius.circular(12.0))
+    borderSide: BorderSide(color: Colors.grey.shade900),
+        borderRadius: BorderRadius.circular(10.0))
         ),
         hint: const Text("Seleccione una opción"),
         items: widget.items.map<DropdownMenuItem<String>>((String value) {

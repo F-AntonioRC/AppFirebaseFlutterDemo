@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 import 'package:testwithfirebase/components/custom_snackbar.dart';
 import 'package:testwithfirebase/components/dropdown_list.dart';
+import 'package:testwithfirebase/components/firebase_dropdown.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/components/my_textfileld.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
@@ -19,21 +20,9 @@ class _EmployeeState extends State<Employee> {
   final List<String> dropdownsex = ['M', 'F']; // VALORES DEL DROPDOWN
   String? sexdropdownValue;
 
-  final List<String> dropdownArea = [
-    "Jefatura",
-    "Analista",
-    "Enlace",
-    "Auxiliar"
-  ];
-  String? areaDropdownValue;
+  final FirebaseDropdownController _controllerArea = FirebaseDropdownController();
 
-  final List<String> dropdownSare = [
-    "Archivo",
-    "Juridico",
-    "Administrativo",
-    "Ciudadania"
-  ];
-  String? sareDropdownValue;
+  final FirebaseDropdownController _controllerSare = FirebaseDropdownController();
 
   TextEditingController namecontroller = TextEditingController();
 
@@ -108,13 +97,8 @@ class _EmployeeState extends State<Employee> {
                                   fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(width: 20.0),
-                            DropdownList(
-                              items: dropdownArea,
-                              icon: const Icon(Icons.arrow_downward_rounded),
-                              onChanged: (value) {
-                                areaDropdownValue = value;
-                              },
-                            ),
+                            FirebaseDropdown(controller: _controllerArea,
+                                collection: 'Area', data: 'Nombre', textHint: 'Seleccione un area')
                           ],
                         )),
                         const SizedBox(width: 20.0),
@@ -128,13 +112,9 @@ class _EmployeeState extends State<Employee> {
                                   fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(width: 20.0),
-                            DropdownList(
-                              items: dropdownSare,
-                              icon: const Icon(Icons.arrow_downward_rounded),
-                              onChanged: (value) {
-                                sareDropdownValue = value;
-                              },
-                            ),
+                            FirebaseDropdown(
+                                controller: _controllerSare, collection: 'Sare',
+                                data: 'sare', textHint: 'Seleccione una SARE')
                           ],
                         ))
                       ],
@@ -153,8 +133,8 @@ class _EmployeeState extends State<Employee> {
                               "Nombre": namecontroller.text,
                               "Sexo": sexdropdownValue,
                               "Estado": "Activo",
-                              "Area": areaDropdownValue,
-                              "Sare": sareDropdownValue
+                              "Area": _controllerArea.selectedDocument?['Nombre'],
+                              "Sare": _controllerSare.selectedDocument?['sare']
                             };
                             await DatabaseMethods()
                                 .addEmployeeDetails(employeeInfoMap, id);
@@ -163,6 +143,13 @@ class _EmployeeState extends State<Employee> {
                           } catch (e) {
                             showCustomSnackBar(context, "Error: $e", Colors.red);
                           }
+                          //Limpiar las entradas
+                          setState(() {
+                            namecontroller.clear();
+                            sexdropdownValue = null;
+                            _controllerArea.clearSelection();
+                            _controllerSare.clearSelection();
+                          });
                         },
                         buttonColor: greenColor,
                       ),
