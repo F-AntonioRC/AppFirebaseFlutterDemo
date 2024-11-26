@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:random_string/random_string.dart';
+import 'package:testwithfirebase/components/custom_dialog.dart';
+import 'package:testwithfirebase/components/custom_snackbar.dart';
 import 'package:testwithfirebase/pages/card_preview.dart';
 import 'package:testwithfirebase/components/firebase_dropdown.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
+import 'package:testwithfirebase/service/database_detail_courses.dart';
 
 class SendEmail extends StatefulWidget {
   const SendEmail({super.key});
@@ -13,6 +17,11 @@ class SendEmail extends StatefulWidget {
 
 class _SendEmailState extends State<SendEmail> {
 
+  final MethodsDetailCourses databaseDetailCourses = MethodsDetailCourses();
+
+  final FirebaseDropdownController _controllerSare =
+      FirebaseDropdownController();
+
   final FirebaseDropdownController _controllerArea =
       FirebaseDropdownController();
 
@@ -21,6 +30,7 @@ class _SendEmailState extends State<SendEmail> {
 
   String? selectedCourse;
   String? selectedArea;
+  String? selectedSare;
   String? idCourse;
   String? idArea;
   String? fechaInicio;
@@ -67,7 +77,7 @@ class _SendEmailState extends State<SendEmail> {
                                   fontSize: 20.0, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 10.0),
                           FirebaseDropdown(
-                              controller: _controllerArea,
+                              controller: _controllerSare,
                               collection: "Sare",
                               data: "sare",
                               textHint: "Seleccione una sare"),
@@ -90,7 +100,7 @@ class _SendEmailState extends State<SendEmail> {
                       ],
                     ),
 
-                    const SizedBox(height: 10.0),
+                    const SizedBox(height: 15.0),
                     MyButton(
                       text: "Previsualizar",
                       icon: const Icon(Icons.remove_red_eye),
@@ -98,28 +108,54 @@ class _SendEmailState extends State<SendEmail> {
                         setState(() {
                           // Obtener el curso y área seleccionados y actualizar el estado
                           selectedCourse = _controllerCourse.selectedDocument?['NameCourse'] ?? 'Curso no seleccionado';
-                          selectedArea = _controllerArea.selectedDocument?['Nombre'] ?? 'Área no seleccionada';
-                          idCourse = _controllerCourse.selectedDocument?['Id'] ?? "Id no encontrado";
+                          selectedArea = _controllerArea.selectedDocument?['Nombre'];
+                          selectedSare = _controllerSare.selectedDocument?['sare'];
+                          idCourse = _controllerCourse.selectedDocument?['IdCourse'] ?? "Id no encontrado";
                           idArea = _controllerArea.selectedDocument?['IdArea'] ?? "Id no encontrado";
                           fechaInicio = _controllerCourse.selectedDocument?['FechaInicioCurso'] ?? "Fecha no encontrada";
                           fechaRegistro = _controllerCourse.selectedDocument?['Fecharegistro'] ?? "Fecha no encontrada";
                           fechaEnvio = _controllerCourse.selectedDocument?['FechaenvioConstancia'] ?? "Fecha no encontrada";
                         });
+                        showDialog(context: context,
+                            builder: (BuildContext context) {
+                          return CustomDialog(
+                              dataOne: selectedCourse,
+                              dataTwo: selectedArea ?? selectedSare,
+                              accept: () async {
+                            String id = randomAlpha(4);
+                            Map<String, dynamic> detailCourseMap = {
+                              "IdDetailCourse" : id,
+                              "IdCourse": idCourse,
+                              "IdArea": idArea,
+                              "sare": selectedSare
+                            };
+                            try{
+                              await databaseDetailCourses.addDetailCourse(detailCourseMap, id);
+                              if(context.mounted){
+                                showCustomSnackBar(context, "¡Curso Asignado!", greenColor);
+                              }
+                            } catch (e) {
+                              if(context.mounted){
+                                showCustomSnackBar(context, "Error: $e", Colors.red);
+                              }
+                            }
+                          });
+                        });
+
                       }, buttonColor: greenColor,
-                    )
+                    ),
+                    const SizedBox(height: 10.0)
                   ]),
                 ),
               )
             ],
           ),
           const SizedBox(height: 10.0),
-          const Text('Previsualización',
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
           CardPreview(
             nameCourse: selectedCourse,
             nameArea: selectedArea, idCourse: idCourse, idArea: idArea,
             fechaInicio: fechaInicio,
-            fechaRegistro: fechaRegistro, fechaEnvio: fechaEnvio,
+            fechaRegistro: fechaRegistro, fechaEnvio: fechaEnvio, nameSare: selectedSare,
           )
         ],
       ),

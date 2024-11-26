@@ -3,11 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class MethodsDetailCourses {
 
   //REGISTRAR UN DETALLE CURSO
-  Future addDetailCourse(Map<String, dynamic> courseInfoMap, String id) async {
+  Future addDetailCourse(Map<String, dynamic> detailCourseInfoMap, String id) async {
     return await FirebaseFirestore.instance
         .collection("DetalleCursos")
         .doc(id)
-        .set(courseInfoMap);
+        .set(detailCourseInfoMap);
   }
 
   //OBTENER TODOS LOS DETALLE CURSOS

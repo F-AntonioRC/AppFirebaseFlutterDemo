@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/custom_snackbar.dart';
 import 'package:testwithfirebase/components/firebase_dropdown.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
+import 'package:testwithfirebase/service/database.dart';
 
-class Dialogchanges extends StatefulWidget {
+class DialogChanges extends StatefulWidget {
   final String dataChange;
+  final String idChange;
 
-  const Dialogchanges({super.key, required this.dataChange});
+  const DialogChanges({super.key, required this.dataChange, required this.idChange});
 
   @override
-  State<Dialogchanges> createState() => _DialogchangesState();
+  State<DialogChanges> createState() => _DialogChangesState();
 }
 
-class _DialogchangesState extends State<Dialogchanges> {
+class _DialogChangesState extends State<DialogChanges> {
 
   late TextEditingController _textController;
+
+  late TextEditingController _idController;
 
   final FirebaseDropdownController _controllerCupo =
       FirebaseDropdownController();
@@ -24,12 +29,14 @@ class _DialogchangesState extends State<Dialogchanges> {
     super.initState();
     // Inicializa el controlador con el valor de dataChange
     _textController = TextEditingController(text: widget.dataChange);
+    _idController = TextEditingController(text: widget.idChange);
   }
 
   @override
   void dispose() {
     // Libera el controlador para evitar fugas de memoria
     _textController.dispose();
+    _idController.dispose();
     super.dispose();
   }
 
@@ -54,7 +61,7 @@ class _DialogchangesState extends State<Dialogchanges> {
             controller: _textController,
               decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.account_box),
-                  enabledBorder: OutlineInputBorder(
+                  disabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: theme.hintColor),
                       borderRadius: BorderRadius.circular(10.0)),
                   focusedBorder: OutlineInputBorder(
@@ -86,7 +93,21 @@ class _DialogchangesState extends State<Dialogchanges> {
             MyButton(
               text: "Aceptar",
               icon: const Icon(Icons.check_circle_outline),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () async {
+                final String cupoSeleccionado = _controllerCupo.selectedDocument?['CUPO'] ?? '';
+
+                if(cupoSeleccionado.isNotEmpty) {
+                  try {
+                    await DatabaseMethods.addEmployeeCupo(widget.idChange, cupoSeleccionado);
+                    showCustomSnackBar(context, 'CUPO actualizado correctamente', greenColor);
+                    Navigator.pop(context);
+                  } catch (e) {
+                    showCustomSnackBar(context, "Error: $e", Colors.red);
+                  }
+                } else {
+                  showCustomSnackBar(context, "Por favor selecciona una CUPO", greenColor);
+                }
+              },
               buttonColor: greenColor,
             ),
           ],

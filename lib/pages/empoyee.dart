@@ -138,10 +138,13 @@ class _EmployeeState extends State<Employee> {
                             };
                             await DatabaseMethods()
                                 .addEmployeeDetails(employeeInfoMap, id);
-                            showCustomSnackBar(
-                                context, "Empleado agregado correctamente :D", greenColor);
+                            if(context.mounted) {
+                              showCustomSnackBar(context, "Empleado agregado correctamente :D", greenColor);
+                            }
                           } catch (e) {
-                            showCustomSnackBar(context, "Error: $e", Colors.red);
+                            if(context.mounted) {
+                              showCustomSnackBar(context, "Error: $e", Colors.red);
+                            }
                           }
                           //Limpiar las entradas
                           setState(() {

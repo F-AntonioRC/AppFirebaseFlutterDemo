@@ -79,4 +79,16 @@ class DatabaseMethods {
     return querySnapshot.docs.map((doc) => doc.data()).toList();
   }
 
+  //AGREGAR CUPO A UN EMPLEADO
+  static Future<void> addEmployeeCupo(String employeeId, String cupo) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('Employee')
+          .doc(employeeId)
+          .update({'CUPO' : cupo});
+    } catch (e) {
+      throw Exception('Error al actualizar CUPO: $e');
+    }
+  }
+
 }

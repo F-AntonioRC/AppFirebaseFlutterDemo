@@ -147,19 +147,22 @@ class _CoursesState extends State<Courses> {
                           try {
                             String id = randomAlphaNumeric(3);
                             Map<String, dynamic> courseInfoMap = {
-                              "Id": id,
+                              "IdCourse": id,
                               "NameCourse": nameCourseController.text,
                               "LinkCourse": linkCourseController.text,
                               "FechaInicioCurso": dateController.text,
                               "Fecharegistro": registroController.text,
-                              "FechaenvioConstancia": envioConstanciaController.text
+                              "FechaenvioConstancia": envioConstanciaController.text,
+                              "Estado" : "Activo"
                             };
                             await MethodsCourses().addCourse(courseInfoMap, id);
-                            showCustomSnackBar(
-                                context, "Curso añadido correctamente :D", greenColor);
-
+                            if(context.mounted) {
+                              showCustomSnackBar(context, "Curso añadido correctamente :D", greenColor);
+                            }
                           } catch (e) {
-                            showCustomSnackBar(context, "Error: $e", Colors.red);
+                            if(context.mounted) {
+                              showCustomSnackBar(context, "Error: $e", Colors.red);
+                            }
                           }
                         }, buttonColor: greenColor,
                       )

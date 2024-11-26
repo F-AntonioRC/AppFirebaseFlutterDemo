@@ -1,12 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/components/custom_snackbar.dart';
 import 'package:testwithfirebase/components/dialogChanges.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/service/database.dart';
 import 'package:testwithfirebase/util/responsive.dart';
-
 import '../components/my_table.dart';
 
 class TableEmployee extends StatefulWidget {
@@ -19,8 +17,8 @@ class TableEmployee extends StatefulWidget {
 class _TableEmployeeState extends State<TableEmployee> {
   TextEditingController searchInput = TextEditingController();
   final DatabaseMethods databaseMethods = DatabaseMethods();
-  final List<String> headers = ["Identificador", "Nombre Completo", "Estado", "Area", "Sare"];
-  final List<String> fieldKeys = ["IdEmployee", "Nombre", "Estado", "Area", "Sare"];
+  final List<String> headers = ["Identificador", "CUPO", "Nombre Completo", "Estado", "Area", "Sare"];
+  final List<String> fieldKeys = ["IdEmployee", "CUPO", "Nombre", "Estado", "Area", "Sare"];
   static const String idKey = "IdEmployee";
 
   bool viewInactivos = false; // Ver empleados inactivos
@@ -36,7 +34,6 @@ class _TableEmployeeState extends State<TableEmployee> {
       });
       return;
     }
-
     setState(() {
       _isLoading = true;
     });
@@ -121,6 +118,7 @@ class _TableEmployeeState extends State<TableEmployee> {
                         ),
                       ),
                     ),
+                    const SizedBox(width: 20.0)
                   ],
                 ),
                 const Divider(),
@@ -159,10 +157,11 @@ class _TableEmployeeState extends State<TableEmployee> {
                         onAssign: (String id) {
                           final selectedRow = data.firstWhere((row) => row[idKey] == id);
                           final name = selectedRow["Nombre"];
+                          final idAdd = selectedRow[idKey];
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return Dialogchanges(dataChange: name);
+                              return DialogChanges(dataChange: name, idChange: idAdd,);
                             },
                           );
                         },
