@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:testwithfirebase/components/employee/card_employee.dart';
 import 'package:testwithfirebase/pages/empoyee.dart';
-import 'package:testwithfirebase/pages/table_employee.dart';
 
 class PantallaEmpleado extends StatefulWidget {
   const PantallaEmpleado({super.key});
@@ -14,7 +14,7 @@ class _PantallaEmpleadoState extends State<PantallaEmpleado> {
   Widget build(BuildContext context) {
     return const Column(children: [
       Expanded(child: Employee()),
-      Expanded(child: TableEmployee())
+      Expanded(child: CardEmployee())
     ],);
   }
 }

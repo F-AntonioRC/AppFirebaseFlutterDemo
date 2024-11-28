@@ -4,10 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:testwithfirebase/auth/auth_service.dart';
 import 'package:testwithfirebase/bloc/drawer_bloc.dart';
 import 'package:testwithfirebase/bloc/drawer_state.dart';
+import 'package:testwithfirebase/components/cursos/card_table.dart';
 import 'package:testwithfirebase/drawer/drawer_widget.dart';
 import 'package:testwithfirebase/pages/cerrar_sesion.dart';
 import 'package:testwithfirebase/pages/configuration.dart';
 import 'package:testwithfirebase/pages/dashboard_main.dart';
+import 'package:testwithfirebase/pages/page_email.dart';
 import 'package:testwithfirebase/pages/pantalla_empleado.dart';
 import 'package:testwithfirebase/pages/screen_cursos.dart';
 import 'package:testwithfirebase/pages/send_document.dart';
@@ -105,7 +107,7 @@ class _HomePageState extends State<HomePage> {
       case NavItem.courseView:
         return const ScreenCursos();
       case NavItem.emailView:
-        return const SendEmail();
+        return const PageEmail();
       case NavItem.documentView:
         return const SendDocument();
       case NavItem.logout:

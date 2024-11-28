@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:random_string/random_string.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 
@@ -89,7 +88,6 @@ class _CardPreviewState extends State<CardPreview> {
                   text: "Enviar Correo",
                   icon: const Icon(Icons.send_rounded),
                   onPressed: () async {
-                    String id = randomAlphaNumeric(4);
 
                   }, buttonColor: greenColor,
                 ),

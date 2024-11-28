@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 import 'package:testwithfirebase/components/custom_dialog.dart';
 import 'package:testwithfirebase/components/custom_snackbar.dart';
-import 'package:testwithfirebase/pages/card_preview.dart';
 import 'package:testwithfirebase/components/firebase_dropdown.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
@@ -33,10 +32,6 @@ class _SendEmailState extends State<SendEmail> {
   String? selectedSare;
   String? idCourse;
   String? idArea;
-  String? fechaInicio;
-  String? fechaRegistro;
-  String? fechaEnvio;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -51,7 +46,7 @@ class _SendEmailState extends State<SendEmail> {
                   padding: const EdgeInsets.all(10.0),
                   child: Column(children: [
                     const Text(
-                      "Enviar Correos",
+                      "Asignar cursos",
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
@@ -102,8 +97,8 @@ class _SendEmailState extends State<SendEmail> {
 
                     const SizedBox(height: 15.0),
                     MyButton(
-                      text: "Previsualizar",
-                      icon: const Icon(Icons.remove_red_eye),
+                      text: "Agregar",
+                      icon: const Icon(Icons.add_circle_outline),
                       onPressed: () {
                         setState(() {
                           // Obtener el curso y área seleccionados y actualizar el estado
@@ -112,9 +107,6 @@ class _SendEmailState extends State<SendEmail> {
                           selectedSare = _controllerSare.selectedDocument?['sare'];
                           idCourse = _controllerCourse.selectedDocument?['IdCourse'] ?? "Id no encontrado";
                           idArea = _controllerArea.selectedDocument?['IdArea'] ?? "Id no encontrado";
-                          fechaInicio = _controllerCourse.selectedDocument?['FechaInicioCurso'] ?? "Fecha no encontrada";
-                          fechaRegistro = _controllerCourse.selectedDocument?['Fecharegistro'] ?? "Fecha no encontrada";
-                          fechaEnvio = _controllerCourse.selectedDocument?['FechaenvioConstancia'] ?? "Fecha no encontrada";
                         });
                         showDialog(context: context,
                             builder: (BuildContext context) {
@@ -127,7 +119,8 @@ class _SendEmailState extends State<SendEmail> {
                               "IdDetailCourse" : id,
                               "IdCourse": idCourse,
                               "IdArea": idArea,
-                              "sare": selectedSare
+                              "sare": selectedSare,
+                              "Estado" : "Activo"
                             };
                             try{
                               await databaseDetailCourses.addDetailCourse(detailCourseMap, id);
@@ -150,13 +143,6 @@ class _SendEmailState extends State<SendEmail> {
               )
             ],
           ),
-          const SizedBox(height: 10.0),
-          CardPreview(
-            nameCourse: selectedCourse,
-            nameArea: selectedArea, idCourse: idCourse, idArea: idArea,
-            fechaInicio: fechaInicio,
-            fechaRegistro: fechaRegistro, fechaEnvio: fechaEnvio, nameSare: selectedSare,
-          )
         ],
       ),
     );

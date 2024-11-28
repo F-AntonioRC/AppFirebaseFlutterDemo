@@ -161,7 +161,7 @@ class _TableCursosState extends State<TableCursos> {
                               showCustomSnackBar(context, "Error: $e", Colors.red);
                             }
                           },
-                          idKey: 'Id', onActive: isActive,
+                          idKey: 'IdCourse', onActive: isActive,
                           activateFunction: (String id) async {
                             try{
                               await methodsCourses.activateCoursesDetail(id);

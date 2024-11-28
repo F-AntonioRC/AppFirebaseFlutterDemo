@@ -13,6 +13,7 @@ class MyTable extends StatelessWidget {
   final bool onActive; //Estado del boton dinamico
   final Function(String id) activateFunction;
   final Function(String id)? onAssign; //Función opcional
+  final Icon? iconAssign;
 
 
   const MyTable({
@@ -25,7 +26,8 @@ class MyTable extends StatelessWidget {
     this.onAssign,
     required this.idKey,
     required this.onActive,
-    required this.activateFunction
+    required this.activateFunction,
+    this.iconAssign
   });
 
   @override
@@ -105,7 +107,7 @@ class MyTable extends StatelessWidget {
                               tooltip: "Asignar CUPO",
                               onPressed: () {
                             onAssign!(rowData[idKey].toString());
-                          }, icon: const Icon(Icons.manage_accounts, color: Colors.blue,)),
+                          }, icon: iconAssign ?? const Icon(Icons.assignment)),
                         ),
                     ],
                   ),

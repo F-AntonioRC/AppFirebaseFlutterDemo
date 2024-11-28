@@ -141,7 +141,7 @@ class _CoursesState extends State<Courses> {
                   const SizedBox(height: 20.0),
                   Center(
                       child: MyButton(
-                        text: 'Añadir',
+                        text: 'Agregar',
                         icon: const Icon(Icons.add_circle_outline),
                         onPressed: () async {
                           try {
