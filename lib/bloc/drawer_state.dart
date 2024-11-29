@@ -6,6 +6,7 @@ enum NavItem {
   courseView,
   emailView,
   documentView,
+  notifications,
   configuration,
   logout
 }

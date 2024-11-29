@@ -49,6 +49,10 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
         title: "Documentos",
         icon: const Icon(Icons.article_rounded)),
     _NavigationItem(
+      item: NavItem.notifications,
+       title: "notificaciones",
+        icon:  const Icon(Icons.article_rounded)),
+    _NavigationItem(
         item: NavItem.configuration,
         title: "Configuración",
         icon: const Icon(

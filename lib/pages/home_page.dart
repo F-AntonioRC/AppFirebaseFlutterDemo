@@ -5,6 +5,7 @@ import 'package:testwithfirebase/auth/auth_service.dart';
 import 'package:testwithfirebase/bloc/drawer_bloc.dart';
 import 'package:testwithfirebase/bloc/drawer_state.dart';
 import 'package:testwithfirebase/drawer/drawer_widget.dart';
+import 'package:testwithfirebase/pages/NotificationWidgetIcon.dart';
 import 'package:testwithfirebase/pages/cerrar_sesion.dart';
 import 'package:testwithfirebase/pages/configuration.dart';
 import 'package:testwithfirebase/pages/dashboard_main.dart';
@@ -24,11 +25,6 @@ class _HomePageState extends State<HomePage> {
   late AuthService authService;
   late NavDrawerBloc _bloc;
   late Widget _content;
-
-  void logout() {
-    final auth = AuthService();
-    auth.signOut();
-  }
 
   @override
   void initState() {
@@ -61,23 +57,17 @@ class _HomePageState extends State<HomePage> {
                     _getAppbarTitle(state.selectedItem),
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  shadowColor: Colors.black ,
+                  shadowColor: Colors.black,
                   scrolledUnderElevation: 10.0,
                   centerTitle: true,
                   systemOverlayStyle: SystemUiOverlayStyle.dark,
-                  actions: [
-                    IconButton(
-                      splashRadius: 35.0,
-                      iconSize: 30.0,
-                      tooltip: 'Notificaciones',
-                      icon: const Icon(
-                        Icons.notifications_rounded,
-                      ), onPressed: () {  },
-                    ),
+                  actions: const [
+                    NotificationIconWidget(), // Reemplaza el IconButton por el nuevo widget
                   ],
                 ),
-                // Drawer se muestra dependiendo del tamaño de pantalla
-                drawer: isLargeScreen ? null : NavDrawerWidget(userEmail: userEmail),
+                drawer: isLargeScreen
+                    ? null
+                    : NavDrawerWidget(userEmail: userEmail),
                 body: Row(
                   children: [
                     if (isLargeScreen)
@@ -107,7 +97,9 @@ class _HomePageState extends State<HomePage> {
       case NavItem.emailView:
         return const SendEmail();
       case NavItem.documentView:
-        return const SendDocument();
+        return SendDocument();
+      case NavItem.notifications:
+        return const DashboardMain(); // Cambiado para evitar duplicar AdminNotificationsPage
       case NavItem.logout:
         return const CerrarSesion();
       case NavItem.configuration:
@@ -128,7 +120,9 @@ class _HomePageState extends State<HomePage> {
       case NavItem.emailView:
         return "Correos";
       case NavItem.documentView:
-        return "Documents";
+        return "Documentos";
+      case NavItem.notifications:
+        return "Notificaciones";
       case NavItem.configuration:
         return "Configuración";
       case NavItem.logout:
