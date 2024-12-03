@@ -98,7 +98,7 @@ class _EmployeeState extends State<Employee> {
                             ),
                             const SizedBox(width: 20.0),
                             FirebaseDropdown(controller: _controllerArea,
-                                collection: 'Area', data: 'Nombre', textHint: 'Seleccione un area')
+                                collection: 'Area', data: 'NombreArea', textHint: 'Seleccione un area')
                           ],
                         )),
                         const SizedBox(width: 20.0),
@@ -133,7 +133,9 @@ class _EmployeeState extends State<Employee> {
                               "Nombre": namecontroller.text,
                               "Sexo": sexdropdownValue,
                               "Estado": "Activo",
-                              "Area": _controllerArea.selectedDocument?['Nombre'],
+                              "Area": _controllerArea.selectedDocument?['NombreArea'],
+                              "IdArea": _controllerArea.selectedDocument?['IdArea'],
+                              "IdSare": _controllerSare.selectedDocument?['IdSare '],
                               "Sare": _controllerSare.selectedDocument?['sare']
                             };
                             await DatabaseMethods()

@@ -14,7 +14,7 @@ class Responsive {
 
 double responsiveFontSize(BuildContext context, double fontSize) {
   if (Responsive.isMobile(context)) {
-    return fontSize * 0.8;
+    return fontSize * 0.7;
   } else if (Responsive.isTablet(context)) {
     return fontSize * 1.1;
   } else {

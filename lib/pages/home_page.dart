@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:testwithfirebase/auth/auth_service.dart';
 import 'package:testwithfirebase/bloc/drawer_bloc.dart';
 import 'package:testwithfirebase/bloc/drawer_state.dart';
-import 'package:testwithfirebase/components/cursos/card_table.dart';
 import 'package:testwithfirebase/drawer/drawer_widget.dart';
 import 'package:testwithfirebase/pages/cerrar_sesion.dart';
 import 'package:testwithfirebase/pages/configuration.dart';
@@ -13,7 +12,6 @@ import 'package:testwithfirebase/pages/page_email.dart';
 import 'package:testwithfirebase/pages/pantalla_empleado.dart';
 import 'package:testwithfirebase/pages/screen_cursos.dart';
 import 'package:testwithfirebase/pages/send_document.dart';
-import 'package:testwithfirebase/pages/send_email.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

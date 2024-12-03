@@ -18,7 +18,6 @@ class Courses extends StatefulWidget {
 class _CoursesState extends State<Courses> {
   TextEditingController nameCourseController = new TextEditingController();
   TextEditingController nomenclaturaController = new TextEditingController();
-  TextEditingController linkCourseController = new TextEditingController();
   TextEditingController dateController = new TextEditingController();
   TextEditingController registroController = new TextEditingController();
   TextEditingController envioConstanciaController = new TextEditingController();
@@ -74,26 +73,9 @@ class _CoursesState extends State<Courses> {
                       )),
                     ],
                   ),
-                  const SizedBox(height: 15.0),
+                  const SizedBox(height: 20.0),
                   Row(
                     children: [
-                      Expanded(child: Column(
-                        children: [
-                          Text(
-                            "Link del curso",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: responsiveFontSize(context, 20), fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 10.0),
-                          MyTextfileld(
-                              hindText: "Campo obligatorio*",
-                              icon: const Icon(Icons.link),
-                              controller: linkCourseController,
-                              keyboardType: TextInputType.url),
-                        ],
-                      )),
-                      const SizedBox(width: 20.0),
                       Expanded(child: Column(
                         children: [
                           Text(
@@ -106,11 +88,7 @@ class _CoursesState extends State<Courses> {
                           DateTextField(controller: dateController),
                         ],
                       )),
-                    ],
-                  ),
-                  const SizedBox(height: 15.0),
-                  Row(
-                    children: [
+                      const SizedBox(width: 15.0),
                       Expanded(child: Column(
                         children: [
                           Text(
@@ -149,7 +127,6 @@ class _CoursesState extends State<Courses> {
                             Map<String, dynamic> courseInfoMap = {
                               "IdCourse": id,
                               "NameCourse": nameCourseController.text,
-                              "LinkCourse": linkCourseController.text,
                               "FechaInicioCurso": dateController.text,
                               "Fecharegistro": registroController.text,
                               "FechaenvioConstancia": envioConstanciaController.text,

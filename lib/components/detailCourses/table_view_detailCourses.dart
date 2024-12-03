@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/dialog_email.dart';
 import 'package:testwithfirebase/service/database_detail_courses.dart';
 
 import '../../dataConst/constand.dart';
@@ -39,18 +40,18 @@ class TableViewDetailCourses extends StatelessWidget {
 
           return MyTable(
             headers: const [
-              "Nombre del Curso",
-              "Area del curso",
-              "Sare del curso",
-              "Fecha inicio curso",
-              "Fecha de registro",
-              "Fecha de envío de Constancia",
+              "Nombre",
+              "Area",
+              "Sare",
+              "Inicio curso",
+              "Registro",
+              "Envío de Constancia",
             ],
             data: data,
             fieldKeys: const [
               "NameCourse",
               "NombreArea",
-              "NombreSare",
+              "sare",
               "FechaInicioCurso",
               "Fecharegistro",
               "FechaenvioConstancia",
@@ -72,6 +73,15 @@ class TableViewDetailCourses extends StatelessWidget {
                 }
               }
             },
+            onAssign: (String id) {
+              showDialog(context: context,
+                  builder: (BuildContext context) {
+                return const DialogEmail(nameCourse: "Uso de Facebbok",
+                  dateInit: "12/10/24", dateFinish: "24/10/14",
+                  sendDocument: "30/10/24", nameArea: "Auxiliar", idArea: "1",);
+                  });
+            },
+            iconAssign: const Icon(Icons.attach_email, color: Colors.blue,),
             idKey: idKey,
             onActive: isActive,
             activateFunction: (String id) async {

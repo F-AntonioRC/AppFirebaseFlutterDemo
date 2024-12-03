@@ -99,10 +99,14 @@ class _DialogChangesState extends State<DialogChanges> {
                 if(cupoSeleccionado.isNotEmpty) {
                   try {
                     await DatabaseMethods.addEmployeeCupo(widget.idChange, cupoSeleccionado);
-                    showCustomSnackBar(context, 'CUPO actualizado correctamente', greenColor);
                     Navigator.pop(context);
+                    if(context.mounted) {
+                      showCustomSnackBar(context, 'CUPO actualizado correctamente', greenColor);
+                    }
                   } catch (e) {
-                    showCustomSnackBar(context, "Error: $e", Colors.red);
+                    if(context.mounted) {
+                      showCustomSnackBar(context, "Error: $e", Colors.red);
+                    }
                   }
                 } else {
                   showCustomSnackBar(context, "Por favor selecciona una CUPO", greenColor);

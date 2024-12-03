@@ -32,6 +32,7 @@ class _SendEmailState extends State<SendEmail> {
   String? selectedSare;
   String? idCourse;
   String? idArea;
+  String? idSare;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -88,7 +89,7 @@ class _SendEmailState extends State<SendEmail> {
                             FirebaseDropdown(
                                 controller: _controllerArea,
                                 collection: "Area",
-                                data: "Nombre",
+                                data: "NombreArea",
                                 textHint: "Seleccione un Area"),
                           ],
                         ),)
@@ -103,8 +104,9 @@ class _SendEmailState extends State<SendEmail> {
                         setState(() {
                           // Obtener el curso y área seleccionados y actualizar el estado
                           selectedCourse = _controllerCourse.selectedDocument?['NameCourse'] ?? 'Curso no seleccionado';
-                          selectedArea = _controllerArea.selectedDocument?['Nombre'];
+                          selectedArea = _controllerArea.selectedDocument?['NombreArea'];
                           selectedSare = _controllerSare.selectedDocument?['sare'];
+                          idSare = _controllerSare.selectedDocument?['IdSare'];
                           idCourse = _controllerCourse.selectedDocument?['IdCourse'] ?? "Id no encontrado";
                           idArea = _controllerArea.selectedDocument?['IdArea'] ?? "Id no encontrado";
                         });
@@ -119,7 +121,7 @@ class _SendEmailState extends State<SendEmail> {
                               "IdDetailCourse" : id,
                               "IdCourse": idCourse,
                               "IdArea": idArea,
-                              "sare": selectedSare,
+                              "IdSare": idSare,
                               "Estado" : "Activo"
                             };
                             try{

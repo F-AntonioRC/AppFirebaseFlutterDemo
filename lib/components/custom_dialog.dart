@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/util/responsive.dart';
 import '../dataConst/constand.dart';
 import 'my_button.dart';
 
@@ -47,6 +48,9 @@ class _CustomDialogState extends State<CustomDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           if(widget.dataOne != null)
+            Text("Curso seleccionado",
+              style: TextStyle(fontSize: responsiveFontSize(context, 15), fontWeight: FontWeight.bold),),
+            const SizedBox(height: 10.0),
             TextField(
                 enabled: false,
                 controller: _dataOneController,
@@ -62,6 +66,9 @@ class _CustomDialogState extends State<CustomDialog> {
             ),
           const SizedBox(height: 10.0),
           if(widget.dataTwo != null)
+            Text("Area/Sare asigando",
+              style: TextStyle(fontSize: responsiveFontSize(context, 15), fontWeight: FontWeight.bold),),
+          const SizedBox(height: 10.0),
           TextField(
               enabled: false,
               controller: _dataTwoController,
