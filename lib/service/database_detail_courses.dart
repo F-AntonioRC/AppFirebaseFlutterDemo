@@ -22,63 +22,6 @@ class MethodsDetailCourses {
     }
   }
 
-  //BUSCAR LOS EMPLEADOS POR ARE
-  Future<List<Map<String, dynamic>>> getEmpleadosPorArea(String area) async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('Employee')
-        .where('IdArea', isEqualTo: area)
-        .get();
-
-    return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-  }
-
-  //OBTENER LOS CORREOS POR AREA
-  Future<List<String>> getCorreoPorArea(String area) async {
-    var empleados = await getEmpleadosPorArea(area);
-
-    List claves = empleados.map((e) => e['CUPO'].toString()).toList();
-
-    if(claves.isEmpty) return []; //Evitar la consulta vacia
-
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-    .collection('User')
-    .where('CUPO', whereIn: claves)
-    .get();
-
-    return querySnapshot.docs.map((doc) => doc['email'].toString()).toList();
-  }
-
-  Future<void> sendEmailToArea(String idArea) async {
-    List<String> correos = await getCorreoPorArea(idArea);
-
-    if(correos.isNotEmpty) {
-      final String emailList = correos.join(',');
-
-      final Uri emailUri = Uri(
-        scheme: 'mailto',
-        path: emailList,
-        query: _encodeQueryParameters(<String, String> {
-          'subject' : 'Asunto del correo',
-          'body': 'Cuerpo del mensaje'
-        })
-      );
-
-      if (await canLaunchUrl(emailUri)) {
-        await launchUrl(emailUri);
-      } else {
-        print('No se pudo lanzar el cliente de correo');
-      }
-    } else {
-      print('No se encontraron correos para el área $idArea');
-    }
-  }
-
-  String _encodeQueryParameters(Map<String, String> params) {
-    return params.entries
-        .map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
-        .join('&');
-  }
-
   //ACTIVAR
   Future ActivarDetalleCurso(String id) async {
     try{
@@ -122,7 +65,19 @@ class MethodsDetailCourses {
         String? idArea = detalleCursoDoc['IdArea'];
         String? idSare = detalleCursoDoc['IdSare'];
 
-        Map<String, dynamic> result = {};
+        // Inicializa todos los campos con valores predeterminados
+        Map<String, dynamic> result = {
+          'IdDetailCourse': detalleCursoDoc.id, // Asignar un ID único si aplica
+          'NameCourse': 'N/A',
+          'FechaInicioCurso': 'N/A',
+          'Fecharegistro': 'N/A',
+          'FechaenvioConstancia': 'N/A',
+          'NombreArea': 'N/A',
+          'IdArea': 'N/A',
+          'sare': 'N/A',
+          'IdSare': 'N/A',
+        };
+
 
         // Consulta el documento de Courses
         DocumentSnapshot courseDoc =
@@ -142,7 +97,8 @@ class MethodsDetailCourses {
 
           if (areaDoc.exists) {
             var areaData = areaDoc.data() as Map<String, dynamic>;
-            result['NombreArea'] = areaData['NombreArea'];
+            result['NombreArea'] = areaData['NombreArea'] ?? 'N/A';
+            result['IdArea'] = areaData['IdArea'];
           }
 
 
@@ -152,7 +108,8 @@ class MethodsDetailCourses {
 
           if (sareDoc.exists) {
             var sareData = sareDoc.data() as Map<String, dynamic>;
-            result['sare'] = sareData['sare'];
+            result['sare'] = sareData['sare'] ?? 'N/A';
+            result['IdSare'] = sareData['IdSare'];
           }
 
 

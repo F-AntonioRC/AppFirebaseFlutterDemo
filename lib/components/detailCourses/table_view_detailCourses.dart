@@ -40,6 +40,7 @@ class TableViewDetailCourses extends StatelessWidget {
 
           return MyTable(
             headers: const [
+              "Id",
               "Nombre",
               "Area",
               "Sare",
@@ -49,6 +50,7 @@ class TableViewDetailCourses extends StatelessWidget {
             ],
             data: data,
             fieldKeys: const [
+              'IdDetailCourse',
               "NameCourse",
               "NombreArea",
               "sare",
@@ -74,12 +76,31 @@ class TableViewDetailCourses extends StatelessWidget {
               }
             },
             onAssign: (String id) {
-              showDialog(context: context,
-                  builder: (BuildContext context) {
-                return const DialogEmail(nameCourse: "Uso de Facebbok",
-                  dateInit: "12/10/24", dateFinish: "24/10/14",
-                  sendDocument: "30/10/24", nameArea: "Auxiliar", idArea: "1",);
-                  });
+                final selectedRow = data.firstWhere((row) => row[idKey] == id, orElse: () => {});
+
+                if(selectedRow.isNotEmpty) {
+                  final nameCourse = selectedRow['NameCourse'];
+                  final dateInit = selectedRow['FechaInicioCurso'];
+                  final dateRegister = selectedRow['Fecharegistro'];
+                  final dateSendDocument = selectedRow['FechaenvioConstancia'];
+                  final areaSelected = selectedRow['NombreArea'];
+
+
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return DialogEmail(
+                        nameCourse: nameCourse,
+                        dateInit: dateInit,
+                        dateRegister: dateRegister,
+                        sendDocument: dateSendDocument,
+                        nameArea: areaSelected,
+                        idArea: "1",
+                      );
+                    },
+                  );
+                } else {}
+
             },
             iconAssign: const Icon(Icons.attach_email, color: Colors.blue,),
             idKey: idKey,

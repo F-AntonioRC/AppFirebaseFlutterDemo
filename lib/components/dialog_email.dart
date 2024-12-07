@@ -3,14 +3,14 @@ import 'package:testwithfirebase/components/build_field.dart';
 import 'package:testwithfirebase/components/custom_snackbar.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
-import 'package:testwithfirebase/service/database_detail_courses.dart';
+import 'package:testwithfirebase/service/send_email_methods.dart';
 
 import '../util/responsive.dart';
 
 class DialogEmail extends StatefulWidget {
   final String nameCourse;
   final String dateInit;
-  final String dateFinish;
+  final String dateRegister;
   final String sendDocument;
   final String? nameArea;
   final String? nameSare;
@@ -21,7 +21,7 @@ class DialogEmail extends StatefulWidget {
     super.key,
     required this.nameCourse,
     required this.dateInit,
-    required this.dateFinish,
+    required this.dateRegister,
     required this.sendDocument,
     this.nameArea,
     this.nameSare,
@@ -36,16 +36,17 @@ class DialogEmail extends StatefulWidget {
 class _DialogEmailState extends State<DialogEmail> {
   late final TextEditingController _nameCourseController;
   late final TextEditingController _dateInitController;
-  late final TextEditingController _dateFinishController;
+  late final TextEditingController _dateRegisterController;
   late final TextEditingController _dateSendEmailController;
   late final TextEditingController _nameAreaController;
   late final TextEditingController _nameSareController;
+  TextEditingController bodyEmailController = TextEditingController();
 
   @override
   void dispose() {
     _nameCourseController.dispose();
     _dateInitController.dispose();
-    _dateFinishController.dispose();
+    _dateRegisterController.dispose();
     _dateSendEmailController.dispose();
     _nameAreaController.dispose();
     _nameSareController.dispose();
@@ -57,7 +58,7 @@ class _DialogEmailState extends State<DialogEmail> {
     super.initState();
     _nameCourseController = TextEditingController(text: widget.nameCourse);
     _dateInitController = TextEditingController(text: widget.dateInit);
-    _dateFinishController = TextEditingController(text: widget.dateFinish);
+    _dateRegisterController = TextEditingController(text: widget.dateRegister);
     _dateSendEmailController = TextEditingController(text: widget.sendDocument);
     _nameAreaController = TextEditingController(text: widget.nameArea);
     _nameSareController = TextEditingController(text: widget.nameSare);
@@ -138,7 +139,7 @@ class _DialogEmailState extends State<DialogEmail> {
                   const SizedBox(height: 10.0),
                   TextField(
                     enabled: false,
-                    controller: _dateFinishController,
+                    controller: _dateRegisterController,
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.account_box),
                       disabledBorder: _buildDisabledBorder(theme),
@@ -180,11 +181,15 @@ class _DialogEmailState extends State<DialogEmail> {
           Text("Escribe el mensaje",
             style: TextStyle(fontSize: responsiveFontSize(context, 15), fontWeight: FontWeight.bold),),
           const SizedBox(height: 10.0,),
-          const TextField(
-            maxLines: 3,
-            decoration: InputDecoration(
-              labelText: 'Escribe tu mensaje',
-              border: OutlineInputBorder(),
+          SizedBox(
+            width: 300,
+            child: TextField(
+              controller: bodyEmailController,
+              maxLines: 3,
+              decoration: const InputDecoration(
+                labelText: 'Escribe tu mensaje',
+                border: OutlineInputBorder(),
+              ),
             ),
           )
         ],
@@ -201,22 +206,22 @@ class _DialogEmailState extends State<DialogEmail> {
               buttonColor: Colors.red,
             ),
             const SizedBox(width: 10.0),
-            MyButton(text: "Enviar",
+            MyButton(text: "Generar",
               icon: const Icon(Icons.mark_email_read_rounded),
               buttonColor: greenColor,
               onPressed: () async {
               if(widget.idArea != null) {
                 try{
-                  await MethodsDetailCourses().sendEmailToArea(widget.idArea!);
+                  await SendEmailMethods().sendEmailToArea(
+                      widget.idArea!, widget.nameCourse, widget.dateInit, widget.dateRegister, widget.sendDocument, bodyEmailController.text);
                   if(context.mounted) {
-                    showCustomSnackBar(context, "Email enviado con exito", greenColor);
+                    showCustomSnackBar(context, "Email generado con exito", greenColor);
                   }
                 } catch (e){
                   if(context.mounted) {
                     showCustomSnackBar(context, "Error: $e", Colors.red);
                   }
                 }
-
               }
               },),
           ],
