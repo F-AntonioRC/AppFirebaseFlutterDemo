@@ -3,107 +3,95 @@ import 'package:url_launcher/url_launcher.dart';
 
 class SendEmailMethods {
 
-  //OBTENER LOS EMPLEADOS POR AREA
-  Future<List<Map<String, dynamic>>> getEmpleadosPorArea(String area) async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('Employee')
-        .where('IdArea', isEqualTo: area)
-        .get();
+  //OBTENER LOS EMPLEADOS POR CAMPO
+  Future<List<Map<String, dynamic>>> getEmpleadosPorCampo(String campo, String valor) async {
 
-    return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('Employee')
+          .where(campo, isEqualTo: valor)
+          .get();
+
+      return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
+    } catch (e) {
+      print('Error: $e');
+      return [];
+    }
   }
 
-  //OBTENER LOS EMPLEADOS POR SARE
-  Future<List<Map<String, dynamic>>> getEmpleadosPorSare(String sare) async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('Employee')
-        .where('IdSare', isEqualTo: sare)
-        .get();
+  // Función genérica para obtener correos según un campo (área o sare)
+  Future<List<String>> getCorreoPorCampo(String campo, String valor) async {
+    try {
+      var empleados = await getEmpleadosPorCampo(campo, valor);
+      List claves = empleados.map((e) => e['CUPO']?.toString()).where((cupo) => cupo != null).toList();
 
-    return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+      if (claves.isEmpty) return []; // Evitar la consulta vacía
+
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('User')
+          .where('CUPO', whereIn: claves)
+          .get();
+
+      return querySnapshot.docs.map((doc) => doc['email'].toString()).toList();
+    } catch (e) {
+      print('Error obteniendo correos: $e');
+      return [];
+    }
   }
 
-  //OBTENER LOS CORREOS POR AREA
-  Future<List<String>> getCorreoPorArea(String area) async {
-    var empleados = await getEmpleadosPorArea(area);
-
-    List claves = empleados.map((e) => e['CUPO'].toString()).toList();
-
-    if(claves.isEmpty) return []; //Evitar la consulta vacia
-
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('User')
-        .where('CUPO', whereIn: claves)
-        .get();
-
-    return querySnapshot.docs.map((doc) => doc['email'].toString()).toList();
-  }
-
-  //OBTENER LOS CORREOS POR SARE
-  Future<void> sendEmailToArea(
-      String idArea, String nameCourse, String dateIniti,
+  // Función genérica para enviar correos
+  Future<void> sendEmail(
+      String campo, String valor, String nameCourse, String dateIniti,
       String dateRegister, String dateSend, String body) async {
-    List<String> correos = await getCorreoPorArea(idArea);
+    List<String> correos = await getCorreoPorCampo(campo, valor);
 
-    String bodyFinal = '$body \n Fecha de inicio: $dateIniti,  Fecha de registro: $dateRegister, Envio de constancia: $dateSend ';
+    if (correos.isEmpty) {
+      print('No se encontraron correos para $campo: $valor');
+      return;
+    }
 
-    if (correos.isNotEmpty) {
-      final String emailList = correos.join(',');
+    String bodyFinal = '$body\n'
+        'Fecha de inicio: $dateIniti\n'
+        'Fecha de registro: $dateRegister\n'
+        'Envío de constancia: $dateSend';
 
-      final String gmailUrl = Uri(
-        scheme: 'https',
-        host: 'mail.google.com',
-        path: '/mail/',
-        queryParameters: {
-          'view': 'cm',
-          'fs': '1',
-          'to': emailList,
-          'su': 'Curso: $nameCourse',
-          'body': bodyFinal,
-        },
-      ).toString();
+    final String emailList = correos.join(',');
+    final Uri gmailUrl = Uri(
+      scheme: 'https',
+      host: 'mail.google.com',
+      path: '/mail/',
+      queryParameters: {
+        'view': 'cm',
+        'fs': '1',
+        'to': emailList,
+        'su': 'Curso: $nameCourse',
+        'body': bodyFinal,
+      },
+    );
 
-      if (await canLaunchUrl(Uri.parse(gmailUrl))) {
-        await launchUrl(Uri.parse(gmailUrl), mode: LaunchMode.externalApplication);
+    try {
+      if (await canLaunchUrl(gmailUrl)) {
+        await launchUrl(gmailUrl, mode: LaunchMode.externalApplication);
       } else {
         print('No se pudo lanzar Gmail');
       }
-    } else {
-      print('No se encontraron correos para el área $idArea');
+    } catch (e) {
+      print('Error al intentar lanzar Gmail: $e');
     }
+  }
+
+  // Métodos específicos para área y sare
+  Future<void> sendEmailToArea(
+      String idArea, String nameCourse, String dateIniti,
+      String dateRegister, String dateSend, String body) async {
+    await sendEmail('IdArea', idArea, nameCourse, dateIniti, dateRegister, dateSend, body);
   }
 
   Future<void> sendEmailToSare(
       String idSare, String nameSare, String dateIniti,
       String dateRegister, String dateSend, String body) async {
-    List<String> correos = await getCorreoPorArea(idSare);
-
-    String bodyFinal = '$body \n Fecha de inicio: $dateIniti,  Fecha de registro: $dateRegister, Envio de constancia: $dateSend ';
-
-    if (correos.isNotEmpty) {
-      final String emailList = correos.join(',');
-
-      final String gmailUrl = Uri(
-        scheme: 'https',
-        host: 'mail.google.com',
-        path: '/mail/',
-        queryParameters: {
-          'view': 'cm',
-          'fs': '1',
-          'to': emailList,
-          'su': 'Curso: $nameSare',
-          'body': bodyFinal,
-        },
-      ).toString();
-
-      if (await canLaunchUrl(Uri.parse(gmailUrl))) {
-        await launchUrl(Uri.parse(gmailUrl), mode: LaunchMode.externalApplication);
-      } else {
-        print('No se pudo lanzar Gmail');
-      }
-    } else {
-      print('No se encontraron correos para el área $idSare');
-    }
+    await sendEmail('IdSare', idSare, nameSare, dateIniti, dateRegister, dateSend, body);
   }
 
 }

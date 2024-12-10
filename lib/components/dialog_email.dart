@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/components/build_field.dart';
 import 'package:testwithfirebase/components/custom_snackbar.dart';
+import 'package:testwithfirebase/components/detailCourses/body_card_detailCourse.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/service/send_email_methods.dart';
@@ -38,8 +39,8 @@ class _DialogEmailState extends State<DialogEmail> {
   late final TextEditingController _dateInitController;
   late final TextEditingController _dateRegisterController;
   late final TextEditingController _dateSendEmailController;
-  late final TextEditingController _nameAreaController;
-  late final TextEditingController _nameSareController;
+  final TextEditingController _nameAreaController = TextEditingController();
+  final TextEditingController _nameSareController = TextEditingController();
   TextEditingController bodyEmailController = TextEditingController();
 
   @override
@@ -60,8 +61,13 @@ class _DialogEmailState extends State<DialogEmail> {
     _dateInitController = TextEditingController(text: widget.dateInit);
     _dateRegisterController = TextEditingController(text: widget.dateRegister);
     _dateSendEmailController = TextEditingController(text: widget.sendDocument);
-    _nameAreaController = TextEditingController(text: widget.nameArea);
-    _nameSareController = TextEditingController(text: widget.nameSare);
+    // Prellenar controladores si hay datos disponibles
+    if (widget.nameArea != null && widget.nameArea != 'N/A') {
+      _nameAreaController.text = widget.nameArea!;
+    } else { _nameAreaController.text = 'No asignado'; }
+    if (widget.nameSare != null && widget.nameSare != 'N/A') {
+      _nameSareController.text = widget.nameSare!;
+    } else { _nameSareController.text = 'No Asignado'; }
   }
 
   @override
@@ -71,146 +77,50 @@ class _DialogEmailState extends State<DialogEmail> {
 
     return AlertDialog(
       scrollable: true,
-      title: const Text(
-        "Enviar Correos",
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
+      title: const Text( "Enviar Correos", style: TextStyle(fontWeight: FontWeight.bold), ),
       content: Column(
         children: [
-          Row(
-            children: [
-              Expanded(child: Column(
-                children: [
-                  Text(
-                    "Curso seleccionado",
-                    style: TextStyle(
-                      fontSize: responsiveFontSize(context, 15),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10.0),
-                  TextField(
-                    enabled: false,
-                    controller: _nameCourseController,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.account_box),
-                      disabledBorder: _buildDisabledBorder(theme),
-                      focusedBorder: _buildDisabledBorder(theme),
-                    ),
-                  ),
-                ],
-              ),),
-              const SizedBox(width: 10.0),
-              Expanded(child: Column(
-                children: [
-                  Text(
-                    "Fecha de Inicio",
-                    style: TextStyle(
-                      fontSize: responsiveFontSize(context, 15),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10.0),
-                  TextField(
-                    enabled: false,
-                    controller: _dateInitController,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.account_box),
-                      disabledBorder: _buildDisabledBorder(theme),
-                      focusedBorder: _buildDisabledBorder(theme),
-                    ),
-                  ),
-                ],
-              ))
-            ],
-          ),
+          BodyCardDetailCourse(
+              firstController: _nameCourseController, firstTitle: "Curso seleccionado", firstIcon: const Icon(Icons.account_box),
+              secondController: _dateInitController, secondTitle: "Fecha de inicio", secondIcon: const Icon(Icons.date_range),),
           const SizedBox(height: 10.0),
-          Row(
-            children: [
-              Expanded(child: Column(
-                children: [
-                  Text(
-                    "Fecha termino",
-                    style: TextStyle(
-                      fontSize: responsiveFontSize(context, 15),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10.0),
-                  TextField(
-                    enabled: false,
-                    controller: _dateRegisterController,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.account_box),
-                      disabledBorder: _buildDisabledBorder(theme),
-                      focusedBorder: _buildDisabledBorder(theme),
-                    ),
-                  ),
-                ],
-              )),
-              const SizedBox(width: 10.0,),
-              Expanded(child: Column(children: [
-                Text(
-                  "Envio Constancia",
-                  style: TextStyle(
-                    fontSize: responsiveFontSize(context, 15),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 10.0),
-                TextField(
-                  enabled: false,
-                  controller: _dateSendEmailController,
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.account_box),
-                    disabledBorder: _buildDisabledBorder(theme),
-                    focusedBorder: _buildDisabledBorder(theme),
-                  ),
-                ),
-              ],))
-            ],
-          ),
+          BodyCardDetailCourse(
+              firstController: _dateRegisterController, firstTitle: "Registro", firstIcon: const Icon(Icons.event),
+              secondController: _dateSendEmailController, secondTitle: "Envio constancia", secondIcon: const Icon(Icons.event_available_sharp)),
           const SizedBox(height: 10.0),
-          if (widget.nameArea != null) ...[
+          if (widget.nameArea != 'N/A') ...[
             BuildField(title: 'Área Asignada', controller:  _nameAreaController, theme: theme),
           ],
-          if (widget.nameSare != null) ...[
-            BuildField(title: 'SARE', controller: _nameSareController, theme: theme),
+          if (widget.nameSare != 'N/A') ...[
+            BuildField(title: 'SARE Asignado', controller: _nameSareController, theme: theme),
           ],
           const SizedBox(height: 10.0),
           Text("Escribe el mensaje",
             style: TextStyle(fontSize: responsiveFontSize(context, 15), fontWeight: FontWeight.bold),),
           const SizedBox(height: 10.0,),
           SizedBox(
-            width: 300,
+            width: 400,
             child: TextField(
-              controller: bodyEmailController,
-              maxLines: 3,
-              decoration: const InputDecoration(
-                labelText: 'Escribe tu mensaje',
-                border: OutlineInputBorder(),
+              controller: bodyEmailController, maxLines: 3,
+              decoration: const InputDecoration( labelText: 'Escribe tu mensaje',  border: OutlineInputBorder(),
               ),
             ),
           )
         ],
       ),
-
       actions: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             MyButton(
-              text: "Cancelar",
-              icon: const Icon(Icons.cancel_outlined),
-              onPressed: () => Navigator.pop(context),
-              buttonColor: Colors.red,
+              text: "Cancelar", icon: const Icon(Icons.cancel_outlined),
+              onPressed: () => Navigator.pop(context), buttonColor: Colors.red,
             ),
             const SizedBox(width: 10.0),
             MyButton(text: "Generar",
-              icon: const Icon(Icons.mark_email_read_rounded),
-              buttonColor: greenColor,
+              icon: const Icon(Icons.mark_email_read_rounded), buttonColor: greenColor,
               onPressed: () async {
-              if(widget.idArea != null) {
+              if(widget.idArea != null && widget.idArea != 'N/A') {
                 try{
                   await SendEmailMethods().sendEmailToArea(
                       widget.idArea!, widget.nameCourse, widget.dateInit, widget.dateRegister, widget.sendDocument, bodyEmailController.text);
@@ -222,18 +132,27 @@ class _DialogEmailState extends State<DialogEmail> {
                     showCustomSnackBar(context, "Error: $e", Colors.red);
                   }
                 }
+              } else if (widget.idSare != null && widget.idSare != 'N/A') {
+              try{
+                await SendEmailMethods().sendEmailToSare(
+                    widget.idSare!, widget.nameCourse, widget.dateInit, widget.dateRegister, widget.sendDocument, bodyEmailController.text);
+                if(context.mounted) {
+                  showCustomSnackBar(context, "Email generado con exito", greenColor);
+                }
+              } catch (e) {
+                if(context.mounted) {
+                  showCustomSnackBar(context, 'Error: $e', Colors.red);
+                }
+              }
+              } else {
+                if(context.mounted) {
+                  showCustomSnackBar(context, 'No se encontro Area o sare asignado', Colors.red);
+                }
               }
               },),
           ],
         )
       ],
-    );
-  }
-
-  InputBorder _buildDisabledBorder(ThemeData theme) {
-    return OutlineInputBorder(
-      borderSide: BorderSide(color: theme.hintColor),
-      borderRadius: BorderRadius.circular(10.0),
     );
   }
 }

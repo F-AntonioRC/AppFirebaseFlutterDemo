@@ -84,7 +84,9 @@ class TableViewDetailCourses extends StatelessWidget {
                   final dateRegister = selectedRow['Fecharegistro'];
                   final dateSendDocument = selectedRow['FechaenvioConstancia'];
                   final areaSelected = selectedRow['NombreArea'];
-
+                  final sareSelected = selectedRow['sare'];
+                  final idAreaSelected = selectedRow['IdArea'];
+                  final idSareSelected = selectedRow['IdSare'];
 
                   showDialog(
                     context: context,
@@ -95,7 +97,9 @@ class TableViewDetailCourses extends StatelessWidget {
                         dateRegister: dateRegister,
                         sendDocument: dateSendDocument,
                         nameArea: areaSelected,
-                        idArea: "1",
+                        nameSare: sareSelected,
+                        idArea: idAreaSelected,
+                        idSare: idSareSelected,
                       );
                     },
                   );
