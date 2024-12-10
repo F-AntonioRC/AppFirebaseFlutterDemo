@@ -11,7 +11,7 @@ class SendDocument extends StatefulWidget {
 }
 
 class _SendDocument extends State<SendDocument> {
-  Map<String, List<Map<String, String>>> courseFiles = {}; // Archivos por curso
+  Map<String, Map<String, List<Map<String, String>>>> courseFiles = {}; // Archivos por curso y subcurso
   bool isLoading = true;
 
   @override
@@ -25,24 +25,40 @@ class _SendDocument extends State<SendDocument> {
     try {
       FirebaseStorage storage = FirebaseStorage.instance;
 
-      // Define aquí las rutas de los cursos
-      List<String> courses = ['SICAVISP', 'INMUJERES', 'CONAPRED'];
+      // Cursos principales y sus subcursos
+      Map<String, List<String>> courses = {
+        'SICAVISP': ['Curso 1', 'Curso 2', 'Curso 3'],
+        'INMUJERES': ['Curso 1', 'Curso 2', 'Curso 3'],
+        'CONAPRED': ['Curso 1', 'Curso 2', 'Curso 3'],
+      };
 
-      Map<String, List<Map<String, String>>> loadedFiles = {};
+      Map<String, Map<String, List<Map<String, String>>>> loadedFiles = {};
 
-      for (String course in courses) {
-        Reference courseRef = storage.ref(
-            '2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARE\'S/Cursos_2024/TRIMESTRE 1/$course');
+      for (String course in courses.keys) {
+        Map<String, List<Map<String, String>>> subcourseFiles = {};
 
-        ListResult result = await courseRef.listAll();
-        List<Map<String, String>> files = [];
+        for (String subCourse in courses[course]!) {
+          String subCoursePath =
+              '2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARE\'S/Cursos_2024/TRIMESTRE 1/$course/$subCourse';
+          Reference subCourseRef = storage.ref(subCoursePath);
 
-        for (Reference ref in result.items) {
-          String url = await ref.getDownloadURL();
-          files.add({'name': ref.name, 'url': url});
+          try {
+            ListResult result = await subCourseRef.listAll();
+            List<Map<String, String>> files = [];
+
+            for (Reference ref in result.items) {
+              String url = await ref.getDownloadURL();
+              files.add({'name': ref.name, 'url': url});
+            }
+
+            subcourseFiles[subCourse] = files;
+          } catch (e) {
+            print('Error al cargar archivos de $subCourse: $e');
+            subcourseFiles[subCourse] = [];
+          }
         }
 
-        loadedFiles[course] = files;
+        loadedFiles[course] = subcourseFiles;
       }
 
       setState(() {
@@ -82,7 +98,8 @@ class _SendDocument extends State<SendDocument> {
                   child: ListView(
                     children: courseFiles.entries.map((entry) {
                       String courseName = entry.key;
-                      List<Map<String, String>> files = entry.value;
+                      Map<String, List<Map<String, String>>> subCourses =
+                          entry.value;
 
                       return Card(
                         elevation: 5,
@@ -99,12 +116,33 @@ class _SendDocument extends State<SendDocument> {
                               color: Color.fromARGB(255, 0, 0, 0),
                             ),
                           ),
-                          children: files.map((file) {
-                            return ListTile(
-                              title: Text(file['name'] ?? 'Archivo'),
-                              trailing: IconButton(
-                                icon: const Icon(Icons.download),
-                                onPressed: () => _downloadFile(file['url']!),
+                          children: subCourses.entries.map((subEntry) {
+                            String subCourseName = subEntry.key;
+                            List<Map<String, String>> files = subEntry.value;
+
+                            return Card(
+                              elevation: 3,
+                              margin:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: ExpansionTile(
+                                title: Text(
+                                  subCourseName,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(255, 54, 54, 54),
+                                  ),
+                                ),
+                                children: files.map((file) {
+                                  return ListTile(
+                                    title: Text(file['name'] ?? 'Archivo'),
+                                    trailing: IconButton(
+                                      icon: const Icon(Icons.download),
+                                      onPressed: () =>
+                                          _downloadFile(file['url']!),
+                                    ),
+                                  );
+                                }).toList(),
                               ),
                             );
                           }).toList(),

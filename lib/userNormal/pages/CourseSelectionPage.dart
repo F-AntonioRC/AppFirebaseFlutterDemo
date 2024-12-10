@@ -5,14 +5,18 @@ import 'cursos_normal.dart';
 class CourseSelectionPage extends StatelessWidget {
   CourseSelectionPage({Key? key}) : super(key: key);
 
-  // Lista de cursos disponibles
-  final List<String> courses = ['SICAVISP', 'INMUJERES', 'CONAPRED'];
+  // Cursos principales con sus subcursos
+  final Map<String, List<String>> courses = {
+    'SICAVISP': ['Curso 1', 'Curso 2', 'Curso 3'],
+    'INMUJERES': ['Curso 1', 'Curso 2', 'Curso 3'],
+    'CONAPRED': ['Curso 1', 'Curso 2', 'Curso 3'],
+  };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Seleccionar Curso'),
+        title: const Text('Seleccionar Curso Principal'),
         backgroundColor: greenColor,
       ),
       body: Padding(
@@ -30,7 +34,7 @@ class CourseSelectionPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // GridView para mostrar las tarjetas de cursos
+            // GridView para mostrar las tarjetas de cursos principales
             Expanded(
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -39,10 +43,12 @@ class CourseSelectionPage extends StatelessWidget {
                   mainAxisSpacing: 16.0, // Espacio vertical entre tarjetas
                   childAspectRatio: 3 / 2, // Relación de aspecto de las tarjetas
                 ),
-                itemCount: courses.length,
+                itemCount: courses.keys.length,
                 itemBuilder: (context, index) {
+                  String courseName = courses.keys.elementAt(index);
                   return CourseCard(
-                    courseName: courses[index],
+                    courseName: courseName,
+                    subCourses: courses[courseName]!,
                   );
                 },
               ),
@@ -56,8 +62,10 @@ class CourseSelectionPage extends StatelessWidget {
 
 class CourseCard extends StatelessWidget {
   final String courseName;
+  final List<String> subCourses;
 
-  const CourseCard({Key? key, required this.courseName}) : super(key: key);
+  const CourseCard({Key? key, required this.courseName, required this.subCourses})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +79,10 @@ class CourseCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => CursosNormal(course: courseName),
+              builder: (context) => SubCourseSelectionPage(
+                courseName: courseName,
+                subCourses: subCourses,
+              ),
             ),
           );
         },
@@ -105,6 +116,52 @@ class CourseCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+// Nueva clase para seleccionar subcursos
+class SubCourseSelectionPage extends StatelessWidget {
+  final String courseName;
+  final List<String> subCourses;
+
+  const SubCourseSelectionPage({Key? key, required this.courseName, required this.subCourses})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Subcursos de $courseName'),
+        backgroundColor: greenColor,
+      ),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16.0),
+        itemCount: subCourses.length,
+        itemBuilder: (context, index) {
+          String subCourseName = subCourses[index];
+          return Card(
+            elevation: 3,
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            child: ListTile(
+              title: Text(subCourseName),
+              leading: const Icon(Icons.folder_open, color: Colors.blue),
+              trailing: const Icon(Icons.arrow_forward_ios, color: Colors.grey),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CursosNormal(
+                      course: courseName,
+                      subCourse: subCourseName,
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
       ),
     );
   }
