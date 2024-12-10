@@ -2,48 +2,66 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SendEmailMethods {
-
-  //OBTENER LOS EMPLEADOS POR CAMPO
-  Future<List<Map<String, dynamic>>> getEmpleadosPorCampo(String campo, String valor) async {
-
+  // Obtener los empleados por campo
+  Future<List<Map<String, dynamic>>> getEmpleadosPorCampo(
+      String campo, String valor) async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('Employee')
           .where(campo, isEqualTo: valor)
           .get();
 
-      return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>)
+      return querySnapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
     } catch (e) {
-      print('Error: $e');
+      print('Error obteniendo empleados: $e');
       return [];
     }
   }
 
-  // Función genérica para obtener correos según un campo (área o sare)
+  // Obtener correos según un campo
   Future<List<String>> getCorreoPorCampo(String campo, String valor) async {
     try {
       var empleados = await getEmpleadosPorCampo(campo, valor);
-      List claves = empleados.map((e) => e['CUPO']?.toString()).where((cupo) => cupo != null).toList();
+      List<String?> claves = empleados
+          .map((e) => e['CUPO']?.toString())
+          .where((cupo) => cupo != null)
+          .cast<String>()
+          .toList();
 
-      if (claves.isEmpty) return []; // Evitar la consulta vacía
+      if (claves.isEmpty) return [];
 
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('User')
-          .where('CUPO', whereIn: claves)
-          .get();
+      // Dividir en lotes si es necesario
+      final List<String> correos = [];
+      for (var i = 0; i < claves.length; i += 10) {
+        final batch = claves.sublist(i, i + 10 > claves.length ? claves.length : i + 10);
 
-      return querySnapshot.docs.map((doc) => doc['email'].toString()).toList();
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection('User')
+            .where('CUPO', whereIn: batch)
+            .get();
+
+        correos.addAll(querySnapshot.docs.map((doc) => doc['email'].toString()));
+      }
+
+      return correos;
     } catch (e) {
       print('Error obteniendo correos: $e');
       return [];
     }
   }
 
-  // Función genérica para enviar correos
+  // Enviar correos
   Future<void> sendEmail(
-      String campo, String valor, String nameCourse, String dateIniti,
-      String dateRegister, String dateSend, String body) async {
+      String campo,
+      String valor,
+      String nameCourse,
+      String dateIniti,
+      String dateRegister,
+      String dateSend,
+      String body,
+      ) async {
     List<String> correos = await getCorreoPorCampo(campo, valor);
 
     if (correos.isEmpty) {
@@ -51,10 +69,10 @@ class SendEmailMethods {
       return;
     }
 
-    String bodyFinal = '$body\n'
+    String bodyFinal = Uri.encodeComponent('$body\n'
         'Fecha de inicio: $dateIniti\n'
         'Fecha de registro: $dateRegister\n'
-        'Envío de constancia: $dateSend';
+        'Envío de constancia: $dateSend');
 
     final String emailList = correos.join(',');
     final Uri gmailUrl = Uri(
@@ -83,15 +101,24 @@ class SendEmailMethods {
 
   // Métodos específicos para área y sare
   Future<void> sendEmailToArea(
-      String idArea, String nameCourse, String dateIniti,
-      String dateRegister, String dateSend, String body) async {
+      String idArea,
+      String nameCourse,
+      String dateIniti,
+      String dateRegister,
+      String dateSend,
+      String body,
+      ) async {
     await sendEmail('IdArea', idArea, nameCourse, dateIniti, dateRegister, dateSend, body);
   }
 
   Future<void> sendEmailToSare(
-      String idSare, String nameSare, String dateIniti,
-      String dateRegister, String dateSend, String body) async {
+      String idSare,
+      String nameSare,
+      String dateIniti,
+      String dateRegister,
+      String dateSend,
+      String body,
+      ) async {
     await sendEmail('IdSare', idSare, nameSare, dateIniti, dateRegister, dateSend, body);
   }
-
 }
