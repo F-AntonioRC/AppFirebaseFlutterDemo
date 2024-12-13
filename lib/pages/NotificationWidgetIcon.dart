@@ -41,15 +41,8 @@ class _NotificationIconWidgetState extends State<NotificationIconWidget> {
         IconButton(
           icon: const Icon(Icons.notifications),
           onPressed: () {
-            showModalBottomSheet(
+            showDialog(
               context: context,
-              isScrollControlled: true,
-              backgroundColor: Colors.white,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20),
-                ),
-              ),
               builder: (context) => NotificationDrawer(isAdmin: isAdmin),
             );
           },
@@ -94,108 +87,119 @@ class NotificationDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.8,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                'Notificaciones',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+    return Align(
+      alignment: Alignment.topRight,
+      child: Material(
+        type: MaterialType.transparency,
+        child: Container(
+          margin: const EdgeInsets.only(top: 60, right: 10),
+          padding: const EdgeInsets.all(16),
+          width: MediaQuery.of(context).size.width * 0.4,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
               ),
-            ),
-            Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('notifications')
-                    .orderBy('timestamp', descending: true)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-
-                  final notifications = snapshot.data!.docs;
-                  if (notifications.isEmpty) {
-                    return const Center(
-                      child: Text('No hay notificaciones'),
-                    );
-                  }
-
-                  return ListView.builder(
-                    itemCount: notifications.length,
-                    itemBuilder: (context, index) {
-                      final notification = notifications[index];
-                      final timestamp = (notification['timestamp'] as Timestamp?)?.toDate();
-                      final isRead = notification['isRead'] ?? false;
-
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.blueAccent,
-                          child: Icon(
-                            isRead ? Icons.check : Icons.new_releases,
-                            color: Colors.white,
-                          ),
-                        ),
-                        title: Text(
-                          notification['fileName'] ?? 'Notificación',
-                          style: TextStyle(
-                            fontWeight: isRead ? FontWeight.normal : FontWeight.bold,
-                          ),
-                        ),
-                        subtitle: Text(
-                    'Curso: ${notification['course']}\n'
-                    'Subido por: ${notification['uploader']}\n'
-                    'Fecha: ${notification['timestamp']?.toDate() ?? 'Desconocida'}',
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Notificaciones',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                        /*
-                        subtitle: Text(
-                          timestamp != null
-                              ? timeago.format(timestamp)
-                              : 'Fecha no disponible',
-                        ),*/
-                        trailing: isAdmin
-                            ? PopupMenuButton<String>(
-                                onSelected: (value) {
-                                  if (value == 'Eliminar') {
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
+              const Divider(),
+              Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('notifications')
+                      .orderBy('timestamp', descending: true)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    final notifications = snapshot.data!.docs;
+                    if (notifications.isEmpty) {
+                      return const Center(
+                        child: Text('No hay notificaciones'),
+                      );
+                    }
+
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: notifications.length,
+                      itemBuilder: (context, index) {
+                        final notification = notifications[index];
+                        final timestamp = (notification['timestamp'] as Timestamp?)?.toDate();
+                        final isRead = notification['isRead'] ?? false;
+
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: isRead ? Colors.grey : Colors.blueAccent,
+                            child: Icon(
+                              isRead ? Icons.check : Icons.new_releases,
+                              color: Colors.white,
+                            ),
+                          ),
+                          title: Text(
+                            notification['fileName'] ?? 'Notificación',
+                            style: TextStyle(
+                              fontWeight: isRead ? FontWeight.normal : FontWeight.bold,
+                            ),
+                          ),
+                          subtitle: Text(
+                            timestamp != null
+                                ? timeago.format(timestamp)
+                                : 'Fecha no disponible',
+                          ),
+                          trailing: isAdmin
+                              ? IconButton(
+                                  icon: const Icon(Icons.delete, color: Colors.red),
+                                  onPressed: () {
                                     FirebaseFirestore.instance
                                         .collection('notifications')
                                         .doc(notification.id)
                                         .delete();
-                                  }
-                                },
-                                itemBuilder: (context) => [
-                                  const PopupMenuItem(
-                                    value: 'Eliminar',
-                                    child: Text('Eliminar'),
-                                  ),
-                                ],
-                              )
-                            : null,
-                        onTap: () {
-                          FirebaseFirestore.instance
-                              .collection('notifications')
-                              .doc(notification.id)
-                              .update({'isRead': true});
-                        },
-                      );
-                    },
-                  );
-                },
+                                  },
+                                )
+                              : null,
+                          onTap: () {
+                            FirebaseFirestore.instance
+                                .collection('notifications')
+                                .doc(notification.id)
+                                .update({'isRead': true});
+                          },
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
-    

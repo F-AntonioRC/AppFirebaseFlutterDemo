@@ -86,7 +86,7 @@ class _SendDocument extends State<SendDocument> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Archivos Subidos por Usuarios'),
+        title: const Text('Evidencia de los cursos por Trimestre'),
         backgroundColor: greenColor,
       ),
       body: isLoading

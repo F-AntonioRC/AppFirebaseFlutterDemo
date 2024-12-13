@@ -89,6 +89,7 @@ class _CursosNormalState extends State<CursosNormal> {
         title: Text(widget.subCourse != null
             ? 'Subir Documento: ${widget.course} > ${widget.subCourse}'
             : 'Subir Documento: ${widget.course}'),
+             backgroundColor: const Color(0xFF255946),
       ),
       body: Center(
         child: isUploading
@@ -98,7 +99,7 @@ class _CursosNormalState extends State<CursosNormal> {
                 children: [
                   Text(
                     widget.subCourse != null
-                        ? 'Sube un documento PDF para el subcurso seleccionado.'
+                        ? 'Sube el la evidencia del curso en formato PDF no mayor a 5MB'
                         : 'Sube un documento PDF para el curso seleccionado.',
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontSize: 18),

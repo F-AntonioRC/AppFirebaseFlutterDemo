@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'cursos_normal.dart';
 
+
+
 class CourseSelectionPage extends StatelessWidget {
   CourseSelectionPage({Key? key}) : super(key: key);
 
@@ -10,6 +12,13 @@ class CourseSelectionPage extends StatelessWidget {
     'SICAVISP': ['Curso 1', 'Curso 2', 'Curso 3'],
     'INMUJERES': ['Curso 1', 'Curso 2', 'Curso 3'],
     'CONAPRED': ['Curso 1', 'Curso 2', 'Curso 3'],
+  };
+
+  // Map de imágenes para cada curso
+  final Map<String, String> courseImages = {
+    'SICAVISP': 'assets/images/logo.jpg',
+    'INMUJERES': 'assets/images/logo.jpg',
+    'CONAPRED': 'assets/images/logo.jpg',
   };
 
   @override
@@ -49,6 +58,7 @@ class CourseSelectionPage extends StatelessWidget {
                   return CourseCard(
                     courseName: courseName,
                     subCourses: courses[courseName]!,
+                    imagePath: courseImages[courseName] ?? 'assets/images/default.png',
                   );
                 },
               ),
@@ -63,9 +73,14 @@ class CourseSelectionPage extends StatelessWidget {
 class CourseCard extends StatelessWidget {
   final String courseName;
   final List<String> subCourses;
+  final String imagePath; // Ruta de la imagen
 
-  const CourseCard({Key? key, required this.courseName, required this.subCourses})
-      : super(key: key);
+  const CourseCard({
+    Key? key,
+    required this.courseName,
+    required this.subCourses,
+    required this.imagePath,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -86,40 +101,57 @@ class CourseCard extends StatelessWidget {
             ),
           );
         },
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            gradient: LinearGradient(
-              colors: [const Color(0xFF255946)!, const Color(0xFF255946)!],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                courseName,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 255, 255, 255),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Imagen en la parte superior
+            Expanded(
+              flex: 2,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.cover,
                 ),
-                textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 10),
-              const Icon(
-                Icons.folder,
-                size: 40,
-                color: Color.fromARGB(255, 255, 255, 255),
+            ),
+            // Texto en la parte inferior
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      courseName,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      "Fecha de Inicio: ",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
 
 // Nueva clase para seleccionar subcursos
 class SubCourseSelectionPage extends StatelessWidget {
@@ -133,23 +165,54 @@ class SubCourseSelectionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Subcursos de $courseName'),
-        backgroundColor: greenColor,
+        title: Text('Seleccion $courseName'),
+        backgroundColor: const Color(0xFF255946), // Cambia al color que uses.
       ),
-      body: ListView.builder(
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
-        itemCount: subCourses.length,
-        itemBuilder: (context, index) {
-          String subCourseName = subCourses[index];
-          return Card(
-            elevation: 3,
-            margin: const EdgeInsets.symmetric(vertical: 8),
-            child: ListTile(
-              title: Text(subCourseName),
-              leading: const Icon(Icons.folder_open, color: Colors.blue),
-              trailing: const Icon(Icons.arrow_forward_ios, color: Colors.grey),
-              onTap: () {
-                Navigator.push(
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, // Número de columnas
+            crossAxisSpacing: 16.0, // Espacio horizontal
+            mainAxisSpacing: 16.0, // Espacio vertical
+            childAspectRatio: 3 / 2, // Relación de aspecto
+          ),
+          itemCount: subCourses.length,
+          itemBuilder: (context, index) {
+            return SubCourseCard(
+              subCourseName: subCourses[index],
+              imageUrl: 'assets/images/logo.jpg', courseName: '', // Ruta a tu imagen.
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class SubCourseCard extends StatelessWidget {
+  final String subCourseName;
+  final String imageUrl;
+  final String courseName;
+
+  const SubCourseCard({
+    Key? key,
+    required this.subCourseName,
+    required this.imageUrl,
+    required this.courseName,
+    
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => CursosNormal(
@@ -158,10 +221,53 @@ class SubCourseSelectionPage extends StatelessWidget {
                     ),
                   ),
                 );
-              },
-            ),
-          );
         },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Imagen en la parte superior
+            Expanded(
+              flex: 2,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                child: Image.asset(
+                  imageUrl, // Imagen desde assets
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            // Texto en la parte inferior
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      subCourseName,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      "Datos del curso",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
