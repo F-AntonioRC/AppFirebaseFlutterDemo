@@ -36,10 +36,15 @@ class _CursosNormalState extends State<CursosNormal> {
       String fileName = basename(result.files.single.name);
 
       // Construir la ruta de almacenamiento dinámicamente
-      final storagePath = widget.subCourse != null
-          ? '2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARE\'S/Cursos_2024/TRIMESTRE 1/${widget.course}/${widget.subCourse}/$fileName'
-          : '2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARE\'S/Cursos_2024/TRIMESTRE 1/${widget.course}/$fileName';
+       const String fixedPrefix = 
+        '2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARE\'S/Cursos_2024/TRIMESTRE 1/';
 
+    // Construcción dinámica de la ruta completa
+    String storagePath = '$fixedPrefix${widget.course}/';
+    if (widget.subCourse != null) {
+      storagePath += '${widget.subCourse}/';
+    }
+    storagePath += fileName;
       final storageRef = FirebaseStorage.instance.ref().child(storagePath);
       final metadata = SettableMetadata(contentType: 'application/pdf');
 

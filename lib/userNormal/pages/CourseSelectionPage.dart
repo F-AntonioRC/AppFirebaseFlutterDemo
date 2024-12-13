@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
+import 'package:testwithfirebase/pages/courses.dart';
 import 'cursos_normal.dart';
 
 
@@ -180,8 +182,9 @@ class SubCourseSelectionPage extends StatelessWidget {
           itemCount: subCourses.length,
           itemBuilder: (context, index) {
             return SubCourseCard(
+              courseName: courseName,
               subCourseName: subCourses[index],
-              imageUrl: 'assets/images/logo.jpg', courseName: '', // Ruta a tu imagen.
+              imageUrl: 'assets/images/logo.jpg',  // Ruta a tu imagen.
             );
           },
         ),
@@ -191,15 +194,17 @@ class SubCourseSelectionPage extends StatelessWidget {
 }
 
 class SubCourseCard extends StatelessWidget {
+   final String courseName;
   final String subCourseName;
   final String imageUrl;
-  final String courseName;
+ 
 
   const SubCourseCard({
     Key? key,
+     required this.courseName,
     required this.subCourseName,
     required this.imageUrl,
-    required this.courseName,
+   
     
   }) : super(key: key);
 
