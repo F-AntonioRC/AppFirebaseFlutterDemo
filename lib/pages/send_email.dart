@@ -37,116 +37,109 @@ class _SendEmailState extends State<SendEmail> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            children: [
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(children: [
-                    const Text(
-                      "Asignar cursos",
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 10.0),
-                    const Text('Curso',
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 10.0),
-                    FirebaseDropdown(
-                      controller: _controllerCourse,
-                      collection: "Courses",
-                      data: "NameCourse",
-                      textHint: 'Seleccione un curso',
-                    ),
-                    const SizedBox(height: 10.0),
-                    Row(
-                      children: [
-                      Expanded(child: Column(
-                        children: [
-                          const Text('SARE',
-                              style: TextStyle(
-                                  fontSize: 20.0, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 10.0),
-                          FirebaseDropdown(
-                              controller: _controllerSare,
-                              collection: "Sare",
-                              data: "sare",
-                              textHint: "Seleccione una sare"),
-                        ],
-                      ),),
-                        const SizedBox(width: 20.0),
-                        Expanded(child: Column(
-                          children: [
-                            const Text('Area',
-                                style: TextStyle(
-                                    fontSize: 20.0, fontWeight: FontWeight.bold)),
-                            const SizedBox(height: 10.0),
-                            FirebaseDropdown(
-                                controller: _controllerArea,
-                                collection: "Area",
-                                data: "NombreArea",
-                                textHint: "Seleccione un Area"),
-                          ],
-                        ),)
-                      ],
-                    ),
+      child: SingleChildScrollView(
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(children: [
+              const Text(
+                "Asignar cursos",
+                style:
+                TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10.0),
+              const Text('Curso',
+                  style: TextStyle(
+                      fontSize: 20.0, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10.0),
+              FirebaseDropdown(
+                controller: _controllerCourse,
+                collection: "Courses",
+                data: "NameCourse",
+                textHint: 'Seleccione un curso',
+              ),
+              const SizedBox(height: 10.0),
+              Row(
+                children: [
+                  Expanded(child: Column(
+                    children: [
+                      const Text('SARE',
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 10.0),
+                      FirebaseDropdown(
+                          controller: _controllerSare,
+                          collection: "Sare",
+                          data: "sare",
+                          textHint: "Seleccione una sare"),
+                    ],
+                  ),),
+                  const SizedBox(width: 20.0),
+                  Expanded(child: Column(
+                    children: [
+                      const Text('Area',
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 10.0),
+                      FirebaseDropdown(
+                          controller: _controllerArea,
+                          collection: "Area",
+                          data: "NombreArea",
+                          textHint: "Seleccione un Area"),
+                    ],
+                  ),)
+                ],
+              ),
 
-                    const SizedBox(height: 15.0),
-                    MyButton(
-                      text: "Agregar",
-                      icon: const Icon(Icons.add_circle_outline),
-                      onPressed: () {
-                        setState(() {
-                          // Obtener el curso y área seleccionados y actualizar el estado
-                          selectedCourse = _controllerCourse.selectedDocument?['NameCourse'] ?? 'Curso no seleccionado';
-                          selectedArea = _controllerArea.selectedDocument?['NombreArea'];
-                          selectedSare = _controllerSare.selectedDocument?['sare'];
-                          idSare = _controllerSare.selectedDocument?['IdSare'];
-                          idCourse = _controllerCourse.selectedDocument?['IdCourse'] ?? "Id no encontrado";
-                          idArea = _controllerArea.selectedDocument?['IdArea'] ?? "Id no encontrado";
-                        });
-                        showDialog(context: context,
-                            builder: (BuildContext context) {
-                          return CustomDialog(
-                              dataOne: selectedCourse,
-                              dataTwo: selectedArea ?? selectedSare,
-                              accept: () async {
-                            String id = randomAlpha(4);
-                            Map<String, dynamic> detailCourseMap = {
-                              "IdDetailCourse" : id,
-                              "IdCourse": idCourse,
-                              "IdArea": idArea,
-                              "IdSare": idSare,
-                              "Estado" : "Activo"
-                            };
-                            try{
-                              await databaseDetailCourses.addDetailCourse(detailCourseMap, id);
-                              if(context.mounted){
-                                showCustomSnackBar(context, "¡Curso Asignado!", greenColor);
+              const SizedBox(height: 15.0),
+              MyButton(
+                text: "Agregar",
+                icon: const Icon(Icons.add_circle_outline),
+                onPressed: () {
+                  setState(() {
+                    // Obtener el curso y área seleccionados y actualizar el estado
+                    selectedCourse = _controllerCourse.selectedDocument?['NameCourse'] ?? 'Curso no seleccionado';
+                    selectedArea = _controllerArea.selectedDocument?['NombreArea'];
+                    selectedSare = _controllerSare.selectedDocument?['sare'];
+                    idSare = _controllerSare.selectedDocument?['IdSare'];
+                    idCourse = _controllerCourse.selectedDocument?['IdCourse'] ?? "Id no encontrado";
+                    idArea = _controllerArea.selectedDocument?['IdArea'] ?? "Id no encontrado";
+                  });
+                  showDialog(context: context,
+                      builder: (BuildContext context) {
+                        return CustomDialog(
+                            dataOne: selectedCourse,
+                            dataTwo: selectedArea ?? selectedSare,
+                            accept: () async {
+                              String id = randomAlpha(4);
+                              Map<String, dynamic> detailCourseMap = {
+                                "IdDetailCourse" : id,
+                                "IdCourse": idCourse,
+                                "IdArea": idArea,
+                                "IdSare": idSare,
+                                "Estado" : "Activo"
+                              };
+                              try{
+                                await databaseDetailCourses.addDetailCourse(detailCourseMap, id);
+                                if(context.mounted){
+                                  showCustomSnackBar(context, "¡Curso Asignado!", greenColor);
+                                }
+                              } catch (e) {
+                                if(context.mounted){
+                                  showCustomSnackBar(context, "Error: $e", Colors.red);
+                                }
                               }
-                            } catch (e) {
-                              if(context.mounted){
-                                showCustomSnackBar(context, "Error: $e", Colors.red);
-                              }
-                            }
-                          });
-                        });
+                            });
+                      });
 
-                      }, buttonColor: greenColor,
-                    ),
-                    const SizedBox(height: 10.0)
-                  ]),
-                ),
-              )
-            ],
+                }, buttonColor: greenColor,
+              ),
+              const SizedBox(height: 10.0)
+            ]),
           ),
-        ],
-      ),
+        ),
+      )
     );
   }
 }

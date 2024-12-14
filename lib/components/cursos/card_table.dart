@@ -5,14 +5,14 @@ import '../custom_snackbar.dart';
 import 'table_view_courses.dart';
 import 'package:testwithfirebase/service/database_courses.dart';
 
-class CardTable extends StatefulWidget {
-  const CardTable({super.key});
+class CardTableCourses extends StatefulWidget {
+  const CardTableCourses({super.key});
 
   @override
-  State<CardTable> createState() => _CardTableState();
+  State<CardTableCourses> createState() => _CardTableState();
 }
 
-class _CardTableState extends State<CardTable> {
+class _CardTableState extends State<CardTableCourses> {
   final MethodsCourses methodsCourses = MethodsCourses();
   TextEditingController searchInput = TextEditingController();
   bool viewInactivos = false;

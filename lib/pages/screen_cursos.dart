@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/cursos/card_table.dart';
 import 'package:testwithfirebase/pages/courses.dart';
-import 'package:testwithfirebase/pages/table_cursos.dart';
 
 class ScreenCursos extends StatefulWidget {
   const ScreenCursos({super.key});
@@ -18,7 +18,7 @@ class _ScreenCursosState extends State<ScreenCursos> {
         Expanded(
           child: Courses(),
         ),
-        Expanded( child: TableCursos()),
+        Expanded( child: CardTableCourses()),
       ],
     );
   }

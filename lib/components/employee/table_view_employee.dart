@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/MyPaginatedTable.dart';
 import 'package:testwithfirebase/service/database.dart';
-
 import '../../dataConst/constand.dart';
 import '../custom_snackbar.dart';
 import '../dialogChanges.dart';
-import '../my_table.dart';
 
 class TableViewEmployee extends StatelessWidget {
   final bool viewInactivos;
@@ -39,11 +38,19 @@ class TableViewEmployee extends StatelessWidget {
         } else {
           final data =
           filteredData.isEmpty ? snapshot.data! : filteredData;
-          return MyTable(
+          return MyPaginatedTable(
             headers: const ["Identificador", "CUPO", "Nombre Completo", "Estado", "Area", "Sare"],
             data: data,
             fieldKeys: const ["IdEmployee", "CUPO", "Nombre", "Estado", "Area", "Sare"],
-            onEdit: (String id) {},
+            onEdit: (String id) {
+              final selectedRow = data.firstWhere((row) => row[idKey] == id);
+              final idChange = selectedRow[idKey];
+              final name = selectedRow['Nombre'];
+              final sareChange = selectedRow['Sare'];
+              final areaChange = selectedRow['Area'];
+              final sexChange = selectedRow['Sexo'];
+
+            },
             onDelete: (String id) async {
               try {
                 await databaseMethods.deleteEmployeeDetail(id);
@@ -68,6 +75,7 @@ class TableViewEmployee extends StatelessWidget {
                 },
               );
             },
+            tooltipAssign: "Asignar CUPO",
             idKey: idKey,
             onActive: isActive,
             activateFunction: (String id) async {
@@ -82,7 +90,7 @@ class TableViewEmployee extends StatelessWidget {
                   showCustomSnackBar(context, "Error: $e", Colors.red);
                 }
               }
-            }, iconAssign: const Icon(Icons.manage_accounts, color: Colors.blue,),
+            }, iconAssign: const Icon(Icons.engineering, color: Colors.blue,),
           );
         }
       },

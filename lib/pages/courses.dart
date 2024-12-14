@@ -33,11 +33,8 @@ class _CoursesState extends State<Courses> {
               child: Column(
                 children: [
                   Text("Añadir Curso", style: TextStyle(fontSize: responsiveFontSize(context, 24),
-                      fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
-                  Row(
-                    children: [
-                      Expanded(child: Column(
-                        children: [
+                      fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                  const SizedBox(height: 10.0),
                           Text(
                             "Nombre del curso",
                             textAlign: TextAlign.center,
@@ -52,11 +49,7 @@ class _CoursesState extends State<Courses> {
                               ),
                               controller: nameCourseController,
                               keyboardType: TextInputType.text),
-                        ],
-                      )),
-                      const SizedBox(width: 20.0),
-                      Expanded(child: Column(
-                        children: [
+                      const SizedBox(height: 10.0),
                           Text(
                             "Nomenclatura del Documento",
                             textAlign: TextAlign.start,
@@ -68,12 +61,8 @@ class _CoursesState extends State<Courses> {
                               hindText: "Campo Obligatorio*",
                               icon: const Icon(Icons.document_scanner_sharp),
                               controller: nomenclaturaController,
-                              keyboardType: TextInputType.text)
-                        ],
-                      )),
-                    ],
-                  ),
-                  const SizedBox(height: 20.0),
+                              keyboardType: TextInputType.text),
+                  const SizedBox(height: 10.0),
                   Row(
                     children: [
                       Expanded(child: Column(
@@ -116,7 +105,7 @@ class _CoursesState extends State<Courses> {
                       ),)
                     ],
                   ),
-                  const SizedBox(height: 20.0),
+                  const SizedBox(height: 10.0),
                   Center(
                       child: MyButton(
                         text: 'Agregar',

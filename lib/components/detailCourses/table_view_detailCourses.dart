@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/MyPaginatedTable.dart';
 import 'package:testwithfirebase/components/dialog_email.dart';
 import 'package:testwithfirebase/service/database_detail_courses.dart';
-
 import '../../dataConst/constand.dart';
 import '../custom_snackbar.dart';
-import '../my_table.dart';
 
 class TableViewDetailCourses extends StatelessWidget {
   final bool viewInactivos;
@@ -38,7 +37,7 @@ class TableViewDetailCourses extends StatelessWidget {
         } else {
           final data = filteredData.isEmpty ? snapshot.data! : filteredData;
 
-          return MyTable(
+          return MyPaginatedTable(
             headers: const [
               "Id",
               "Nombre",
@@ -106,7 +105,8 @@ class TableViewDetailCourses extends StatelessWidget {
                 } else {}
 
             },
-            iconAssign: const Icon(Icons.attach_email, color: Colors.blue,),
+            tooltipAssign: "Enviar correos",
+            iconAssign: const Icon(Icons.outgoing_mail, color: Colors.blue,),
             idKey: idKey,
             onActive: isActive,
             activateFunction: (String id) async {

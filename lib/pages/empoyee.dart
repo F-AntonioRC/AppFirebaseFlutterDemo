@@ -10,13 +10,16 @@ import 'package:testwithfirebase/service/database.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 
 class Employee extends StatefulWidget {
-  const Employee({super.key});
+  final Map<String, dynamic>? initialData;
+
+  const Employee({super.key, this.initialData});
 
   @override
   State<Employee> createState() => _EmployeeState();
 }
 
 class _EmployeeState extends State<Employee> {
+
   final List<String> dropdownsex = ['M', 'F']; // VALORES DEL DROPDOWN
   String? sexdropdownValue;
 
@@ -25,6 +28,18 @@ class _EmployeeState extends State<Employee> {
   final FirebaseDropdownController _controllerSare = FirebaseDropdownController();
 
   TextEditingController namecontroller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.initialData != null) {
+      // Inicializar los valores si hay datos iniciales
+      namecontroller.text = widget.initialData?['Nombre'] ?? '';
+      sexdropdownValue = widget.initialData?['Sexo'];
+      _controllerArea.selectedDocument?['Area'];
+      _controllerSare.selectedDocument?['Sare'];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +52,9 @@ class _EmployeeState extends State<Employee> {
                 child: Column(
                   children: [
                     Text(
-                      "Añadir Empleado",
+                      widget.initialData != null
+                      ? "Añadir Empleado"
+                      : "Editar Emppleado",
                       style: TextStyle(
                           fontSize: responsiveFontSize(context, 24),
                           fontWeight: FontWeight.bold),
@@ -123,7 +140,10 @@ class _EmployeeState extends State<Employee> {
                     Center(
                       widthFactor: 0.5,
                       child: MyButton(
-                        text: 'Agregar',
+                        text:
+                        widget.initialData != null
+                        ? 'Agregar'
+                        : 'Aceptar',
                         icon: const Icon(Icons.person_add_alt_rounded),
                         onPressed: () async {
                           try {

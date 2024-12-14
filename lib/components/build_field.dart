@@ -26,7 +26,7 @@ class BuildField extends StatelessWidget {
         ),
         const SizedBox(height: 10.0),
         TextField(
-          enabled: false,
+          readOnly: true,
           controller: controller,
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.account_box),

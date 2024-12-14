@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:testwithfirebase/components/my_table.dart';
+import 'package:testwithfirebase/components/MyPaginatedTable.dart';
 import 'package:testwithfirebase/components/custom_snackbar.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/service/database_courses.dart';
@@ -37,7 +37,7 @@ class TableViewCourses extends StatelessWidget {
           return const Center(child: Text('No se encontraron cursos.'));
         } else {
           final data = filteredData.isEmpty ? snapshot.data! : filteredData;
-          return MyTable(
+          return MyPaginatedTable(
             headers: const [
               "Nombre del Curso",
               "Fecha inicio curso",
@@ -57,7 +57,7 @@ class TableViewCourses extends StatelessWidget {
                 await methodsCourses.deleteCoursesDetail(id);
                 refreshTable();
                 if(context.mounted) {
-                  showCustomSnackBar(context, "Curso eliminado correctamente", Colors.green);
+                  showCustomSnackBar(context, "Curso eliminado correctamente", greenColor);
                 }
               } catch (e) {
                if(context.mounted) {

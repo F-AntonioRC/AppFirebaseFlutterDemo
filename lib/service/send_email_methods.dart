@@ -35,14 +35,16 @@ class SendEmailMethods {
       // Dividir en lotes si es necesario
       final List<String> correos = [];
       for (var i = 0; i < claves.length; i += 10) {
-        final batch = claves.sublist(i, i + 10 > claves.length ? claves.length : i + 10);
+        final batch =
+            claves.sublist(i, i + 10 > claves.length ? claves.length : i + 10);
 
         QuerySnapshot querySnapshot = await FirebaseFirestore.instance
             .collection('User')
             .where('CUPO', whereIn: batch)
             .get();
 
-        correos.addAll(querySnapshot.docs.map((doc) => doc['email'].toString()));
+        correos
+            .addAll(querySnapshot.docs.map((doc) => doc['email'].toString()));
       }
 
       return correos;
@@ -54,14 +56,14 @@ class SendEmailMethods {
 
   // Enviar correos
   Future<void> sendEmail(
-      String campo,
-      String valor,
-      String nameCourse,
-      String dateIniti,
-      String dateRegister,
-      String dateSend,
-      String body,
-      ) async {
+    String campo,
+    String valor,
+    String nameCourse,
+    String dateIniti,
+    String dateRegister,
+    String dateSend,
+    String body,
+  ) async {
     List<String> correos = await getCorreoPorCampo(campo, valor);
 
     if (correos.isEmpty) {
@@ -69,12 +71,65 @@ class SendEmailMethods {
       return;
     }
 
-    String bodyFinal = Uri.encodeComponent('$body\n'
+    String bodyFinal = ('$body\n'
         'Fecha de inicio: $dateIniti\n'
         'Fecha de registro: $dateRegister\n'
         'Envío de constancia: $dateSend');
 
     final String emailList = correos.join(',');
+
+    try {
+      if (_isChromeTargetTopScheme('mailto')) {
+        await launchEmailWebWithUrl(emailList, 'Curso: $nameCourse', bodyFinal);
+      } else {
+        await launchEmailWebFallback(
+            emailList, 'Curso: $nameCourse', bodyFinal);
+        await launchEmailWebWithUrl(emailList, 'Curso: $nameCourse', bodyFinal);
+      }
+    } catch (e) {
+      print('Error enviando el correo: $e');
+    }
+  }
+
+// Función para validar esquemas en Chrome
+  bool _isChromeTargetTopScheme(String url) {
+    const Set<String> chromeTargetTopSchemes = <String>{
+      'mailto',
+      'https',
+      'http',
+    };
+    final String? scheme = Uri.tryParse(url)?.scheme;
+    return chromeTargetTopSchemes.contains(scheme);
+  }
+
+  // Métodos específicos para área y sare
+  Future<void> sendEmailToArea(
+    String idArea,
+    String nameCourse,
+    String dateIniti,
+    String dateRegister,
+    String dateSend,
+    String body,
+  ) async {
+    await sendEmail(
+        'IdArea', idArea, nameCourse, dateIniti, dateRegister, dateSend, body);
+  }
+
+  Future<void> sendEmailToSare(
+    String idSare,
+    String nameSare,
+    String dateIniti,
+    String dateRegister,
+    String dateSend,
+    String body,
+  ) async {
+    await sendEmail(
+        'IdSare', idSare, nameSare, dateIniti, dateRegister, dateSend, body);
+  }
+
+  //MÉTODO PARA ENVIAR EMAIL POR URL
+  Future<void> launchEmailWebWithUrl(
+      String email, String subject, String body) async {
     final Uri gmailUrl = Uri(
       scheme: 'https',
       host: 'mail.google.com',
@@ -82,15 +137,19 @@ class SendEmailMethods {
       queryParameters: {
         'view': 'cm',
         'fs': '1',
-        'to': emailList,
-        'su': 'Curso: $nameCourse',
-        'body': bodyFinal,
+        'to': email,
+        'su': subject,
+        'body': body,
       },
     );
 
     try {
+      // Usar la API estándar de url_launcher
       if (await canLaunchUrl(gmailUrl)) {
-        await launchUrl(gmailUrl, mode: LaunchMode.externalApplication);
+        await launchUrl(
+          gmailUrl,
+          mode: LaunchMode.externalApplication,
+        );
       } else {
         print('No se pudo lanzar Gmail');
       }
@@ -99,26 +158,26 @@ class SendEmailMethods {
     }
   }
 
-  // Métodos específicos para área y sare
-  Future<void> sendEmailToArea(
-      String idArea,
-      String nameCourse,
-      String dateIniti,
-      String dateRegister,
-      String dateSend,
-      String body,
-      ) async {
-    await sendEmail('IdArea', idArea, nameCourse, dateIniti, dateRegister, dateSend, body);
-  }
+  //MÉTODO PARA ENVIAR EMAIL POR MAILTO
+  Future<void> launchEmailWebFallback(
+      String email, String subject, String body) async {
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: email,
+      queryParameters: {
+        'subject': subject,
+        'body': body,
+      },
+    );
 
-  Future<void> sendEmailToSare(
-      String idSare,
-      String nameSare,
-      String dateIniti,
-      String dateRegister,
-      String dateSend,
-      String body,
-      ) async {
-    await sendEmail('IdSare', idSare, nameSare, dateIniti, dateRegister, dateSend, body);
+    try {
+      if (await canLaunchUrl(emailUri)) {
+        await launchUrl(emailUri);
+      } else {
+        throw 'No se puede abrir el cliente de correo.';
+      }
+    } catch (e) {
+      print('Error lanzando el correo: $e');
+    }
   }
 }

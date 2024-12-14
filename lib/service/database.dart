@@ -44,8 +44,15 @@ class DatabaseMethods {
   }
 
   //ACTUALIZAR
-  Future updateEmployeeDetail(String id, Map<String, dynamic> updateInfo) async {
-    return await FirebaseFirestore.instance.collection("Employee").doc(id).update(updateInfo);
+  Future<void> updateEmployeeDetail(String id, Map<String, dynamic> updatedData) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('Employee')
+          .doc(id)
+          .update(updatedData);
+    } catch (e) {
+      throw Exception("Error al actualizar el empleado: $e");
+    }
   }
 
   //ELIMINAR

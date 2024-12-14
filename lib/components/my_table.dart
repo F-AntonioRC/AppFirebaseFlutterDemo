@@ -13,7 +13,8 @@ class MyTable extends StatelessWidget {
   final bool onActive; //Estado del boton dinamico
   final Function(String id) activateFunction;
   final Function(String id)? onAssign; //Función opcional
-  final Icon? iconAssign;
+  final Icon? iconAssign; //Icono del metodo opcinal
+  final String? tooltipAssign;
 
 
   const MyTable({
@@ -27,7 +28,8 @@ class MyTable extends StatelessWidget {
     required this.idKey,
     required this.onActive,
     required this.activateFunction,
-    this.iconAssign
+    this.iconAssign,
+    this.tooltipAssign
   });
 
   @override
@@ -40,19 +42,19 @@ class MyTable extends StatelessWidget {
           columns: [
             ...headers.map((header) {
               return DataColumn(
-                label: Text(
+                label: Expanded(child: Text(
                   header,
-                  style: TextStyle(fontSize: responsiveFontSize(context, 15), fontWeight: FontWeight.bold),
-                ),
+                  style: TextStyle(fontSize: responsiveFontSize(context, 16), fontWeight: FontWeight.bold),
+                )),
               );
             }),
             DataColumn(  // Columna para las acciones
-              label: Text(
+              label: Expanded(child: Text(
                 'Acciones',
                 style: TextStyle(
-                    fontSize: responsiveFontSize(context, 15),
+                    fontSize: responsiveFontSize(context, 16),
                     fontWeight: FontWeight.bold),
-              ),
+              )),
             ),
           ],
           rows: data.map((rowData) {
@@ -61,7 +63,7 @@ class MyTable extends StatelessWidget {
                 ...fieldKeys.map((key) {
                   return DataCell(
                       Text(rowData[key]?.toString() ?? '',
-                        style: TextStyle(fontSize: responsiveFontSize(context, 12)),)  );
+                        style: TextStyle(fontSize: responsiveFontSize(context, 15)),)  );
                 }),
                 DataCell(
                   Row(
@@ -104,7 +106,7 @@ class MyTable extends StatelessWidget {
                         Ink(
                           decoration: const ShapeDecoration(shape: CircleBorder(), color: ligth),
                           child: IconButton(
-                              tooltip: "Asignar CUPO",
+                              tooltip: tooltipAssign,
                               onPressed: () {
                             onAssign!(rowData[idKey].toString());
                           }, icon: iconAssign ?? const Icon(Icons.assignment)),
