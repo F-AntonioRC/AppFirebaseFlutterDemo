@@ -4,13 +4,19 @@ import 'package:provider/provider.dart';
 import 'package:testwithfirebase/auth/auth_gate.dart';
 import 'package:testwithfirebase/firebase_options.dart';
 import 'package:testwithfirebase/providers/theme.dart';
+import 'package:testwithfirebase/providers/edit_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
-    ChangeNotifierProvider(create: (_) => ThemeNotifier(),
-    child: const MyApp(),)
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeNotifier()), //Provier del tema
+        ChangeNotifierProvider(create: (_) => EditProvider()), //Provider del employee
+      ],
+      child: const MyApp(),
+    ),
   );
 }
 

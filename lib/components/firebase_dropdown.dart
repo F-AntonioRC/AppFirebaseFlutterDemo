@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/custom_snackbar.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 
 class FirebaseDropdown extends StatefulWidget {
@@ -49,18 +50,22 @@ class _FirebaseDropdownState extends State<FirebaseDropdown> {
   }
 
   Future<void> fetchDocuments() async {
-    QuerySnapshot querySnapshot =
-    await FirebaseFirestore.instance.collection(widget.collection).get();
+try {
+  QuerySnapshot querySnapshot =
+  await FirebaseFirestore.instance.collection(widget.collection).get();
 
-    List<Map<String, dynamic>> fetchedDocuments = querySnapshot.docs.map((doc) {
-      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      data['Id'] = doc.id; //Añadir el Id del documento a los datos
-      return data;
-    }).toList();
+  List<Map<String, dynamic>> fetchedDocuments = querySnapshot.docs.map((doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    data['Id'] = doc.id; //Añadir el Id del documento a los datos
+    return data;
+  }).toList();
 
-    setState(() {
-      documentsList = fetchedDocuments;
-    });
+  setState(() {
+    documentsList = fetchedDocuments;
+  });
+} catch (e) {
+  showCustomSnackBar(context, "Error: $e", Colors.red);
+}
   }
 
   @override
@@ -83,7 +88,7 @@ class _FirebaseDropdownState extends State<FirebaseDropdown> {
                 borderRadius: BorderRadius.circular(10.0))
         ),
         value: widget.controller.selectedDocument == null
-        ? null
+            ? null
             : documentsList.firstWhere(
               (doc) => doc == widget.controller.selectedDocument,
           orElse: () => documentsList.isNotEmpty ? documentsList[0] : {},

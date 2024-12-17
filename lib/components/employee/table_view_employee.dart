@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:testwithfirebase/components/MyPaginatedTable.dart';
 import 'package:testwithfirebase/service/database.dart';
 import '../../dataConst/constand.dart';
+import '../../providers/edit_provider.dart';
 import '../custom_snackbar.dart';
 import '../dialogChanges.dart';
 
@@ -42,13 +44,12 @@ class TableViewEmployee extends StatelessWidget {
             headers: const ["Identificador", "CUPO", "Nombre Completo", "Estado", "Area", "Sare"],
             data: data,
             fieldKeys: const ["IdEmployee", "CUPO", "Nombre", "Estado", "Area", "Sare"],
+
             onEdit: (String id) {
               final selectedRow = data.firstWhere((row) => row[idKey] == id);
-              final idChange = selectedRow[idKey];
-              final name = selectedRow['Nombre'];
-              final sareChange = selectedRow['Sare'];
-              final areaChange = selectedRow['Area'];
-              final sexChange = selectedRow['Sexo'];
+
+              Provider.of<EditProvider>(context, listen: false)
+                  .setData(selectedRow);
 
             },
             onDelete: (String id) async {

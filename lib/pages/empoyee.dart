@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:random_string/random_string.dart';
 import 'package:testwithfirebase/components/custom_snackbar.dart';
 import 'package:testwithfirebase/components/dropdown_list.dart';
@@ -6,6 +7,7 @@ import 'package:testwithfirebase/components/firebase_dropdown.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/components/my_textfileld.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
+import 'package:testwithfirebase/providers/edit_provider.dart';
 import 'package:testwithfirebase/service/database.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 
@@ -20,7 +22,17 @@ class Employee extends StatefulWidget {
 
 class _EmployeeState extends State<Employee> {
 
-  final List<String> dropdownsex = ['M', 'F']; // VALORES DEL DROPDOWN
+  @override
+  void initState() {
+    super.initState();
+    final provider = Provider.of<EditProvider>(context, listen: false);
+    if (provider.data != null) {
+      namecontroller.text = provider.data?['Nombre'] ?? '';
+      sexdropdownValue = provider.data?['Sexo']; // Verifica si este valor se está asignando correctamente
+    }
+  }
+
+  final List<String> dropdownsex = ["M", "F"]; // VALORES DEL DROPDOWN
   String? sexdropdownValue;
 
   final FirebaseDropdownController _controllerArea = FirebaseDropdownController();
@@ -29,20 +41,35 @@ class _EmployeeState extends State<Employee> {
 
   TextEditingController namecontroller = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    if(widget.initialData != null) {
-      // Inicializar los valores si hay datos iniciales
-      namecontroller.text = widget.initialData?['Nombre'] ?? '';
-      sexdropdownValue = widget.initialData?['Sexo'];
-      _controllerArea.selectedDocument?['Area'];
-      _controllerSare.selectedDocument?['Sare'];
-    }
-  }
+  late final Map<String, dynamic>? initialData;
 
   @override
   Widget build(BuildContext context) {
+  final provider = Provider.of<EditProvider>(context);
+
+  // Actualizar los valores del controlador y dropdown si hay datos en el provider
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    if (provider.data != null) {
+      if (namecontroller.text != provider.data?['Nombre']) {
+        namecontroller.text = provider.data?['Nombre'] ?? '';
+      }
+      if (sexdropdownValue != provider.data?['Sexo']) {
+        setState(() {
+          sexdropdownValue = provider.data?['Sexo'];
+        });
+        // Asignar valores seleccionados al FirebaseDropdownController
+      } if (provider.data?['Area'] != null) {
+       _controllerArea.setDocument({
+         'NombreArea' : provider.data?['Area'],
+       });
+      } if (provider.data?['Sare'] != null) {
+        _controllerSare.setDocument({
+          'sare' : provider.data?['Sare']
+        });
+      }
+    }
+  });
+
     return Container(
         margin: const EdgeInsets.all(10.0),
         child: Card(
@@ -53,8 +80,8 @@ class _EmployeeState extends State<Employee> {
                   children: [
                     Text(
                       widget.initialData != null
-                      ? "Añadir Empleado"
-                      : "Editar Emppleado",
+                      ? "Editar Empleado"
+                      : "Añadir Empleado",
                       style: TextStyle(
                           fontSize: responsiveFontSize(context, 24),
                           fontWeight: FontWeight.bold),
@@ -93,8 +120,11 @@ class _EmployeeState extends State<Employee> {
                             DropdownList(
                               items: dropdownsex,
                               icon: const Icon(Icons.arrow_downward_rounded),
+                              value: sexdropdownValue,
                               onChanged: (value) {
-                                sexdropdownValue = value;
+                                setState(() {
+                                  sexdropdownValue = value;
+                                },);
                               },
                             ),
                           ],
@@ -142,8 +172,8 @@ class _EmployeeState extends State<Employee> {
                       child: MyButton(
                         text:
                         widget.initialData != null
-                        ? 'Agregar'
-                        : 'Aceptar',
+                        ? 'Aceptar'
+                        : 'Agregar',
                         icon: const Icon(Icons.person_add_alt_rounded),
                         onPressed: () async {
                           try {

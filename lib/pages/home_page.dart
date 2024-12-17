@@ -9,8 +9,8 @@ import 'package:testwithfirebase/pages/cerrar_sesion.dart';
 import 'package:testwithfirebase/pages/configuration.dart';
 import 'package:testwithfirebase/pages/dashboard_main.dart';
 import 'package:testwithfirebase/pages/page_email.dart';
-import 'package:testwithfirebase/pages/pantalla_empleado.dart';
 import 'package:testwithfirebase/pages/screen_cursos.dart';
+import 'package:testwithfirebase/pages/screen_employee.dart';
 import 'package:testwithfirebase/pages/send_document.dart';
 
 class HomePage extends StatefulWidget {
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
       case NavItem.homeView:
         return const DashboardMain();
       case NavItem.employeeView:
-        return const PantallaEmpleado();
+        return const ScreenEmployee();
       case NavItem.courseView:
         return const ScreenCursos();
       case NavItem.emailView:
