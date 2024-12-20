@@ -72,6 +72,7 @@ class _CursosNormalState extends State<CursosNormal> {
           'uploader': user?.email ?? 'Usuario desconocido',
           'timestamp': FieldValue.serverTimestamp(),
           'isRead': false,
+          'pdfUrl': downloadURL,
         });
 
         print('Archivo subido: $downloadURL');

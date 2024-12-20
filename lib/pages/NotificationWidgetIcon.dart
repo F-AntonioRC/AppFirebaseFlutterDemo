@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:url_launcher/url_launcher.dart';
 
 class NotificationIconWidget extends StatefulWidget {
   const NotificationIconWidget({super.key});
@@ -151,6 +152,7 @@ class NotificationDrawer extends StatelessWidget {
                       itemCount: notifications.length,
                       itemBuilder: (context, index) {
                         final notification = notifications[index];
+                       
                         final timestamp = (notification['timestamp'] as Timestamp?)?.toDate();
                         final isRead = notification['isRead'] ?? false;
 
@@ -168,10 +170,19 @@ class NotificationDrawer extends StatelessWidget {
                               fontWeight: isRead ? FontWeight.normal : FontWeight.bold,
                             ),
                           ),
-                          subtitle: Text(
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                            Text(
+                              notification['uploader']??'usuario desconocido',
+                              style:const TextStyle(fontSize: 12, color: Colors.grey),
+                            ),
+                            Text(
                             timestamp != null
                                 ? timeago.format(timestamp)
                                 : 'Fecha no disponible',
+                              ),
+                            ],
                           ),
                           trailing: isAdmin
                               ? IconButton(
@@ -184,11 +195,32 @@ class NotificationDrawer extends StatelessWidget {
                                   },
                                 )
                               : null,
-                          onTap: () {
+                          onTap: () async {
+                            final pdfUrl = notification['pdfUrl'];
                             FirebaseFirestore.instance
                                 .collection('notifications')
                                 .doc(notification.id)
                                 .update({'isRead': true});
+                            if(pdfUrl !=null && pdfUrl.isNotEmpty){
+                              try{
+                                if(await canLaunch(pdfUrl)){
+                                  await launch(pdfUrl);
+                                } else{
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('no se puede abrir el archivo pdf')),
+                                  );
+                                }
+
+                              }
+                              catch(e){
+                                print('error al abrir el archivo PDF: $e');
+                              }
+                            }else{
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('no se puede abrir el archivo pdf')),
+                                  );
+                              }
+                            
                           },
                         );
                       },
