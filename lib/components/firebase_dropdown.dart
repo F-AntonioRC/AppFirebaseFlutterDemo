@@ -89,10 +89,12 @@ try {
         ),
         value: widget.controller.selectedDocument == null
             ? null
-            : documentsList.firstWhere(
+            : documentsList.isNotEmpty
+            ? documentsList.firstWhere(
               (doc) => doc == widget.controller.selectedDocument,
-          orElse: () => documentsList.isNotEmpty ? documentsList[0] : {},
-        ),
+          orElse: () => documentsList[0], // Primer elemento como fallback
+        )
+            : null,
         hint: Text(widget.textHint),
         isExpanded: true,
         items: documentsList.map<DropdownMenuItem<Map<String, dynamic>?>>(

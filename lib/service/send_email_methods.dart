@@ -80,11 +80,12 @@ class SendEmailMethods {
 
     try {
       if (_isChromeTargetTopScheme('mailto')) {
-        await launchEmailWebWithUrl(emailList, 'Curso: $nameCourse', bodyFinal);
+        await launchEmailWebFallback(
+            emailList, 'Curso: $nameCourse', bodyFinal);
       } else {
         await launchEmailWebFallback(
             emailList, 'Curso: $nameCourse', bodyFinal);
-        await launchEmailWebWithUrl(emailList, 'Curso: $nameCourse', bodyFinal);
+        await launchEmailWebWithOutlook(emailList, 'Curso: $nameCourse', bodyFinal);
       }
     } catch (e) {
       print('Error enviando el correo: $e');
@@ -127,36 +128,29 @@ class SendEmailMethods {
         'IdSare', idSare, nameSare, dateIniti, dateRegister, dateSend, body);
   }
 
-  //MÉTODO PARA ENVIAR EMAIL POR URL
-  Future<void> launchEmailWebWithUrl(
+
+  // MÉTODO PARA ENVIAR EMAIL A OUTLOOK
+  Future<void> launchEmailWebWithOutlook(
       String email, String subject, String body) async {
-    final Uri gmailUrl = Uri(
+    final Uri outlookUrl = Uri(
       scheme: 'https',
-      host: 'mail.google.com',
-      path: '/mail/',
+      host: 'outlook.live.com',
+      path: '/owa/',
       queryParameters: {
-        'view': 'cm',
-        'fs': '1',
+        'path': '/mail/action/compose',
         'to': email,
-        'su': subject,
+        'subject': subject,
         'body': body,
       },
     );
 
-    try {
-      // Usar la API estándar de url_launcher
-      if (await canLaunchUrl(gmailUrl)) {
-        await launchUrl(
-          gmailUrl,
-          mode: LaunchMode.externalApplication,
-        );
-      } else {
-        print('No se pudo lanzar Gmail');
-      }
-    } catch (e) {
-      print('Error al intentar lanzar Gmail: $e');
+    if (await canLaunchUrl(outlookUrl)) {
+      await launchUrl(outlookUrl);
+    } else {
+      throw 'No se puede lanzar la URL para Outlook';
     }
   }
+
 
   //MÉTODO PARA ENVIAR EMAIL POR MAILTO
   Future<void> launchEmailWebFallback(

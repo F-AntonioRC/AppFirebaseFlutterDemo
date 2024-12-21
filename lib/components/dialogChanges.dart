@@ -57,16 +57,23 @@ class _DialogChangesState extends State<DialogChanges> {
               style: TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 10.0),
           TextField(
-            enabled: false,
+            readOnly: true,
             controller: _textController,
               decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.account_box),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: theme.hintColor),
+                      borderRadius: BorderRadius.circular(10.0)
+                  ),
                   disabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: theme.hintColor),
                       borderRadius: BorderRadius.circular(10.0)),
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: theme.hintColor),
-                      borderRadius: BorderRadius.circular(10.0))
+                      borderRadius: BorderRadius.circular(10.0)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0)
+                )
               )
           ),
           const SizedBox(height: 10.0),

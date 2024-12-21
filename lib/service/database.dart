@@ -45,15 +45,20 @@ class DatabaseMethods {
 
   //ACTUALIZAR
   Future<void> updateEmployeeDetail(String id, Map<String, dynamic> updatedData) async {
+    if (id.isEmpty || updatedData.isEmpty) {
+      throw Exception("El ID o los datos están vacíos.");
+    }
     try {
       await FirebaseFirestore.instance
           .collection('Employee')
           .doc(id)
           .update(updatedData);
     } catch (e) {
+      // Puedes usar un logger o mostrar el error al usuario
       throw Exception("Error al actualizar el empleado: $e");
     }
   }
+
 
   //ELIMINAR
   Future deleteEmployeeDetail(String id) async {

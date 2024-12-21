@@ -30,6 +30,13 @@ class BuildField extends StatelessWidget {
           controller: controller,
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.account_box),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: theme.hintColor),
+                borderRadius: BorderRadius.circular(10.0)
+            ),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: theme.hintColor),
+                borderRadius: BorderRadius.circular(10.0)),
             disabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: theme.hintColor),
               borderRadius: BorderRadius.circular(10.0),

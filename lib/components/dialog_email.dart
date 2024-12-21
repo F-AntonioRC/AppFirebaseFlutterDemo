@@ -99,10 +99,13 @@ class _DialogEmailState extends State<DialogEmail> {
             style: TextStyle(fontSize: responsiveFontSize(context, 15), fontWeight: FontWeight.bold),),
           const SizedBox(height: 10.0,),
           SizedBox(
-            width: 400,
+            width: 500,
             child: TextField(
               controller: bodyEmailController, maxLines: 3,
-              decoration: const InputDecoration( labelText: 'Escribe tu mensaje',  border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: 'Escribe tu mensaje',  border: const OutlineInputBorder(), enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: theme.hintColor),
+                  borderRadius: BorderRadius.circular(10.0)),
               ),
             ),
           )

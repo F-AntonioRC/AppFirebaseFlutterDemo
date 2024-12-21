@@ -43,6 +43,7 @@ class TableViewDetailCourses extends StatelessWidget {
               "Nombre",
               "Area",
               "Sare",
+              "Estado",
               "Inicio curso",
               "Registro",
               "Envío de Constancia",
@@ -53,6 +54,7 @@ class TableViewDetailCourses extends StatelessWidget {
               "NameCourse",
               "NombreArea",
               "sare",
+              "Estado",
               "FechaInicioCurso",
               "Fecharegistro",
               "FechaenvioConstancia",
@@ -66,7 +68,7 @@ class TableViewDetailCourses extends StatelessWidget {
                 refreshTable();
                 if (context.mounted) {
                   showCustomSnackBar(
-                      context, "Curso eliminado correctamente", Colors.green);
+                      context, "Curso eliminado correctamente", greenColor);
                 }
               } catch (e) {
                 if (context.mounted) {

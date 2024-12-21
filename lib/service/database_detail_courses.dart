@@ -75,6 +75,7 @@ class MethodsDetailCourses {
           'IdArea': 'N/A',
           'sare': 'N/A',
           'IdSare': 'N/A',
+          'Estado' : detalleCursoDoc['Estado'] ?? 'N/A'
         };
 
 
@@ -143,9 +144,22 @@ class MethodsDetailCourses {
       for (var detalleCursoDoc in detalleCursosQuery.docs) {
         String idCourse = detalleCursoDoc['IdCourse'];
         String? idArea = detalleCursoDoc['IdArea'];
-        String? idSare = detalleCursoDoc['sare'];
+        String? idSare = detalleCursoDoc['IdSare'];
 
-        Map<String, dynamic> result = {};
+        // Inicializa todos los campos con valores predeterminados
+        Map<String, dynamic> result = {
+          'IdDetailCourse': detalleCursoDoc.id, // Asignar un ID único si aplica
+          'NameCourse': 'N/A',
+          'FechaInicioCurso': 'N/A',
+          'Fecharegistro': 'N/A',
+          'FechaenvioConstancia': 'N/A',
+          'NombreArea': 'N/A',
+          'IdArea': 'N/A',
+          'sare': 'N/A',
+          'IdSare': 'N/A',
+          'Estado' : detalleCursoDoc['Estado'] ?? 'N/A'
+        };
+
 
         // Consulta el documento de Courses
         DocumentSnapshot courseDoc =
@@ -160,26 +174,26 @@ class MethodsDetailCourses {
         }
 
         // Consulta el documento de Area si existe idArea
-        if (idArea != null) {
-          DocumentSnapshot areaDoc =
-          await firestore.collection('Area').doc(idArea).get();
+        DocumentSnapshot areaDoc =
+        await firestore.collection('Area').doc(idArea).get();
 
-          if (areaDoc.exists) {
-            var areaData = areaDoc.data() as Map<String, dynamic>;
-            result['NombreArea'] = areaData['Nombre'];
-          }
+        if (areaDoc.exists) {
+          var areaData = areaDoc.data() as Map<String, dynamic>;
+          result['NombreArea'] = areaData['NombreArea'] ?? 'N/A';
+          result['IdArea'] = areaData['IdArea'];
         }
+
 
         // Consulta el documento de Sare si existe idSare
-        if (idSare != null) {
-          DocumentSnapshot sareDoc =
-          await firestore.collection('Sare').doc(idSare).get();
+        DocumentSnapshot sareDoc =
+        await firestore.collection('Sare').doc(idSare).get();
 
-          if (sareDoc.exists) {
-            var sareData = sareDoc.data() as Map<String, dynamic>;
-            result['NombreSare'] = sareData['Nombre'];
-          }
+        if (sareDoc.exists) {
+          var sareData = sareDoc.data() as Map<String, dynamic>;
+          result['sare'] = sareData['sare'] ?? 'N/A';
+          result['IdSare'] = sareData['IdSare'];
         }
+
 
         results.add(result);
       }
