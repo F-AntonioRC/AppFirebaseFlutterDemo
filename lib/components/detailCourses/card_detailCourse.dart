@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/body_widgets.dart';
 import 'package:testwithfirebase/components/detailCourses/table_view_detailCourses.dart';
 import 'package:testwithfirebase/components/header_search.dart';
 import 'package:testwithfirebase/service/database_detail_courses.dart';
@@ -49,7 +50,9 @@ class _CardDetailcourseState extends State<CardDetailCourse> {
         });
       } catch (e) {
         setState(() => _isLoading = false);
-        showCustomSnackBar(context, "Error: $e", Colors.red);
+        if(context.mounted) {
+          showCustomSnackBar(context, "Error: $e", Colors.red);
+        }
       }
     });
   }
@@ -60,36 +63,31 @@ class _CardDetailcourseState extends State<CardDetailCourse> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(5.0),
-      child: Card(
-        child: Padding(padding: const EdgeInsets.all(10.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              HeaderSearch(
-                  searchInput: searchInput,
-                  onSearch: _searchDetalleCurso,
-                  onToggleView: () {
-                    setState(() {
-                      viewInactivos = !viewInactivos;
-                      isActive = !isActive;
-                    });
-                  },
-                  viewInactivos: viewInactivos,
-                  title: "Cursos asignados", viewOn: "Mostrar inactivos", viewOff: "Mostrar activos"),
-              const Divider(),
-              _isLoading
-                  ? const Center(child: CircularProgressIndicator(),)
-                  : TableViewDetailCourses(
-                  viewInactivos: viewInactivos,
-                  filteredData: _filteredData,
-                  methodsDetailCourses: methodsDetailCourses,
-                  isActive: isActive, refreshTable: refreshTable)
-            ],
-          ),
-        ),),
+    return BodyWidgets(
+        body: SingleChildScrollView(
+      child: Column(
+        children: [
+          HeaderSearch(
+              searchInput: searchInput,
+              onSearch: _searchDetalleCurso,
+              onToggleView: () {
+                setState(() {
+                  viewInactivos = !viewInactivos;
+                  isActive = !isActive;
+                });
+              },
+              viewInactivos: viewInactivos,
+              title: "Cursos asignados", viewOn: "Mostrar inactivos", viewOff: "Mostrar activos"),
+          const Divider(),
+          _isLoading
+              ? const Center(child: CircularProgressIndicator(),)
+              : TableViewDetailCourses(
+              viewInactivos: viewInactivos,
+              filteredData: _filteredData,
+              methodsDetailCourses: methodsDetailCourses,
+              isActive: isActive, refreshTable: refreshTable)
+        ],
       ),
-    );
+    ));
   }
 }

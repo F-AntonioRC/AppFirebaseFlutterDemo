@@ -27,7 +27,9 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
   // Items del Drawer
   final List<_NavigationItem> _drawerItems = [
     _NavigationItem(
-        item: NavItem.homeView, title: "Home", icon: const Icon(Icons.home)),
+        item: NavItem.homeView,
+        title: "Home",
+        icon: const Icon(Icons.home)),
     _NavigationItem(
         item: NavItem.employeeView,
         title: "Empleados",
@@ -42,7 +44,7 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
         )),
     _NavigationItem(
         item: NavItem.emailView,
-        title: "Asigar Cursos",
+        title: "Asignar Cursos",
         icon: const Icon(Icons.contact_mail_rounded)),
     _NavigationItem(
         item: NavItem.documentView,

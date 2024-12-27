@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/body_widgets.dart';
 import 'package:testwithfirebase/components/header_search.dart';
 import '../custom_snackbar.dart';
 import 'table_view_courses.dart';
@@ -59,42 +60,35 @@ class _CardTableState extends State<CardTableCourses> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(5.0),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                HeaderSearch(
-                  searchInput: searchInput,
-                  onSearch: _searchCourses,
-                  onToggleView: () {
-                    setState(() {
-                      viewInactivos = !viewInactivos;
-                      isActive = !isActive;
-                    });
-                  },
-                  viewInactivos: viewInactivos,
-                  title: 'Lista de Cursos',
-                  viewOn: 'Mostrar cursos Inactivos', viewOff: 'Mostrar cursos Activos',
-                ),
-                const Divider(),
-                _isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : TableViewCourses(
-                  viewInactivos: viewInactivos,
-                  filteredData: _filteredData,
-                  methodsCourses: methodsCourses,
-                  isActive: isActive,
-                  refreshTable: _refreshTable,
-                ),
-              ],
-            ),
+    return BodyWidgets(
+        body: SingleChildScrollView(
+      child: Column(
+        children: [
+          HeaderSearch(
+            searchInput: searchInput,
+            onSearch: _searchCourses,
+            onToggleView: () {
+              setState(() {
+                viewInactivos = !viewInactivos;
+                isActive = !isActive;
+              });
+            },
+            viewInactivos: viewInactivos,
+            title: 'Lista de Cursos',
+            viewOn: 'Mostrar cursos Inactivos', viewOff: 'Mostrar cursos Activos',
           ),
-        ),
+          const Divider(),
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : TableViewCourses(
+            viewInactivos: viewInactivos,
+            filteredData: _filteredData,
+            methodsCourses: methodsCourses,
+            isActive: isActive,
+            refreshTable: _refreshTable,
+          ),
+        ],
       ),
-    );
+    ));
   }
 }

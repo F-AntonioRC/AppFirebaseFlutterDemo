@@ -31,7 +31,7 @@ class PasswordInput extends StatelessWidget {
       errorMessage:
         messageadd
             ? "Por favor ingrese la contraseña"
-            : "Recomendacion de contraseña: \n- Letras Mayusculas y minusculas\n- Numeros y simbolos\n- Tamaño minimo de 8 caracteres",
+            : "Recomendacion de contraseña: \n- Letras Mayusculas y minusculas \n- Numeros y simbolos \n- Minimo 8 caracteres",
     );
   }
 

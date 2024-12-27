@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:testwithfirebase/components/employee/card_employee.dart';
 import 'package:testwithfirebase/pages/employee/empoyee.dart';
-import 'package:testwithfirebase/pages/employee/page_employee.dart';
 import 'package:testwithfirebase/providers/edit_provider.dart';
 
 class ScreenEmployee extends StatefulWidget {

@@ -40,14 +40,16 @@ class TableViewCourses extends StatelessWidget {
           return MyPaginatedTable(
             headers: const [
               "Nombre del Curso",
+              "Trimestre",
               "Estado",
               "Fecha inicio curso",
               "Fecha de registro",
-              "Fecha de envio de Constancia"
+              "Envio de Constancia"
             ],
             data: data,
             fieldKeys: const [
               "NameCourse",
+              "Trimestre",
               "Estado",
               "Fecharegistro",
               "FechaInicioCurso",

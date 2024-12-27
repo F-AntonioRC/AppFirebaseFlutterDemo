@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 
-class CardViewCourse extends StatelessWidget {
+class CardViewDataCourses extends StatelessWidget {
   final String assetImagePath;
   final String title;
   final String subtitle;
 
-  const CardViewCourse({super.key,
+  const CardViewDataCourses({super.key,
     required this.assetImagePath,
     required this.title,
     required this.subtitle});

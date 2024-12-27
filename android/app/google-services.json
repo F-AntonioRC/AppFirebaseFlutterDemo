@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "103325378423",
+    "firebase_url": "https://test-appwithflutter-default-rtdb.firebaseio.com",
     "project_id": "test-appwithflutter",
     "storage_bucket": "test-appwithflutter.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:103325378423:android:77922b74708119cbce2372",
+        "mobilesdk_app_id": "1:103325378423:android:f796be157870363bce2372",
         "android_client_info": {
           "package_name": "com.testwithfirebase.app"
         }

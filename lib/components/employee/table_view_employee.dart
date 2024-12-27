@@ -41,9 +41,9 @@ class TableViewEmployee extends StatelessWidget {
           final data =
           filteredData.isEmpty ? snapshot.data! : filteredData;
           return MyPaginatedTable(
-            headers: const ["Identificador", "CUPO", "Nombre Completo", "Estado", "Area", "Sare"],
+            headers: const ["Nombre Completo", "CUPO",  "Estado", "Dependencia", "Area", "Sare"],
             data: data,
-            fieldKeys: const ["IdEmployee", "CUPO", "Nombre", "Estado", "Area", "Sare"],
+            fieldKeys: const ["Nombre", "CUPO",  "Estado", "Dependencia", "Area", "Sare"],
 
             onEdit: (String id) {
               final selectedRow = data.firstWhere((row) => row[idKey] == id);

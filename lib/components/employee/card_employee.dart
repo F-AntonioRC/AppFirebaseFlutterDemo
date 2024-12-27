@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/body_widgets.dart';
 import 'package:testwithfirebase/components/employee/table_view_employee.dart';
 import 'package:testwithfirebase/components/header_search.dart';
 import 'package:testwithfirebase/service/database.dart';
@@ -60,38 +61,32 @@ class _CardEmployeeState extends State<CardEmployee> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(5.0),
-      child: Card(
-        child: Padding(padding: const EdgeInsets.all(10.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                HeaderSearch(
-                    searchInput: searchInput,
-                    onSearch: _searchEmployee,
-                    onToggleView: () {
-                      setState(() {
-                        viewInactivos = !viewInactivos;
-                        isActive = !isActive;
-                      });
-                    },
-                    viewInactivos: viewInactivos,
-                    title: "Lista de Empleados", viewOn: "Ver Empleados Inactivos",
-                    viewOff: "Ver Empleados Activos"),
-                const Divider(),
-                _isLoading
-                    ? const Center(child: CircularProgressIndicator(),)
-                    : TableViewEmployee(
-                    viewInactivos: viewInactivos,
-                    filteredData: _filteredData,
-                    databaseMethods: databaseMethods,
-                    isActive: isActive,
-                    refreshTable: _refreshTable)
-              ],
-            ),
-          ),),
+    return BodyWidgets(body: SingleChildScrollView(
+      child: Column(
+        children: [
+          HeaderSearch(
+              searchInput: searchInput,
+              onSearch: _searchEmployee,
+              onToggleView: () {
+                setState(() {
+                  viewInactivos = !viewInactivos;
+                  isActive = !isActive;
+                });
+              },
+              viewInactivos: viewInactivos,
+              title: "Lista de Empleados", viewOn: "Ver Empleados Inactivos",
+              viewOff: "Ver Empleados Activos"),
+          const Divider(),
+          _isLoading
+              ? const Center(child: CircularProgressIndicator(),)
+              : TableViewEmployee(
+              viewInactivos: viewInactivos,
+              filteredData: _filteredData,
+              databaseMethods: databaseMethods,
+              isActive: isActive,
+              refreshTable: _refreshTable)
+        ],
       ),
-    );
+    ));
   }
 }

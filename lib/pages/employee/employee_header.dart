@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:testwithfirebase/pages/employee/Employee_controller.dart';
-import 'package:testwithfirebase/providers/edit_provider.dart';
 
 class EmployeeHeader extends StatelessWidget {
   const EmployeeHeader({Key? key}) : super(key: key);

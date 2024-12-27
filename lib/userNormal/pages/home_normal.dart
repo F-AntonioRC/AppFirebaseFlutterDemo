@@ -101,9 +101,7 @@ class _HomeNormalState extends State<HomeNormal> {
         return const Configuration();
       case NavItemNormal.cerrarSesionView:
         return const CerrarSesion();
-      default:
-        return const DashboardNormal();
-    }
+      }
   }
 
   String _getAppbarTitleNormal(NavItemNormal selected) {
@@ -117,9 +115,7 @@ class _HomeNormalState extends State<HomeNormal> {
         return "Configuración";
       case NavItemNormal.cerrarSesionView:
         return "Cerrar Sesión";
-      default:
-        return "Navigatión drawer user";
-    }
+      }
   }
 
 

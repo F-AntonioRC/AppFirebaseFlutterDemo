@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/body_widgets.dart';
 
 class CardGraphics extends StatefulWidget {
   const CardGraphics({super.key, required this.cardWidget});
@@ -12,17 +13,9 @@ class CardGraphics extends StatefulWidget {
 class _CardGraphicsState extends State<CardGraphics> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(5.0),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25.0),  // Bordes redondeados
-        ),
-        child: Padding(padding: const EdgeInsets.all(5.0),
-        child: SingleChildScrollView(
-          child: widget.cardWidget,
-        ),),
-      ),
-    );
+    return BodyWidgets(
+        body: SingleChildScrollView(
+      child: widget.cardWidget,
+    ));
   }
 }

@@ -112,9 +112,7 @@ class _HomePageState extends State<HomePage> {
         return const CerrarSesion();
       case NavItem.configuration:
         return const Configuration();
-      default:
-        return const DashboardMain();
-    }
+      }
   }
 
   String _getAppbarTitle(NavItem selectedItem) {
@@ -126,15 +124,13 @@ class _HomePageState extends State<HomePage> {
       case NavItem.courseView:
         return "Cursos";
       case NavItem.emailView:
-        return "Correos";
+        return "Asignar Cursos";
       case NavItem.documentView:
         return "Documents";
       case NavItem.configuration:
         return "Configuración";
       case NavItem.logout:
         return "Cerrar Sesión";
-      default:
-        return "Navigation Drawer Admin";
-    }
+      }
   }
 }

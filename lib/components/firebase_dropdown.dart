@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:testwithfirebase/components/custom_snackbar.dart';
-import 'package:testwithfirebase/dataConst/constand.dart';
+import 'package:testwithfirebase/components/decoration_dropdown.dart';
 
 class FirebaseDropdown extends StatefulWidget {
   final FirebaseDropdownController controller;
@@ -18,98 +17,147 @@ class FirebaseDropdown extends StatefulWidget {
   });
 
   @override
-  _FirebaseDropdownState createState() {
-    return _FirebaseDropdownState();
-  }
+  _FirebaseDropdownState createState() => _FirebaseDropdownState();
 }
 
 class FirebaseDropdownController {
   Map<String, dynamic>? _selectedDocument;
+  final List<Function()> _listeners = [];
 
-  // Método para obtener el valor seleccionado
+  // Metodo para obtener el valor seleccionado
   Map<String, dynamic>? get selectedDocument => _selectedDocument;
 
-  // Método para establecer el documento seleccionado
+  // Metodo para establecer el documento seleccionado
   void setDocument(Map<String, dynamic>? document) {
     _selectedDocument = document;
+    notifyListeners(); // Notifica a los listeners
   }
 
+  // Limpia la selección actual
   void clearSelection() {
     _selectedDocument = null;
+    notifyListeners(); // Notifica a los listeners
   }
 
+  // Agrega un listener
+  void addListener(Function() listener) {
+    _listeners.add(listener);
+  }
+
+  // Elimina un listener
+  void removeListener(Function() listener) {
+    _listeners.remove(listener);
+  }
+
+  // Notifica a todos los listeners
+  void notifyListeners() {
+    for (var listener in _listeners) {
+      listener();
+    }
+  }
+
+  //Sincroniza la selección actual con los documentos disponibles
+  void synchronizeSelection(List<Map<String, dynamic>> documents) {
+    if (_selectedDocument != null &&
+        !documents.any((doc) => doc['Id'] == _selectedDocument?['Id'])) {
+      clearSelection();
+    }
+  }
 }
 
 class _FirebaseDropdownState extends State<FirebaseDropdown> {
-  List<Map<String, dynamic>> documentsList = [];
-
   @override
   void initState() {
     super.initState();
-    fetchDocuments();
+    widget.controller.addListener(_updateState);
   }
 
-  Future<void> fetchDocuments() async {
-try {
-  QuerySnapshot querySnapshot =
-  await FirebaseFirestore.instance.collection(widget.collection).get();
+  @override
+  void dispose() {
+    widget.controller.removeListener(_updateState);
+    super.dispose();
+  }
 
-  List<Map<String, dynamic>> fetchedDocuments = querySnapshot.docs.map((doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    data['Id'] = doc.id; //Añadir el Id del documento a los datos
-    return data;
-  }).toList();
-
-  setState(() {
-    documentsList = fetchedDocuments;
-  });
-} catch (e) {
-  showCustomSnackBar(context, "Error: $e", Colors.red);
-}
+  //Metodo para actualizar el estado cuando el controlador cambie
+  void _updateState() {
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Center(
-      child: documentsList.isEmpty
-          ? const CircularProgressIndicator()
-          : DropdownButtonFormField<Map<String, dynamic>?>(
-        dropdownColor: ligthBackground,
-        decoration: InputDecoration(
-            contentPadding:  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: theme.hintColor),
-                borderRadius: BorderRadius.circular(10.0)
-            ),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: theme.hintColor),
-                borderRadius: BorderRadius.circular(10.0))
-        ),
-        value: widget.controller.selectedDocument == null
-            ? null
-            : documentsList.isNotEmpty
-            ? documentsList.firstWhere(
-              (doc) => doc == widget.controller.selectedDocument,
-          orElse: () => documentsList[0], // Primer elemento como fallback
-        )
-            : null,
-        hint: Text(widget.textHint),
-        isExpanded: true,
-        items: documentsList.map<DropdownMenuItem<Map<String, dynamic>?>>(
-                (Map<String, dynamic> document) {
-              return DropdownMenuItem<Map<String, dynamic>?>(
-                value: document,
-                child: Text(document[widget.data] ?? 'Sin datos'), // Mostrar solo el campo del nombre
-              );
-            }).toList(),
-        onChanged: (Map<String, dynamic>? newValue) {
-          setState(() {
-            widget.controller.setDocument(newValue);
-          });
+    return StreamBuilder<List<Map<String, dynamic>>>(
+      stream: FirebaseFirestore.instance.collection(widget.collection).snapshots().map(
+            (snapshot) {
+          return snapshot.docs.map((doc) {
+            Map<String, dynamic> data = doc.data();
+            data['Id'] = doc.id; // Agregar el ID del documento
+            return data;
+          }).toList();
         },
       ),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator(); // Indicador de carga
+        }
+
+        if (snapshot.hasError) {
+          return Text(
+            "Error al cargar los datos",
+            style: TextStyle(color: theme.colorScheme.error),
+          );
+        }
+
+        if (snapshot.hasData) {
+          // Obtener la lista de documentos
+          List<Map<String, dynamic>> fetchedDocuments = snapshot.data ?? [];
+
+          // Diferir la sincronización para evitar conflictos con el ciclo de construcción
+          Future.microtask(() {
+            widget.controller.synchronizeSelection(fetchedDocuments);
+          });
+
+          if (fetchedDocuments.isEmpty) {
+            return Text(
+              'No hay datos disponibles',
+              style: TextStyle(color: theme.colorScheme.error),
+            );
+          }
+
+          return DropdownButtonFormField<Map<String, dynamic>?>(
+            decoration: CustomInputDecoration.inputDecoration(context),
+            dropdownColor: theme.cardColor,
+            value: widget.controller.selectedDocument == null
+                ? null
+                : fetchedDocuments.firstWhere(
+                  (doc) => doc['Id'] == widget.controller.selectedDocument?['Id'],
+              orElse: () => {},
+            ),
+            hint: Text(widget.textHint),
+            items: fetchedDocuments.map<DropdownMenuItem<Map<String, dynamic>?>>((document) {
+              return DropdownMenuItem<Map<String, dynamic>?>(
+                value: document,
+                child: Text(document[widget.data] ?? 'Sin datos'),
+              );
+            }).toList(),
+            onChanged: (Map<String, dynamic>? newValue) {
+              widget.controller.setDocument(newValue);
+            },
+            validator: (value) {
+              if (value == null) {
+                return 'Por favor selecciona un valor';
+              }
+              return null;
+            },
+          );
+        }
+
+        return Text(
+          'Cargando datos...',
+          style: TextStyle(color: theme.colorScheme.primary),
+        );
+      },
     );
   }
 }
