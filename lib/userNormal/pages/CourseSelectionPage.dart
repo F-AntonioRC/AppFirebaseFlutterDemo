@@ -60,7 +60,8 @@ class CourseSelectionPage extends StatelessWidget {
                   return CourseCard(
                     courseName: courseName,
                     subCourses: courses[courseName]!,
-                    imagePath: courseImages[courseName] ?? 'assets/images/default.png',
+                    imagePath: courseImages[courseName] ?? 'assets/images/logo.jpg',
+                    trimester: 'TRIMESTRE 1'
                   );
                 },
               ),
@@ -76,12 +77,15 @@ class CourseCard extends StatelessWidget {
   final String courseName;
   final List<String> subCourses;
   final String imagePath; // Ruta de la imagen
+  final String trimester;
 
   const CourseCard({
     Key? key,
     required this.courseName,
     required this.subCourses,
     required this.imagePath,
+    required this.trimester,
+    
   }) : super(key: key);
 
   @override
@@ -99,6 +103,7 @@ class CourseCard extends StatelessWidget {
               builder: (context) => SubCourseSelectionPage(
                 courseName: courseName,
                 subCourses: subCourses,
+                trimester: 'TRIMESTRE 1',
               ),
             ),
           );
@@ -159,8 +164,9 @@ class CourseCard extends StatelessWidget {
 class SubCourseSelectionPage extends StatelessWidget {
   final String courseName;
   final List<String> subCourses;
+  final String trimester;
 
-  const SubCourseSelectionPage({Key? key, required this.courseName, required this.subCourses})
+  const SubCourseSelectionPage({Key? key, required this.courseName, required this.subCourses, required this.trimester})
       : super(key: key);
 
   @override
@@ -223,6 +229,7 @@ class SubCourseCard extends StatelessWidget {
                     builder: (context) => CursosNormal(
                       course: courseName,
                       subCourse: subCourseName,
+                      trimester: 'TRIMESTRE 1',
                     ),
                   ),
                 );

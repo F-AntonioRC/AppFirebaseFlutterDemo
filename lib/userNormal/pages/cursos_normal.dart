@@ -9,8 +9,14 @@ import 'package:path/path.dart';
 class CursosNormal extends StatefulWidget {
   final String course; // Curso principal
   final String? subCourse; // Subcurso opcional
+  final String trimester; // Trimestre al que pertenece
 
-  CursosNormal({required this.course, this.subCourse, Key? key}) : super(key: key);
+  CursosNormal({
+    required this.course,
+    this.subCourse,
+    required this.trimester, // Nuevo parámetro para el trimestre
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<CursosNormal> createState() => _CursosNormalState();
@@ -35,16 +41,13 @@ class _CursosNormalState extends State<CursosNormal> {
     if (result != null) {
       String fileName = basename(result.files.single.name);
 
-      // Construir la ruta de almacenamiento dinámicamente
-       const String fixedPrefix = 
-        '2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARE\'S/Cursos_2024/TRIMESTRE 1/';
+      // Construir la ruta de almacenamiento dinámicamente con el trimestre
+      String storagePath = '2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARES/Cursos_2024/${widget.trimester}/${widget.course}/';
+      if (widget.subCourse != null) {
+        storagePath += '${widget.subCourse}/';
+      }
+      storagePath += fileName;
 
-    // Construcción dinámica de la ruta completa
-    String storagePath = '$fixedPrefix${widget.course}/';
-    if (widget.subCourse != null) {
-      storagePath += '${widget.subCourse}/';
-    }
-    storagePath += fileName;
       final storageRef = FirebaseStorage.instance.ref().child(storagePath);
       final metadata = SettableMetadata(contentType: 'application/pdf');
 
@@ -53,7 +56,7 @@ class _CursosNormalState extends State<CursosNormal> {
           isUploading = true;
         });
 
-        // Subir archivo: bytes o file path
+        // Subir archivo
         if (result.files.single.bytes != null) {
           await storageRef.putData(result.files.single.bytes!, metadata);
         } else if (result.files.single.path != null) {
@@ -66,8 +69,9 @@ class _CursosNormalState extends State<CursosNormal> {
 
         // Agregar notificación al Firestore
         await FirebaseFirestore.instance.collection('notifications').add({
+          'trimester': widget.trimester, // Trimestre
           'course': widget.course,
-          'subCourse': widget.subCourse ?? 'Sin subcurso', // Subcurso, si aplica
+          'subCourse': widget.subCourse ?? 'Sin subcurso',
           'fileName': fileName,
           'uploader': user?.email ?? 'Usuario desconocido',
           'timestamp': FieldValue.serverTimestamp(),
@@ -95,7 +99,7 @@ class _CursosNormalState extends State<CursosNormal> {
         title: Text(widget.subCourse != null
             ? 'Subir Documento: ${widget.course} > ${widget.subCourse}'
             : 'Subir Documento: ${widget.course}'),
-             backgroundColor: const Color(0xFF255946),
+        backgroundColor: const Color(0xFF255946),
       ),
       body: Center(
         child: isUploading
@@ -105,8 +109,8 @@ class _CursosNormalState extends State<CursosNormal> {
                 children: [
                   Text(
                     widget.subCourse != null
-                        ? 'Sube el la evidencia del curso en formato PDF no mayor a 5MB'
-                        : 'Sube un documento PDF para el curso seleccionado.',
+                        ? 'Sube la evidencia del curso en formato PDF no mayor a 5MB para ${widget.trimester}.'
+                        : 'Sube un documento PDF para el curso seleccionado (${widget.trimester}).',
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontSize: 18),
                   ),

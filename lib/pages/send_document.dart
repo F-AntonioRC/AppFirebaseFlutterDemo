@@ -3,16 +3,107 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SendDocument extends StatefulWidget {
-  SendDocument({Key? key}) : super(key: key);
+class TrimestersView extends StatefulWidget { 
+  const TrimestersView({Key? key}) : super(key: key);
 
   @override
-  State<SendDocument> createState() => _SendDocument();
+  State<TrimestersView> createState() => _TrimestersViewState();
 }
 
-class _SendDocument extends State<SendDocument> {
-  Map<String, Map<String, List<Map<String, String>>>> courseFiles = {}; // Archivos por curso y subcurso
+class _TrimestersViewState extends State<TrimestersView> {
+  final List<String> trimesters = [
+    'TRIMESTRE 1',
+    'TRIMESTRE 2',
+    'TRIMESTRE 3',
+    'TRIMESTRE 4',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Evidencia por Trimestres'),
+        backgroundColor: greenColor,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 16.0,
+            mainAxisSpacing: 16.0,
+            childAspectRatio: 4 / 3, // Relación de aspecto más compacta
+          ),
+          itemCount: trimesters.length,
+          itemBuilder: (context, index) {
+            String trimester = trimesters[index];
+            return Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 3,
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SendDocument(trimester: trimester),
+                    ),
+                  );
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                      child: Image.asset(
+                        'assets/images/logo.jpg',
+                        height: 100, // Altura fija más pequeña
+                        width: double.infinity, // Ancho completo de la tarjeta
+                        fit: BoxFit.cover, // La imagen se adapta sin distorsionarse
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          trimester,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+
+class SendDocument extends StatefulWidget {
+  final String trimester;
+
+  const SendDocument({Key? key, required this.trimester}) : super(key: key);
+
+  @override
+  State<SendDocument> createState() => _SendDocumentState();
+}
+
+
+
+class _SendDocumentState extends State<SendDocument> {
+  Map<String, Map<String, List<Map<String, String>>>> courseFiles = {};
   bool isLoading = true;
+  
+  get trimester => null;
 
   @override
   void initState() {
@@ -20,12 +111,9 @@ class _SendDocument extends State<SendDocument> {
     _loadFilesForAllCourses();
   }
 
-  // Cargar todos los archivos subidos en Firebase Storage
   Future<void> _loadFilesForAllCourses() async {
     try {
       FirebaseStorage storage = FirebaseStorage.instance;
-
-      // Cursos principales y sus subcursos
       Map<String, List<String>> courses = {
         'SICAVISP': ['Curso 1', 'Curso 2', 'Curso 3'],
         'INMUJERES': ['Curso 1', 'Curso 2', 'Curso 3'],
@@ -39,7 +127,7 @@ class _SendDocument extends State<SendDocument> {
 
         for (String subCourse in courses[course]!) {
           String subCoursePath =
-              '2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARE\'S/Cursos_2024/TRIMESTRE 1/$course/$subCourse';
+              '2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARE\'S/Cursos_2024/$trimester/$course/$subCourse';
           Reference subCourseRef = storage.ref(subCoursePath);
 
           try {
@@ -53,7 +141,6 @@ class _SendDocument extends State<SendDocument> {
 
             subcourseFiles[subCourse] = files;
           } catch (e) {
-            print('Error al cargar archivos de $subCourse: $e');
             subcourseFiles[subCourse] = [];
           }
         }
@@ -66,14 +153,12 @@ class _SendDocument extends State<SendDocument> {
         isLoading = false;
       });
     } catch (e) {
-      print('Error al cargar archivos: $e');
       setState(() {
         isLoading = false;
       });
     }
   }
 
-  // Función para descargar un archivo
   Future<void> _downloadFile(String fileUrl) async {
     if (await canLaunch(fileUrl)) {
       await launch(fileUrl);
@@ -95,62 +180,218 @@ class _SendDocument extends State<SendDocument> {
               ? const Center(child: Text('No hay archivos disponibles.'))
               : Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: ListView(
-                    children: courseFiles.entries.map((entry) {
-                      String courseName = entry.key;
+                  child: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, // Dos columnas
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0,
+                      childAspectRatio: 3 / 2, // Relación de aspecto
+                    ),
+                    itemCount: courseFiles.entries.length,
+                    itemBuilder: (context, courseIndex) {
+                      String courseName = courseFiles.keys.elementAt(courseIndex);
                       Map<String, List<Map<String, String>>> subCourses =
-                          entry.value;
+                          courseFiles[courseName]!;
 
                       return Card(
-                        elevation: 5,
-                        margin: const EdgeInsets.symmetric(vertical: 10.0),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: ExpansionTile(
-                          title: Text(
-                            courseName,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 0, 0, 0),
-                            ),
-                          ),
-                          children: subCourses.entries.map((subEntry) {
-                            String subCourseName = subEntry.key;
-                            List<Map<String, String>> files = subEntry.value;
-
-                            return Card(
-                              elevation: 3,
-                              margin:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: ExpansionTile(
-                                title: Text(
-                                  subCourseName,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(255, 54, 54, 54),
-                                  ),
+                        elevation: 5,
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                                child: Image.asset(
+                                  'assets/images/logo.jpg',
+                                  fit: BoxFit.cover,
                                 ),
-                                children: files.map((file) {
-                                  return ListTile(
-                                    title: Text(file['name'] ?? 'Archivo'),
-                                    trailing: IconButton(
-                                      icon: const Icon(Icons.download),
-                                      onPressed: () =>
-                                          _downloadFile(file['url']!),
-                                    ),
-                                  );
-                                }).toList(),
                               ),
-                            );
-                          }).toList(),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    courseName,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => SubCourseGridPage(
+                                            courseName: courseName,
+                                            subCourses: subCourses,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text('Ver subcursos'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       );
-                    }).toList(),
+                    },
                   ),
                 ),
     );
   }
 }
+
+class SubCourseGridPage extends StatelessWidget {
+  final String courseName;
+  final Map<String, List<Map<String, String>>> subCourses;
+
+  const SubCourseGridPage({
+    Key? key,
+    required this.courseName,
+    required this.subCourses,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Subcursos de $courseName'),
+        backgroundColor: greenColor,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 16.0,
+            mainAxisSpacing: 16.0,
+            childAspectRatio: 3 / 2,
+          ),
+          itemCount: subCourses.keys.length,
+          itemBuilder: (context, subCourseIndex) {
+            String subCourseName = subCourses.keys.elementAt(subCourseIndex);
+            List<Map<String, String>> files = subCourses[subCourseName]!;
+
+            return Card(
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                      child: Image.asset(
+                        'assets/images/logo.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      children: [
+                        Text(
+                          subCourseName,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                             Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FilesListPage(
+                        subCourseName: subCourseName,
+                        files: files,
+                      ),
+                    ),
+                  );// Lógica para mostrar los archivos de este subcurso
+                          },
+                          child: const Text('Ver archivos'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class FilesListPage extends StatelessWidget {
+  final String subCourseName;
+  final List<Map<String, String>> files;
+
+  const FilesListPage({
+    Key? key,
+    required this.subCourseName,
+    required this.files,
+  }) : super(key: key);
+
+  Future<void> _downloadFile(String fileUrl) async {
+    if (await canLaunch(fileUrl)) {
+      await launch(fileUrl);
+    } else {
+      throw 'No se puede abrir el archivo';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Archivos de $subCourseName'),
+        backgroundColor: greenColor,
+      ),
+      body: files.isEmpty
+          ? const Center(
+              child: Text('No hay archivos disponibles.'),
+            )
+          : ListView.builder(
+              padding: const EdgeInsets.all(16.0),
+              itemCount: files.length,
+              itemBuilder: (context, index) {
+                String fileName = files[index]['name']!;
+                String fileUrl = files[index]['url']!;
+
+                return Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 5,
+                  margin: const EdgeInsets.only(bottom: 16.0),
+                  child: ListTile(
+                    title: Text(
+                      fileName,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.download),
+                      onPressed: () => _downloadFile(fileUrl),
+                    ),
+                  ),
+                );
+              },
+            ),
+    );
+  }
+}
+
