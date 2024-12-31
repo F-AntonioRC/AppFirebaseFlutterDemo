@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:testwithfirebase/components/MyPaginatedTable.dart';
 import 'package:testwithfirebase/components/custom_snackbar.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
-import 'package:testwithfirebase/service/database_courses.dart';
+import 'package:testwithfirebase/providers/edit_provider.dart';
+import 'package:testwithfirebase/service/coursesService/database_courses.dart';
 
 class TableViewCourses extends StatelessWidget {
   final bool viewInactivos;
@@ -55,7 +57,11 @@ class TableViewCourses extends StatelessWidget {
               "FechaInicioCurso",
               "FechaenvioConstancia"
             ],
-            onEdit: (String id) {},
+            onEdit: (String id) {
+              final selectedRow = data.firstWhere((row) => row[idKey] == id);
+              
+              Provider.of<EditProvider>(context, listen: false).setData(selectedRow);
+            },
             onDelete: (String id) async {
               try {
                 await methodsCourses.deleteCoursesDetail(id);

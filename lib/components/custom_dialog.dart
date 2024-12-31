@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 import '../dataConst/constand.dart';
+import 'custom_snackbar.dart';
 import 'my_button.dart';
 
 class CustomDialog extends StatefulWidget {
@@ -52,7 +53,7 @@ class _CustomDialogState extends State<CustomDialog> {
               style: TextStyle(fontSize: responsiveFontSize(context, 15), fontWeight: FontWeight.bold),),
             const SizedBox(height: 10.0),
             TextField(
-                enabled: false,
+                readOnly: true,
                 controller: _dataOneController,
                 decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.account_box),
@@ -70,7 +71,7 @@ class _CustomDialogState extends State<CustomDialog> {
               style: TextStyle(fontSize: responsiveFontSize(context, 15), fontWeight: FontWeight.bold),),
           const SizedBox(height: 10.0),
           TextField(
-              enabled: false,
+              readOnly: true,
               controller: _dataTwoController,
               decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.account_box),
@@ -88,6 +89,23 @@ class _CustomDialogState extends State<CustomDialog> {
 Row(
   mainAxisAlignment: MainAxisAlignment.center,
   children: [
+    MyButton(text: "Aceptar", icon: const Icon(Icons.check_circle_outline),
+      buttonColor: greenColor, onPressed: () {
+        try {
+          widget.accept();
+          if (context.mounted) {
+            showCustomSnackBar(
+                context, "¡Curso Asignado!", greenColor);
+          }
+        } catch (e) {
+          if (context.mounted) {
+            showCustomSnackBar(
+                context, "Error: $e", greenColor);
+          }
+        }
+        Navigator.of(context).pop();
+      },),
+    const SizedBox(width: 10.0),
     MyButton(
       text: "Cancelar",
       icon: const Icon(Icons.cancel_outlined),
@@ -96,12 +114,6 @@ Row(
       },
       buttonColor: Colors.red,
     ),
-    const SizedBox(width: 10.0),
-    MyButton(text: "Aceptar", icon: const Icon(Icons.add_circle_outline),
-      buttonColor: greenColor, onPressed: () {
-        widget.accept();
-        Navigator.of(context).pop();
-      },)
   ],
 )
       ],

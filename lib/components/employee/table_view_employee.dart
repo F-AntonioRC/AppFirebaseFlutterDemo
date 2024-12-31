@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:testwithfirebase/components/MyPaginatedTable.dart';
-import 'package:testwithfirebase/service/database.dart';
+import 'package:testwithfirebase/service/employeeService/database.dart';
 import '../../dataConst/constand.dart';
 import '../../providers/edit_provider.dart';
 import '../custom_snackbar.dart';
@@ -14,12 +14,13 @@ class TableViewEmployee extends StatelessWidget {
   final bool isActive;
   final Function() refreshTable;
 
-  const TableViewEmployee({super.key,
-    required this.viewInactivos,
-    required this.filteredData,
-    required this.databaseMethods,
-    required this.isActive,
-    required this.refreshTable});
+  const TableViewEmployee(
+      {super.key,
+      required this.viewInactivos,
+      required this.filteredData,
+      required this.databaseMethods,
+      required this.isActive,
+      required this.refreshTable});
 
   @override
   Widget build(BuildContext context) {
@@ -38,29 +39,41 @@ class TableViewEmployee extends StatelessWidget {
             filteredData.isEmpty) {
           return const Center(child: Text('No se encontraron empleados.'));
         } else {
-          final data =
-          filteredData.isEmpty ? snapshot.data! : filteredData;
+          final data = filteredData.isEmpty ? snapshot.data! : filteredData;
           return MyPaginatedTable(
-            headers: const ["Nombre Completo", "CUPO",  "Estado", "Dependencia", "Area", "Sare"],
+            headers: const [
+              "Nombre Completo",
+              "CUPO",
+              "Estado",
+              "Dependencia",
+              "Area",
+              "Sare"
+            ],
             data: data,
-            fieldKeys: const ["Nombre", "CUPO",  "Estado", "Dependencia", "Area", "Sare"],
-
+            fieldKeys: const [
+              "Nombre",
+              "CUPO",
+              "Estado",
+              "Dependencia",
+              "Area",
+              "Sare"
+            ],
             onEdit: (String id) {
               final selectedRow = data.firstWhere((row) => row[idKey] == id);
 
               Provider.of<EditProvider>(context, listen: false)
                   .setData(selectedRow);
-
             },
             onDelete: (String id) async {
               try {
                 await databaseMethods.deleteEmployeeDetail(id);
                 refreshTable();
-                if(context.mounted) {
-                  showCustomSnackBar(context, "Empleado eliminado Correctamente", greenColor);
+                if (context.mounted) {
+                  showCustomSnackBar(
+                      context, "Empleado eliminado Correctamente", greenColor);
                 }
               } catch (e) {
-                if(context.mounted) {
+                if (context.mounted) {
                   showCustomSnackBar(context, "Error: $e", Colors.red);
                 }
               }
@@ -72,7 +85,10 @@ class TableViewEmployee extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return DialogChanges(dataChange: name, idChange: idAdd,);
+                  return DialogChanges(
+                    dataChange: name,
+                    idChange: idAdd,
+                  );
                 },
               );
             },
@@ -83,15 +99,20 @@ class TableViewEmployee extends StatelessWidget {
               try {
                 await databaseMethods.activateEmployeeDetail(id);
                 refreshTable();
-                if(context.mounted) {
-                  showCustomSnackBar(context, "Empleado restaurado Correctamente", greenColor);
+                if (context.mounted) {
+                  showCustomSnackBar(
+                      context, "Empleado restaurado Correctamente", greenColor);
                 }
               } catch (e) {
-                if(context.mounted) {
+                if (context.mounted) {
                   showCustomSnackBar(context, "Error: $e", Colors.red);
                 }
               }
-            }, iconAssign: const Icon(Icons.engineering, color: Colors.blue,),
+            },
+            iconAssign: const Icon(
+              Icons.engineering,
+              color: Colors.blue,
+            ),
           );
         }
       },

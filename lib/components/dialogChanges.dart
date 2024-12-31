@@ -3,7 +3,7 @@ import 'package:testwithfirebase/components/custom_snackbar.dart';
 import 'package:testwithfirebase/components/firebase_dropdown.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
-import 'package:testwithfirebase/service/database.dart';
+import 'package:testwithfirebase/service/employeeService/database.dart';
 
 class DialogChanges extends StatefulWidget {
   final String dataChange;

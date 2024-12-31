@@ -8,9 +8,9 @@ import 'package:testwithfirebase/drawer/drawer_widget.dart';
 import 'package:testwithfirebase/pages/cerrar_sesion.dart';
 import 'package:testwithfirebase/pages/configuration.dart';
 import 'package:testwithfirebase/pages/dashboard_main.dart';
-import 'package:testwithfirebase/pages/page_email.dart';
-import 'package:testwithfirebase/pages/screen_cursos.dart';
-import 'package:testwithfirebase/pages/screen_employee.dart';
+import 'package:testwithfirebase/pages/detailCourses/page_detail_courses.dart';
+import 'package:testwithfirebase/pages/courses/screen_cursos.dart';
+import 'package:testwithfirebase/pages/employee/screen_employee.dart';
 import 'package:testwithfirebase/pages/send_document.dart';
 
 class HomePage extends StatefulWidget {
@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> {
       case NavItem.courseView:
         return const ScreenCursos();
       case NavItem.emailView:
-        return const PageEmail();
+        return const PageDetailCourses();
       case NavItem.documentView:
         return const SendDocument();
       case NavItem.logout:

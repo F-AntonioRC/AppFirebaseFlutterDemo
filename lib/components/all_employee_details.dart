@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testwithfirebase/components/custom_snackbar.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
-import 'package:testwithfirebase/service/database.dart';
+import 'package:testwithfirebase/service/employeeService/database.dart';
 
 class AllEmployeeDetails extends StatelessWidget {
   final Stream? employeeStream;

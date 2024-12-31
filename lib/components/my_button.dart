@@ -20,14 +20,14 @@ class MyButton extends StatelessWidget {
             backgroundColor: buttonColor,
             foregroundColor: Colors.white,
             padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
           ),
           onPressed: onPressed,
           icon: icon,
           iconAlignment: IconAlignment.end,
           label: Text(
             text,
-            style: TextStyle(fontSize: responsiveFontSize(context, 18), fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: responsiveFontSize(context, 16), fontWeight: FontWeight.bold),
           ),
         )
       ],

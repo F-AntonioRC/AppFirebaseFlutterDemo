@@ -54,7 +54,6 @@ class DatabaseMethods {
           .doc(id)
           .update(updatedData);
     } catch (e) {
-      // Puedes usar un logger o mostrar el error al usuario
       throw Exception("Error al actualizar el empleado: $e");
     }
   }

@@ -10,6 +10,14 @@ class EditProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // Actualiza solo los campos que necesitas, reutilizable para diferentes tipos de datos
+  void updateData(Map<String, dynamic> updatedData) {
+    if (_data != null) {
+      _data!.addAll(updatedData); // Puedes fusionar los datos actuales con los nuevos
+      notifyListeners();
+    }
+  }
+
   void clearData() {
     _data = null;
     notifyListeners();

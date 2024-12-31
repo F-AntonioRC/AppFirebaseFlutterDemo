@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:testwithfirebase/components/MyPaginatedTable.dart';
 import 'package:testwithfirebase/components/dialog_email.dart';
-import 'package:testwithfirebase/service/database_detail_courses.dart';
+import 'package:testwithfirebase/service/detailCourseService/database_detail_courses.dart';
 import '../../dataConst/constand.dart';
+import '../../providers/edit_provider.dart';
 import '../custom_snackbar.dart';
 
 class TableViewDetailCourses extends StatelessWidget {
@@ -39,7 +41,6 @@ class TableViewDetailCourses extends StatelessWidget {
 
           return MyPaginatedTable(
             headers: const [
-              "Id",
               "Nombre",
               "Area",
               "Sare",
@@ -50,7 +51,6 @@ class TableViewDetailCourses extends StatelessWidget {
             ],
             data: data,
             fieldKeys: const [
-              'IdDetailCourse',
               "NameCourse",
               "NombreArea",
               "sare",
@@ -60,7 +60,9 @@ class TableViewDetailCourses extends StatelessWidget {
               "FechaenvioConstancia",
             ],
             onEdit: (String id) {
-              // Implementación futura
+              final selectedRow = data.firstWhere((row) => row[idKey] == id);
+              Provider.of<EditProvider>(context, listen: false)
+                  .setData(selectedRow);
             },
             onDelete: (String id) async {
               try {

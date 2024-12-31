@@ -32,11 +32,18 @@ class MethodsCourses {
   }
 
   //ACTULIZAR
-  Future<void> updateCourse(String id, Map<String, dynamic> updateInfo) async {
-    return await FirebaseFirestore.instance
-        .collection("Courses")
-        .doc(id)
-        .update(updateInfo);
+  Future<void> updateCourse(String id, Map<String, dynamic> updateData) async {
+    if(id.isEmpty || updateData.isEmpty) {
+      throw Exception("El ID o los datos están vacíos.");
+    }
+    try {
+      return await FirebaseFirestore.instance
+          .collection("Courses")
+          .doc(id)
+          .update(updateData);
+    } catch (e) {
+      throw Exception("Error al actualizar el curso: $e");
+    }
   }
 
   //ELIMINAR
