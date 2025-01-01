@@ -47,7 +47,7 @@ class TableViewDetailCourses extends StatelessWidget {
               "Estado",
               "Inicio curso",
               "Registro",
-              "Envío de Constancia",
+              "Envío Constancia",
             ],
             data: data,
             fieldKeys: const [

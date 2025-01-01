@@ -44,19 +44,15 @@ class _DetailCoursesState extends State<DetailCourses> {
   }
 
   void _initializeControllers(EditProvider provider) {
-    print(provider.data);
     if (isClearing) return;
 
-    if (provider.data != null) {
-      if (provider.data?['IdArea'] != null) {
-        _controllerArea.setDocument({'Id': provider.data?['IdArea']});
-      }
-      if (provider.data?['IdCourse'] != null) {
-        _controllerCourse.setDocument({'Id': provider.data?['IdCourse']});
-      }
-      if (provider.data?['IdSare'] != null) {
-        _controllerSare.setDocument({'Id': provider.data?['IdSare']});
-      }
+    final provider = Provider.of<EditProvider>(context, listen: false);
+    final data = provider.data ?? widget.initialData;
+
+    if (data != null) {
+      _setControllerData(_controllerArea, 'IdArea', 'NombreArea', data);
+      _setControllerData(_controllerCourse, 'IdCourse', 'NameCourse', data);
+      _setControllerData(_controllerSare, 'IdSare', 'sare', data);
     }
   }
 
@@ -69,6 +65,27 @@ class _DetailCoursesState extends State<DetailCourses> {
         _initializeControllers(provider);
       }
     });
+  }
+
+  void _stateInitial() {
+    setState(() {
+      // Obtener el curso y área seleccionados y actualizar el estado
+      selectedCourse = _controllerCourse.selectedDocument?['NameCourse'];
+      selectedArea = _controllerArea.selectedDocument?['NombreArea'];
+      selectedSare = _controllerSare.selectedDocument?['sare'];
+      idSare = _controllerSare.selectedDocument?['IdSare'];
+      idCourse = _controllerCourse.selectedDocument?['IdCourse'];
+      idArea = _controllerArea.selectedDocument?['IdArea'];
+    });
+  }
+
+  void _setControllerData(FirebaseDropdownController controller, String idKey, String nameKey, Map<String, dynamic> data) {
+    if (data[idKey] != null) {
+      controller.setDocument({
+        'Id': data[idKey],
+        nameKey: data[nameKey],
+      });
+    }
   }
 
   String? selectedCourse;
@@ -96,15 +113,7 @@ class _DetailCoursesState extends State<DetailCourses> {
         const SizedBox(height: 20.0),
         ActionsFormCheck(isEditing: widget.initialData != null,
         onAdd: () {
-          setState(() {
-            // Obtener el curso y área seleccionados y actualizar el estado
-            selectedCourse = _controllerCourse.selectedDocument?['NameCourse'];
-            selectedArea = _controllerArea.selectedDocument?['NombreArea'];
-            selectedSare = _controllerSare.selectedDocument?['sare'];
-            idSare = _controllerSare.selectedDocument?['IdSare'];
-            idCourse = _controllerCourse.selectedDocument?['IdCourse'];
-            idArea = _controllerArea.selectedDocument?['IdArea'];
-          });
+        _stateInitial();
           showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -123,19 +132,11 @@ class _DetailCoursesState extends State<DetailCourses> {
                       await databaseDetailCourses.addDetailCourse(
                           detailCourseMap, id);
                       _clearControllers();
-                    });
+                    }, messageSuccess: 'Curso asignado correctamente',);
               });
         },
         onUpdate: () {
-          setState(() {
-            // Obtener el curso y área seleccionados y actualizar el estado
-            selectedCourse = _controllerCourse.selectedDocument?['NameCourse'];
-            selectedArea = _controllerArea.selectedDocument?['NombreArea'];
-            selectedSare = _controllerSare.selectedDocument?['sare'];
-            idSare = _controllerSare.selectedDocument?['IdSare'];
-            idCourse = _controllerCourse.selectedDocument?['IdCourse'];
-            idArea = _controllerArea.selectedDocument?['IdArea'];
-          });
+          _stateInitial();
           showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -144,16 +145,19 @@ class _DetailCoursesState extends State<DetailCourses> {
                     dataTwo: selectedArea ?? selectedSare,
                     accept: () async {
                       final String documentId = widget.initialData?['IdDetailCourse'];
-                      Map<String, dynamic> detailCourseMap = {
+                      Map<String, dynamic> updateData = {
                         "IdDetailCourse": documentId,
-                        "IdCourse": idCourse,
-                        "IdArea": idArea,
-                        "IdSare": idSare,
-                        "Estado": "Activo"
+                        "IdCourse": _controllerCourse.selectedDocument?['IdCourse'] ??
+                            widget.initialData?['IdCourse'],
+                        "IdArea": _controllerArea.selectedDocument?['IdArea'] ??
+                      widget.initialData?['IdArea'],
+                        "IdSare": _controllerSare.selectedDocument?['IdSare'] ??
+                      widget.initialData?['IdSare'],
                       };
-                      //await databaseDetailCourses.updateDetalleCursos(id, updatedData);
+                      await databaseDetailCourses.updateDetalleCursos(documentId, updateData);
                       _clearControllers();
-                    });
+                      _clearProviderData();
+                    }, messageSuccess: 'Asignación editada correctamente',);
               });
         },
           onCancel: () {

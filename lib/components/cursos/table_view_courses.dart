@@ -41,12 +41,12 @@ class TableViewCourses extends StatelessWidget {
           final data = filteredData.isEmpty ? snapshot.data! : filteredData;
           return MyPaginatedTable(
             headers: const [
-              "Nombre del Curso",
+              "Nombre",
               "Trimestre",
               "Estado",
-              "Fecha inicio curso",
-              "Fecha de registro",
-              "Envio de Constancia"
+              "Inicio curso",
+              "Registro",
+              "Envio Constancia"
             ],
             data: data,
             fieldKeys: const [

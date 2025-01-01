@@ -8,11 +8,12 @@ class CustomDialog extends StatefulWidget {
   final String? dataOne;
   final String? dataTwo;
   final VoidCallback accept;
+  final String messageSuccess;
 
   const CustomDialog({super.key,
     required this.accept,
     this.dataOne,
-    this.dataTwo});
+    this.dataTwo, required this.messageSuccess});
 
   @override
   State<CustomDialog> createState() => _CustomDialogState();
@@ -95,12 +96,12 @@ Row(
           widget.accept();
           if (context.mounted) {
             showCustomSnackBar(
-                context, "¡Curso Asignado!", greenColor);
+                context, widget.messageSuccess, greenColor);
           }
         } catch (e) {
           if (context.mounted) {
             showCustomSnackBar(
-                context, "Error: $e", greenColor);
+                context, "Error: $e", Colors.red);
           }
         }
         Navigator.of(context).pop();
