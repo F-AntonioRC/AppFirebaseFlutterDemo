@@ -21,13 +21,11 @@ class _SendDocumentState extends State<SendDocument> {
               children: [
                 Expanded(
                     child: CardViewDataCourses(
-                        assetImagePath: 'assets/images/logo.jpg',
                         title: "Cursos asignados:",
                         subtitle: "Primer Trimestre")),
                 SizedBox(width: 10.0),
                 Expanded(
                     child: CardViewDataCourses(
-                        assetImagePath: 'assets/images/logo.jpg',
                         title: "Cursos asignados:",
                         subtitle: "Segundo Trimestre")),
               ],
@@ -39,13 +37,11 @@ class _SendDocumentState extends State<SendDocument> {
               children: [
                 Expanded(
                     child: CardViewDataCourses(
-                        assetImagePath: 'assets/images/logo.jpg',
                         title: "Cursos asignados:",
                         subtitle: "Tercer Trimestre")),
                 SizedBox(width: 10.0),
                 Expanded(
                     child: CardViewDataCourses(
-                        assetImagePath: 'assets/images/logo.jpg',
                         title: "Cursos asignados:",
                         subtitle: "Cuarto Trimestre")),
               ],

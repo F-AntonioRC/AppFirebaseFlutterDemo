@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 
 class CardViewDataCourses extends StatelessWidget {
-  final String assetImagePath;
   final String title;
   final String subtitle;
 
   const CardViewDataCourses({super.key,
-    required this.assetImagePath,
     required this.title,
     required this.subtitle});
 
   @override
   Widget build(BuildContext context) {
+    final String imagePath = 'assets/images/logoActualizado.jpg';
+
     // Obtener dimensiones de la pantalla
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -29,7 +29,7 @@ class CardViewDataCourses extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(10.0),
             child: Image.asset(
-              assetImagePath,
+              imagePath,
               width: screenWidth * 0.9,
               height: screenHeight * 0.25,
               fit: BoxFit.cover,

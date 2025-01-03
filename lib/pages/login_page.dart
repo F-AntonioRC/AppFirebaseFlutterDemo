@@ -4,7 +4,7 @@ import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/components/my_textfileld.dart';
 import 'package:testwithfirebase/components/password_input.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
-
+import 'package:testwithfirebase/pages/backgruond_main.dart';
 import '../util/responsive.dart';
 import 'forgot_password.dart';
 
@@ -24,150 +24,94 @@ class LoginPage extends StatelessWidget {
       await authService.signInWithEmailPassword(
           _emailController.text, _passwordController.text);
     } catch (e) {
-      showDialog(
-        context: context,
-        builder: ((context) => AlertDialog(
-              title: Text(e.toString()),
-            )),
-      );
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          builder: ((context) => AlertDialog(
+                title: Text(e.toString()),
+              )),
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ligthBackground,
-      body: SafeArea(
-          child: Stack(
+    return BackgruondMain(
+        formInit: SingleChildScrollView(
+      child: Column(
         children: [
-          Positioned(
-              top: 10,
-              left: 230,
-              child: Container(
-                width: 30,
-                height: 30,
-                decoration: const BoxDecoration(
-                    color: greenColor, shape: BoxShape.circle),
+          Text(
+            'Iniciar Sesión',
+            style: TextStyle(
+                fontSize: responsiveFontSize(context, 24),
+                fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 20.0),
+          MyTextfileld(
+            hindText: 'Correo',
+            icon: const Icon(Icons.email_outlined),
+            controller: _emailController,
+            keyboardType: TextInputType.emailAddress,
+          ),
+          const SizedBox(height: 15.0),
+          PasswordInput(
+            controller: _passwordController,
+            hindText: "Contraseña",
+            messageadd: true,
+          ),
+          const SizedBox(height: 20.0),
+          MyButton(
+            text: 'Login',
+            onPressed: () => login(context),
+            icon: const Icon(Icons.login),
+            buttonColor: greenColor,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ForgotPassword()));
+              },
+              child: Text(
+                "Olvide mi contraseña",
+                style: TextStyle(
+                    color: Colors.red,
+                    fontSize: responsiveFontSize(context, 18),
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.red),
               )),
-          Positioned(
-              top: 10,
-              left: 270,
-              child: Container(
-                width: 150,
-                height: 150,
-                decoration: const BoxDecoration(
-                    color: greenColor, shape: BoxShape.circle),
-              )),
-          Positioned(
-              bottom: 100,
-              right: 280,
-              child: Container(
-                width: 30,
-                height: 30,
-                decoration: const BoxDecoration(
-                    color: greenColor, shape: BoxShape.circle),
-              )),
-          Positioned(
-              bottom: 10,
-              right: 320,
-              child: Container(
-                width: 100,
-                height: 100,
-                decoration: const BoxDecoration(
-                    color: greenColor, shape: BoxShape.circle),
-              )),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  FractionallySizedBox(
-                    widthFactor: 0.80,
-                    child: Card(
-                        child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Text(
-                              'Iniciar Sesión',
-                              style: TextStyle(
-                                  fontSize: responsiveFontSize(context, 24),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 20.0),
-                            MyTextfileld(
-                              hindText: 'Correo',
-                              icon: const Icon(Icons.email_outlined),
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
-                            ),
-                            const SizedBox(height: 15.0),
-                            PasswordInput(
-                              controller: _passwordController,
-                              hindText: "Contraseña",
-                              messageadd: true,
-                            ),
-                            const SizedBox(height: 20.0),
-                            MyButton(
-                              text: 'Login',
-                              onPressed: () => login(context),
-                              icon: const Icon(Icons.arrow_forward), buttonColor: greenColor,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPassword()
-                                ));
-                              },
-                                child: Text(
-                              "Olvide mi contraseña",
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: responsiveFontSize(context, 18),
-                                  fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline,
-                              decorationColor: Colors.red),
-                            ))
-                          ],
-                        ),
-                      ),
-                    )),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 40.0),
-                      Text(
-                        '¿No tienes una cuenta? ',
-                        style: TextStyle(
-                            fontSize: responsiveFontSize(context, 20),
-                            fontWeight: FontWeight.bold),
-                      ),
-                      GestureDetector(
-                        onTap: onTap,
-                        child: Text(
-                          'Registrate',
-                          style: TextStyle(
-                              fontSize: responsiveFontSize(context, 20),
-                              fontWeight: FontWeight.bold,
-                              color: greenColor,
-                          decoration: TextDecoration.underline,
-                          decorationColor: greenColor),
-                        ),
-                      )
-                    ],
-                  )
-                ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 20.0),
+              Text(
+                '¿No tienes una cuenta? ',
+                style: TextStyle(
+                    fontSize: responsiveFontSize(context, 20),
+                    fontWeight: FontWeight.bold),
               ),
-            ),
+              GestureDetector(
+                onTap: onTap,
+                child: Text(
+                  'Registrate',
+                  style: TextStyle(
+                      fontSize: responsiveFontSize(context, 20),
+                      fontWeight: FontWeight.bold,
+                      color: greenColor,
+                      decoration: TextDecoration.underline,
+                      decorationColor: greenColor),
+                ),
+              )
+            ],
           )
         ],
-      )),
-    );
+      ),
+    ));
   }
 }

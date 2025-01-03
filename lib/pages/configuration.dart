@@ -20,7 +20,6 @@ class _ConfigurationState extends State<Configuration> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ThemeColor(),
-        SizedBox(height: 20.0),
         CardColors()
       ],
     ),);

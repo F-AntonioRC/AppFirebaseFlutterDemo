@@ -68,7 +68,7 @@ class _NavDrawerWidgetNormalState extends State<NavDrawerWidgetNormal> {
         decoration: const BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/backgroundProfile.jpeg'))),
+                image: AssetImage('assets/images/logoActualizado.jpg'))),
           currentAccountPicture: const CircleAvatar(
             backgroundImage: AssetImage('assets/images/profile.jpeg'),
           ),

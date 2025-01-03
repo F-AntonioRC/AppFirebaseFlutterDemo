@@ -9,9 +9,9 @@ class BodyWidgets extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Container(
-      margin: const EdgeInsets.all(10.0),
+      margin: const EdgeInsets.all(15.0),
       child: Card(
-        child: Padding(padding: const EdgeInsets.all(10.0),
+        child: Padding(padding: const EdgeInsets.all(15.0),
         child: body,
         ),
       ),
