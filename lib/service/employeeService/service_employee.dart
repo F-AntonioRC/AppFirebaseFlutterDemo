@@ -2,21 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 import 'package:testwithfirebase/components/custom_snackbar.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
-
 import '../../components/firebase_dropdown.dart';
 import 'database.dart';
 
-Future<void> addEmployee(
-  BuildContext context,
-  TextEditingController nameController,
-  String? sexDropdownValue,
-  FirebaseDropdownController controllerArea,
-  FirebaseDropdownController controllerSare,
-  FirebaseDropdownController controllerDependency,
-  VoidCallback clearControllers,
-) async {
+Future<void> addEmployee(BuildContext context,
+    TextEditingController nameController,
+    String? sexDropdownValue,
+    FirebaseDropdownController controllerArea,
+    FirebaseDropdownController controllerSare,
+    FirebaseDropdownController controllerDependency,
+    VoidCallback clearControllers,
+    VoidCallback refreshData
+    ) async {
   try {
-
     // Validaciones de los campos
     if (nameController.text.isEmpty) {
       showCustomSnackBar(context, "Por favor, ingresa un nombre", Colors.red);
@@ -45,9 +43,9 @@ Future<void> addEmployee(
       "Area": controllerArea.selectedDocument?['NombreArea'],
       "IdArea": controllerArea.selectedDocument?['IdArea'],
       "IdSare": controllerSare.selectedDocument?['IdSare'],
-      "Sare": controllerSare.selectedDocument?['Sare'],
+      "Sare": controllerSare.selectedDocument?['sare'],
       "Dependencia":
-          controllerDependency.selectedDocument?['NombreDependencia'],
+      controllerDependency.selectedDocument?['NombreDependencia'],
       "IdDependencia": controllerDependency.selectedDocument?['IdDependencia'],
     };
 
@@ -60,8 +58,9 @@ Future<void> addEmployee(
         greenColor,
       );
     }
-    // Limpiar las entradas
+    // Limpiar y actualizar las entradas
     clearControllers();
+    refreshData();
   } catch (e) {
     if (context.mounted) {
       showCustomSnackBar(context, "Error: $e", Colors.red);
@@ -69,17 +68,17 @@ Future<void> addEmployee(
   }
 }
 
-Future<void> updateEmployee(
-  BuildContext context,
-  String documentId,
-  TextEditingController nameController,
-  String? sexDropdownValue,
-  FirebaseDropdownController controllerArea,
-  FirebaseDropdownController controllerSare,
-  FirebaseDropdownController controllerDependency,
-  Map<String, dynamic>? initialData,
-  VoidCallback clearControllers,
-) async {
+Future<void> updateEmployee(BuildContext context,
+    String documentId,
+    TextEditingController nameController,
+    String? sexDropdownValue,
+    FirebaseDropdownController controllerArea,
+    FirebaseDropdownController controllerSare,
+    FirebaseDropdownController controllerDependency,
+    Map<String, dynamic>? initialData,
+    VoidCallback clearControllers,
+    VoidCallback refreshData
+    ) async {
   try {
     // Crear el mapa con los datos actualizados
     Map<String, dynamic> updateData = {
@@ -87,22 +86,23 @@ Future<void> updateEmployee(
       'Nombre': nameController.text,
       'Sexo': sexDropdownValue.toString(),
       'IdArea':
-          controllerArea.selectedDocument?['IdArea'] ?? initialData?['IdArea'],
+      controllerArea.selectedDocument?['IdArea'] ?? initialData?['IdArea'],
       'IdSare':
-          controllerSare.selectedDocument?['IdSare'] ?? initialData?['IdSare'],
+      controllerSare.selectedDocument?['IdSare'] ?? initialData?['IdSare'],
       'IdDependencia':
-          controllerDependency.selectedDocument?['IdDependencia'] ??
-              initialData?['IdDependencia'],
+      controllerDependency.selectedDocument?['IdDependencia'] ??
+          initialData?['IdDependencia'],
       'Area': controllerArea.selectedDocument?['NombreArea'] ??
           initialData?['Area'],
       'Sare': controllerSare.selectedDocument?['sare'] ?? initialData?['Sare'],
       'Dependencia':
-          controllerDependency.selectedDocument?['NombreDependencia'] ??
-              initialData?['Dependencia'],
+      controllerDependency.selectedDocument?['NombreDependencia'] ??
+          initialData?['Dependencia'],
     };
 
     // Llamar al metodo del servicio para actualizar los datos
     await DatabaseMethods().updateEmployeeDetail(documentId, updateData);
+
     if (context.mounted) {
       showCustomSnackBar(
         context,
@@ -110,9 +110,8 @@ Future<void> updateEmployee(
         greenColor,
       );
     }
-
-    // Limpiar los controladores
     clearControllers();
+    refreshData();
   } catch (e) {
     if (context.mounted) {
       showCustomSnackBar(context, "Error: $e", Colors.red);

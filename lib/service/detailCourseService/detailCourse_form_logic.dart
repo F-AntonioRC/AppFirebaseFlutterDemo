@@ -1,27 +1,19 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import '../../components/firebase_dropdown.dart';
+import 'package:testwithfirebase/components/firebase_dropdown.dart';
 import '../../providers/edit_provider.dart';
 
-class EmployeeFormLogic {
-  final List<String> dropdownSex = ['M', 'F'];
-  String? sexDropdownValue;
-
+class DetailCourseFormLogic {
   final FirebaseDropdownController controllerArea = FirebaseDropdownController();
   final FirebaseDropdownController controllerSare = FirebaseDropdownController();
-  final FirebaseDropdownController controllerDependency = FirebaseDropdownController();
-
-  final TextEditingController nameController = TextEditingController();
+  final FirebaseDropdownController controllerCourses = FirebaseDropdownController();
 
   bool isClearing = false;
 
-  /// Limpia los controladores
-  void clearControllers() {
-    nameController.clear();
-    sexDropdownValue = null;
+  void clearControllers () {
     controllerArea.clearSelection();
     controllerSare.clearSelection();
-    controllerDependency.clearSelection();
+    controllerCourses.clearSelection();
   }
 
   /// Limpia los datos del proveedor
@@ -41,27 +33,27 @@ class EmployeeFormLogic {
     if (isClearing) return;
 
     if (provider.data != null) {
-      nameController.text = provider.data?['Nombre'] ?? '';
-      sexDropdownValue = provider.data?['Sexo'] ?? '';
 
-      if (provider.data?['Area'] != null) {
+      if (provider.data?['IdArea'] != null) {
         controllerArea.setDocument({
           'Id': provider.data?['IdArea'],
-          'Area': provider.data?['Area']
+          'NombreArea': provider.data?['NombreArea']
         });
       }
-      if (provider.data?['Dependencia'] != null) {
-        controllerDependency.setDocument({
-          'Id': provider.data?['IdDependencia'],
-          'Dependencia': provider.data?['Dependencia']
+      if (provider.data?['IdCourse'] != null) {
+        controllerCourses.setDocument({
+          'Id': provider.data?['IdCourse'],
+          'NameCourse': provider.data?['NameCourse']
         });
       }
-      if (provider.data?['Sare'] != null) {
+      if (provider.data?['IdSare'] != null) {
         controllerSare.setDocument({
           'Id': provider.data?['IdSare'],
-          'Sare': provider.data?['Sare']
+          'sare': provider.data?['sare']
         });
       }
     }
   }
+
+
 }

@@ -34,6 +34,12 @@ class CourseFormLogic {
     provider.clearData();
   }
 
+  /// Actualizar la vista
+  void refreshProviderData(BuildContext context) {
+    final provier = Provider.of<EditProvider>(context, listen: false);
+    provier.refreshData();
+  }
+
   void initializeControllers(BuildContext context, EditProvider provider) {
     if (isClearing) return;
     if (provider.data != null) {

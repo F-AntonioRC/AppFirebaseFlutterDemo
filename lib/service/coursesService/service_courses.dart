@@ -13,13 +13,14 @@ Future<void> addCourse(
     TextEditingController registroController,
     TextEditingController envioConstanciaController,
     String? trimestreValue,
-    VoidCallback clearControllers
+    VoidCallback clearControllers,
+    VoidCallback refreshData
     ) async {
 
   try {
 
     if(nameCourseController.text.isEmpty) {
-      showCustomSnackBar(context, "Por favor, ingresa un nombre", Colors.red);
+      showCustomSnackBar(context, "Por favor, ingresa un nombre de Curso", Colors.red);
       return;
     }
 
@@ -61,6 +62,7 @@ Future<void> addCourse(
           context, "Curso añadido correctamente", greenColor);
     }
     clearControllers();
+    refreshData();
 
   } catch(e) {
     if (context.mounted) {
@@ -79,7 +81,8 @@ Future<void> updateCourse(
     TextEditingController registroController,
     TextEditingController envioConstanciaController,
     String? trimestreValue,
-    VoidCallback clearControllers
+    VoidCallback clearControllers,
+    VoidCallback refreshData
     ) async {
   try{
     Map<String, dynamic> updateInfoMap = {
@@ -102,6 +105,7 @@ Future<void> updateCourse(
     }
     // Limpiar los controladores
     clearControllers();
+    refreshData();
 
   } catch (e) {
     if (context.mounted) {

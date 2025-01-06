@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class EditProvider with ChangeNotifier {
+class EditProvider extends ChangeNotifier {
   Map<String, dynamic>? _data;
 
   Map<String, dynamic>? get data => _data;
@@ -20,6 +20,10 @@ class EditProvider with ChangeNotifier {
 
   void clearData() {
     _data = null;
+    notifyListeners();
+  }
+
+  void refreshData() {
     notifyListeners();
   }
 }

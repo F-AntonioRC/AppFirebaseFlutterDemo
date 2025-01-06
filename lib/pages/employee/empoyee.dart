@@ -64,7 +64,9 @@ class _EmployeeState extends State<Employee> {
                   _formLogic.controllerArea,
                   _formLogic.controllerSare,
                   _formLogic.controllerDependency,
-                  _formLogic.clearControllers);
+                  _formLogic.clearControllers,
+                  () => _formLogic.refreshProviderData(context)
+              );
             },
             onUpdate: () async {
               final String documentId = widget.initialData?['IdEmployee'];
@@ -77,7 +79,8 @@ class _EmployeeState extends State<Employee> {
                   _formLogic.controllerSare,
                   _formLogic.controllerDependency,
                   widget.initialData,
-                  () => _formLogic.clearProviderData(context));
+                  () => _formLogic.clearProviderData(context),
+                  () => _formLogic.refreshProviderData(context));
                   _formLogic.clearControllers();
             },
             onCancel: () {

@@ -26,73 +26,75 @@ class TableViewCourses extends StatelessWidget {
   Widget build(BuildContext context) {
     const String idKey = "IdCourse";
 
-    return FutureBuilder(
-      future: viewInactivos
-          ? methodsCourses.getAllCoursesInac()
-          : methodsCourses.getAllCourses(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('No se encontraron cursos.'));
-        } else {
-          final data = filteredData.isEmpty ? snapshot.data! : filteredData;
-          return MyPaginatedTable(
-            headers: const [
-              "Nombre",
-              "Trimestre",
-              "Estado",
-              "Inicio curso",
-              "Registro",
-              "Envio Constancia"
-            ],
-            data: data,
-            fieldKeys: const [
-              "NameCourse",
-              "Trimestre",
-              "Estado",
-              "FechaInicioCurso",
-              "Fecharegistro",
-              "FechaenvioConstancia"
-            ],
-            onEdit: (String id) {
-              final selectedRow = data.firstWhere((row) => row[idKey] == id);
-              
-              Provider.of<EditProvider>(context, listen: false).setData(selectedRow);
-            },
-            onDelete: (String id) async {
-              try {
-                await methodsCourses.deleteCoursesDetail(id);
-                refreshTable();
-                if(context.mounted) {
-                  showCustomSnackBar(context, "Curso eliminado correctamente", greenColor);
+    return Consumer<EditProvider>(builder: (context, editProvider, child) {
+      return FutureBuilder(
+        future: viewInactivos
+            ? methodsCourses.getAllCoursesInac()
+            : methodsCourses.getAllCourses(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No se encontraron cursos.'));
+          } else {
+            final data = filteredData.isEmpty ? snapshot.data! : filteredData;
+            return MyPaginatedTable(
+              headers: const [
+                "Nombre",
+                "Trimestre",
+                "Estado",
+                "Inicio curso",
+                "Registro",
+                "Envio Constancia"
+              ],
+              data: data,
+              fieldKeys: const [
+                "NameCourse",
+                "Trimestre",
+                "Estado",
+                "FechaInicioCurso",
+                "Fecharegistro",
+                "FechaenvioConstancia"
+              ],
+              onEdit: (String id) {
+                final selectedRow = data.firstWhere((row) => row[idKey] == id);
+
+                Provider.of<EditProvider>(context, listen: false).setData(selectedRow);
+              },
+              onDelete: (String id) async {
+                try {
+                  await methodsCourses.deleteCoursesDetail(id);
+                  refreshTable();
+                  if(context.mounted) {
+                    showCustomSnackBar(context, "Curso eliminado correctamente", greenColor);
+                  }
+                } catch (e) {
+                  if(context.mounted) {
+                    showCustomSnackBar(context, "Error: $e", Colors.red);
+                  }
                 }
-              } catch (e) {
-               if(context.mounted) {
-                 showCustomSnackBar(context, "Error: $e", Colors.red);
-               }
-              }
-            },
-            idKey: idKey,
-            onActive: isActive,
-            activateFunction: (String id) async {
-              try {
-                await methodsCourses.activateCoursesDetail(id);
-                refreshTable();
-                if(context.mounted) {
-                  showCustomSnackBar(context, "Curso restaurado correctamente", greenColor);
+              },
+              idKey: idKey,
+              onActive: isActive,
+              activateFunction: (String id) async {
+                try {
+                  await methodsCourses.activateCoursesDetail(id);
+                  refreshTable();
+                  if(context.mounted) {
+                    showCustomSnackBar(context, "Curso restaurado correctamente", greenColor);
+                  }
+                } catch (e) {
+                  if(context.mounted) {
+                    showCustomSnackBar(context, "Error: $e", Colors.red);
+                  }
                 }
-              } catch (e) {
-                if(context.mounted) {
-                  showCustomSnackBar(context, "Error: $e", Colors.red);
-                }
-              }
-            },
-          );
-        }
-      },
-    );
+              },
+            );
+          }
+        },
+      );
+    });
   }
 }

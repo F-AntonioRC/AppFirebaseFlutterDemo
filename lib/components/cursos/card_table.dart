@@ -49,7 +49,9 @@ class _CardTableState extends State<CardTableCourses> {
         });
       } catch (e) {
         setState(() => _isLoading = false);
-        showCustomSnackBar(context, "Error: $e", Colors.red);
+        if(mounted) {
+          showCustomSnackBar(context, "Error: $e", Colors.red);
+        }
       }
     });
   }

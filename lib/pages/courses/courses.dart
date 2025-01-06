@@ -64,7 +64,9 @@ class _CoursesState extends State<Courses> {
                   _courseLogic.registroController,
                   _courseLogic.envioConstanciaController,
                   _courseLogic.trimestreValue,
-                  _courseLogic.clearControllers);
+                  _courseLogic.clearControllers,
+                  () => _courseLogic.refreshProviderData(context)
+              );
             },
             onUpdate: () async {
               final String documentId = widget.initialData?['IdCourse'];
@@ -78,7 +80,9 @@ class _CoursesState extends State<Courses> {
                   _courseLogic.registroController,
                   _courseLogic.envioConstanciaController,
                   _courseLogic.trimestreValue,
-                  () => _courseLogic.clearProviderData(context));
+                  () => _courseLogic.clearProviderData(context),
+                  () => _courseLogic.refreshProviderData(context)
+              );
               _courseLogic.clearControllers();
             },
             onCancel: () {

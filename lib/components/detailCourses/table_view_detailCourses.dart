@@ -25,60 +25,62 @@ class TableViewDetailCourses extends StatelessWidget {
   Widget build(BuildContext context) {
     const String idKey = "IdDetailCourse";
 
-    return FutureBuilder(
-      future: viewInactivos
-          ? methodsDetailCourses.getDatosDetalleCursosInac()
-          : methodsDetailCourses.getDatosDetalleCursosActivos(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('No se encontraron cursos.'));
-        } else {
-          final data = filteredData.isEmpty ? snapshot.data! : filteredData;
+    return Consumer<EditProvider>(builder:
+    (context, editProvider, child) {
+      return FutureBuilder(
+        future: viewInactivos
+            ? methodsDetailCourses.getDatosDetalleCursosInac()
+            : methodsDetailCourses.getDatosDetalleCursosActivos(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No se encontraron cursos.'));
+          } else {
+            final data = filteredData.isEmpty ? snapshot.data! : filteredData;
 
-          return MyPaginatedTable(
-            headers: const [
-              "Nombre",
-              "Area",
-              "Sare",
-              "Estado",
-              "Inicio curso",
-              "Registro",
-              "Envío Constancia",
-            ],
-            data: data,
-            fieldKeys: const [
-              "NameCourse",
-              "NombreArea",
-              "sare",
-              "Estado",
-              "FechaInicioCurso",
-              "Fecharegistro",
-              "FechaenvioConstancia",
-            ],
-            onEdit: (String id) {
-              final selectedRow = data.firstWhere((row) => row[idKey] == id);
-              Provider.of<EditProvider>(context, listen: false)
-                  .setData(selectedRow);
-            },
-            onDelete: (String id) async {
-              try {
-                await methodsDetailCourses.deleteDetalleCursos(id);
-                refreshTable();
-                if (context.mounted) {
-                  showCustomSnackBar(
-                      context, "Curso eliminado correctamente", greenColor);
+            return MyPaginatedTable(
+              headers: const [
+                "Nombre",
+                "Area",
+                "Sare",
+                "Estado",
+                "Inicio curso",
+                "Registro",
+                "Envío Constancia",
+              ],
+              data: data,
+              fieldKeys: const [
+                "NameCourse",
+                "NombreArea",
+                "sare",
+                "Estado",
+                "FechaInicioCurso",
+                "Fecharegistro",
+                "FechaenvioConstancia",
+              ],
+              onEdit: (String id) {
+                final selectedRow = data.firstWhere((row) => row[idKey] == id);
+                Provider.of<EditProvider>(context, listen: false)
+                    .setData(selectedRow);
+              },
+              onDelete: (String id) async {
+                try {
+                  await methodsDetailCourses.deleteDetalleCursos(id);
+                  refreshTable();
+                  if (context.mounted) {
+                    showCustomSnackBar(
+                        context, "Curso eliminado correctamente", greenColor);
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    showCustomSnackBar(context, "Error: $e", Colors.red);
+                  }
                 }
-              } catch (e) {
-                if (context.mounted) {
-                  showCustomSnackBar(context, "Error: $e", Colors.red);
-                }
-              }
-            },
-            onAssign: (String id) {
+              },
+              onAssign: (String id) {
                 final selectedRow = data.firstWhere((row) => row[idKey] == id, orElse: () => {});
 
                 if(selectedRow.isNotEmpty) {
@@ -108,28 +110,29 @@ class TableViewDetailCourses extends StatelessWidget {
                   );
                 } else {}
 
-            },
-            tooltipAssign: "Enviar correos",
-            iconAssign: const Icon(Icons.outgoing_mail, color: Colors.blue,),
-            idKey: idKey,
-            onActive: isActive,
-            activateFunction: (String id) async {
-              try {
-                await methodsDetailCourses.ActivarDetalleCurso(id);
-                refreshTable();
-                if (context.mounted) {
-                  showCustomSnackBar(
-                      context, "Curso restaurado correctamente", greenColor);
+              },
+              tooltipAssign: "Enviar correos",
+              iconAssign: const Icon(Icons.outgoing_mail, color: Colors.blue,),
+              idKey: idKey,
+              onActive: isActive,
+              activateFunction: (String id) async {
+                try {
+                  await methodsDetailCourses.ActivarDetalleCurso(id);
+                  refreshTable();
+                  if (context.mounted) {
+                    showCustomSnackBar(
+                        context, "Curso restaurado correctamente", greenColor);
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    showCustomSnackBar(context, "Error: $e", Colors.red);
+                  }
                 }
-              } catch (e) {
-                if (context.mounted) {
-                  showCustomSnackBar(context, "Error: $e", Colors.red);
-                }
-              }
-            },
-          );
-        }
-      },
-    );
+              },
+            );
+          }
+        },
+      );
+    });
   }
 }

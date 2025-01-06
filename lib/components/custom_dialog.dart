@@ -7,13 +7,17 @@ import 'my_button.dart';
 class CustomDialog extends StatefulWidget {
   final String? dataOne;
   final String? dataTwo;
+  final String? dataThree;
   final VoidCallback accept;
   final String messageSuccess;
 
-  const CustomDialog({super.key,
-    required this.accept,
-    this.dataOne,
-    this.dataTwo, required this.messageSuccess});
+  const CustomDialog(
+      {super.key,
+      required this.accept,
+      this.dataOne,
+      this.dataTwo,
+      required this.messageSuccess,
+      this.dataThree});
 
   @override
   State<CustomDialog> createState() => _CustomDialogState();
@@ -24,12 +28,14 @@ class _CustomDialogState extends State<CustomDialog> {
 
   late TextEditingController _dataTwoController;
 
+  late TextEditingController _dataThreeController;
   @override
   void initState() {
     super.initState();
     // Inicializa el controlador con el valor de dataChange
     _dataOneController = TextEditingController(text: widget.dataOne);
     _dataTwoController = TextEditingController(text: widget.dataTwo);
+    _dataThreeController = TextEditingController(text: widget.dataThree);
   }
 
   @override
@@ -37,6 +43,7 @@ class _CustomDialogState extends State<CustomDialog> {
     // Libera el controlador para evitar fugas de memoria
     _dataOneController.dispose();
     _dataTwoController.dispose();
+    _dataThreeController.dispose();
     super.dispose();
   }
 
@@ -49,27 +56,33 @@ class _CustomDialogState extends State<CustomDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if(widget.dataOne != null)
-            Text("Curso seleccionado",
-              style: TextStyle(fontSize: responsiveFontSize(context, 15), fontWeight: FontWeight.bold),),
-            const SizedBox(height: 10.0),
-            TextField(
-                readOnly: true,
-                controller: _dataOneController,
-                decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.account_box),
-                    disabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: theme.hintColor),
-                        borderRadius: BorderRadius.circular(10.0)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: theme.hintColor),
-                        borderRadius: BorderRadius.circular(10.0))
-                )
+          if (widget.dataOne != null)
+            Text(
+              "Curso seleccionado",
+              style: TextStyle(
+                  fontSize: responsiveFontSize(context, 15),
+                  fontWeight: FontWeight.bold),
             ),
           const SizedBox(height: 10.0),
-          if(widget.dataTwo != null)
-            Text("Area/Sare asigando",
-              style: TextStyle(fontSize: responsiveFontSize(context, 15), fontWeight: FontWeight.bold),),
+          TextField(
+              readOnly: true,
+              controller: _dataOneController,
+              decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.account_box),
+                  disabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: theme.hintColor),
+                      borderRadius: BorderRadius.circular(10.0)),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: theme.hintColor),
+                      borderRadius: BorderRadius.circular(10.0)))),
+          const SizedBox(height: 10.0),
+          if (widget.dataTwo != null) ... [
+            Text(
+              "Area asigando",
+              style: TextStyle(
+                  fontSize: responsiveFontSize(context, 15),
+                  fontWeight: FontWeight.bold),
+            ),
           const SizedBox(height: 10.0),
           TextField(
               readOnly: true,
@@ -81,42 +94,64 @@ class _CustomDialogState extends State<CustomDialog> {
                       borderRadius: BorderRadius.circular(10.0)),
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: theme.hintColor),
-                      borderRadius: BorderRadius.circular(10.0))
-              )
-          ),
+                      borderRadius: BorderRadius.circular(10.0)))),
+          const SizedBox(height: 10.0), ],
+          if (widget.dataThree != null) ... [
+            Text(
+              "Sare asigando",
+              style: TextStyle(
+                  fontSize: responsiveFontSize(context, 15),
+                  fontWeight: FontWeight.bold),
+            ),
+          const SizedBox(height: 10.0),
+          TextField(
+              readOnly: true,
+              controller: _dataThreeController,
+              decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.account_box),
+                  disabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: theme.hintColor),
+                      borderRadius: BorderRadius.circular(10.0)),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: theme.hintColor),
+                      borderRadius: BorderRadius.circular(10.0)))),
+          ]
         ],
       ),
       actions: [
-Row(
-  mainAxisAlignment: MainAxisAlignment.center,
-  children: [
-    MyButton(text: "Aceptar", icon: const Icon(Icons.check_circle_outline),
-      buttonColor: greenColor, onPressed: () {
-        try {
-          widget.accept();
-          if (context.mounted) {
-            showCustomSnackBar(
-                context, widget.messageSuccess, greenColor);
-          }
-        } catch (e) {
-          if (context.mounted) {
-            showCustomSnackBar(
-                context, "Error: $e", Colors.red);
-          }
-        }
-        Navigator.of(context).pop();
-      },),
-    const SizedBox(width: 10.0),
-    MyButton(
-      text: "Cancelar",
-      icon: const Icon(Icons.cancel_outlined),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-      buttonColor: Colors.red,
-    ),
-  ],
-)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            MyButton(
+              text: "Aceptar",
+              icon: const Icon(Icons.check_circle_outline),
+              buttonColor: greenColor,
+              onPressed: () {
+                try {
+                  widget.accept();
+                  if (context.mounted) {
+                    showCustomSnackBar(
+                        context, widget.messageSuccess, greenColor);
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    showCustomSnackBar(context, "Error: $e", Colors.red);
+                  }
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+            const SizedBox(width: 10.0),
+            MyButton(
+              text: "Cancelar",
+              icon: const Icon(Icons.cancel_outlined),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              buttonColor: Colors.red,
+            ),
+          ],
+        )
       ],
     );
   }
