@@ -53,8 +53,8 @@ class TableViewCourses extends StatelessWidget {
               "NameCourse",
               "Trimestre",
               "Estado",
-              "Fecharegistro",
               "FechaInicioCurso",
+              "Fecharegistro",
               "FechaenvioConstancia"
             ],
             onEdit: (String id) {

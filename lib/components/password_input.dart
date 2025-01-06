@@ -6,7 +6,11 @@ class PasswordInput extends StatelessWidget {
   final String hindText;
   final bool messageadd;
 
-  const PasswordInput({super.key, required this.controller, required this.hindText, required this.messageadd});
+  const PasswordInput(
+      {super.key,
+      required this.controller,
+      required this.hindText,
+      required this.messageadd});
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +32,11 @@ class PasswordInput extends StatelessWidget {
           borderSide: BorderSide(width: 2, color: Colors.grey.shade500),
         ),
       ),
-      errorMessage:
-        messageadd
-            ? "Por favor ingrese la contraseña"
-            : "Recomendacion de contraseña: \n- Letras Mayusculas y minusculas \n- Numeros y simbolos \n- Minimo 8 caracteres",
+      errorMessage: messageadd
+          ? "Por favor ingrese la contraseña"
+          : "Recomendacion de contraseña: "
+          "\n- Letras Mayusculas y minusculas 8 caracteres "
+          "\n- Combine con numeros y simbolos",
     );
   }
-
-
 }

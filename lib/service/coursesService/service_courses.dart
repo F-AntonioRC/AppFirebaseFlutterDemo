@@ -17,6 +17,32 @@ Future<void> addCourse(
     ) async {
 
   try {
+
+    if(nameCourseController.text.isEmpty) {
+      showCustomSnackBar(context, "Por favor, ingresa un nombre", Colors.red);
+      return;
+    }
+
+    if(trimestreValue == null) {
+      showCustomSnackBar(context, "Por favor, selecciona un Trimestre", Colors.red);
+      return;
+    }
+
+    if(dateController.text.isEmpty) {
+      showCustomSnackBar(context, "Por favor, ingresa una fecha de Inicio", Colors.red);
+      return;
+    }
+
+    if(registroController.text.isEmpty) {
+      showCustomSnackBar(context, "Por favor, ingresa una fecha de Registro", Colors.red);
+      return;
+    }
+
+    if(envioConstanciaController.text.isEmpty) {
+      showCustomSnackBar(context, "Por favor, ingresa una fecha para las Constancias", Colors.red);
+      return;
+    }
+
     String id = randomAlphaNumeric(3);
     Map<String, dynamic> courseInfoMap = {
       "IdCourse": id,

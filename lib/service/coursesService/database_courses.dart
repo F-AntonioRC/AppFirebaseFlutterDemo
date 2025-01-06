@@ -11,29 +11,40 @@ class MethodsCourses {
 
   //OBTENER TODOS LOS CURSOS ACTIVOS
   Future<List<Map<String, dynamic>>> getAllCourses() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Courses').where('Estado', isEqualTo: 'Activo').get();
-    return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('Courses')
+        .where('Estado', isEqualTo: 'Activo')
+        .get();
+    return querySnapshot.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
   }
 
   //OBTENER TODOS LOS CURSOS DESACTIVADOS
   Future<List<Map<String, dynamic>>> getAllCoursesInac() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Courses').where('Estado', isEqualTo: 'Inactivo').get();
-    return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('Courses')
+        .where('Estado', isEqualTo: 'Inactivo')
+        .get();
+    return querySnapshot.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
   }
 
   //ACTIVAR
   Future activateCoursesDetail(String id) async {
-    try{
-      DocumentReference documentReference = FirebaseFirestore.instance.collection('Courses').doc(id);
-      await documentReference.update({'Estado' : 'Activo'});
-    } catch(e) {
+    try {
+      DocumentReference documentReference =
+          FirebaseFirestore.instance.collection('Courses').doc(id);
+      await documentReference.update({'Estado': 'Activo'});
+    } catch (e) {
       print("Error: $e");
     }
   }
 
   //ACTULIZAR
   Future<void> updateCourse(String id, Map<String, dynamic> updateData) async {
-    if(id.isEmpty || updateData.isEmpty) {
+    if (id.isEmpty || updateData.isEmpty) {
       throw Exception("El ID o los datos están vacíos.");
     }
     try {
@@ -48,10 +59,11 @@ class MethodsCourses {
 
   //ELIMINAR
   Future deleteCoursesDetail(String id) async {
-    try{
-      DocumentReference documentReference = FirebaseFirestore.instance.collection('Courses').doc(id);
-      await documentReference.update({'Estado' : 'Inactivo'});
-    } catch(e) {
+    try {
+      DocumentReference documentReference =
+          FirebaseFirestore.instance.collection('Courses').doc(id);
+      await documentReference.update({'Estado': 'Inactivo'});
+    } catch (e) {
       print("Error: $e");
     }
   }
@@ -61,10 +73,11 @@ class MethodsCourses {
     final querySnapshot = await FirebaseFirestore.instance
         .collection('Courses')
         .where('NameCourse', isGreaterThanOrEqualTo: name)
-        .where('NameCourse', isLessThan: '${name}z') // Para búsquedas "que empiezan con minuscula"
+        .where('NameCourse',
+            isLessThan:
+                '${name}z') // Para búsquedas "que empiezan con minuscula"
         .get();
 
     return querySnapshot.docs.map((doc) => doc.data()).toList();
   }
-
 }

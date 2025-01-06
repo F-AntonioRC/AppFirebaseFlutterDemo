@@ -7,15 +7,35 @@ import '../../components/firebase_dropdown.dart';
 import 'database.dart';
 
 Future<void> addEmployee(
-    BuildContext context,
-    TextEditingController nameController,
-    String? sexDropdownValue,
-    FirebaseDropdownController controllerArea,
-    FirebaseDropdownController controllerSare,
-    FirebaseDropdownController controllerDependency,
-    VoidCallback clearControllers,
-    ) async {
+  BuildContext context,
+  TextEditingController nameController,
+  String? sexDropdownValue,
+  FirebaseDropdownController controllerArea,
+  FirebaseDropdownController controllerSare,
+  FirebaseDropdownController controllerDependency,
+  VoidCallback clearControllers,
+) async {
   try {
+
+    // Validaciones de los campos
+    if (nameController.text.isEmpty) {
+      showCustomSnackBar(context, "Por favor, ingresa un nombre", Colors.red);
+      return;
+    }
+
+    if (sexDropdownValue == null || sexDropdownValue.isEmpty) {
+      showCustomSnackBar(
+          context, "Por favor, selecciona un sexo", Colors.red);
+      return;
+    }
+
+    if (controllerDependency.selectedDocument == null) {
+      showCustomSnackBar(
+          context, "Por favor, selecciona una dependencia", Colors.red);
+      return;
+    }
+
+
     String id = randomAlphaNumeric(3);
     Map<String, dynamic> employeeInfoMap = {
       "IdEmployee": id,
@@ -26,7 +46,8 @@ Future<void> addEmployee(
       "IdArea": controllerArea.selectedDocument?['IdArea'],
       "IdSare": controllerSare.selectedDocument?['IdSare'],
       "Sare": controllerSare.selectedDocument?['Sare'],
-      "Dependencia": controllerDependency.selectedDocument?['NombreDependencia'],
+      "Dependencia":
+          controllerDependency.selectedDocument?['NombreDependencia'],
       "IdDependencia": controllerDependency.selectedDocument?['IdDependencia'],
     };
 
@@ -49,34 +70,35 @@ Future<void> addEmployee(
 }
 
 Future<void> updateEmployee(
-    BuildContext context,
-    String documentId,
-    TextEditingController nameController,
-    String? sexDropdownValue,
-    FirebaseDropdownController controllerArea,
-    FirebaseDropdownController controllerSare,
-    FirebaseDropdownController controllerDependency,
-    Map<String, dynamic>? initialData,
-    VoidCallback clearControllers,
-    ) async {
+  BuildContext context,
+  String documentId,
+  TextEditingController nameController,
+  String? sexDropdownValue,
+  FirebaseDropdownController controllerArea,
+  FirebaseDropdownController controllerSare,
+  FirebaseDropdownController controllerDependency,
+  Map<String, dynamic>? initialData,
+  VoidCallback clearControllers,
+) async {
   try {
     // Crear el mapa con los datos actualizados
     Map<String, dynamic> updateData = {
       'IdEmployee': documentId,
       'Nombre': nameController.text,
-      'Sexo': sexDropdownValue,
-      'IdArea': controllerArea.selectedDocument?['IdArea'] ??
-          initialData?['IdArea'],
-      'IdSare': controllerSare.selectedDocument?['IdSare'] ??
-          initialData?['IdSare'],
-      'IdDependencia': controllerDependency.selectedDocument?['IdDependencia'] ??
-          initialData?['IdDependencia'],
-      'Area': controllerArea.selectedDocument?['Area'] ??
+      'Sexo': sexDropdownValue.toString(),
+      'IdArea':
+          controllerArea.selectedDocument?['IdArea'] ?? initialData?['IdArea'],
+      'IdSare':
+          controllerSare.selectedDocument?['IdSare'] ?? initialData?['IdSare'],
+      'IdDependencia':
+          controllerDependency.selectedDocument?['IdDependencia'] ??
+              initialData?['IdDependencia'],
+      'Area': controllerArea.selectedDocument?['NombreArea'] ??
           initialData?['Area'],
-      'Sare': controllerSare.selectedDocument?['Sare'] ??
-          initialData?['Sare'],
-      'Dependencia': controllerDependency.selectedDocument?['Dependencia'] ??
-          initialData?['Dependencia'],
+      'Sare': controllerSare.selectedDocument?['sare'] ?? initialData?['Sare'],
+      'Dependencia':
+          controllerDependency.selectedDocument?['NombreDependencia'] ??
+              initialData?['Dependencia'],
     };
 
     // Llamar al metodo del servicio para actualizar los datos

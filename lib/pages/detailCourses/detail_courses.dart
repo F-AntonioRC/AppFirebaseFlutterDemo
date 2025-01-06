@@ -79,7 +79,8 @@ class _DetailCoursesState extends State<DetailCourses> {
     });
   }
 
-  void _setControllerData(FirebaseDropdownController controller, String idKey, String nameKey, Map<String, dynamic> data) {
+  void _setControllerData(FirebaseDropdownController controller, String idKey,
+      String nameKey, Map<String, dynamic> data) {
     if (data[idKey] != null) {
       controller.setDocument({
         'Id': data[idKey],
@@ -111,13 +112,14 @@ class _DetailCoursesState extends State<DetailCourses> {
                 ? "Editar Asignación de cursos"
                 : "Asignar Cursos"),
         const SizedBox(height: 20.0),
-        ActionsFormCheck(isEditing: widget.initialData != null,
-        onAdd: () {
-        _stateInitial();
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return CustomDialog(
+        ActionsFormCheck(
+          isEditing: widget.initialData != null,
+          onAdd: () {
+            _stateInitial();
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CustomDialog(
                     dataOne: selectedCourse,
                     dataTwo: selectedArea ?? selectedSare,
                     accept: () async {
@@ -132,37 +134,44 @@ class _DetailCoursesState extends State<DetailCourses> {
                       await databaseDetailCourses.addDetailCourse(
                           detailCourseMap, id);
                       _clearControllers();
-                    }, messageSuccess: 'Curso asignado correctamente',);
-              });
-        },
-        onUpdate: () {
-          _stateInitial();
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return CustomDialog(
+                    },
+                    messageSuccess: 'Curso asignado correctamente',
+                  );
+                });
+          },
+          onUpdate: () {
+            _stateInitial();
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CustomDialog(
                     dataOne: selectedCourse,
                     dataTwo: selectedArea ?? selectedSare,
                     accept: () async {
-                      final String documentId = widget.initialData?['IdDetailCourse'];
+                      final String documentId =
+                          widget.initialData?['IdDetailCourse'];
                       Map<String, dynamic> updateData = {
                         "IdDetailCourse": documentId,
-                        "IdCourse": _controllerCourse.selectedDocument?['IdCourse'] ??
-                            widget.initialData?['IdCourse'],
+                        "IdCourse":
+                            _controllerCourse.selectedDocument?['IdCourse'] ??
+                                widget.initialData?['IdCourse'],
                         "IdArea": _controllerArea.selectedDocument?['IdArea'] ??
-                      widget.initialData?['IdArea'],
+                            widget.initialData?['IdArea'],
                         "IdSare": _controllerSare.selectedDocument?['IdSare'] ??
-                      widget.initialData?['IdSare'],
+                            widget.initialData?['IdSare'],
                       };
-                      await databaseDetailCourses.updateDetalleCursos(documentId, updateData);
+                      await databaseDetailCourses.updateDetalleCursos(
+                          documentId, updateData);
                       _clearControllers();
                       _clearProviderData();
-                    }, messageSuccess: 'Asignación editada correctamente',);
-              });
-        },
+                    },
+                    messageSuccess: 'Asignación editada correctamente',
+                  );
+                });
+          },
           onCancel: () {
-          _clearControllers();
-          _clearProviderData();
+            _clearControllers();
+            _clearProviderData();
           },
         )
       ]),

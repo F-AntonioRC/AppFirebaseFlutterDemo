@@ -94,7 +94,6 @@ class MethodsDetailCourses {
           'Estado' : detalleCursoDoc['Estado'] ?? 'N/A'
         };
 
-
         // Consulta el documento de Courses
         DocumentSnapshot courseDoc =
         await firestore.collection('Courses').doc(idCourse).get();
