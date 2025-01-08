@@ -11,9 +11,9 @@ class CourseSelectionPage extends StatelessWidget {
 
   // Cursos principales con sus subcursos
   final Map<String, List<String>> courses = {
-    'SICAVISP': ['Curso 1', 'Curso 2', 'Curso 3'],
-    'INMUJERES': ['Curso 1', 'Curso 2', 'Curso 3'],
-    'CONAPRED': ['Curso 1', 'Curso 2', 'Curso 3'],
+    'SICAVISP': ['Curso1', 'Curso2', 'Curso3'],
+    'INMUJERES': ['Curso1', 'Curso2', 'Curso3'],
+    'CONAPRED': ['Curso1', 'Curso2', 'Curso3'],
   };
 
   // Map de imágenes para cada curso
@@ -61,7 +61,7 @@ class CourseSelectionPage extends StatelessWidget {
                     courseName: courseName,
                     subCourses: courses[courseName]!,
                     imagePath: courseImages[courseName] ?? 'assets/images/logo.jpg',
-                    trimester: 'TRIMESTRE 1'
+                    trimester: 'TRIMESTRE_1'
                   );
                 },
               ),
@@ -168,6 +168,7 @@ class SubCourseSelectionPage extends StatelessWidget {
 
   const SubCourseSelectionPage({Key? key, required this.courseName, required this.subCourses, required this.trimester})
       : super(key: key);
+  
 
   @override
   Widget build(BuildContext context) {
@@ -200,20 +201,44 @@ class SubCourseSelectionPage extends StatelessWidget {
 }
 
 class SubCourseCard extends StatelessWidget {
-   final String courseName;
+  final String courseName;
   final String subCourseName;
   final String imageUrl;
- 
 
   const SubCourseCard({
     Key? key,
-     required this.courseName,
+    required this.courseName,
     required this.subCourseName,
     required this.imageUrl,
-   
-    
   }) : super(key: key);
-
+  Future<String?> TrimesterSelectionDialog(BuildContext context) async {
+  // Lista de opciones para los trimestres
+  final List<String> trimesters = [
+    'TRIMESTRE_1',
+    'TRIMESTRE_2',
+    'TRIMESTRE_3',
+    'TRIMESTRE_4',
+  ];
+return await showDialog<String>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Selecciona un Trimestre'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: trimesters.map((trimester) {
+            return ListTile(
+              title: Text(trimester),
+              onTap: () {
+                Navigator.pop(context, trimester); // Devuelve el trimestre seleccionado
+              },
+            );
+          }).toList(),
+        ),
+      );
+    },
+  );
+}
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -222,33 +247,35 @@ class SubCourseCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: InkWell(
-        onTap: () {
-          Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CursosNormal(
-                      course: courseName,
-                      subCourse: subCourseName,
-                      trimester: 'TRIMESTRE 1',
-                    ),
-                  ),
-                );
+        onTap: () async {
+          final selectedTrimester = await TrimesterSelectionDialog(context);
+
+          if (selectedTrimester != null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CursosNormal(
+                  course: courseName,
+                  subCourse: subCourseName,
+                  trimester: selectedTrimester,
+                ),
+              ),
+            );
+          }
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Imagen en la parte superior
             Expanded(
               flex: 2,
               child: ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                 child: Image.asset(
-                  imageUrl, // Imagen desde assets
+                  imageUrl,
                   fit: BoxFit.cover,
                 ),
               ),
             ),
-            // Texto en la parte inferior
             Expanded(
               flex: 1,
               child: Padding(
@@ -268,7 +295,8 @@ class SubCourseCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     const Text(
                       "Datos del curso",
-                      style: TextStyle(
+                      style: TextStyle
+(
                         fontSize: 12,
                         color: Colors.grey,
                       ),

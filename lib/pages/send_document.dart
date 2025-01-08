@@ -12,10 +12,10 @@ class TrimestersView extends StatefulWidget {
 
 class _TrimestersViewState extends State<TrimestersView> {
   final List<String> trimesters = [
-    'TRIMESTRE 1',
-    'TRIMESTRE 2',
-    'TRIMESTRE 3',
-    'TRIMESTRE 4',
+    'TRIMESTRE_1',
+    'TRIMESTRE_2',
+    'TRIMESTRE_3',
+    'TRIMESTRE_4',
   ];
 
   @override
@@ -32,16 +32,17 @@ class _TrimestersViewState extends State<TrimestersView> {
             crossAxisCount: 2,
             crossAxisSpacing: 16.0,
             mainAxisSpacing: 16.0,
-            childAspectRatio: 4 / 3, // Relación de aspecto más compacta
+            childAspectRatio: 3 / 2, // Relación de aspecto más compacta
           ),
           itemCount: trimesters.length,
           itemBuilder: (context, index) {
             String trimester = trimesters[index];
             return Card(
+              elevation: 5,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              elevation: 3,
+              /*
               child: InkWell(
                 onTap: () {
                   Navigator.push(
@@ -50,23 +51,27 @@ class _TrimestersViewState extends State<TrimestersView> {
                       builder: (context) => SendDocument(trimester: trimester),
                     ),
                   );
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                },*/
+                child: Column(                  
                   children: [
-                    ClipRRect(
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                      child: Image.asset(
+                    Expanded(
+                    flex: 2,
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                        child: Image.asset(
                         'assets/images/logo.jpg',
-                        height: 100, // Altura fija más pequeña
-                        width: double.infinity, // Ancho completo de la tarjeta
+                         // Altura fija más pequeña
+                         // Ancho completo de la tarjeta
                         fit: BoxFit.cover, // La imagen se adapta sin distorsionarse
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    
                     Expanded(
-                      child: Center(
-                        child: Text(
+                      flex:1, 
+                      child: Column(
+                        children: [
+                          Text(
                           trimester,
                           style: const TextStyle(
                             fontSize: 16,
@@ -74,19 +79,29 @@ class _TrimestersViewState extends State<TrimestersView> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                      ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                             MaterialPageRoute(
+                              builder: (context) => SendDocument(trimester: trimester),
+                             ),
+                            );
+                          },
+                          child: const Text('ver cursos disponibles')
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
           },
         ),
       ),
-    );
+   );
   }
 }
-
 
 class SendDocument extends StatefulWidget {
   final String trimester;
@@ -115,9 +130,9 @@ class _SendDocumentState extends State<SendDocument> {
     try {
       FirebaseStorage storage = FirebaseStorage.instance;
       Map<String, List<String>> courses = {
-        'SICAVISP': ['Curso 1', 'Curso 2', 'Curso 3'],
-        'INMUJERES': ['Curso 1', 'Curso 2', 'Curso 3'],
-        'CONAPRED': ['Curso 1', 'Curso 2', 'Curso 3'],
+        'SICAVISP': ['Curso1', 'Curso2', 'Curso3'],
+        'INMUJERES': ['Curso1', 'Curso2', 'Curso3'],
+        'CONAPRED': ['Curso1', 'Curso2', 'Curso3'],
       };
 
       Map<String, Map<String, List<Map<String, String>>>> loadedFiles = {};
@@ -127,7 +142,7 @@ class _SendDocumentState extends State<SendDocument> {
 
         for (String subCourse in courses[course]!) {
           String subCoursePath =
-              '2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARE\'S/Cursos_2024/$trimester/$course/$subCourse';
+              '2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARES/Cursos_2024/${widget.trimester}/$course/$subCourse';
           Reference subCourseRef = storage.ref(subCoursePath);
 
           try {
