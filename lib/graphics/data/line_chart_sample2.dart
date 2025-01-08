@@ -1,6 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:testwithfirebase/dataConst/constand.dart';
 
 class LineChartSample2 extends StatefulWidget {
   const LineChartSample2({super.key});
@@ -20,8 +19,6 @@ class _LineChartSample2State extends State<LineChartSample2> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: ligth,
-      child: Padding(padding: const EdgeInsets.all(10.0),
       child: Stack(
         children: [
           AspectRatio(
@@ -51,13 +48,13 @@ class _LineChartSample2State extends State<LineChartSample2> {
                 'avg',
                 style: TextStyle(
                   fontSize: 12,
-                  color: showAvg ? Colors.white.withOpacity(0.5) : Colors.white,
+                  color: showAvg ? Colors.white.withAlpha((0.3 * 255).toInt()) : Colors.white,
                 ),
               ),
             ),
           ),
         ],
-      ),),
+      )
     );
   }
 
@@ -282,10 +279,10 @@ class _LineChartSample2State extends State<LineChartSample2> {
               colors: [
                 ColorTween(begin: gradientColors[0], end: gradientColors[1])
                     .lerp(0.2)!
-                    .withOpacity(0.1),
+                    .withAlpha((0.1 * 255).toInt()),
                 ColorTween(begin: gradientColors[0], end: gradientColors[1])
                     .lerp(0.2)!
-                    .withOpacity(0.1),
+                    .withAlpha((0.1 * 255).toInt()),
               ],
             ),
           ),

@@ -80,7 +80,8 @@ class _EmployeeState extends State<Employee> {
                   _formLogic.controllerDependency,
                   widget.initialData,
                   () => _formLogic.clearProviderData(context),
-                  () => _formLogic.refreshProviderData(context));
+                  () => _formLogic.refreshProviderData(context)
+               );
                   _formLogic.clearControllers();
             },
             onCancel: () {

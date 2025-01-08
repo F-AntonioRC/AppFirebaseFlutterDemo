@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:testwithfirebase/components/MyPaginatedTable.dart';
-import 'package:testwithfirebase/components/dialog_email.dart';
+import 'package:testwithfirebase/components/sendEmail/dialog_email.dart';
 import 'package:testwithfirebase/service/detailCourseService/database_detail_courses.dart';
 import '../../dataConst/constand.dart';
 import '../../providers/edit_provider.dart';

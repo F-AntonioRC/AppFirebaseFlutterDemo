@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/userNormal/components/card_graphics_normal.dart';
 import 'package:testwithfirebase/userNormal/componentsNormal/card_welcome.dart';
-import 'package:testwithfirebase/userNormal/componentsNormal/table_component_normal.dart';
 
 class ScreenHome extends StatelessWidget {
   const ScreenHome({super.key});
@@ -11,9 +11,9 @@ class ScreenHome extends StatelessWidget {
     return const Column(
       children: [
         CardWelcome(),
-        Expanded(child:
-        TableComponentNormal()
-        )
+        Expanded(child: SizedBox(height: 300,
+        child: CardGraphicsNormal(),
+        ))
       ],
     );
   }

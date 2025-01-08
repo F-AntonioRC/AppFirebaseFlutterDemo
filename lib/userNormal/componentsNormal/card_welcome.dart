@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 
 class CardWelcome extends StatelessWidget {
@@ -16,7 +15,7 @@ class CardWelcome extends StatelessWidget {
               height: 100,
               child: ListTile(
                 leading: const Icon(
-                  Icons.insert_emoticon, color: greenColor, weight: 10.0, size: 50,),
+                  Icons.fact_check_outlined, weight: 10.0, size: 50,),
                 title: Text("Recuerda enviar tus constancias a tiempo",
                   style: TextStyle(fontSize: responsiveFontSize(context, 20),
                       fontWeight: FontWeight.bold),),

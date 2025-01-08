@@ -59,7 +59,7 @@ class SendEmailMethods {
     String campo,
     String valor,
     String nameCourse,
-    String dateIniti,
+    String dateInit,
     String dateRegister,
     String dateSend,
     String body,
@@ -71,8 +71,9 @@ class SendEmailMethods {
       return;
     }
 
-    String bodyFinal = ('$body\n'
-        'Fecha de inicio: $dateIniti\n'
+    String bodyFinal =
+    ('$body\n'
+        'Fecha de inicio: $dateInit\n'
         'Fecha de registro: $dateRegister\n'
         'Envío de constancia: $dateSend');
 
@@ -85,7 +86,6 @@ class SendEmailMethods {
       } else {
         await launchEmailWebFallback(
             emailList, 'Curso: $nameCourse', bodyFinal);
-        await launchEmailWebWithOutlook(emailList, 'Curso: $nameCourse', bodyFinal);
       }
     } catch (e) {
       print('Error enviando el correo: $e');
@@ -107,29 +107,29 @@ class SendEmailMethods {
   Future<void> sendEmailToArea(
     String idArea,
     String nameCourse,
-    String dateIniti,
+    String dateInit,
     String dateRegister,
     String dateSend,
     String body,
   ) async {
     await sendEmail(
-        'IdArea', idArea, nameCourse, dateIniti, dateRegister, dateSend, body);
+        'IdArea', idArea, nameCourse, dateInit, dateRegister, dateSend, body);
   }
 
   Future<void> sendEmailToSare(
     String idSare,
     String nameSare,
-    String dateIniti,
+    String dateInit,
     String dateRegister,
     String dateSend,
     String body,
   ) async {
     await sendEmail(
-        'IdSare', idSare, nameSare, dateIniti, dateRegister, dateSend, body);
+        'IdSare', idSare, nameSare, dateInit, dateRegister, dateSend, body);
   }
 
 
-  // MÉTODO PARA ENVIAR EMAIL A OUTLOOK
+  // METODO PARA ENVIAR EMAIL A OUTLOOK
   Future<void> launchEmailWebWithOutlook(
       String email, String subject, String body) async {
     final Uri outlookUrl = Uri(
@@ -152,16 +152,13 @@ class SendEmailMethods {
   }
 
 
-  //MÉTODO PARA ENVIAR EMAIL POR MAILTO
+  //METODO PARA ENVIAR EMAIL POR MAILTO
   Future<void> launchEmailWebFallback(
       String email, String subject, String body) async {
     final Uri emailUri = Uri(
       scheme: 'mailto',
       path: email,
-      queryParameters: {
-        'subject': subject,
-        'body': body,
-      },
+      query: 'subject=${Uri.encodeComponent(subject)}&body=${Uri.encodeComponent(body)}'
     );
 
     try {

@@ -109,12 +109,39 @@ Future<void> updateEmployee(BuildContext context,
         "Empleado actualizado correctamente",
         greenColor,
       );
+      refreshData();
     }
     clearControllers();
-    refreshData();
+
   } catch (e) {
     if (context.mounted) {
       showCustomSnackBar(context, "Error: $e", Colors.red);
     }
+  }
+}
+
+Future<void> assignCupo (
+    BuildContext context,
+    FirebaseDropdownController controllerCupo,
+    String idChange,
+    Function refreshTable
+    ) async {
+  final String cupoSeleccionado = controllerCupo.selectedDocument?['CUPO'] ?? '';
+
+  if(cupoSeleccionado.isNotEmpty) {
+    try {
+      await DatabaseMethods.addEmployeeCupo(idChange, cupoSeleccionado);
+      if(context.mounted) {
+        showCustomSnackBar(context, 'CUPO Asignado correctamente', greenColor);
+        Navigator.pop(context);
+        refreshTable();
+      }
+    } catch (e) {
+      if(context.mounted) {
+        showCustomSnackBar(context, "Error: $e", Colors.red);
+      }
+    }
+  } else {
+    showCustomSnackBar(context, "Por favor selecciona una CUPO", greenColor);
   }
 }

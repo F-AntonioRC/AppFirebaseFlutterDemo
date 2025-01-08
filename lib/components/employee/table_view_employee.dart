@@ -90,6 +90,7 @@ class TableViewEmployee extends StatelessWidget {
                       return DialogChanges(
                         dataChange: name,
                         idChange: idAdd,
+                        refreshTable: refreshTable,
                       );
                     },
                   );

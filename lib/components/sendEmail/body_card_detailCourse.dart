@@ -39,11 +39,7 @@ class BodyCardDetailCourse extends StatelessWidget {
               controller: firstController,
               decoration: InputDecoration(
                 prefixIcon: firstIcon,
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: theme.hintColor),
-                    borderRadius: BorderRadius.circular(10.0)
-                ),
-                disabledBorder: _buildDisabledBorder(theme),
+                enabledBorder: _buildDisabledBorder(theme),
                 focusedBorder: _buildDisabledBorder(theme),
               ),
             ),
@@ -65,10 +61,7 @@ class BodyCardDetailCourse extends StatelessWidget {
               controller: secondController,
               decoration: InputDecoration(
                 prefixIcon: secondIcon,
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: theme.hintColor),
-                    borderRadius: BorderRadius.circular(10.0)),
-                disabledBorder: _buildDisabledBorder(theme),
+                enabledBorder: _buildDisabledBorder(theme),
                 focusedBorder: _buildDisabledBorder(theme),
               ),
             ),

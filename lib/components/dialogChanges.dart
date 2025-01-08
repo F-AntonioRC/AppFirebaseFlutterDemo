@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:testwithfirebase/components/custom_snackbar.dart';
 import 'package:testwithfirebase/components/firebase_dropdown.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
-import 'package:testwithfirebase/service/employeeService/database.dart';
+import 'package:testwithfirebase/service/employeeService/service_employee.dart';
 
 class DialogChanges extends StatefulWidget {
   final String dataChange;
   final String idChange;
+  final Function() refreshTable;
 
-  const DialogChanges({super.key, required this.dataChange, required this.idChange});
+  const DialogChanges(
+      {super.key,
+      required this.dataChange,
+      required this.idChange,
+      required this.refreshTable});
 
   @override
   State<DialogChanges> createState() => _DialogChangesState();
 }
 
 class _DialogChangesState extends State<DialogChanges> {
-
   late TextEditingController _textController;
 
   late TextEditingController _idController;
@@ -50,76 +53,53 @@ class _DialogChangesState extends State<DialogChanges> {
         style: TextStyle(fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
       ),
-      content: SingleChildScrollView(child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Text("Nombre del empleado",
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10.0),
-          TextField(
-            readOnly: true,
-            controller: _textController,
-              decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.account_box),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: theme.hintColor),
-                      borderRadius: BorderRadius.circular(10.0)
-                  ),
-                  disabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: theme.hintColor),
-                      borderRadius: BorderRadius.circular(10.0)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: theme.hintColor),
-                      borderRadius: BorderRadius.circular(10.0)),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0)
-                )
-              )
-          ),
-          const SizedBox(height: 10.0),
-          const Text("Seleccione CUPO",
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10.0),
-          FirebaseDropdown(
-              controller: _controllerCupo,
-              collection: 'User',
-              data: 'CUPO',
-              textHint: 'Seleccione CUPO del empleado'),
-        ],
-      ),),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text("Nombre del empleado",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10.0),
+            TextField(
+                readOnly: true,
+                controller: _textController,
+                decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.account_box),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: theme.hintColor),
+                        borderRadius: BorderRadius.circular(10.0)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0)))),
+            const SizedBox(height: 10.0),
+            const Text("Seleccione CUPO",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10.0),
+            FirebaseDropdown(
+                controller: _controllerCupo,
+                collection: 'User',
+                data: 'CUPO',
+                textHint: 'Seleccione CUPO del empleado'),
+          ],
+        ),
+      ),
       actions: [
         Row(
           children: [
+            MyButton(
+              text: "Aceptar",
+              icon: const Icon(Icons.check_circle_outline),
+              onPressed: () async {
+                await assignCupo(context, _controllerCupo, widget.idChange,
+                    widget.refreshTable);
+              },
+              buttonColor: greenColor,
+            ),
+            const SizedBox(width: 10.0),
             MyButton(
               text: "Cancelar",
               icon: const Icon(Icons.cancel_outlined),
               onPressed: () => Navigator.pop(context),
               buttonColor: Colors.red,
-            ),
-            const SizedBox(width: 10.0),
-            MyButton(
-              text: "Aceptar",
-              icon: const Icon(Icons.check_circle_outline),
-              onPressed: () async {
-                final String cupoSeleccionado = _controllerCupo.selectedDocument?['CUPO'] ?? '';
-
-                if(cupoSeleccionado.isNotEmpty) {
-                  try {
-                    await DatabaseMethods.addEmployeeCupo(widget.idChange, cupoSeleccionado);
-                    Navigator.pop(context);
-                    if(context.mounted) {
-                      showCustomSnackBar(context, 'CUPO actualizado correctamente', greenColor);
-                    }
-                  } catch (e) {
-                    if(context.mounted) {
-                      showCustomSnackBar(context, "Error: $e", Colors.red);
-                    }
-                  }
-                } else {
-                  showCustomSnackBar(context, "Por favor selecciona una CUPO", greenColor);
-                }
-              },
-              buttonColor: greenColor,
             ),
           ],
         )
