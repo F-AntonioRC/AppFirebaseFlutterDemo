@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:testwithfirebase/auth/auth_gate.dart';
 import 'package:testwithfirebase/components/my_button.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
-import 'package:testwithfirebase/pages/home_page.dart';
+import 'package:testwithfirebase/pages/main_pages/home_page.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 import '../auth/auth_service.dart';
 

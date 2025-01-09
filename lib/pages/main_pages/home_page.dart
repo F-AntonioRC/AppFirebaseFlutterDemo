@@ -6,7 +6,7 @@ import 'package:testwithfirebase/bloc/drawer_bloc.dart';
 import 'package:testwithfirebase/bloc/drawer_state.dart';
 import 'package:testwithfirebase/drawer/drawer_widget.dart';
 import 'package:testwithfirebase/pages/cerrar_sesion.dart';
-import 'package:testwithfirebase/pages/configuration.dart';
+import 'package:testwithfirebase/pages/configuration/configuration.dart';
 import 'package:testwithfirebase/pages/dashboard/dashboard_main.dart';
 import 'package:testwithfirebase/pages/detailCourses/page_detail_courses.dart';
 import 'package:testwithfirebase/pages/courses/screen_cursos.dart';

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:testwithfirebase/components/body_widgets.dart';
 import 'package:testwithfirebase/providers/theme.dart';
 
-import '../util/responsive.dart';
+import '../../util/responsive.dart';
 
 class ThemeColor extends StatelessWidget {
   const ThemeColor({super.key});
