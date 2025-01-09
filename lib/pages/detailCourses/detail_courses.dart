@@ -73,8 +73,8 @@ class _DetailCoursesState extends State<DetailCourses> {
             const SizedBox(height: 20.0),
             ActionsFormCheck(
               isEditing: widget.initialData != null,
-              onAdd: () {
-                addDetailCourse(
+              onAdd: () async {
+                await addDetailCourse(
                     context,
                     _detailCourseFormLogic.controllerSare,
                     _detailCourseFormLogic.controllerArea,

@@ -7,9 +7,24 @@ class EmployeeFormLogic {
   final List<String> dropdownSex = ['M', 'F'];
   String? sexDropdownValue;
 
-  final FirebaseDropdownController controllerArea = FirebaseDropdownController();
-  final FirebaseDropdownController controllerSare = FirebaseDropdownController();
-  final FirebaseDropdownController controllerDependency = FirebaseDropdownController();
+  final List<String> dropdownSection = [
+    'Analista',
+    'Apoyo',
+    'Auxiliar',
+    'Enlace',
+    'Jefatura',
+    'Subdireccion',
+    'Titular'
+  ];
+
+  final FirebaseDropdownController controllerArea =
+      FirebaseDropdownController();
+  final FirebaseDropdownController controllerSare =
+      FirebaseDropdownController();
+  final FirebaseDropdownController controllerDependency =
+      FirebaseDropdownController();
+  final FirebaseDropdownController controllerSection =
+      FirebaseDropdownController();
 
   final TextEditingController nameController = TextEditingController();
 
@@ -22,6 +37,7 @@ class EmployeeFormLogic {
     controllerArea.clearSelection();
     controllerSare.clearSelection();
     controllerDependency.clearSelection();
+    controllerSection.clearSelection();
   }
 
   /// Limpia los datos del proveedor
@@ -45,10 +61,8 @@ class EmployeeFormLogic {
       sexDropdownValue = provider.data?['Sexo'] ?? '';
 
       if (provider.data?['Area'] != null) {
-        controllerArea.setDocument({
-          'Id': provider.data?['IdArea'],
-          'Area': provider.data?['Area']
-        });
+        controllerArea.setDocument(
+            {'Id': provider.data?['IdArea'], 'Area': provider.data?['Area']});
       }
       if (provider.data?['Dependencia'] != null) {
         controllerDependency.setDocument({
@@ -57,10 +71,8 @@ class EmployeeFormLogic {
         });
       }
       if (provider.data?['Sare'] != null) {
-        controllerSare.setDocument({
-          'Id': provider.data?['IdSare'],
-          'Sare': provider.data?['Sare']
-        });
+        controllerSare.setDocument(
+            {'Id': provider.data?['IdSare'], 'Sare': provider.data?['Sare']});
       }
     }
   }

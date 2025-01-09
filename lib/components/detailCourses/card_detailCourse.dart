@@ -4,7 +4,6 @@ import 'package:testwithfirebase/components/body_widgets.dart';
 import 'package:testwithfirebase/components/detailCourses/table_view_detailCourses.dart';
 import 'package:testwithfirebase/components/header_search.dart';
 import 'package:testwithfirebase/service/detailCourseService/database_detail_courses.dart';
-
 import '../custom_snackbar.dart';
 
 class CardDetailCourse extends StatefulWidget {
@@ -50,7 +49,7 @@ class _CardDetailcourseState extends State<CardDetailCourse> {
         });
       } catch (e) {
         setState(() => _isLoading = false);
-        if(context.mounted) {
+        if(mounted) {
           showCustomSnackBar(context, "Error: $e", Colors.red);
         }
       }

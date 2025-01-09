@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SendEmailMethods {
@@ -71,8 +72,7 @@ class SendEmailMethods {
       return;
     }
 
-    String bodyFinal =
-    ('$body\n'
+    String bodyFinal = ('$body\n'
         'Fecha de inicio: $dateInit\n'
         'Fecha de registro: $dateRegister\n'
         'Envío de constancia: $dateSend');
@@ -83,12 +83,16 @@ class SendEmailMethods {
       if (_isChromeTargetTopScheme('mailto')) {
         await launchEmailWebFallback(
             emailList, 'Curso: $nameCourse', bodyFinal);
+        await launchEmailWebWithOutlook(
+            emailList, 'Curso: $nameCourse', bodyFinal);
       } else {
         await launchEmailWebFallback(
             emailList, 'Curso: $nameCourse', bodyFinal);
       }
     } catch (e) {
-      print('Error enviando el correo: $e');
+      if (kDebugMode) {
+        print('Error enviando el correo: $e');
+      }
     }
   }
 
@@ -128,21 +132,15 @@ class SendEmailMethods {
         'IdSare', idSare, nameSare, dateInit, dateRegister, dateSend, body);
   }
 
-
   // METODO PARA ENVIAR EMAIL A OUTLOOK
   Future<void> launchEmailWebWithOutlook(
       String email, String subject, String body) async {
     final Uri outlookUrl = Uri(
-      scheme: 'https',
-      host: 'outlook.live.com',
-      path: '/owa/',
-      queryParameters: {
-        'path': '/mail/action/compose',
-        'to': email,
-        'subject': subject,
-        'body': body,
-      },
-    );
+        scheme: 'https',
+        host: 'outlook.live.com',
+        path: '/owa/',
+        query:
+            'subject=${Uri.encodeComponent(subject)}&body=${Uri.encodeComponent(body)}');
 
     if (await canLaunchUrl(outlookUrl)) {
       await launchUrl(outlookUrl);
@@ -151,15 +149,14 @@ class SendEmailMethods {
     }
   }
 
-
   //METODO PARA ENVIAR EMAIL POR MAILTO
   Future<void> launchEmailWebFallback(
       String email, String subject, String body) async {
     final Uri emailUri = Uri(
-      scheme: 'mailto',
-      path: email,
-      query: 'subject=${Uri.encodeComponent(subject)}&body=${Uri.encodeComponent(body)}'
-    );
+        scheme: 'mailto',
+        path: email,
+        query:
+            'subject=${Uri.encodeComponent(subject)}&body=${Uri.encodeComponent(body)}');
 
     try {
       if (await canLaunchUrl(emailUri)) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/actions_form_check.dart';
 import 'package:testwithfirebase/components/firebase_dropdown.dart';
-import 'package:testwithfirebase/components/my_button.dart';
-import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/service/employeeService/service_employee.dart';
 
 class DialogChanges extends StatefulWidget {
@@ -83,25 +82,15 @@ class _DialogChangesState extends State<DialogChanges> {
         ),
       ),
       actions: [
-        Row(
-          children: [
-            MyButton(
-              text: "Aceptar",
-              icon: const Icon(Icons.check_circle_outline),
-              onPressed: () async {
-                await assignCupo(context, _controllerCupo, widget.idChange,
-                    widget.refreshTable);
-              },
-              buttonColor: greenColor,
-            ),
-            const SizedBox(width: 10.0),
-            MyButton(
-              text: "Cancelar",
-              icon: const Icon(Icons.cancel_outlined),
-              onPressed: () => Navigator.pop(context),
-              buttonColor: Colors.red,
-            ),
-          ],
+        Center(
+          child: ActionsFormCheck(
+            isEditing: true,
+            onUpdate: () async {
+              await assignCupo(context, _controllerCupo, widget.idChange,
+                  widget.refreshTable);
+            },
+            onCancel: () => Navigator.pop(context),
+          ),
         )
       ],
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/actions_form_check.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 import '../dataConst/constand.dart';
 import 'custom_snackbar.dart';
-import 'my_button.dart';
 
 class CustomDialog extends StatefulWidget {
   final String? dataOne;
@@ -69,16 +69,15 @@ class _CustomDialogState extends State<CustomDialog> {
               controller: _dataOneController,
               decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.account_box),
-                  disabledBorder: OutlineInputBorder(
+                  enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: theme.hintColor),
                       borderRadius: BorderRadius.circular(10.0)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: theme.hintColor),
-                      borderRadius: BorderRadius.circular(10.0)))),
+              )
+          ),
           const SizedBox(height: 10.0),
           if (widget.dataTwo != null) ... [
             Text(
-              "Area asigando",
+              "Area asiganda",
               style: TextStyle(
                   fontSize: responsiveFontSize(context, 15),
                   fontWeight: FontWeight.bold),
@@ -89,12 +88,10 @@ class _CustomDialogState extends State<CustomDialog> {
               controller: _dataTwoController,
               decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.account_box),
-                  disabledBorder: OutlineInputBorder(
+                  enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: theme.hintColor),
                       borderRadius: BorderRadius.circular(10.0)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: theme.hintColor),
-                      borderRadius: BorderRadius.circular(10.0)))),
+          ),),
           const SizedBox(height: 10.0), ],
           if (widget.dataThree != null) ... [
             Text(
@@ -109,48 +106,33 @@ class _CustomDialogState extends State<CustomDialog> {
               controller: _dataThreeController,
               decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.account_box),
-                  disabledBorder: OutlineInputBorder(
+                  enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: theme.hintColor),
                       borderRadius: BorderRadius.circular(10.0)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: theme.hintColor),
-                      borderRadius: BorderRadius.circular(10.0)))),
+              )),
           ]
         ],
       ),
       actions: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            MyButton(
-              text: "Aceptar",
-              icon: const Icon(Icons.check_circle_outline),
-              buttonColor: greenColor,
-              onPressed: () {
-                try {
-                  widget.accept();
-                  if (context.mounted) {
-                    showCustomSnackBar(
-                        context, widget.messageSuccess, greenColor);
-                  }
-                } catch (e) {
-                  if (context.mounted) {
-                    showCustomSnackBar(context, "Error: $e", Colors.red);
-                  }
-                }
-                Navigator.of(context).pop();
-              },
-            ),
-            const SizedBox(width: 10.0),
-            MyButton(
-              text: "Cancelar",
-              icon: const Icon(Icons.cancel_outlined),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              buttonColor: Colors.red,
-            ),
-          ],
+        Center(
+          child: ActionsFormCheck(isEditing: true,
+          onUpdate: () async {
+            try {
+              widget.accept();
+              if (context.mounted) {
+                showCustomSnackBar(
+                    context, widget.messageSuccess, greenColor);
+              }
+            } catch (e) {
+              if (context.mounted) {
+                showCustomSnackBar(context, "Error: $e", Colors.red);
+              }
+            }
+            Navigator.pop(context);
+            //Navigator.of(context).pop();
+          },
+          onCancel: () => Navigator.pop(context),
+          ),
         )
       ],
     );

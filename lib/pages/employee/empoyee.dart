@@ -52,7 +52,7 @@ class _EmployeeState extends State<Employee> {
               sexDropdownValue: _formLogic.sexDropdownValue,
               onChangedDropdownList: (String? newValue) {
                 _formLogic.sexDropdownValue = newValue;
-              }),
+              }, controllerSection: _formLogic.controllerSection,),
           const SizedBox(height: 20.0),
           ActionsFormCheck(
             isEditing: widget.initialData != null,

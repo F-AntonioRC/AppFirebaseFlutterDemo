@@ -13,6 +13,7 @@ class FormBodyEmployee extends StatelessWidget {
   final String? sexDropdownValue;
   final Function(String?)? onChangedDropdownList;
   final String title;
+  final FirebaseDropdownController controllerSection;
 
   const FormBodyEmployee(
       {super.key,
@@ -23,7 +24,7 @@ class FormBodyEmployee extends StatelessWidget {
       required this.dropdownSex,
       this.sexDropdownValue,
       required this.onChangedDropdownList,
-        required this.title});
+        required this.title, required this.controllerSection});
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +74,24 @@ class FormBodyEmployee extends StatelessWidget {
                     onChanged: onChangedDropdownList),
               ],
             )),
+            const SizedBox(width: 20.0),
+            Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      'Sección',
+                      style: TextStyle(
+                          fontSize: responsiveFontSize(context, 20),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10.0),
+                    FirebaseDropdown(
+                        controller: controllerDependency,
+                        collection: 'Secciones',
+                        data: 'Seccion',
+                        textHint: 'Seleccione una opción')
+                  ],
+                )),
           ],
         ),
         const SizedBox(height: 15.0),
@@ -82,7 +101,7 @@ class FormBodyEmployee extends StatelessWidget {
                 child: Column(
               children: [
                 Text(
-                  'Dependencia',
+                  'Puesto',
                   style: TextStyle(
                       fontSize: responsiveFontSize(context, 20),
                       fontWeight: FontWeight.bold),

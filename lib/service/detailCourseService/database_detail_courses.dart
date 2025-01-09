@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MethodsDetailCourses {
-
   //REGISTRAR UN DETALLE CURSO
-  Future addDetailCourse(Map<String, dynamic> detailCourseInfoMap,
-      String id) async {
+  Future addDetailCourse(
+      Map<String, dynamic> detailCourseInfoMap, String id) async {
     return await FirebaseFirestore.instance
         .collection("DetalleCursos")
         .doc(id)
@@ -12,7 +11,8 @@ class MethodsDetailCourses {
   }
 
   //ACTUALIZAR
-  Future<void> updateDetalleCursos(String id, Map<String, dynamic> updateData) async {
+  Future<void> updateDetalleCursos(
+      String id, Map<String, dynamic> updateData) async {
     if (id.isEmpty || updateData.isEmpty) {
       throw Exception("El ID o los datos están vacíos.");
     }
@@ -28,30 +28,35 @@ class MethodsDetailCourses {
 
   //ELIMINAR
   Future deleteDetalleCursos(String id) async {
-    try{
-      DocumentReference documentReference = FirebaseFirestore.instance.collection('DetalleCursos').doc(id);
-      await documentReference.update({'Estado' : 'Inactivo'});
-    } catch(e) {
+    try {
+      DocumentReference documentReference =
+          FirebaseFirestore.instance.collection('DetalleCursos').doc(id);
+      await documentReference.update({'Estado': 'Inactivo'});
+    } catch (e) {
       print("Error: $e");
     }
   }
 
   //ACTIVAR
   Future ActivarDetalleCurso(String id) async {
-    try{
-      DocumentReference documentReference = FirebaseFirestore.instance.collection('DetalleCursos').doc(id);
-      await documentReference.update({'Estado' : 'Activo'});
-    } catch(e) {
+    try {
+      DocumentReference documentReference =
+          FirebaseFirestore.instance.collection('DetalleCursos').doc(id);
+      await documentReference.update({'Estado': 'Activo'});
+    } catch (e) {
       print("Error: $e");
     }
   }
 
   //BUSCAR UN DETALLE DEL CURSO
-  Future<List<Map<String, dynamic>>> searchDeatilCoursesByName(String name) async {
+  Future<List<Map<String, dynamic>>> searchDeatilCoursesByName(
+      String name) async {
     final querySnapshot = await FirebaseFirestore.instance
         .collection('Courses')
         .where('NameCourse', isGreaterThanOrEqualTo: name)
-        .where('NameCourse', isLessThan: '${name}z') // Para búsquedas "que empiezan con minuscula"
+        .where('NameCourse',
+            isLessThan:
+                '${name}z') // Para búsquedas "que empiezan con minuscula"
         .get();
 
     return querySnapshot.docs.map((doc) => doc.data()).toList();
@@ -90,13 +95,13 @@ class MethodsDetailCourses {
           'IdArea': null,
           'sare': 'N/A',
           'IdSare': null,
-          'IdCourse' : null,
-          'Estado' : detalleCursoDoc['Estado'] ?? 'N/A'
+          'IdCourse': null,
+          'Estado': detalleCursoDoc['Estado'] ?? 'N/A'
         };
 
         // Consulta el documento de Courses
         DocumentSnapshot courseDoc =
-        await firestore.collection('Courses').doc(idCourse).get();
+            await firestore.collection('Courses').doc(idCourse).get();
 
         if (courseDoc.exists) {
           var courseData = courseDoc.data() as Map<String, dynamic>;
@@ -108,26 +113,24 @@ class MethodsDetailCourses {
         }
 
         // Consulta el documento de Area si existe idArea
-          DocumentSnapshot areaDoc =
-          await firestore.collection('Area').doc(idArea).get();
+        DocumentSnapshot areaDoc =
+            await firestore.collection('Area').doc(idArea).get();
 
-          if (areaDoc.exists) {
-            var areaData = areaDoc.data() as Map<String, dynamic>;
-            result['NombreArea'] = areaData['NombreArea'] ?? 'N/A';
-            result['IdArea'] = areaData['IdArea'];
-          }
-
+        if (areaDoc.exists) {
+          var areaData = areaDoc.data() as Map<String, dynamic>;
+          result['NombreArea'] = areaData['NombreArea'] ?? 'N/A';
+          result['IdArea'] = areaData['IdArea'];
+        }
 
         // Consulta el documento de Sare si existe idSare
-          DocumentSnapshot sareDoc =
-          await firestore.collection('Sare').doc(idSare).get();
+        DocumentSnapshot sareDoc =
+            await firestore.collection('Sare').doc(idSare).get();
 
-          if (sareDoc.exists) {
-            var sareData = sareDoc.data() as Map<String, dynamic>;
-            result['sare'] = sareData['sare'] ?? 'N/A';
-            result['IdSare'] = sareData['IdSare'];
-          }
-
+        if (sareDoc.exists) {
+          var sareData = sareDoc.data() as Map<String, dynamic>;
+          result['sare'] = sareData['sare'] ?? 'N/A';
+          result['IdSare'] = sareData['IdSare'];
+        }
 
         results.add(result);
       }
@@ -138,7 +141,6 @@ class MethodsDetailCourses {
       throw e;
     }
   }
-
 
   Future<List<Map<String, dynamic>>> getDatosDetalleCursosInac() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -173,13 +175,12 @@ class MethodsDetailCourses {
           'IdArea': 'N/A',
           'sare': 'N/A',
           'IdSare': 'N/A',
-          'Estado' : detalleCursoDoc['Estado'] ?? 'N/A'
+          'Estado': detalleCursoDoc['Estado'] ?? 'N/A'
         };
-
 
         // Consulta el documento de Courses
         DocumentSnapshot courseDoc =
-        await firestore.collection('Courses').doc(idCourse).get();
+            await firestore.collection('Courses').doc(idCourse).get();
 
         if (courseDoc.exists) {
           var courseData = courseDoc.data() as Map<String, dynamic>;
@@ -191,7 +192,7 @@ class MethodsDetailCourses {
 
         // Consulta el documento de Area si existe idArea
         DocumentSnapshot areaDoc =
-        await firestore.collection('Area').doc(idArea).get();
+            await firestore.collection('Area').doc(idArea).get();
 
         if (areaDoc.exists) {
           var areaData = areaDoc.data() as Map<String, dynamic>;
@@ -199,17 +200,15 @@ class MethodsDetailCourses {
           result['IdArea'] = areaData['IdArea'];
         }
 
-
         // Consulta el documento de Sare si existe idSare
         DocumentSnapshot sareDoc =
-        await firestore.collection('Sare').doc(idSare).get();
+            await firestore.collection('Sare').doc(idSare).get();
 
         if (sareDoc.exists) {
           var sareData = sareDoc.data() as Map<String, dynamic>;
           result['sare'] = sareData['sare'] ?? 'N/A';
           result['IdSare'] = sareData['IdSare'];
         }
-
 
         results.add(result);
       }
@@ -219,6 +218,19 @@ class MethodsDetailCourses {
       print('Error al obtener los datos: $e');
       throw e;
     }
+  }
+
+  Future<List<Map<String, dynamic>>> getCoursesForEmployee(String idArea, String idSare) async {
+    final query = FirebaseFirestore.instance
+        .collection('DetalleCursos')
+        .where('IdArea', isEqualTo: idArea)
+        .where('IdSare', isEqualTo: idSare)
+        .where('Estado', isEqualTo: 'activo');
+
+    final querySnapshot = await query.get();
+
+    // Procesar los datos y retornar la lista de cursos
+    return querySnapshot.docs.map((doc) => doc.data()).toList();
   }
 
 }
