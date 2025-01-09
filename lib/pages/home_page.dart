@@ -11,6 +11,7 @@ import 'package:testwithfirebase/pages/dashboard/dashboard_main.dart';
 import 'package:testwithfirebase/pages/detailCourses/page_detail_courses.dart';
 import 'package:testwithfirebase/pages/courses/screen_cursos.dart';
 import 'package:testwithfirebase/pages/employee/screen_employee.dart';
+import 'package:testwithfirebase/pages/notification_icon_widget.dart';
 import 'package:testwithfirebase/pages/send_document.dart';
 
 class HomePage extends StatefulWidget {
@@ -65,15 +66,8 @@ class _HomePageState extends State<HomePage> {
                   scrolledUnderElevation: 10.0,
                   centerTitle: true,
                   systemOverlayStyle: SystemUiOverlayStyle.dark,
-                  actions: [
-                    IconButton(
-                      splashRadius: 35.0,
-                      iconSize: 30.0,
-                      tooltip: 'Notificaciones',
-                      icon: const Icon(
-                        Icons.notifications_rounded,
-                      ), onPressed: () {  },
-                    ),
+                  actions: const [
+                    NotificationIconWidget()
                   ],
                 ),
                 // Drawer se muestra dependiendo del tamaño de pantalla
@@ -107,7 +101,7 @@ class _HomePageState extends State<HomePage> {
       case NavItem.emailView:
         return const PageDetailCourses();
       case NavItem.documentView:
-        return const SendDocument();
+        return  const TrimestersView();
       case NavItem.logout:
         return const CerrarSesion();
       case NavItem.configuration:
@@ -126,7 +120,7 @@ class _HomePageState extends State<HomePage> {
       case NavItem.emailView:
         return "Asignar Cursos";
       case NavItem.documentView:
-        return "Documents";
+        return "Evidencia por Trimestre";
       case NavItem.configuration:
         return "Configuración";
       case NavItem.logout:
