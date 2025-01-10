@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../components/date_textflied.dart';
 import '../../components/dropdown_list.dart';
+import '../../components/firebase_dropdown.dart';
 import '../../components/my_textfileld.dart';
 import '../../util/responsive.dart';
 
 class FormBodyCourses extends StatelessWidget {
   final String title;
+  final FirebaseDropdownController controllerDependency;
   final TextEditingController nameCourseController;
   final TextEditingController nomenclaturaController;
   final List<String> dropdowntrimestre;
@@ -25,7 +27,8 @@ class FormBodyCourses extends StatelessWidget {
       this.onChangedDropdownList,
       required this.dateController,
       required this.registroController,
-      required this.envioConstanciaController});
+      required this.envioConstanciaController,
+        required this.controllerDependency});
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +40,10 @@ class FormBodyCourses extends StatelessWidget {
                 fontWeight: FontWeight.bold),
             textAlign: TextAlign.center),
         const SizedBox(height: 10.0),
+Row(
+  children: [
+    Expanded(child: Column(
+      children: [
         Text(
           "Nombre del curso",
           textAlign: TextAlign.center,
@@ -52,6 +59,28 @@ class FormBodyCourses extends StatelessWidget {
             ),
             controller: nameCourseController,
             keyboardType: TextInputType.text),
+      ],
+    )),
+    const SizedBox(width: 20.0,),
+    Expanded(
+        child: Column(
+          children: [
+            Text(
+              'Dependencia',
+              style: TextStyle(
+                  fontSize: responsiveFontSize(context, 20),
+                  fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10.0),
+            FirebaseDropdown(
+                controller: controllerDependency,
+                collection: 'Dependencia',
+                data: 'NombreDependencia',
+                textHint: 'Seleccione una opción')
+          ],
+        )),
+  ],
+),
         const SizedBox(height: 10.0),
         Row(
           children: [
@@ -73,7 +102,7 @@ class FormBodyCourses extends StatelessWidget {
                     keyboardType: TextInputType.text),
               ],
             )),
-            const SizedBox(width: 10.0),
+            const SizedBox(width: 20.0),
             Expanded(
                 child: Column(
               children: [

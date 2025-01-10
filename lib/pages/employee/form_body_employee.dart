@@ -40,6 +40,7 @@ class FormBodyEmployee extends StatelessWidget {
         Row(
           children: [
             Expanded(
+              flex: 2,
                 child: Column(
               children: [
                 Text(
@@ -58,24 +59,7 @@ class FormBodyEmployee extends StatelessWidget {
             )),
             const SizedBox(width: 20.0),
             Expanded(
-                child: Column(
-              children: [
-                Text(
-                  'Sexo',
-                  style: TextStyle(
-                      fontSize: responsiveFontSize(context, 20),
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10.0),
-                DropdownList(
-                    items: dropdownSex,
-                    icon: const Icon(Icons.arrow_downward_rounded),
-                    value: sexDropdownValue,
-                    onChanged: onChangedDropdownList),
-              ],
-            )),
-            const SizedBox(width: 20.0),
-            Expanded(
+              flex: 2,
                 child: Column(
                   children: [
                     Text(
@@ -92,12 +76,32 @@ class FormBodyEmployee extends StatelessWidget {
                         textHint: 'Seleccione una opción')
                   ],
                 )),
+            const SizedBox(width: 20.0),
+            Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Text(
+                      'Sexo',
+                      style: TextStyle(
+                          fontSize: responsiveFontSize(context, 20),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10.0),
+                    DropdownList(
+                        items: dropdownSex,
+                        icon: const Icon(Icons.arrow_downward_rounded),
+                        value: sexDropdownValue,
+                        onChanged: onChangedDropdownList),
+                  ],
+                )),
           ],
         ),
         const SizedBox(height: 15.0),
         Row(
           children: [
             Expanded(
+              flex: 2,
                 child: Column(
               children: [
                 Text(
@@ -109,8 +113,8 @@ class FormBodyEmployee extends StatelessWidget {
                 const SizedBox(height: 10.0),
                 FirebaseDropdown(
                     controller: controllerDependency,
-                    collection: 'Dependencia',
-                    data: 'NombreDependencia',
+                    collection: 'Puesto',
+                    data: 'Puesto',
                     textHint: 'Seleccione una opción')
               ],
             )),

@@ -48,6 +48,7 @@ class _CoursesState extends State<Courses> {
             dateController: _courseLogic.dateController,
             registroController: _courseLogic.registroController,
             envioConstanciaController: _courseLogic.envioConstanciaController,
+            controllerDependency: _courseLogic.controllerDependency,
             onChangedDropdownList: (value) {
               _courseLogic.trimestreValue = value;
             },

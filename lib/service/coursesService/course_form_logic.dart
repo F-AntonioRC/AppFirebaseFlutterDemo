@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:testwithfirebase/components/firebase_dropdown.dart';
 
 import '../../providers/edit_provider.dart';
 
@@ -16,6 +17,7 @@ class CourseFormLogic {
   TextEditingController dateController = TextEditingController();
   TextEditingController registroController = TextEditingController();
   TextEditingController envioConstanciaController = TextEditingController();
+  FirebaseDropdownController controllerDependency = FirebaseDropdownController();
 
   bool isClearing = false;
 
@@ -26,6 +28,7 @@ class CourseFormLogic {
     dateController.clear();
     registroController.clear();
     envioConstanciaController.clear();
+    controllerDependency.clearSelection();
   }
 
   /// Limpia los datos del proveedor
@@ -49,6 +52,12 @@ class CourseFormLogic {
       dateController.text = provider.data?['FechaInicioCurso'];
       registroController.text = provider.data?['Fecharegistro'];
       envioConstanciaController.text = provider.data?['FechaenvioConstancia'];
+      if (provider.data?['Dependencia'] != null) {
+        controllerDependency.setDocument({
+          'Id': provider.data?['IdDependencia'],
+          'Dependencia': provider.data?['Dependencia']
+        });
+      }
     }
   }
 
