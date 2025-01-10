@@ -3,106 +3,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class TrimestersView extends StatefulWidget { 
-  const TrimestersView({Key? key}) : super(key: key);
-
-  @override
-  State<TrimestersView> createState() => _TrimestersViewState();
-}
-
-class _TrimestersViewState extends State<TrimestersView> {
-  final List<String> trimesters = [
-    'TRIMESTRE_1',
-    'TRIMESTRE_2',
-    'TRIMESTRE_3',
-    'TRIMESTRE_4',
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Evidencia por Trimestres'),
-        backgroundColor: greenColor,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16.0,
-            mainAxisSpacing: 16.0,
-            childAspectRatio: 3 / 2, // Relación de aspecto más compacta
-          ),
-          itemCount: trimesters.length,
-          itemBuilder: (context, index) {
-            String trimester = trimesters[index];
-            return Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              /*
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SendDocument(trimester: trimester),
-                    ),
-                  );
-                },*/
-                child: Column(                  
-                  children: [
-                    Expanded(
-                    flex: 2,
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                        child: Image.asset(
-                        'assets/images/logo.jpg',
-                         // Altura fija más pequeña
-                         // Ancho completo de la tarjeta
-                        fit: BoxFit.cover, // La imagen se adapta sin distorsionarse
-                        ),
-                      ),
-                    ),
-                    
-                    Expanded(
-                      flex:1, 
-                      child: Column(
-                        children: [
-                          Text(
-                          trimester,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                             MaterialPageRoute(
-                              builder: (context) => SendDocument(trimester: trimester),
-                             ),
-                            );
-                          },
-                          child: const Text('ver cursos disponibles')
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-      ),
-   );
-  }
-}
-
 class SendDocument extends StatefulWidget {
   final String trimester;
 
@@ -112,13 +12,9 @@ class SendDocument extends StatefulWidget {
   State<SendDocument> createState() => _SendDocumentState();
 }
 
-
-
 class _SendDocumentState extends State<SendDocument> {
-  Map<String, Map<String, List<Map<String, String>>>> courseFiles = {};
+  Map<String, List<Map<String, String>>> courseFiles = {};
   bool isLoading = true;
-  
-  get trimester => null;
 
   @override
   void initState() {
@@ -129,38 +25,21 @@ class _SendDocumentState extends State<SendDocument> {
   Future<void> _loadFilesForAllCourses() async {
     try {
       FirebaseStorage storage = FirebaseStorage.instance;
-      Map<String, List<String>> courses = {
-        'SICAVISP': ['Curso1', 'Curso2', 'Curso3'],
-        'INMUJERES': ['Curso1', 'Curso2', 'Curso3'],
-        'CONAPRED': ['Curso1', 'Curso2', 'Curso3'],
-      };
+      ListResult coursesList = await storage.ref('2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARES/Cursos_2024/${widget.trimester}').listAll();
 
-      Map<String, Map<String, List<Map<String, String>>>> loadedFiles = {};
+      Map<String, List<Map<String, String>>> loadedFiles = {};
 
-      for (String course in courses.keys) {
-        Map<String, List<Map<String, String>>> subcourseFiles = {};
+      for (Reference courseRef in coursesList.prefixes) {
+        String coursePath = courseRef.fullPath;
+        ListResult filesList = await courseRef.listAll();
+        List<Map<String, String>> files = [];
 
-        for (String subCourse in courses[course]!) {
-          String subCoursePath =
-              '2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARES/Cursos_2024/${widget.trimester}/$course/$subCourse';
-          Reference subCourseRef = storage.ref(subCoursePath);
-
-          try {
-            ListResult result = await subCourseRef.listAll();
-            List<Map<String, String>> files = [];
-
-            for (Reference ref in result.items) {
-              String url = await ref.getDownloadURL();
-              files.add({'name': ref.name, 'url': url});
-            }
-
-            subcourseFiles[subCourse] = files;
-          } catch (e) {
-            subcourseFiles[subCourse] = [];
-          }
+        for (Reference fileRef in filesList.items) {
+          String url = await fileRef.getDownloadURL();
+          files.add({'name': fileRef.name, 'url': url});
         }
 
-        loadedFiles[course] = subcourseFiles;
+        loadedFiles[courseRef.name] = files;
       }
 
       setState(() {
@@ -171,14 +50,6 @@ class _SendDocumentState extends State<SendDocument> {
       setState(() {
         isLoading = false;
       });
-    }
-  }
-
-  Future<void> _downloadFile(String fileUrl) async {
-    if (await canLaunch(fileUrl)) {
-      await launch(fileUrl);
-    } else {
-      throw 'No se puede abrir el archivo';
     }
   }
 
@@ -202,11 +73,10 @@ class _SendDocumentState extends State<SendDocument> {
                       mainAxisSpacing: 16.0,
                       childAspectRatio: 3 / 2, // Relación de aspecto
                     ),
-                    itemCount: courseFiles.entries.length,
+                    itemCount: courseFiles.keys.length,
                     itemBuilder: (context, courseIndex) {
                       String courseName = courseFiles.keys.elementAt(courseIndex);
-                      Map<String, List<Map<String, String>>> subCourses =
-                          courseFiles[courseName]!;
+                      List<Map<String, String>> files = courseFiles[courseName]!;
 
                       return Card(
                         shape: RoundedRectangleBorder(
@@ -242,14 +112,14 @@ class _SendDocumentState extends State<SendDocument> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => SubCourseGridPage(
-                                            courseName: courseName,
-                                            subCourses: subCourses,
+                                          builder: (context) => FilesListPage(
+                                            subCourseName: courseName,
+                                            files: files,
                                           ),
                                         ),
                                       );
                                     },
-                                    child: const Text('Ver subcursos'),
+                                    child: const Text('Ver archivos'),
                                   ),
                                 ],
                               ),
@@ -264,100 +134,13 @@ class _SendDocumentState extends State<SendDocument> {
   }
 }
 
-class SubCourseGridPage extends StatelessWidget {
-  final String courseName;
-  final Map<String, List<Map<String, String>>> subCourses;
-
-  const SubCourseGridPage({
-    Key? key,
-    required this.courseName,
-    required this.subCourses,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Subcursos de $courseName'),
-        backgroundColor: greenColor,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16.0,
-            mainAxisSpacing: 16.0,
-            childAspectRatio: 3 / 2,
-          ),
-          itemCount: subCourses.keys.length,
-          itemBuilder: (context, subCourseIndex) {
-            String subCourseName = subCourses.keys.elementAt(subCourseIndex);
-            List<Map<String, String>> files = subCourses[subCourseName]!;
-
-            return Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                      child: Image.asset(
-                        'assets/images/logo.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: [
-                        Text(
-                          subCourseName,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                             Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FilesListPage(
-                        subCourseName: subCourseName,
-                        files: files,
-                      ),
-                    ),
-                  );// Lógica para mostrar los archivos de este subcurso
-                          },
-                          child: const Text('Ver archivos'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
-
 class FilesListPage extends StatelessWidget {
-  final String subCourseName;
+  final String subCourseName; // Renombrado a courseName
   final List<Map<String, String>> files;
 
   const FilesListPage({
     Key? key,
-    required this.subCourseName,
+    required this.subCourseName, // Renombrado a courseName
     required this.files,
   }) : super(key: key);
 
@@ -373,7 +156,7 @@ class FilesListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Archivos de $subCourseName'),
+        title: Text('Archivos de $subCourseName'), // Renombrado a courseName
         backgroundColor: greenColor,
       ),
       body: files.isEmpty
@@ -409,4 +192,3 @@ class FilesListPage extends StatelessWidget {
     );
   }
 }
-

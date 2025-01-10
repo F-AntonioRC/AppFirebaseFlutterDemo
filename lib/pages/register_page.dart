@@ -19,40 +19,69 @@ class RegisterPage extends StatelessWidget {
   RegisterPage({super.key, this.onTap});
 
   void register(BuildContext context) async {
-    //auth service
-    final auth = AuthService();
+  final auth = AuthService();
 
-    if (_passwordController.text == _confirmPasswordController.text) {
-      try {
-        // Registro del usuario en Firebase Auth
-        final userCredential = await auth.signUpWithEmailAndPassword(
-            _emailController.text, _passwordController.text);
+  // Validar que las contraseñas coincidan
+  if (_passwordController.text == _confirmPasswordController.text) {
+    try {
+      // Registrar el usuario en Firebase Auth
+      final userCredential = await auth.signUpWithEmailAndPassword(
+        _emailController.text,
+        _passwordController.text,
+      );
 
-        String UID = userCredential.user!.uid;
+      String UID = userCredential.user!.uid;
 
-        // Guarda los datos del empleado en Firestore
-        await FirebaseFirestore.instance.collection('User').doc(UID).set({
-          'CUPO': _cupoController.text,
-          'email': _emailController.text,
-          'uid': UID,
-        });
-      } catch (e) {
-        showDialog(
-          context: context,
-          builder: ((context) => AlertDialog(
-                title: Text(e.toString()),
-              )),
-        );
+      // Verificar si el CUPO existe en la colección de empleados
+      final employeeSnapshot = await FirebaseFirestore.instance
+          .collection('Employee')
+          .where('CUPO', isEqualTo: _cupoController.text)
+          .get();
+
+      if (employeeSnapshot.docs.isEmpty) {
+        throw Exception('CUPO no encontrado en la base de datos.');
       }
-    } else {
+
+      // Actualizar el registro del empleado con el UID
+      final employeeId = employeeSnapshot.docs.first.id;
+      await FirebaseFirestore.instance
+          .collection('Employee')
+          .doc(employeeId)
+          .update({
+        'uid': UID,
+        'email': _emailController.text,
+      });
+
+      // Mostrar mensaje de éxito
       showDialog(
         context: context,
-        builder: ((context) => const AlertDialog(
-              title: Text('Las contraselas no coinciden'),
-            )),
+        builder: (context) => const AlertDialog(
+          title: Text('Registro exitoso'),
+          content: Text('Usuario registrado correctamente.'),
+        ),
+      );
+    } catch (e) {
+      // Manejar errores
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: Text(e.toString()),
+        ),
       );
     }
+  } else {
+    // Mostrar error si las contraseñas no coinciden
+    showDialog(
+      context: context,
+      builder: (context) => const AlertDialog(
+        title: Text('Error'),
+        content: Text('Las contraseñas no coinciden.'),
+      ),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

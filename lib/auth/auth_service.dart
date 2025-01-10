@@ -9,6 +9,10 @@ class AuthService {
     User? user = auth.currentUser;
     return user?.email;
   }
+  String? getCurrentUserUid() {
+    final User? user = auth.currentUser;
+    return user?.uid; // Devuelve el UID del usuario autenticado o null si no hay sesión activa
+  }
 
   //Sign in
   Future<UserCredential> signInWithEmailPassword(String email, password) async {

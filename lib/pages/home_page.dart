@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
       case NavItem.emailView:
         return const SendEmail();
       case NavItem.documentView:
-        return TrimestersView();
+        return SendDocument(trimester: '2',);
       case NavItem.notifications:
         return const DashboardMain(); // Cambiado para evitar duplicar AdminNotificationsPage
       case NavItem.logout:
