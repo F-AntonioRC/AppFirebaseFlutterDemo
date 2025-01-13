@@ -64,6 +64,7 @@ class _CoursesState extends State<Courses> {
                   _courseLogic.dateController,
                   _courseLogic.registroController,
                   _courseLogic.envioConstanciaController,
+                  _courseLogic.controllerDependency,
                   _courseLogic.trimestreValue,
                   _courseLogic.clearControllers,
                   () => _courseLogic.refreshProviderData(context)
@@ -80,6 +81,7 @@ class _CoursesState extends State<Courses> {
                   _courseLogic.dateController,
                   _courseLogic.registroController,
                   _courseLogic.envioConstanciaController,
+                  _courseLogic.controllerDependency,
                   _courseLogic.trimestreValue,
                   () => _courseLogic.clearProviderData(context),
                   () => _courseLogic.refreshProviderData(context)

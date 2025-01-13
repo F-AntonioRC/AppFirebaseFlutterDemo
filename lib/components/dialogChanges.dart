@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/components/actions_form_check.dart';
-import 'package:testwithfirebase/components/firebase_dropdown.dart';
+import 'package:testwithfirebase/components/firebase_reusable/firebase_dropdown.dart';
 import 'package:testwithfirebase/service/employeeService/service_employee.dart';
+import 'firebase_reusable/firebase_dropdown_controller.dart';
 
 class DialogChanges extends StatefulWidget {
   final String dataChange;
@@ -54,7 +55,7 @@ class _DialogChangesState extends State<DialogChanges> {
       ),
       content: SingleChildScrollView(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           children: [
             const Text("Nombre del empleado",
                 style: TextStyle(fontWeight: FontWeight.bold)),
@@ -74,6 +75,7 @@ class _DialogChangesState extends State<DialogChanges> {
                 style: TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 10.0),
             FirebaseDropdown(
+              enabled: true,
                 controller: _controllerCupo,
                 collection: 'User',
                 data: 'CUPO',

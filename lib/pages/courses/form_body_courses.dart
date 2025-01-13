@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../components/date_textflied.dart';
 import '../../components/dropdown_list.dart';
-import '../../components/firebase_dropdown.dart';
+import '../../components/firebase_reusable/firebase_dropdown.dart';
+import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
 import '../../components/my_textfileld.dart';
 import '../../util/responsive.dart';
 
@@ -76,7 +77,7 @@ Row(
                 controller: controllerDependency,
                 collection: 'Dependencia',
                 data: 'NombreDependencia',
-                textHint: 'Seleccione una opción')
+                textHint: 'Seleccione una opción', enabled: true,)
           ],
         )),
   ],

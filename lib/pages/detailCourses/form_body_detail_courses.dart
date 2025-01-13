@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import '../../components/firebase_dropdown.dart';
+import '../../components/firebase_reusable/firebase_dropdown.dart';
+import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
 
 class FormBodyDetailCourses extends StatelessWidget {
   final FirebaseDropdownController controllerCourse;
@@ -29,6 +30,7 @@ class FormBodyDetailCourses extends StatelessWidget {
                 fontSize: 20.0, fontWeight: FontWeight.bold)),
         const SizedBox(height: 10.0),
         FirebaseDropdown(
+          enabled: true,
           controller: controllerCourse,
           collection: "Courses",
           data: "NameCourse",
@@ -44,6 +46,7 @@ class FormBodyDetailCourses extends StatelessWidget {
                         fontSize: 20.0, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10.0),
                 FirebaseDropdown(
+                  enabled: true,
                     controller: controllerSare,
                     collection: "Sare",
                     data: "sare",
@@ -58,6 +61,7 @@ class FormBodyDetailCourses extends StatelessWidget {
                         fontSize: 20.0, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10.0),
                 FirebaseDropdown(
+                  enabled: true,
                     controller: controllerArea,
                     collection: "Area",
                     data: "NombreArea",

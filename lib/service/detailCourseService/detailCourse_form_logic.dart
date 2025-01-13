@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:testwithfirebase/components/firebase_dropdown.dart';
+import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
 import '../../providers/edit_provider.dart';
 
 class DetailCourseFormLogic {

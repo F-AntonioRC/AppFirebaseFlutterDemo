@@ -32,10 +32,11 @@ class _GraphicLineChartState extends State<GraphicLineChart> {
   }
 
   Future<void> _fetchChartData() async {
-    final String dataField = widget.viewOtherGraphics ? 'Sare' : 'Area';
+    final String dataField = widget.viewOtherGraphics ? 'Activo' : 'Inactivo';
     try {
       // Llama a la función obtenerDatos()
-      List<ChartData> chartData = await _chartLineService.getDataBySelect('Employee', dataField);
+      List<ChartData> chartData =
+          await _chartLineService.getDataBySelect('Courses', dataField);
 
       // Transforma los datos categóricos en puntos numéricos
       List<FlSpot> dataPoints = [];
@@ -53,9 +54,9 @@ class _GraphicLineChartState extends State<GraphicLineChart> {
         _isLoading = false;
       });
     } catch (e) {
-        if(mounted) {
-          showCustomSnackBar(context, 'Error: $e', Colors.red);
-        }
+      if (mounted) {
+        showCustomSnackBar(context, 'Error: $e', Colors.red);
+      }
       setState(() {
         _isLoading = false;
       });
@@ -91,7 +92,9 @@ class _GraphicLineChartState extends State<GraphicLineChart> {
             belowBarData: BarAreaData(
               show: true,
               gradient: LinearGradient(
-                colors: gradientColors.map((color) => color.withAlpha((0.3 * 255).toInt())).toList(),
+                colors: gradientColors
+                    .map((color) => color.withAlpha((0.3 * 255).toInt()))
+                    .toList(),
               ),
             ),
             dotData: const FlDotData(show: false),
@@ -154,9 +157,8 @@ class _GraphicLineChartState extends State<GraphicLineChart> {
           border: Border.all(color: const Color(0xff37434d)),
         ),
         minX: 0,
-        maxX: _dataPoints.isNotEmpty
-            ? _dataPoints.last.x
-            : 0, // Ajusta el rango según los datos
+        maxX: _dataPoints.isNotEmpty ? _dataPoints.last.x : 0,
+        // Ajusta el rango según los datos
         minY: 0,
         maxY: _dataPoints.isNotEmpty
             ? _dataPoints.map((e) => e.y).reduce((a, b) => a > b ? a : b)
@@ -165,4 +167,3 @@ class _GraphicLineChartState extends State<GraphicLineChart> {
     );
   }
 }
-

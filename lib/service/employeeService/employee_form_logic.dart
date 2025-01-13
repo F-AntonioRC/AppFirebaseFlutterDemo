@@ -1,29 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../components/firebase_dropdown.dart';
+import 'package:testwithfirebase/components/firebase_reusable/firebase_value_dropdown_controller.dart';
+import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
 import '../../providers/edit_provider.dart';
 
 class EmployeeFormLogic {
   final List<String> dropdownSex = ['M', 'F'];
   String? sexDropdownValue;
 
-  final List<String> dropdownSection = [
-    'Analista',
-    'Apoyo',
-    'Auxiliar',
-    'Enlace',
-    'Jefatura',
-    'Subdireccion',
-    'Titular'
-  ];
+  final FirebaseValueDropdownController controllerSection = FirebaseValueDropdownController();
+  final FirebaseValueDropdownController controllerArea = FirebaseValueDropdownController();
+  final FirebaseValueDropdownController controllerPuesto = FirebaseValueDropdownController();
 
-  final FirebaseDropdownController controllerArea =
+  final FirebaseDropdownController controllerOre =
       FirebaseDropdownController();
   final FirebaseDropdownController controllerSare =
-      FirebaseDropdownController();
-  final FirebaseDropdownController controllerDependency =
-      FirebaseDropdownController();
-  final FirebaseDropdownController controllerSection =
       FirebaseDropdownController();
 
   final TextEditingController nameController = TextEditingController();
@@ -34,10 +25,11 @@ class EmployeeFormLogic {
   void clearControllers() {
     nameController.clear();
     sexDropdownValue = null;
-    controllerArea.clearSelection();
+    controllerOre.clearSelection();
     controllerSare.clearSelection();
-    controllerDependency.clearSelection();
-    controllerSection.clearSelection();
+    controllerSection.clearDocument();
+    controllerPuesto.clearDocument();
+    controllerArea.clearDocument();
   }
 
   /// Limpia los datos del proveedor
@@ -60,19 +52,16 @@ class EmployeeFormLogic {
       nameController.text = provider.data?['Nombre'] ?? '';
       sexDropdownValue = provider.data?['Sexo'] ?? '';
 
-      if (provider.data?['Area'] != null) {
-        controllerArea.setDocument(
-            {'Id': provider.data?['IdArea'], 'Area': provider.data?['Area']});
-      }
-      if (provider.data?['Dependencia'] != null) {
-        controllerDependency.setDocument({
-          'Id': provider.data?['IdDependencia'],
-          'Dependencia': provider.data?['Dependencia']
-        });
+      if (provider.data?['Ore'] != null) {
+        controllerOre.setDocument(
+            {'Id': provider.data?['IdOre'], 'Ore': provider.data?['Ore']});
       }
       if (provider.data?['Sare'] != null) {
         controllerSare.setDocument(
             {'Id': provider.data?['IdSare'], 'Sare': provider.data?['Sare']});
+      }
+      if(provider.data?['Puesto'] != null) {
+        controllerPuesto.setValue(provider.data?['Puesto']);
       }
     }
   }

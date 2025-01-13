@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 import 'package:testwithfirebase/components/custom_dialog.dart';
 import 'package:testwithfirebase/components/custom_snackbar.dart';
-import 'package:testwithfirebase/components/firebase_dropdown.dart';
 import 'package:testwithfirebase/service/detailCourseService/database_detail_courses.dart';
+import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
 
 Future<void> addDetailCourse(
     BuildContext context,

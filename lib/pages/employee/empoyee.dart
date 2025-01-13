@@ -41,18 +41,21 @@ class _EmployeeState extends State<Employee> {
       child: Column(
         children: [
           FormBodyEmployee(
-              title: widget.initialData != null
-                  ? "Editar Empleado"
-                  : "Añadir Empleado",
-              nameController: _formLogic.nameController,
-              controllerDependency: _formLogic.controllerDependency,
-              controllerArea: _formLogic.controllerArea,
-              controllerSare: _formLogic.controllerSare,
-              dropdownSex: _formLogic.dropdownSex,
-              sexDropdownValue: _formLogic.sexDropdownValue,
-              onChangedDropdownList: (String? newValue) {
-                _formLogic.sexDropdownValue = newValue;
-              }, controllerSection: _formLogic.controllerSection,),
+            title: widget.initialData != null
+                ? "Editar Empleado"
+                : "Añadir Empleado",
+            nameController: _formLogic.nameController,
+            controllerPuesto: _formLogic.controllerPuesto,
+            controllerArea: _formLogic.controllerArea,
+            controllerSare: _formLogic.controllerSare,
+            dropdownSex: _formLogic.dropdownSex,
+            sexDropdownValue: _formLogic.sexDropdownValue,
+            onChangedDropdownList: (String? newValue) {
+              _formLogic.sexDropdownValue = newValue;
+            },
+            controllerSection: _formLogic.controllerSection,
+            controllerOre: _formLogic.controllerOre,
+          ),
           const SizedBox(height: 20.0),
           ActionsFormCheck(
             isEditing: widget.initialData != null,
@@ -60,13 +63,14 @@ class _EmployeeState extends State<Employee> {
               await addEmployee(
                   context,
                   _formLogic.nameController,
-                  _formLogic.sexDropdownValue,
+                  _formLogic.controllerPuesto,
                   _formLogic.controllerArea,
+                  _formLogic.controllerSection,
+                  _formLogic.sexDropdownValue,
+                  _formLogic.controllerOre,
                   _formLogic.controllerSare,
-                  _formLogic.controllerDependency,
                   _formLogic.clearControllers,
-                  () => _formLogic.refreshProviderData(context)
-              );
+                  () => _formLogic.refreshProviderData(context));
             },
             onUpdate: () async {
               final String documentId = widget.initialData?['IdEmployee'];
@@ -74,15 +78,16 @@ class _EmployeeState extends State<Employee> {
                   context,
                   documentId,
                   _formLogic.nameController,
-                  _formLogic.sexDropdownValue,
+                  _formLogic.controllerPuesto,
                   _formLogic.controllerArea,
+                  _formLogic.controllerSection,
+                  _formLogic.sexDropdownValue,
+                  _formLogic.controllerOre,
                   _formLogic.controllerSare,
-                  _formLogic.controllerDependency,
                   widget.initialData,
                   () => _formLogic.clearProviderData(context),
-                  () => _formLogic.refreshProviderData(context)
-               );
-                  _formLogic.clearControllers();
+                  () => _formLogic.refreshProviderData(context));
+              _formLogic.clearControllers();
             },
             onCancel: () {
               _formLogic.clearControllers();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
+import 'package:testwithfirebase/components/firebase_reusable/firebase_dropdown_controller.dart';
 import 'package:testwithfirebase/service/coursesService/database_courses.dart';
 
 import '../../components/custom_snackbar.dart';
@@ -12,6 +13,7 @@ Future<void> addCourse(
     TextEditingController dateController,
     TextEditingController registroController,
     TextEditingController envioConstanciaController,
+    FirebaseDropdownController controllerDependency,
     String? trimestreValue,
     VoidCallback clearControllers,
     VoidCallback refreshData
@@ -26,6 +28,11 @@ Future<void> addCourse(
 
     if(trimestreValue == null) {
       showCustomSnackBar(context, "Por favor, selecciona un Trimestre", Colors.red);
+      return;
+    }
+
+    if(controllerDependency.selectedDocument == null) {
+      showCustomSnackBar(context, "Por favor, selecciona una Dependencia", Colors.red);
       return;
     }
 
@@ -52,6 +59,8 @@ Future<void> addCourse(
       "FechaInicioCurso": dateController.text,
       "Fecharegistro": registroController.text,
       "FechaenvioConstancia": envioConstanciaController.text,
+      "IdDependencia" : controllerDependency.selectedDocument?['IdDependencia'],
+      "Dependencia" : controllerDependency.selectedDocument?['NombreDependencia'],
       "Trimestre": trimestreValue,
       "Estado": "Activo"
     };
@@ -80,6 +89,7 @@ Future<void> updateCourse(
     TextEditingController dateController,
     TextEditingController registroController,
     TextEditingController envioConstanciaController,
+    FirebaseDropdownController controllerDependency,
     String? trimestreValue,
     VoidCallback clearControllers,
     VoidCallback refreshData
@@ -92,6 +102,12 @@ Future<void> updateCourse(
       "FechaInicioCurso": dateController.text,
       "Fecharegistro": registroController.text,
       "FechaenvioConstancia": envioConstanciaController.text,
+      'Dependencia':
+      controllerDependency.selectedDocument?['NombreDependencia'] ??
+          initialData?['Dependencia'],
+      'IdDependencia':
+      controllerDependency.selectedDocument?['IdDependencia'] ??
+          initialData?['IdDependencia'],
       "Trimestre": trimestreValue,
     };
 

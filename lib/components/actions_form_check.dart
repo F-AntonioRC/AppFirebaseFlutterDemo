@@ -17,7 +17,6 @@ class ActionsFormCheck extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      widthFactor: 0.5,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

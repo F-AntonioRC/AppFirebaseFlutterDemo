@@ -4,7 +4,7 @@ import 'package:testwithfirebase/graphics/model_chart.dart';
 
 Future<List<ChartData>> getDataEmployeeByDependency() async {
   final snapshot =
-  await FirebaseFirestore.instance.collection('Employee').get();
+  await FirebaseFirestore.instance.collection('Courses').get();
   final Map<String, int> agrupadosPorDependencia = {};
 
   for (var doc in snapshot.docs) {

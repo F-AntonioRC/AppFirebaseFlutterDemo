@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:testwithfirebase/components/firebase_dropdown.dart';
+import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
 
 class AsignCupoLogic {
   final TextEditingController textController = TextEditingController();

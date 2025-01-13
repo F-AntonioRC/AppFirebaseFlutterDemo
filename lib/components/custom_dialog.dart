@@ -54,7 +54,6 @@ class _CustomDialogState extends State<CustomDialog> {
       scrollable: true,
       title: const Text("¿Esta seguro que la selección en correcta?"),
       content: Column(
-        mainAxisSize: MainAxisSize.min,
         children: [
           if (widget.dataOne != null)
             Text(

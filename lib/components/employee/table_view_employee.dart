@@ -47,8 +47,8 @@ class TableViewEmployee extends StatelessWidget {
                   "Nombre Completo",
                   "CUPO",
                   "Estado",
-                  "Dependencia",
                   "Area",
+                  "Ore",
                   "Sare"
                 ],
                 data: data,
@@ -56,8 +56,8 @@ class TableViewEmployee extends StatelessWidget {
                   "Nombre",
                   "CUPO",
                   "Estado",
-                  "Dependencia",
                   "Area",
+                  "Ore",
                   "Sare"
                 ],
                 onEdit: (String id) {

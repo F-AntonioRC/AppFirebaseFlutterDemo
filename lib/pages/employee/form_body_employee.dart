@@ -1,37 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/firebase_reusable/firebase_value_dropdown_controller.dart';
 import '../../components/dropdown_list.dart';
-import '../../components/firebase_dropdown.dart';
+import '../../components/firebase_reusable/firebase_dropdown.dart';
+import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
+import '../../components/firebase_reusable/firebase_value_dropdown.dart';
 import '../../components/my_textfileld.dart';
 import '../../util/responsive.dart';
 
-class FormBodyEmployee extends StatelessWidget {
+class FormBodyEmployee extends StatefulWidget {
   final TextEditingController nameController;
-  final FirebaseDropdownController controllerDependency;
-  final FirebaseDropdownController controllerArea;
+  final FirebaseValueDropdownController controllerPuesto;
+  final FirebaseValueDropdownController controllerArea;
+  final FirebaseValueDropdownController controllerSection;
   final FirebaseDropdownController controllerSare;
+  final FirebaseDropdownController controllerOre;
   final List<String> dropdownSex;
   final String? sexDropdownValue;
   final Function(String?)? onChangedDropdownList;
   final String title;
-  final FirebaseDropdownController controllerSection;
 
   const FormBodyEmployee(
       {super.key,
       required this.nameController,
-      required this.controllerDependency,
+      required this.controllerPuesto,
       required this.controllerArea,
       required this.controllerSare,
       required this.dropdownSex,
       this.sexDropdownValue,
       required this.onChangedDropdownList,
-        required this.title, required this.controllerSection});
+      required this.title,
+      required this.controllerSection,
+      required this.controllerOre});
+
+  @override
+  State<FormBodyEmployee> createState() => _FormBodyEmployeeState();
+}
+
+class _FormBodyEmployeeState extends State<FormBodyEmployee> {
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Text(
-          title,
+          widget.title,
           style: TextStyle(
               fontSize: responsiveFontSize(context, 24),
               fontWeight: FontWeight.bold),
@@ -40,40 +52,42 @@ class FormBodyEmployee extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              flex: 2,
-                child: Column(
-              children: [
-                Text(
-                  'Nombre del empleado',
-                  style: TextStyle(
-                      fontSize: responsiveFontSize(context, 20),
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10.0),
-                MyTextfileld(
-                    hindText: "Campo Obligatorio*",
-                    icon: const Icon(Icons.person),
-                    controller: nameController,
-                    keyboardType: TextInputType.text),
-              ],
-            )),
-            const SizedBox(width: 20.0),
-            Expanded(
-              flex: 2,
+                flex: 3,
                 child: Column(
                   children: [
                     Text(
-                      'Sección',
+                      'Nombre del empleado',
                       style: TextStyle(
                           fontSize: responsiveFontSize(context, 20),
                           fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 10.0),
-                    FirebaseDropdown(
-                        controller: controllerDependency,
-                        collection: 'Secciones',
-                        data: 'Seccion',
-                        textHint: 'Seleccione una opción')
+                    MyTextfileld(
+                        hindText: "Campo Obligatorio*",
+                        icon: const Icon(Icons.person),
+                        controller: widget.nameController,
+                        keyboardType: TextInputType.text),
+                  ],
+                )),
+            const SizedBox(width: 20.0),
+            Expanded(
+                flex: 2,
+                child: Column(
+                  children: [
+                    Text(
+                      'Area',
+                      style: TextStyle(
+                          fontSize: responsiveFontSize(context, 20),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10.0),
+                    FirebaseValueDropdown(
+                        controller: widget.controllerArea,
+                        collection: 'Area',
+                        field: 'NombreArea',
+                      onChanged: (String value) {
+                          widget.onChangedDropdownList;
+                      },)
                   ],
                 )),
             const SizedBox(width: 20.0),
@@ -89,10 +103,10 @@ class FormBodyEmployee extends StatelessWidget {
                     ),
                     const SizedBox(height: 10.0),
                     DropdownList(
-                        items: dropdownSex,
+                        items: widget.dropdownSex,
                         icon: const Icon(Icons.arrow_downward_rounded),
-                        value: sexDropdownValue,
-                        onChanged: onChangedDropdownList),
+                        value: widget.sexDropdownValue,
+                        onChanged: widget.onChangedDropdownList),
                   ],
                 )),
           ],
@@ -101,39 +115,21 @@ class FormBodyEmployee extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              flex: 2,
                 child: Column(
               children: [
                 Text(
-                  'Puesto',
+                  'Ore',
                   style: TextStyle(
                       fontSize: responsiveFontSize(context, 20),
                       fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10.0),
                 FirebaseDropdown(
-                    controller: controllerDependency,
-                    collection: 'Puesto',
-                    data: 'Puesto',
-                    textHint: 'Seleccione una opción')
-              ],
-            )),
-            const SizedBox(width: 20.0),
-            Expanded(
-                child: Column(
-              children: [
-                Text(
-                  'Area',
-                  style: TextStyle(
-                      fontSize: responsiveFontSize(context, 20),
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10.0),
-                FirebaseDropdown(
-                    controller: controllerArea,
-                    collection: 'Area',
-                    data: 'NombreArea',
-                    textHint: 'Seleccione un area')
+                    controller: widget.controllerOre,
+                    collection: 'Ore',
+                    data: 'Ore',
+                    textHint: 'Seleccione un Ore',
+                )
               ],
             )),
             const SizedBox(width: 20.0),
@@ -148,10 +144,54 @@ class FormBodyEmployee extends StatelessWidget {
                 ),
                 const SizedBox(height: 10.0),
                 FirebaseDropdown(
-                    controller: controllerSare,
-                    collection: 'Sare',
-                    data: 'sare',
-                    textHint: 'Seleccione SARE')
+                  controller: widget.controllerSare,
+                  collection: 'Sare',
+                  data: 'sare',
+                  textHint: 'Seleccione SARE',
+                  enabled: widget.controllerOre.selectedDocument == null,
+                )
+              ],
+            )),
+          ],
+        ),
+        const SizedBox(height: 15.0),
+        Row(
+          children: [
+            Expanded(
+                child: Column(
+              children: [
+                Text(
+                  'Sección',
+                  style: TextStyle(
+                      fontSize: responsiveFontSize(context, 20),
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10.0),
+                FirebaseValueDropdown(
+                    controller: widget.controllerSection,
+                    collection: 'Secciones',
+                    field: 'Seccion', onChanged: (String value) {
+                      widget.onChangedDropdownList;
+                },)
+              ],
+            )),
+            const SizedBox(width: 20.0),
+            Expanded(
+                child: Column(
+              children: [
+                Text(
+                  'Puesto',
+                  style: TextStyle(
+                      fontSize: responsiveFontSize(context, 20),
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10.0),
+                FirebaseValueDropdown(
+                    controller: widget.controllerPuesto,
+                    collection: 'Puesto',
+                    field: 'Puesto', onChanged: (String value) {
+                      widget.onChangedDropdownList;
+                },)
               ],
             )),
           ],

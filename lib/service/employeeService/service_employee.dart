@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 import 'package:testwithfirebase/components/custom_snackbar.dart';
+import 'package:testwithfirebase/components/firebase_reusable/firebase_value_dropdown_controller.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
-import '../../components/firebase_dropdown.dart';
+import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
 import 'database.dart';
 
 Future<void> addEmployee(BuildContext context,
     TextEditingController nameController,
+    FirebaseValueDropdownController controllerPuesto,
+    FirebaseValueDropdownController controllerArea,
+    FirebaseValueDropdownController controllerSection,
     String? sexDropdownValue,
-    FirebaseDropdownController controllerArea,
+    FirebaseDropdownController controllerOre,
     FirebaseDropdownController controllerSare,
-    FirebaseDropdownController controllerDependency,
     VoidCallback clearControllers,
     VoidCallback refreshData
     ) async {
@@ -27,12 +30,6 @@ Future<void> addEmployee(BuildContext context,
       return;
     }
 
-    if (controllerDependency.selectedDocument == null) {
-      showCustomSnackBar(
-          context, "Por favor, selecciona una dependencia", Colors.red);
-      return;
-    }
-
 
     String id = randomAlphaNumeric(3);
     Map<String, dynamic> employeeInfoMap = {
@@ -40,13 +37,13 @@ Future<void> addEmployee(BuildContext context,
       "Nombre": nameController.text,
       "Sexo": sexDropdownValue,
       "Estado": "Activo",
-      "Area": controllerArea.selectedDocument?['NombreArea'],
-      "IdArea": controllerArea.selectedDocument?['IdArea'],
+      "Area": controllerArea.selectedValue,
+      "Sección" : controllerSection.selectedValue,
+      "Puesto" : controllerPuesto.selectedValue,
       "IdSare": controllerSare.selectedDocument?['IdSare'],
       "Sare": controllerSare.selectedDocument?['sare'],
-      "Dependencia":
-      controllerDependency.selectedDocument?['NombreDependencia'],
-      "IdDependencia": controllerDependency.selectedDocument?['IdDependencia'],
+      "IdOre": controllerOre.selectedDocument?['IdOre'],
+      "Ore": controllerOre.selectedDocument?['Ore'],
     };
 
     await DatabaseMethods().addEmployeeDetails(employeeInfoMap, id);
@@ -71,10 +68,12 @@ Future<void> addEmployee(BuildContext context,
 Future<void> updateEmployee(BuildContext context,
     String documentId,
     TextEditingController nameController,
+    FirebaseValueDropdownController controllerPuesto,
+    FirebaseValueDropdownController controllerArea,
+    FirebaseValueDropdownController controllerSection,
     String? sexDropdownValue,
-    FirebaseDropdownController controllerArea,
+    FirebaseDropdownController controllerOre,
     FirebaseDropdownController controllerSare,
-    FirebaseDropdownController controllerDependency,
     Map<String, dynamic>? initialData,
     VoidCallback clearControllers,
     VoidCallback refreshData
@@ -85,19 +84,11 @@ Future<void> updateEmployee(BuildContext context,
       'IdEmployee': documentId,
       'Nombre': nameController.text,
       'Sexo': sexDropdownValue.toString(),
-      'IdArea':
-      controllerArea.selectedDocument?['IdArea'] ?? initialData?['IdArea'],
-      'IdSare':
-      controllerSare.selectedDocument?['IdSare'] ?? initialData?['IdSare'],
-      'IdDependencia':
-      controllerDependency.selectedDocument?['IdDependencia'] ??
-          initialData?['IdDependencia'],
-      'Area': controllerArea.selectedDocument?['NombreArea'] ??
-          initialData?['Area'],
+      'IdOre': controllerOre.selectedDocument?['IdOre'] ?? initialData?['IdOre'],
+      'Ore': controllerOre.selectedDocument?['Ore'] ?? initialData?['Ore'],
+      'IdSare': controllerSare.selectedDocument?['IdSare'] ?? initialData?['IdSare'],
       'Sare': controllerSare.selectedDocument?['sare'] ?? initialData?['Sare'],
-      'Dependencia':
-      controllerDependency.selectedDocument?['NombreDependencia'] ??
-          initialData?['Dependencia'],
+      'Puesto' : controllerPuesto.selectedValue
     };
 
     // Llamar al metodo del servicio para actualizar los datos

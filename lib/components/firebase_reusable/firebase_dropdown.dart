@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/components/decoration_dropdown.dart';
+import 'package:testwithfirebase/components/firebase_reusable/firebase_dropdown_controller.dart';
 
 class FirebaseDropdown extends StatefulWidget {
   final FirebaseDropdownController controller;
   final String collection;
   final String data;
   final String textHint;
+  final bool enabled;
 
   const FirebaseDropdown({
     super.key,
@@ -14,55 +16,11 @@ class FirebaseDropdown extends StatefulWidget {
     required this.collection,
     required this.data,
     required this.textHint,
+    this.enabled = true,
   });
 
   @override
-  _FirebaseDropdownState createState() => _FirebaseDropdownState();
-}
-
-class FirebaseDropdownController {
-  Map<String, dynamic>? _selectedDocument;
-  final List<Function()> _listeners = [];
-
-  // Metodo para obtener el valor seleccionado
-  Map<String, dynamic>? get selectedDocument => _selectedDocument;
-
-  // Metodo para establecer el documento seleccionado
-  void setDocument(Map<String, dynamic>? document) {
-    _selectedDocument = document;
-    notifyListeners(); // Notifica a los listeners
-  }
-
-  // Limpia la selección actual
-  void clearSelection() {
-    _selectedDocument = null;
-    notifyListeners(); // Notifica a los listeners
-  }
-
-  // Agrega un listener
-  void addListener(Function() listener) {
-    _listeners.add(listener);
-  }
-
-  // Elimina un listener
-  void removeListener(Function() listener) {
-    _listeners.remove(listener);
-  }
-
-  // Notifica a todos los listeners
-  void notifyListeners() {
-    for (var listener in _listeners) {
-      listener();
-    }
-  }
-
-  //Sincroniza la selección actual con los documentos disponibles
-  void synchronizeSelection(List<Map<String, dynamic>> documents) {
-    if (_selectedDocument != null &&
-        !documents.any((doc) => doc['Id'] == _selectedDocument?['Id'])) {
-      clearSelection();
-    }
-  }
+  State<FirebaseDropdown> createState() => _FirebaseDropdownState();
 }
 
 class _FirebaseDropdownState extends State<FirebaseDropdown> {
@@ -141,9 +99,15 @@ class _FirebaseDropdownState extends State<FirebaseDropdown> {
                 child: Text(document[widget.data] ?? 'Sin datos'),
               );
             }).toList(),
-            onChanged: (Map<String, dynamic>? newValue) {
-              widget.controller.setDocument(newValue);
-            },
+            onChanged: widget.enabled
+            ? (Map<String, dynamic>? newValue) {
+              if(newValue == null) {
+                widget.controller.clearSelection();
+              } else {
+                widget.controller.setDocument(newValue);
+              }
+            }
+            : null,
             validator: (value) {
               if (value == null) {
                 return 'Por favor selecciona un valor';
@@ -152,7 +116,6 @@ class _FirebaseDropdownState extends State<FirebaseDropdown> {
             },
           );
         }
-
         return Text(
           'Cargando datos...',
           style: TextStyle(color: theme.colorScheme.primary),

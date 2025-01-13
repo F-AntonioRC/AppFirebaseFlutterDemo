@@ -5,7 +5,7 @@ class LineChartService {
   Future<List<ChartData>> getDataBySelect(String collection,
       String dataChange) async {
     final snapshot =
-    await FirebaseFirestore.instance.collection('Employee').get();
+    await FirebaseFirestore.instance.collection('Courses').get();
     final Map<String, int> datosAgrupados = {};
 
     for (var doc in snapshot.docs) {
