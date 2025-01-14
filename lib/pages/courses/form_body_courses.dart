@@ -6,7 +6,7 @@ import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
 import '../../components/my_textfileld.dart';
 import '../../util/responsive.dart';
 
-class FormBodyCourses extends StatelessWidget {
+class FormBodyCourses extends StatefulWidget {
   final String title;
   final FirebaseDropdownController controllerDependency;
   final TextEditingController nameCourseController;
@@ -32,10 +32,15 @@ class FormBodyCourses extends StatelessWidget {
         required this.controllerDependency});
 
   @override
+  State<FormBodyCourses> createState() => _FormBodyCoursesState();
+}
+
+class _FormBodyCoursesState extends State<FormBodyCourses> {
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(title,
+        Text(widget.title,
             style: TextStyle(
                 fontSize: responsiveFontSize(context, 24),
                 fontWeight: FontWeight.bold),
@@ -58,7 +63,7 @@ Row(
             icon: const Icon(
               Icons.fact_check_sharp,
             ),
-            controller: nameCourseController,
+            controller: widget.nameCourseController,
             keyboardType: TextInputType.text),
       ],
     )),
@@ -74,7 +79,7 @@ Row(
             ),
             const SizedBox(height: 10.0),
             FirebaseDropdown(
-                controller: controllerDependency,
+                controller: widget.controllerDependency,
                 collection: 'Dependencia',
                 data: 'NombreDependencia',
                 textHint: 'Seleccione una opción', enabled: true,)
@@ -99,7 +104,7 @@ Row(
                 MyTextfileld(
                     hindText: "Campo Obligatorio*",
                     icon: const Icon(Icons.document_scanner_sharp),
-                    controller: nomenclaturaController,
+                    controller: widget.nomenclaturaController,
                     keyboardType: TextInputType.text),
               ],
             )),
@@ -115,10 +120,10 @@ Row(
                 ),
                 const SizedBox(height: 10.0),
                 DropdownList(
-                  items: dropdowntrimestre,
+                  items: widget.dropdowntrimestre,
                   icon: const Icon(Icons.arrow_downward_rounded),
-                  value: trimestreValue,
-                  onChanged: onChangedDropdownList,
+                  value: widget.trimestreValue,
+                  onChanged: widget.onChangedDropdownList,
                 ),
               ],
             ))
@@ -140,7 +145,7 @@ Row(
                       fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10.0),
-                DateTextField(controller: dateController),
+                DateTextField(controller: widget.dateController),
               ],
             )),
             const SizedBox(width: 10.0),
@@ -155,7 +160,7 @@ Row(
                       fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10.0),
-                DateTextField(controller: registroController),
+                DateTextField(controller: widget.registroController),
               ],
             )),
             const SizedBox(width: 15.0),
@@ -170,7 +175,7 @@ Row(
                         fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10.0),
-                  DateTextField(controller: envioConstanciaController),
+                  DateTextField(controller: widget.envioConstanciaController),
                 ],
               ),
             ),

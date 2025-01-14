@@ -44,7 +44,7 @@ class TableViewDetailCourses extends StatelessWidget {
             return MyPaginatedTable(
               headers: const [
                 "Nombre",
-                "Area",
+                "Ore",
                 "Sare",
                 "Estado",
                 "Inicio curso",
@@ -54,7 +54,7 @@ class TableViewDetailCourses extends StatelessWidget {
               data: data,
               fieldKeys: const [
                 "NameCourse",
-                "NombreArea",
+                "Ore",
                 "sare",
                 "Estado",
                 "FechaInicioCurso",
@@ -88,9 +88,9 @@ class TableViewDetailCourses extends StatelessWidget {
                   final dateInit = selectedRow['FechaInicioCurso'];
                   final dateRegister = selectedRow['Fecharegistro'];
                   final dateSendDocument = selectedRow['FechaenvioConstancia'];
-                  final areaSelected = selectedRow['NombreArea'];
+                  final oreSelected = selectedRow['Ore'];
                   final sareSelected = selectedRow['sare'];
-                  final idAreaSelected = selectedRow['IdArea'];
+                  final idOreSelected = selectedRow['IdOre'];
                   final idSareSelected = selectedRow['IdSare'];
 
                   showDialog(
@@ -101,9 +101,9 @@ class TableViewDetailCourses extends StatelessWidget {
                         dateInit: dateInit,
                         dateRegister: dateRegister,
                         sendDocument: dateSendDocument,
-                        nameArea: areaSelected,
+                        nameOre: oreSelected,
                         nameSare: sareSelected,
-                        idArea: idAreaSelected,
+                        idOre: idOreSelected,
                         idSare: idSareSelected,
                       );
                     },

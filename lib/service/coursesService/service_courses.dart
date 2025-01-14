@@ -98,6 +98,7 @@ Future<void> updateCourse(
     Map<String, dynamic> updateInfoMap = {
       "IdCourse": documentId,
       "NameCourse": nameCourseController.text,
+      "Trimestre": trimestreValue.toString(),
       "NomenclaturaCurso": nomenclaturaController.text,
       "FechaInicioCurso": dateController.text,
       "Fecharegistro": registroController.text,
@@ -108,7 +109,6 @@ Future<void> updateCourse(
       'IdDependencia':
       controllerDependency.selectedDocument?['IdDependencia'] ??
           initialData?['IdDependencia'],
-      "Trimestre": trimestreValue,
     };
 
     await MethodsCourses().updateCourse(documentId, updateInfoMap);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 
 class HeaderGraphics extends StatelessWidget {
@@ -33,7 +34,7 @@ class HeaderGraphics extends StatelessWidget {
             flex: 2,
             child: Ink(
               decoration: const ShapeDecoration(
-                  shape: CircleBorder(), color: Colors.white),
+                  shape: CircleBorder(), color: ligthBackground),
               child: IconButton(
                 onPressed: onToggleView,
                 tooltip: viewOtherGraphics ? viewOff : viewOn,

@@ -6,7 +6,7 @@ import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/pages/backgruond_main.dart';
 import 'package:testwithfirebase/service/auth_methods.dart';
 import '../util/responsive.dart';
-import 'forgot_password.dart';
+import 'main_pages/forgot_password.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;

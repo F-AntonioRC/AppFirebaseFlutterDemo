@@ -113,11 +113,11 @@ class MethodsDetailCourses {
         }
 
         // Consulta el documento de Area si existe idArea
-        DocumentSnapshot areaDoc =
-            await firestore.collection('Area').doc(idOre).get();
+        DocumentSnapshot OreDoc =
+            await firestore.collection('Ore').doc(idOre).get();
 
-        if (areaDoc.exists) {
-          var areaData = areaDoc.data() as Map<String, dynamic>;
+        if (OreDoc.exists) {
+          var areaData = OreDoc.data() as Map<String, dynamic>;
           result['Ore'] = areaData['Ore'] ?? 'N/A';
           result['IdOre'] = areaData['IdOre'];
         }
@@ -191,11 +191,11 @@ class MethodsDetailCourses {
         }
 
         // Consulta el documento de Area si existe idArea
-        DocumentSnapshot areaDoc =
-            await firestore.collection('Area').doc(idOre).get();
+        DocumentSnapshot OreDoc =
+            await firestore.collection('Ore').doc(idOre).get();
 
-        if (areaDoc.exists) {
-          var areaData = areaDoc.data() as Map<String, dynamic>;
+        if (OreDoc.exists) {
+          var areaData = OreDoc.data() as Map<String, dynamic>;
           result['Ore'] = areaData['Ore'] ?? 'N/A';
           result['IdOre'] = areaData['IdOre'];
         }
@@ -218,19 +218,6 @@ class MethodsDetailCourses {
       print('Error al obtener los datos: $e');
       throw e;
     }
-  }
-
-  Future<List<Map<String, dynamic>>> getCoursesForEmployee(String idOre, String idSare) async {
-    final query = FirebaseFirestore.instance
-        .collection('DetalleCursos')
-        .where('IdOre', isEqualTo: idOre)
-        .where('IdSare', isEqualTo: idSare)
-        .where('Estado', isEqualTo: 'activo');
-
-    final querySnapshot = await query.get();
-
-    // Procesar los datos y retornar la lista de cursos
-    return querySnapshot.docs.map((doc) => doc.data()).toList();
   }
 
 }

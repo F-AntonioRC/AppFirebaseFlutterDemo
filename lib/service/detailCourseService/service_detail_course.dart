@@ -44,6 +44,7 @@ Future<void> addDetailCourse(
                 };
                 await MethodsDetailCourses().addDetailCourse(detailCourseInfoMap, id);
                 clearControllers();
+                refreshData();
             }, messageSuccess: 'Curso Asignado Correctamente',);
     });
     } catch (e) {
@@ -82,6 +83,7 @@ try{
 
     });
     clearControllers();
+    refreshData();
     } catch (e) {
         showCustomSnackBar(context, 'Error: $e', Colors.red);
     }

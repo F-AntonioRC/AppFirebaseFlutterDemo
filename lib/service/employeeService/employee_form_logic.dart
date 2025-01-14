@@ -26,7 +26,6 @@ class EmployeeFormLogic {
   void clearControllers() {
     nameController.clear();
     sexDropdownValue = null;
-    dropdownSex.clear();
     controllerOre.clearSelection();
     controllerSare.clearSelection();
     controllerSection.clearDocument();

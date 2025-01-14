@@ -5,10 +5,10 @@ import '../../providers/edit_provider.dart';
 
 class CourseFormLogic {
   final List<String> dropdowntrimestre = [
-    "1",
-    "2",
-    "3",
-    "4"
+    '1',
+    '2',
+    '3',
+    '4'
   ];
   String? trimestreValue;
   TextEditingController nameCourseController = TextEditingController();
@@ -24,7 +24,6 @@ class CourseFormLogic {
     nameCourseController.clear();
     nomenclaturaController.clear();
     trimestreValue = null;
-    dropdowntrimestre.clear();
     dateController.clear();
     registroController.clear();
     envioConstanciaController.clear();

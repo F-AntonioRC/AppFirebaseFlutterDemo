@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:testwithfirebase/auth/login_or_register.dart';
 import 'package:testwithfirebase/pages/backgruond_main.dart';
 import 'package:testwithfirebase/service/auth_methods.dart';
-import '../components/my_button.dart';
-import '../components/my_textfileld.dart';
-import '../dataConst/constand.dart';
-import '../util/responsive.dart';
+import '../../components/my_button.dart';
+import '../../components/my_textfileld.dart';
+import '../../dataConst/constand.dart';
+import '../../util/responsive.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});

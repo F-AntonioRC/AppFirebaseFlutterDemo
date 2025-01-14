@@ -10,9 +10,9 @@ class DialogEmail extends StatefulWidget {
   final String dateInit;
   final String dateRegister;
   final String sendDocument;
-  final String? nameArea;
+  final String? nameOre;
   final String? nameSare;
-  final String? idArea;
+  final String? idOre;
   final String? idSare;
 
   const DialogEmail({
@@ -21,9 +21,9 @@ class DialogEmail extends StatefulWidget {
     required this.dateInit,
     required this.dateRegister,
     required this.sendDocument,
-    this.nameArea,
+    this.nameOre,
     this.nameSare,
-    this.idArea,
+    this.idOre,
     this.idSare,
   });
 
@@ -36,7 +36,7 @@ class _DialogEmailState extends State<DialogEmail> {
   late final TextEditingController _dateInitController;
   late final TextEditingController _dateRegisterController;
   late final TextEditingController _dateSendEmailController;
-  final TextEditingController _nameAreaController = TextEditingController();
+  final TextEditingController _nameOreController = TextEditingController();
   final TextEditingController _nameSareController = TextEditingController();
   TextEditingController bodyEmailController = TextEditingController();
 
@@ -46,7 +46,7 @@ class _DialogEmailState extends State<DialogEmail> {
     _dateInitController.dispose();
     _dateRegisterController.dispose();
     _dateSendEmailController.dispose();
-    _nameAreaController.dispose();
+    _nameOreController.dispose();
     _nameSareController.dispose();
     super.dispose();
   }
@@ -59,10 +59,10 @@ class _DialogEmailState extends State<DialogEmail> {
     _dateRegisterController = TextEditingController(text: widget.dateRegister);
     _dateSendEmailController = TextEditingController(text: widget.sendDocument);
     // Prellenar controladores si hay datos disponibles
-    if (widget.nameArea != null && widget.nameArea != 'N/A') {
-      _nameAreaController.text = widget.nameArea!;
+    if (widget.nameOre != null && widget.nameOre != 'N/A') {
+      _nameOreController.text = widget.nameOre!;
     } else {
-      _nameAreaController.text = 'No asignado';
+      _nameOreController.text = 'No asignado';
     }
     if (widget.nameSare != null && widget.nameSare != 'N/A') {
       _nameSareController.text = widget.nameSare!;
@@ -97,9 +97,9 @@ class _DialogEmailState extends State<DialogEmail> {
               secondTitle: "Envio constancia",
               secondIcon: const Icon(Icons.event_available_sharp)),
           const SizedBox(height: 10.0),
-          if (widget.nameArea != 'N/A') ...[
-            BuildField(title: 'Área Asignada',
-                controller: _nameAreaController,
+          if (widget.nameOre != 'N/A') ...[
+            BuildField(title: 'ORE Asignado',
+                controller: _nameOreController,
                 theme: theme),
           ],
           if (widget.nameSare != 'N/A') ...[
@@ -138,9 +138,9 @@ class _DialogEmailState extends State<DialogEmail> {
                   widget.dateInit,
                   widget.dateRegister,
                   widget.sendDocument,
-                  widget.nameArea,
+                  widget.nameOre,
                   widget.nameSare,
-                  widget.idArea,
+                  widget.idOre,
                   widget.idSare);
             },
             onCancel: () => Navigator.pop(context),

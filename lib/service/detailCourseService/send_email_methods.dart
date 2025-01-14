@@ -108,8 +108,8 @@ class SendEmailMethods {
   }
 
   // Métodos específicos para área y sare
-  Future<void> sendEmailToArea(
-    String idArea,
+  Future<void> sendEmailToOre(
+    String idOre,
     String nameCourse,
     String dateInit,
     String dateRegister,
@@ -117,7 +117,7 @@ class SendEmailMethods {
     String body,
   ) async {
     await sendEmail(
-        'IdArea', idArea, nameCourse, dateInit, dateRegister, dateSend, body);
+        'IdOre', idOre, nameCourse, dateInit, dateRegister, dateSend, body);
   }
 
   Future<void> sendEmailToSare(

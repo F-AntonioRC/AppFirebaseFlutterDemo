@@ -12,11 +12,11 @@ Future<void> sendEmail(
     String sendDocument,
     String? nameArea,
     String? nameSare,
-    String? idArea,
+    String? idOre,
     String? idSare) async {
-  if (idArea != null && idArea != 'N/A') {
+  if (idOre != null && idOre != 'N/A') {
     try {
-      await SendEmailMethods().sendEmailToArea(idArea, nameCourse, dateInit,
+      await SendEmailMethods().sendEmailToOre(idOre, nameCourse, dateInit,
           dateRegister, sendDocument, bodyEmailController.text.trim());
       if (context.mounted) {
         showCustomSnackBar(context, "Email generado con exito", greenColor);
