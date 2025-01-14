@@ -53,6 +53,9 @@ class _EmployeeState extends State<Employee> {
             onChangedDropdownList: (String? newValue) {
               _formLogic.sexDropdownValue = newValue;
             },
+            onChangedFirebaseValue: (String? value) {
+              _formLogic.valueFirebaseDropdown = value;
+            },
             controllerSection: _formLogic.controllerSection,
             controllerOre: _formLogic.controllerOre,
           ),

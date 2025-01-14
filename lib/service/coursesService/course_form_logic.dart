@@ -24,6 +24,7 @@ class CourseFormLogic {
     nameCourseController.clear();
     nomenclaturaController.clear();
     trimestreValue = null;
+    dropdowntrimestre.clear();
     dateController.clear();
     registroController.clear();
     envioConstanciaController.clear();

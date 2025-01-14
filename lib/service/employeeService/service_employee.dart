@@ -24,6 +24,12 @@ Future<void> addEmployee(BuildContext context,
       return;
     }
 
+    if(controllerArea.selectedValue == null) {
+      showCustomSnackBar(
+          context, "Por favor, selecciona un area", Colors.red);
+      return;
+    }
+
     if (sexDropdownValue == null || sexDropdownValue.isEmpty) {
       showCustomSnackBar(
           context, "Por favor, selecciona un sexo", Colors.red);
@@ -88,7 +94,8 @@ Future<void> updateEmployee(BuildContext context,
       'Ore': controllerOre.selectedDocument?['Ore'] ?? initialData?['Ore'],
       'IdSare': controllerSare.selectedDocument?['IdSare'] ?? initialData?['IdSare'],
       'Sare': controllerSare.selectedDocument?['sare'] ?? initialData?['Sare'],
-      'Puesto' : controllerPuesto.selectedValue
+      'Seccion' : controllerSection.selectedValue ?? initialData?['Seccion'],
+      'Puesto' : controllerPuesto.selectedValue ?? initialData?['Puesto']
     };
 
     // Llamar al metodo del servicio para actualizar los datos

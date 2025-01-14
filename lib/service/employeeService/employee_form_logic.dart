@@ -7,6 +7,7 @@ import '../../providers/edit_provider.dart';
 class EmployeeFormLogic {
   final List<String> dropdownSex = ['M', 'F'];
   String? sexDropdownValue;
+  String? valueFirebaseDropdown;
 
   final FirebaseValueDropdownController controllerSection = FirebaseValueDropdownController();
   final FirebaseValueDropdownController controllerArea = FirebaseValueDropdownController();
@@ -25,11 +26,13 @@ class EmployeeFormLogic {
   void clearControllers() {
     nameController.clear();
     sexDropdownValue = null;
+    dropdownSex.clear();
     controllerOre.clearSelection();
     controllerSare.clearSelection();
     controllerSection.clearDocument();
     controllerPuesto.clearDocument();
     controllerArea.clearDocument();
+
   }
 
   /// Limpia los datos del proveedor
@@ -52,6 +55,10 @@ class EmployeeFormLogic {
       nameController.text = provider.data?['Nombre'] ?? '';
       sexDropdownValue = provider.data?['Sexo'] ?? '';
 
+      if(provider.data?['Area'] != null) {
+        controllerArea.setValue(provider.data?['Area']);
+      }
+
       if (provider.data?['Ore'] != null) {
         controllerOre.setDocument(
             {'Id': provider.data?['IdOre'], 'Ore': provider.data?['Ore']});
@@ -60,7 +67,8 @@ class EmployeeFormLogic {
         controllerSare.setDocument(
             {'Id': provider.data?['IdSare'], 'Sare': provider.data?['Sare']});
       }
-      if(provider.data?['Puesto'] != null) {
+      if(provider.data?['Seccion'] != null) {
+        controllerSection.setValue(provider.data?['Seccion']);
         controllerPuesto.setValue(provider.data?['Puesto']);
       }
     }
