@@ -41,6 +41,21 @@ class FormBodyDetailCourses extends StatelessWidget {
           children: [
             Expanded(child: Column(
               children: [
+                const Text('ORE',
+                    style: TextStyle(
+                        fontSize: 20.0, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 10.0),
+                FirebaseDropdown(
+                    enabled: true,
+                    controller: controllerArea,
+                    collection: "Ore",
+                    data: "Ore",
+                    textHint: "Seleccione un ORE"),
+              ],
+            ),),
+            const SizedBox(width: 20.0),
+            Expanded(child: Column(
+              children: [
                 const Text('SARE',
                     style: TextStyle(
                         fontSize: 20.0, fontWeight: FontWeight.bold)),
@@ -53,21 +68,6 @@ class FormBodyDetailCourses extends StatelessWidget {
                     textHint: "Seleccione una sare"),
               ],
             ),),
-            const SizedBox(width: 20.0),
-            Expanded(child: Column(
-              children: [
-                const Text('Area',
-                    style: TextStyle(
-                        fontSize: 20.0, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 10.0),
-                FirebaseDropdown(
-                  enabled: true,
-                    controller: controllerArea,
-                    collection: "Area",
-                    data: "NombreArea",
-                    textHint: "Seleccione un Area"),
-              ],
-            ),)
           ],
         ),
       ],

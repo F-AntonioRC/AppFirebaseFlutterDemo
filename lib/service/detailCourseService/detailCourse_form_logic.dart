@@ -4,14 +4,14 @@ import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
 import '../../providers/edit_provider.dart';
 
 class DetailCourseFormLogic {
-  final FirebaseDropdownController controllerArea = FirebaseDropdownController();
+  final FirebaseDropdownController controllerOre = FirebaseDropdownController();
   final FirebaseDropdownController controllerSare = FirebaseDropdownController();
   final FirebaseDropdownController controllerCourses = FirebaseDropdownController();
 
   bool isClearing = false;
 
   void clearControllers () {
-    controllerArea.clearSelection();
+    controllerOre.clearSelection();
     controllerSare.clearSelection();
     controllerCourses.clearSelection();
   }
@@ -34,10 +34,10 @@ class DetailCourseFormLogic {
 
     if (provider.data != null) {
 
-      if (provider.data?['IdArea'] != null) {
-        controllerArea.setDocument({
-          'Id': provider.data?['IdArea'],
-          'NombreArea': provider.data?['NombreArea']
+      if (provider.data?['IdOre'] != null) {
+        controllerOre.setDocument({
+          'Id': provider.data?['IdOre'],
+          'Ore': provider.data?['Ore']
         });
       }
       if (provider.data?['IdCourse'] != null) {

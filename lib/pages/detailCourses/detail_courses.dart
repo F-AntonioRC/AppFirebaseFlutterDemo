@@ -31,10 +31,10 @@ class _DetailCoursesState extends State<DetailCourses> {
   }
 
   String? selectedCourse;
-  String? selectedArea;
+  String? selectedOre;
   String? selectedSare;
   String? idCourse;
-  String? idArea;
+  String? idOre;
   String? idSare;
 
   void _updateData() {
@@ -42,14 +42,14 @@ class _DetailCoursesState extends State<DetailCourses> {
       // Actualizar las variables de instancia directamente
       selectedCourse =
       _detailCourseFormLogic.controllerCourses.selectedDocument?['NameCourse'];
-      selectedArea =
-      _detailCourseFormLogic.controllerArea.selectedDocument?['NombreArea'];
+      selectedOre =
+      _detailCourseFormLogic.controllerOre.selectedDocument?['Ore'];
       selectedSare =
       _detailCourseFormLogic.controllerSare.selectedDocument?['sare'];
       idCourse =
       _detailCourseFormLogic.controllerCourses.selectedDocument?['IdCourse'];
-      idArea =
-      _detailCourseFormLogic.controllerArea.selectedDocument?['IdArea'];
+      idOre =
+      _detailCourseFormLogic.controllerOre.selectedDocument?['IdOre'];
       idSare =
       _detailCourseFormLogic.controllerSare.selectedDocument?['IdSare'];
     });
@@ -66,7 +66,7 @@ class _DetailCoursesState extends State<DetailCourses> {
             FormBodyDetailCourses(
                 controllerCourse: _detailCourseFormLogic.controllerCourses,
                 controllerSare: _detailCourseFormLogic.controllerSare,
-                controllerArea: _detailCourseFormLogic.controllerArea,
+                controllerArea: _detailCourseFormLogic.controllerOre,
                 title: widget.initialData != null
                     ? "Editar Asignación de cursos"
                     : "Asignar Cursos"),
@@ -77,7 +77,7 @@ class _DetailCoursesState extends State<DetailCourses> {
                 await addDetailCourse(
                     context,
                     _detailCourseFormLogic.controllerSare,
-                    _detailCourseFormLogic.controllerArea,
+                    _detailCourseFormLogic.controllerOre,
                     _detailCourseFormLogic.controllerCourses,
                     _detailCourseFormLogic.clearControllers,
                     () => _detailCourseFormLogic.refreshProviderData(context)
@@ -90,10 +90,10 @@ class _DetailCoursesState extends State<DetailCourses> {
                     context,
                     documentId,
                     selectedCourse,
-                    selectedArea,
+                    selectedOre,
                     selectedSare,
                     idCourse,
-                    idArea,
+                    idOre,
                     idSare,
                     widget.initialData,
                     () => _detailCourseFormLogic.clearProviderData(context),

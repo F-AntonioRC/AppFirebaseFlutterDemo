@@ -8,7 +8,7 @@ import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
 Future<void> addDetailCourse(
     BuildContext context,
     FirebaseDropdownController controllerSare,
-    FirebaseDropdownController controllerArea,
+    FirebaseDropdownController controllerOre,
     FirebaseDropdownController controllerCourse,
     VoidCallback clearControllers,
     VoidCallback refreshData
@@ -21,10 +21,10 @@ Future<void> addDetailCourse(
 
     // Datos seleccionados
     String? selectedCourse = controllerCourse.selectedDocument?['NameCourse'];
-    String? selectedArea = controllerArea.selectedDocument?['NombreArea'];
+    String? selectedArea = controllerOre.selectedDocument?['Ore'];
     String? selectedSare = controllerSare.selectedDocument?['sare'];
     String? idCourse = controllerCourse.selectedDocument?['IdCourse'];
-    String? idArea = controllerArea.selectedDocument?['IdArea'];
+    String? idOre = controllerOre.selectedDocument?['IdOre'];
     String? idSare = controllerSare.selectedDocument?['IdSare'];
 
 
@@ -37,7 +37,7 @@ Future<void> addDetailCourse(
                 String id = randomAlphaNumeric(4);
                 Map<String, dynamic> detailCourseInfoMap = {
                     'IdDetailCourse' : id,
-                    'IdArea' : idArea,
+                    'IdOre' : idOre,
                     'IdCourse' : idCourse,
                     'IdSare' : idSare,
                     'Estado' : 'Activo'
@@ -55,10 +55,10 @@ Future<void> updateDetailCourses(
     BuildContext context,
     String documentId,
     String? selectedCourse,
-    String? selectedArea,
+    String? selectedOre,
     String? selectedSare,
     String? idCourse,
-    String? idArea,
+    String? idOre,
     String? idSare,
     Map<String, dynamic>? initialData,
     VoidCallback clearControllers,
@@ -68,12 +68,12 @@ try{
     showDialog(context: context, builder: (BuildContext context) {
         return CustomDialog(
             dataOne: selectedCourse,
-            dataTwo: selectedArea,
+            dataTwo: selectedOre,
             dataThree: selectedSare,
             accept: () async {
                 Map<String, dynamic> updateData = {
                     'IdDetailCourse' : documentId,
-                    'IdArea': idArea ?? initialData?['IdArea'],
+                    'IdOre': idOre ?? initialData?['IdOre'],
                     'IdSare': idSare ?? initialData?['IdSare'],
                     'IdCourse': idCourse ?? initialData?['IdCourse']
                 };

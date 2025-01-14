@@ -142,7 +142,7 @@ class _FormBodyEmployeeState extends State<FormBodyEmployee> {
                   child: Column(
                     children: [
                       Text(
-                        'Ore',
+                        'ORE',
                         style: TextStyle(
                             fontSize: responsiveFontSize(context, 20),
                             fontWeight: FontWeight.bold),

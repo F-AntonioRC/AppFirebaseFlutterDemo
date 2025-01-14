@@ -81,7 +81,7 @@ class MethodsDetailCourses {
 
       for (var detalleCursoDoc in detalleCursosQuery.docs) {
         String idCourse = detalleCursoDoc['IdCourse'];
-        String? idArea = detalleCursoDoc['IdArea'];
+        String? idOre = detalleCursoDoc['IdOre'];
         String? idSare = detalleCursoDoc['IdSare'];
 
         // Inicializa todos los campos con valores predeterminados
@@ -91,8 +91,8 @@ class MethodsDetailCourses {
           'FechaInicioCurso': 'N/A',
           'Fecharegistro': 'N/A',
           'FechaenvioConstancia': 'N/A',
-          'NombreArea': 'N/A',
-          'IdArea': null,
+          'Ore': 'N/A',
+          'IdOre': null,
           'sare': 'N/A',
           'IdSare': null,
           'IdCourse': null,
@@ -114,12 +114,12 @@ class MethodsDetailCourses {
 
         // Consulta el documento de Area si existe idArea
         DocumentSnapshot areaDoc =
-            await firestore.collection('Area').doc(idArea).get();
+            await firestore.collection('Area').doc(idOre).get();
 
         if (areaDoc.exists) {
           var areaData = areaDoc.data() as Map<String, dynamic>;
-          result['NombreArea'] = areaData['NombreArea'] ?? 'N/A';
-          result['IdArea'] = areaData['IdArea'];
+          result['Ore'] = areaData['Ore'] ?? 'N/A';
+          result['IdOre'] = areaData['IdOre'];
         }
 
         // Consulta el documento de Sare si existe idSare
@@ -161,7 +161,7 @@ class MethodsDetailCourses {
 
       for (var detalleCursoDoc in detalleCursosQuery.docs) {
         String idCourse = detalleCursoDoc['IdCourse'];
-        String? idArea = detalleCursoDoc['IdArea'];
+        String? idOre = detalleCursoDoc['IdOre'];
         String? idSare = detalleCursoDoc['IdSare'];
 
         // Inicializa todos los campos con valores predeterminados
@@ -171,8 +171,8 @@ class MethodsDetailCourses {
           'FechaInicioCurso': 'N/A',
           'Fecharegistro': 'N/A',
           'FechaenvioConstancia': 'N/A',
-          'NombreArea': 'N/A',
-          'IdArea': 'N/A',
+          'Ore': 'N/A',
+          'IdOre': 'N/A',
           'sare': 'N/A',
           'IdSare': 'N/A',
           'Estado': detalleCursoDoc['Estado'] ?? 'N/A'
@@ -192,12 +192,12 @@ class MethodsDetailCourses {
 
         // Consulta el documento de Area si existe idArea
         DocumentSnapshot areaDoc =
-            await firestore.collection('Area').doc(idArea).get();
+            await firestore.collection('Area').doc(idOre).get();
 
         if (areaDoc.exists) {
           var areaData = areaDoc.data() as Map<String, dynamic>;
-          result['NombreArea'] = areaData['NombreArea'] ?? 'N/A';
-          result['IdArea'] = areaData['IdArea'];
+          result['Ore'] = areaData['Ore'] ?? 'N/A';
+          result['IdOre'] = areaData['IdOre'];
         }
 
         // Consulta el documento de Sare si existe idSare
@@ -220,10 +220,10 @@ class MethodsDetailCourses {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getCoursesForEmployee(String idArea, String idSare) async {
+  Future<List<Map<String, dynamic>>> getCoursesForEmployee(String idOre, String idSare) async {
     final query = FirebaseFirestore.instance
         .collection('DetalleCursos')
-        .where('IdArea', isEqualTo: idArea)
+        .where('IdOre', isEqualTo: idOre)
         .where('IdSare', isEqualTo: idSare)
         .where('Estado', isEqualTo: 'activo');
 

@@ -76,7 +76,7 @@ class _CustomDialogState extends State<CustomDialog> {
           const SizedBox(height: 10.0),
           if (widget.dataTwo != null) ... [
             Text(
-              "Area asiganda",
+              "ORE asigando",
               style: TextStyle(
                   fontSize: responsiveFontSize(context, 15),
                   fontWeight: FontWeight.bold),
