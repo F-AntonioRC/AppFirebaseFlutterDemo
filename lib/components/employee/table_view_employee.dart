@@ -30,8 +30,8 @@ class TableViewEmployee extends StatelessWidget {
       (builder: (context, editProvider, child) {
         return FutureBuilder(
           future: viewInactivos
-              ? databaseMethods.getEmployeeInact()
-              : databaseMethods.getEmployeeDetails(),
+              ? databaseMethods.getDataEmployee(false)
+              : databaseMethods.getDataEmployee(true),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());

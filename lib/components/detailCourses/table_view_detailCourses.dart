@@ -29,8 +29,8 @@ class TableViewDetailCourses extends StatelessWidget {
     (context, editProvider, child) {
       return FutureBuilder(
         future: viewInactivos
-            ? methodsDetailCourses.getDatosDetalleCursosInac()
-            : methodsDetailCourses.getDatosDetalleCursosActivos(),
+            ? methodsDetailCourses.getDataDetailCourseMejorado(false)
+            : methodsDetailCourses.getDataDetailCourseMejorado(true),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

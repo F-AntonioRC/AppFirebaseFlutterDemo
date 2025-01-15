@@ -9,22 +9,11 @@ class MethodsCourses {
         .set(courseInfoMap);
   }
 
-  //OBTENER TODOS LOS CURSOS ACTIVOS
-  Future<List<Map<String, dynamic>>> getAllCourses() async {
+  //OBTENER TODOS LOS CURSOS ACTIVOS E INACTIVOS
+  Future<List<Map<String, dynamic>>> getDataCourses(bool active) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('Courses')
-        .where('Estado', isEqualTo: 'Activo')
-        .get();
-    return querySnapshot.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
-  }
-
-  //OBTENER TODOS LOS CURSOS DESACTIVADOS
-  Future<List<Map<String, dynamic>>> getAllCoursesInac() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('Courses')
-        .where('Estado', isEqualTo: 'Inactivo')
+        .where('Estado', isEqualTo: active ? 'Activo' : 'Inactivo')
         .get();
     return querySnapshot.docs
         .map((doc) => doc.data() as Map<String, dynamic>)

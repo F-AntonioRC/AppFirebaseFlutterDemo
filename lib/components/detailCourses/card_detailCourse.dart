@@ -23,41 +23,47 @@ class _CardDetailcourseState extends State<CardDetailCourse> {
   bool _isLoading = false;
 
   @override
+  void initState() {
+    super.initState();
+    _loadData(); // Cargar los datos iniciales
+  }
+
+  Future<void> _loadData({String? query}) async {
+    try {
+      setState(() => _isLoading = true);
+      final results = await methodsDetailCourses.getDataDetailCourse(
+        active: isActive,
+        courseName: query,
+          );
+      setState(() {
+        _filteredData = results;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() => _isLoading = false);
+      if (mounted) {
+        showCustomSnackBar(context, "Error al cargar datos: $e", Colors.red);
+      }
+    }
+  }
+
+  @override
   void dispose() {
     _debounceTimer?.cancel();
     searchInput.dispose();
     super.dispose();
   }
-
   Future<void> _searchDetalleCurso(String query) async {
     if (_debounceTimer?.isActive ?? false) {
       _debounceTimer!.cancel();
     }
     _debounceTimer = Timer(const Duration(milliseconds: 2000), () async {
-      if (query.isEmpty) {
-        setState(() {
-          _filteredData.clear();
-        });
-        return;
-      }
-      try {
-        setState(() => _isLoading = true);
-        final results = await methodsDetailCourses.searchDeatilCoursesByName(query);
-        setState(() {
-          _filteredData = results;
-          _isLoading = false;
-        });
-      } catch (e) {
-        setState(() => _isLoading = false);
-        if(mounted) {
-          showCustomSnackBar(context, "Error: $e", Colors.red);
-        }
-      }
+      await _loadData(query: query.isNotEmpty ? query : null);
     });
   }
 
   void refreshTable() {
-    setState(() {}); // Refresca la tabla al actualizar datos
+    _loadData(); // Refresca la tabla al actualizar datos
   }
 
   @override
@@ -74,17 +80,23 @@ class _CardDetailcourseState extends State<CardDetailCourse> {
                   viewInactivos = !viewInactivos;
                   isActive = !isActive;
                 });
+                _loadData();
               },
               viewInactivos: viewInactivos,
-              title: "Cursos asignados", viewOn: "Mostrar inactivos", viewOff: "Mostrar activos"),
+              title: "Cursos asignados",
+              viewOn: "Mostrar inactivos",
+              viewOff: "Mostrar activos"),
           const Divider(),
           _isLoading
-              ? const Center(child: CircularProgressIndicator(),)
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
               : TableViewDetailCourses(
-              viewInactivos: viewInactivos,
-              filteredData: _filteredData,
-              methodsDetailCourses: methodsDetailCourses,
-              isActive: isActive, refreshTable: refreshTable)
+                  viewInactivos: viewInactivos,
+                  filteredData: _filteredData,
+                  methodsDetailCourses: methodsDetailCourses,
+                  isActive: isActive,
+                  refreshTable: refreshTable)
         ],
       ),
     ));
