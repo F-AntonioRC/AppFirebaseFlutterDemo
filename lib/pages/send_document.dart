@@ -1,124 +1,400 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class TrimestersView extends StatefulWidget {
+class TrimestersView extends StatefulWidget { 
   const TrimestersView({Key? key}) : super(key: key);
 
   @override
   State<TrimestersView> createState() => _TrimestersViewState();
 }
-
 class _TrimestersViewState extends State<TrimestersView> {
-  final List<String> trimesters = [
-    'TRIMESTRE_1',
-    'TRIMESTRE_2',
-    'TRIMESTRE_3',
-    'TRIMESTRE_4',
-  ];
+  List<String> trimesters = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTrimesters();
+  }
+
+  Future<void> _loadTrimesters() async {
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      QuerySnapshot snapshot = await firestore.collection('Courses').get();
+
+      // Extraemos los trimestres únicos
+      Set<String> uniqueTrimesters = {};
+      for (var doc in snapshot.docs) {
+        String? trimester = doc['Trimestre'];
+        if (trimester != null) {
+          uniqueTrimesters.add(trimester);
+        }
+      }
+
+      setState(() {
+        trimesters = uniqueTrimesters.toList()..sort();
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Error al cargar trimestres: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Evidencia por Trimestres'),
-        backgroundColor: greenColor,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16.0,
-            mainAxisSpacing: 16.0,
-            childAspectRatio: 3 / 2, // Relación de aspecto más compacta
-          ),
-          itemCount: trimesters.length,
-          itemBuilder: (context, index) {
-            String trimester = trimesters[index];
-            return Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              /*
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SendDocument(trimester: trimester),
+      
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : trimesters.isEmpty
+              ? const Center(child: Text('No hay trimestres disponibles.'))
+              : Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0,
+                      childAspectRatio: 3 / 2,
                     ),
-                  );
-                },*/
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                      child: Image.asset(
-                        'assets/images/logo.jpg',
-                        // Altura fija más pequeña
-                        // Ancho completo de la tarjeta
-                        fit: BoxFit.cover, // La imagen se adapta sin distorsionarse
-                      ),
-                    ),
-                  ),
-
-                  Expanded(
-                    flex:1,
-                    child: Column(
-                      children: [
-                        Text(
-                          trimester,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        TextButton(
-                            onPressed: () {
+                    itemCount: trimesters.length,
+                    itemBuilder: (context, index) {
+                      String trimester = trimesters[index];
+                      return Material(
+                        color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          elevation: 5,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(12), // Asegura el efecto de splash dentro del borde
+                            onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => SendDocument(trimester: trimester),
+                                  builder: (context) => DependenciesView(
+                                    trimester: trimester
+                                  ),
                                 ),
                               );
                             },
-                            child: const Text('ver cursos disponibles')
-                        ),
-                      ],
-                    ),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                                    child: Image.asset(
+                                      'assets/images/logo.jpg',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        'Trimestre $trimester',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ), 
+                              ], 
+                            ),
+                          ),
+                      );
+                    },
                   ),
-                ],
-              ),
-            );
-          },
-        ),
-      ),
+                ),
     );
   }
 }
-
-class SendDocument extends StatefulWidget {
+class DependenciesView extends StatefulWidget {
   final String trimester;
 
-  const SendDocument({Key? key, required this.trimester}) : super(key: key);
+  const DependenciesView({Key? key, required this.trimester}) : super(key: key);
 
   @override
-  State<SendDocument> createState() => _SendDocumentState();
+  State<DependenciesView> createState() => _DependenciesViewState();
 }
 
-
-
-class _SendDocumentState extends State<SendDocument> {
-  Map<String, Map<String, List<Map<String, String>>>> courseFiles = {};
+class _DependenciesViewState extends State<DependenciesView> {
+  List<Map<String, dynamic>> dependencies = [];
   bool isLoading = true;
 
-  get trimester => null;
+  @override
+  void initState() {
+    super.initState();
+    _loadDependencies();
+  }
+
+  Future<void> _loadDependencies() async {
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      QuerySnapshot snapshot = await firestore
+          .collection('Courses')
+          .where('Trimestre', isEqualTo: widget.trimester)
+          .get();
+
+      Set<String> uniqueDependencies = {};
+      List<Map<String, dynamic>> loadedDependencies = [];
+
+      for (var doc in snapshot.docs) {
+        String idDependencia = doc['IdDependencia'];
+
+        if (!uniqueDependencies.contains(idDependencia)) {
+          uniqueDependencies.add(idDependencia);
+
+          DocumentSnapshot dependenciaDoc = await firestore.collection('Dependencia').doc(idDependencia).get();
+          if (dependenciaDoc.exists) {
+            loadedDependencies.add({
+              'IdDependencia': idDependencia,
+              'NombreDependencia': dependenciaDoc['NombreDependencia'],
+            });
+          }
+        }
+      }
+
+      setState(() {
+        dependencies = loadedDependencies;
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Error al cargar dependencias: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+Widget build(BuildContext context) { 
+  return Scaffold(
+    appBar: AppBar(title: const Text('Dependencias')),
+    body: isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : dependencies.isEmpty
+            ? const Center(child: Text('No hay dependencias disponibles.'))
+            : Padding(
+               padding: const EdgeInsets.all(16.0),
+                child: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, // Dos columnas
+                    crossAxisSpacing: 16.0,
+                    mainAxisSpacing: 16.0,
+                    childAspectRatio: 3 / 2, // Relación de aspecto
+                  ),
+                    itemCount: dependencies.length,
+                    itemBuilder: (context, index) {
+                      final dependencia = dependencies[index];
+                        return Material(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          elevation: 5,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(12), // Asegura el efecto de splash dentro del borde
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CoursesView(
+                                    trimester: widget.trimester,
+                                    dependecyId: dependencia['IdDependencia'],
+                                    dependencyName: dependencia['NombreDependencia'],
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                                    child: Image.asset(
+                                      'assets/images/logo.jpg',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        dependencia['NombreDependencia'],
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ), 
+                              ], 
+                            ),
+                          ),
+                        ); 
+                     }, 
+                ), 
+             ),
+  ); 
+}  
+}
+class CoursesView extends StatelessWidget {
+  final String trimester;
+  final String dependecyId;
+  final String dependencyName;
+
+  const CoursesView({
+    Key? key,
+    required this.trimester,
+    required this.dependecyId,
+    required this.dependencyName,
+  }) : super(key: key);
+
+  @override
+ Widget build(BuildContext context) { 
+  if (trimester == null || dependecyId == null) {
+    return const Scaffold(
+      body: Center(child: Text("Error: Trimestre o IdDependencia es nulo")),
+    );
+  }
+
+  return Scaffold(
+    appBar: AppBar(title: Text('Cursos de $dependencyName')),
+    body: StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('Courses')
+          .where('Trimestre', isEqualTo: trimester)
+          .where('IdDependencia', isEqualTo: dependecyId)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return Center(child: Text("Error: ${snapshot.error}"));
+        }
+
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return const Center(child: Text("No hay cursos disponibles."));
+        }
+
+        var courses = snapshot.data!.docs;
+
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // Dos columnas
+              crossAxisSpacing: 16.0,
+              mainAxisSpacing: 16.0,
+              childAspectRatio: 3 / 2, // Relación de aspecto
+            ),
+            itemCount: courses.length,
+            itemBuilder: (context, index) {
+              var course = courses[index];
+             
+
+              // Verifica si los datos existen antes de usarlos
+              String? courseName = course['NameCourse'];
+              String? dependency = course['Dependencia'];
+              String? trimester = course['Trimestre'];
+               print('Datos de los cursos: $courseName');
+              if (courseName == null || dependency == null || trimester == null) {
+                return const Center(
+                  child: Text("Error: Datos del curso incompletos"),
+                );
+              }
+
+              return Material(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                elevation: 5,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(12),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FilesListPage(
+                          courseName: courseName,
+                          dependency: dependency,
+                          trimester: trimester,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                          child: Image.asset(
+                            'assets/images/logo.jpg',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              courseName,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ), 
+                    ], 
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    ),
+  );
+}
+
+}
+
+class FilesListPage extends StatefulWidget {
+  final String courseName; // Renombrado a courseName
+  final String dependency;
+  final String trimester;
+
+  const FilesListPage({
+    Key? key,
+    required this.courseName,
+    required this.dependency,
+    required this.trimester,
+  }) : super(key: key);
+
+  @override
+  State<FilesListPage> createState() => _FilesListPageState();
+}
+
+class _FilesListPageState extends State<FilesListPage> {
+  Map<String, List<Map<String, String>>> courseFiles = {};
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -129,38 +405,15 @@ class _SendDocumentState extends State<SendDocument> {
   Future<void> _loadFilesForAllCourses() async {
     try {
       FirebaseStorage storage = FirebaseStorage.instance;
-      Map<String, List<String>> courses = {
-        'SICAVISP': ['Curso1', 'Curso2', 'Curso3'],
-        'INMUJERES': ['Curso1', 'Curso2', 'Curso3'],
-        'CONAPRED': ['Curso1', 'Curso2', 'Curso3'],
-      };
+      ListResult coursesList = await storage.ref(
+        '2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARES/Cursos_2024/${widget.trimester}/${widget.dependency}/${widget.courseName}'
+      ).listAll();
 
-      Map<String, Map<String, List<Map<String, String>>>> loadedFiles = {};
+      Map<String, List<Map<String, String>>> loadedFiles = {};
 
-      for (String course in courses.keys) {
-        Map<String, List<Map<String, String>>> subcourseFiles = {};
-
-        for (String subCourse in courses[course]!) {
-          String subCoursePath =
-              '2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARES/Cursos_2024/${widget.trimester}/$course/$subCourse';
-          Reference subCourseRef = storage.ref(subCoursePath);
-
-          try {
-            ListResult result = await subCourseRef.listAll();
-            List<Map<String, String>> files = [];
-
-            for (Reference ref in result.items) {
-              String url = await ref.getDownloadURL();
-              files.add({'name': ref.name, 'url': url});
-            }
-
-            subcourseFiles[subCourse] = files;
-          } catch (e) {
-            subcourseFiles[subCourse] = [];
-          }
-        }
-
-        loadedFiles[course] = subcourseFiles;
+      for (Reference courseRef in coursesList.items) {
+        String url = await courseRef.getDownloadURL();
+        loadedFiles[courseRef.name] = [{'name': courseRef.name, 'url': url}];
       }
 
       setState(() {
@@ -168,6 +421,7 @@ class _SendDocumentState extends State<SendDocument> {
         isLoading = false;
       });
     } catch (e) {
+      print('Error al obtener archivos: $e');
       setState(() {
         isLoading = false;
       });
@@ -186,227 +440,43 @@ class _SendDocumentState extends State<SendDocument> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Evidencia de los cursos por Trimestre'),
-        backgroundColor: greenColor,
+        title: Text('Archivos de ${widget.courseName}'),
+        backgroundColor: Colors.green,
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : courseFiles.isEmpty
-          ? const Center(child: Text('No hay archivos disponibles.'))
-          : Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Dos columnas
-            crossAxisSpacing: 16.0,
-            mainAxisSpacing: 16.0,
-            childAspectRatio: 3 / 2, // Relación de aspecto
-          ),
-          itemCount: courseFiles.entries.length,
-          itemBuilder: (context, courseIndex) {
-            String courseName = courseFiles.keys.elementAt(courseIndex);
-            Map<String, List<Map<String, String>>> subCourses =
-            courseFiles[courseName]!;
-
-            return Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              elevation: 5,
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                      child: Image.asset(
-                        'assets/images/logo.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: [
-                        Text(
-                          courseName,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SubCourseGridPage(
-                                  courseName: courseName,
-                                  subCourses: subCourses,
-                                ),
-                              ),
-                            );
-                          },
-                          child: const Text('Ver subcursos'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class SubCourseGridPage extends StatelessWidget {
-  final String courseName;
-  final Map<String, List<Map<String, String>>> subCourses;
-
-  const SubCourseGridPage({
-    Key? key,
-    required this.courseName,
-    required this.subCourses,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Subcursos de $courseName'),
-        backgroundColor: greenColor,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16.0,
-            mainAxisSpacing: 16.0,
-            childAspectRatio: 3 / 2,
-          ),
-          itemCount: subCourses.keys.length,
-          itemBuilder: (context, subCourseIndex) {
-            String subCourseName = subCourses.keys.elementAt(subCourseIndex);
-            List<Map<String, String>> files = subCourses[subCourseName]!;
-
-            return Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                      child: Image.asset(
-                        'assets/images/logo.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: [
-                        Text(
-                          subCourseName,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => FilesListPage(
-                                  subCourseName: subCourseName,
-                                  files: files,
-                                ),
-                              ),
-                            );// Lógica para mostrar los archivos de este subcurso
-                          },
-                          child: const Text('Ver archivos'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class FilesListPage extends StatelessWidget {
-  final String subCourseName;
-  final List<Map<String, String>> files;
-
-  const FilesListPage({
-    Key? key,
-    required this.subCourseName,
-    required this.files,
-  }) : super(key: key);
-
-  Future<void> _downloadFile(String fileUrl) async {
-    if (await canLaunch(fileUrl)) {
-      await launch(fileUrl);
-    } else {
-      throw 'No se puede abrir el archivo';
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Archivos de $subCourseName'),
-        backgroundColor: greenColor,
-      ),
-      body: files.isEmpty
           ? const Center(
-        child: Text('No hay archivos disponibles.'),
-      )
-          : ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemCount: files.length,
-        itemBuilder: (context, index) {
-          String fileName = files[index]['name']!;
-          String fileUrl = files[index]['url']!;
+              child: CircularProgressIndicator(),
+            )
+          : courseFiles.isEmpty
+              ? const Center(
+                  child: Text('No hay archivos disponibles.'),
+                )
+              : ListView.builder(
+                  padding: const EdgeInsets.all(16.0),
+                  itemCount: courseFiles.length,
+                  itemBuilder: (context, index) {
+                    String fileName = courseFiles.keys.elementAt(index);
+                    String fileUrl = courseFiles[fileName]!.first['url']!;
 
-          return Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            elevation: 5,
-            margin: const EdgeInsets.only(bottom: 16.0),
-            child: ListTile(
-              title: Text(
-                fileName,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              trailing: IconButton(
-                icon: const Icon(Icons.download),
-                onPressed: () => _downloadFile(fileUrl),
-              ),
-            ),
-          );
-        },
-      ),
+                    return Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 5,
+                      margin: const EdgeInsets.only(bottom: 16.0),
+                      child: ListTile(
+                        title: Text(
+                          fileName,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.download),
+                          onPressed: () => _downloadFile(fileUrl),
+                        ),
+                      ),
+                    );
+                  },
+                ),
     );
   }
 }
-

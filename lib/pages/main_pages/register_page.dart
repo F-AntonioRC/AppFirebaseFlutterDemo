@@ -17,7 +17,7 @@ class RegisterPage extends StatelessWidget {
   final void Function()? onTap;
 
   RegisterPage({super.key, this.onTap});
-
+  
   @override
   Widget build(BuildContext context) {
     return BackgruondMain(

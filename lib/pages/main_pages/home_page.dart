@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
       case NavItem.emailView:
         return const PageDetailCourses();
       case NavItem.documentView:
-        return  const TrimestersView();
+        return  TrimestersView();
       case NavItem.logout:
         return const CerrarSesion();
       case NavItem.configuration:

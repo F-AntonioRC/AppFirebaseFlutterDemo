@@ -1,20 +1,22 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 
 class CursosNormal extends StatefulWidget {
   final String course; // Curso principal
   final String? subCourse; // Subcurso opcional
   final String trimester; // Trimestre al que pertenece
+  final String dependecy; //dependencia al que pertenece
 
-  CursosNormal({
+  const CursosNormal({
     required this.course,
     this.subCourse,
     required this.trimester, // Nuevo parámetro para el trimestre
+    required this.dependecy,
     Key? key,
   }) : super(key: key);
 
@@ -42,7 +44,7 @@ class _CursosNormalState extends State<CursosNormal> {
       String fileName = basename(result.files.single.name);
 
       // Construir la ruta de almacenamiento dinámicamente con el trimestre
-      String storagePath = '2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARES/Cursos_2024/${widget.trimester}/${widget.course}/';
+      String storagePath = '2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARES/Cursos_2024/${widget.trimester}/${widget.dependecy}/${widget.course}/';
       if (widget.subCourse != null) {
         storagePath += '${widget.subCourse}/';
       }
@@ -70,6 +72,7 @@ class _CursosNormalState extends State<CursosNormal> {
         // Agregar notificación al Firestore
         await FirebaseFirestore.instance.collection('notifications').add({
           'trimester': widget.trimester, // Trimestre
+          'dependecy': widget.dependecy,
           'course': widget.course,
           'subCourse': widget.subCourse ?? 'Sin subcurso',
           'fileName': fileName,
@@ -105,23 +108,23 @@ class _CursosNormalState extends State<CursosNormal> {
         child: isUploading
             ? const CircularProgressIndicator()
             : Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              widget.subCourse != null
-                  ? 'Sube la evidencia del curso en formato PDF no mayor a 5MB para ${widget.trimester}.'
-                  : 'Sube un documento PDF para el curso seleccionado (${widget.trimester}).',
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              onPressed: _uploadPDF,
-              icon: const Icon(Icons.upload_file),
-              label: const Text('Seleccionar y Subir PDF'),
-            ),
-          ],
-        ),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    widget.subCourse != null
+                        ? 'Sube la evidencia del curso en formato PDF no mayor a 5MB para ${widget.trimester}, Dependencia: ${widget.dependecy}.'
+                        : 'Sube un documento PDF para el curso seleccionado (${widget.trimester}).',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: _uploadPDF,
+                    icon: const Icon(Icons.upload_file),
+                    label: const Text('Seleccionar y Subir PDF'),
+                  ),
+                ],
+              ),
       ),
     );
   }

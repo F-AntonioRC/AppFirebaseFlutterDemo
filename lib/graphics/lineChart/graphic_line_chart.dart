@@ -1,3 +1,5 @@
+//import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/components/custom_snackbar.dart';
@@ -132,6 +134,7 @@ class _GraphicLineChartState extends State<GraphicLineChart> {
               interval: 1,
               getTitlesWidget: (value, meta) {
                 return SideTitleWidget(
+                
                   axisSide: meta.axisSide,
                   child: Text(
                     _xLabels[value.toInt()] ?? '',
