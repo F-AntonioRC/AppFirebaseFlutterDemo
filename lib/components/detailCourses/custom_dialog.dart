@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:testwithfirebase/components/actions_form_check.dart';
+import 'package:testwithfirebase/components/formPatrts/actions_form_check.dart';
 import 'package:testwithfirebase/util/responsive.dart';
-import '../dataConst/constand.dart';
-import 'custom_snackbar.dart';
+import '../../dataConst/constand.dart';
+import '../formPatrts/custom_snackbar.dart';
 
 class CustomDialog extends StatefulWidget {
   final String? dataOne;

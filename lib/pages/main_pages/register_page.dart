@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:testwithfirebase/components/my_button.dart';
-import 'package:testwithfirebase/components/my_textfileld.dart';
-import 'package:testwithfirebase/components/password_input.dart';
+import 'package:testwithfirebase/components/formPatrts/my_button.dart';
+import 'package:testwithfirebase/components/formPatrts/my_textfileld.dart';
+import 'package:testwithfirebase/components/formPatrts/password_input.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/pages/backgruond_main.dart';
 import 'package:testwithfirebase/service/auth_methods.dart';

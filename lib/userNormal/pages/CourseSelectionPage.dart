@@ -156,12 +156,12 @@ class CourseCard extends StatelessWidget {
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(15.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -183,14 +183,14 @@ class CourseCard extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 'Trimestre: $trimester',
-                style: const TextStyle(fontSize: 14, color: Colors.grey),
+                style: const TextStyle(fontSize: 14),
                 textAlign: TextAlign.center,
               ),
               if (startDate != null) ...[
                 const SizedBox(height: 8),
                 Text(
                   'Inicio: $startDate',
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                  style: const TextStyle(fontSize: 14),
                   textAlign: TextAlign.center,
                 ),
               ],

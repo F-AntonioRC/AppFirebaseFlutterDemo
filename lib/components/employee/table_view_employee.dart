@@ -4,8 +4,8 @@ import 'package:testwithfirebase/components/MyPaginatedTable.dart';
 import 'package:testwithfirebase/providers/edit_provider.dart';
 import 'package:testwithfirebase/service/employeeService/database.dart';
 import '../../dataConst/constand.dart';
-import '../custom_snackbar.dart';
-import '../dialogChanges.dart';
+import '../formPatrts/custom_snackbar.dart';
+import 'dialogChanges.dart';
 
 class TableViewEmployee extends StatelessWidget {
   final bool viewInactivos;

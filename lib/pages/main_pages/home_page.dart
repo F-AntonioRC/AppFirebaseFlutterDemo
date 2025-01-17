@@ -5,7 +5,7 @@ import 'package:testwithfirebase/auth/auth_service.dart';
 import 'package:testwithfirebase/bloc/drawer_bloc.dart';
 import 'package:testwithfirebase/bloc/drawer_state.dart';
 import 'package:testwithfirebase/drawer/drawer_widget.dart';
-import 'package:testwithfirebase/pages/cerrar_sesion.dart';
+import 'package:testwithfirebase/pages/configuration/cerrar_sesion.dart';
 import 'package:testwithfirebase/pages/configuration/configuration.dart';
 import 'package:testwithfirebase/pages/dashboard/dashboard_main.dart';
 import 'package:testwithfirebase/pages/detailCourses/page_detail_courses.dart';
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
       case NavItem.emailView:
         return const PageDetailCourses();
       case NavItem.documentView:
-        return  TrimestersView();
+        return  const TrimestersView();
       case NavItem.logout:
         return const CerrarSesion();
       case NavItem.configuration:

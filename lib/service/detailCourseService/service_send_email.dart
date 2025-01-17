@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/service/detailCourseService/send_email_methods.dart';
-import '../../components/custom_snackbar.dart';
+import '../../components/formPatrts/custom_snackbar.dart';
 
 Future<void> sendEmail(
     BuildContext context,

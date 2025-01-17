@@ -1,6 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:testwithfirebase/components/body_widgets.dart';
+import 'package:testwithfirebase/components/formPatrts/body_widgets.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 import '../indicator.dart';

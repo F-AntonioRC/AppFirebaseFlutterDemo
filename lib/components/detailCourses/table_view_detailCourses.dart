@@ -5,7 +5,7 @@ import 'package:testwithfirebase/components/sendEmail/dialog_email.dart';
 import 'package:testwithfirebase/service/detailCourseService/database_detail_courses.dart';
 import '../../dataConst/constand.dart';
 import '../../providers/edit_provider.dart';
-import '../custom_snackbar.dart';
+import '../formPatrts/custom_snackbar.dart';
 
 class TableViewDetailCourses extends StatelessWidget {
   final bool viewInactivos;

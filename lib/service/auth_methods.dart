@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/auth/auth_service.dart';
-import 'package:testwithfirebase/components/custom_snackbar.dart';
+import 'package:testwithfirebase/components/formPatrts/custom_snackbar.dart';
 
 import '../auth/login_or_register.dart';
 import '../dataConst/constand.dart';

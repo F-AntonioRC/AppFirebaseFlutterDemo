@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:testwithfirebase/auth/auth_service.dart';
-import 'package:testwithfirebase/pages/cerrar_sesion.dart';
-//import 'package:testwithfirebase/pages/configuration.dart';
-import 'package:testwithfirebase/pages/configuration/configuration.dart';
+import 'package:testwithfirebase/pages/configuration/cerrar_sesion.dart';
 import 'package:testwithfirebase/userNormal/blockNormal/drawer_block_normal.dart';
 import 'package:testwithfirebase/userNormal/blockNormal/drawer_state_normal.dart';
 import 'package:testwithfirebase/userNormal/components/drawerNormal/drawer_widget_normal.dart';
 import 'package:testwithfirebase/userNormal/pages/CourseSelectionPage.dart';
-//import 'package:testwithfirebase/userNormal/pages/cursos_normal.dart';
+import 'package:testwithfirebase/userNormal/pages/configuration_normal.dart';
 import 'package:testwithfirebase/userNormal/pages/dashboard_normal.dart';
 
 class HomeNormal extends StatefulWidget {
@@ -150,12 +148,10 @@ class _HomeNormalState extends State<HomeNormal> {
           return const Center(child: CircularProgressIndicator()); // Mostrar cargando si el CUPO aún no está disponible
         }
       case NavItemNormal.configuracionUserView:
-        return const Configuration();
+        return const ConfigurationNormal();
       case NavItemNormal.cerrarSesionView:
         return const CerrarSesion();
-      default:
-        return const DashboardNormal();
-    }
+      }
   }
 
   String _getAppbarTitleNormal(NavItemNormal selected) {
@@ -168,8 +164,6 @@ class _HomeNormalState extends State<HomeNormal> {
         return "Configuración";
       case NavItemNormal.cerrarSesionView:
         return "Cerrar Sesión";
-      default:
-        return "Navigatión drawer user";
-    }
+      }
   }
 }

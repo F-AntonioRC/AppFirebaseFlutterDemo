@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:testwithfirebase/components/body_widgets.dart';
+import 'package:testwithfirebase/components/formPatrts/body_widgets.dart';
 import 'package:testwithfirebase/graphics/data/line_chart_sample2.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 class CardGraphicsNormal extends StatefulWidget {

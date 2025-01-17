@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:testwithfirebase/components/body_widgets.dart';
+import 'package:testwithfirebase/components/formPatrts/body_widgets.dart';
 import 'package:testwithfirebase/components/detailCourses/table_view_detailCourses.dart';
 import 'package:testwithfirebase/components/header_search.dart';
 import 'package:testwithfirebase/service/detailCourseService/database_detail_courses.dart';
-import '../custom_snackbar.dart';
+import '../formPatrts/custom_snackbar.dart';
 
 class CardDetailCourse extends StatefulWidget {
   const CardDetailCourse({super.key});

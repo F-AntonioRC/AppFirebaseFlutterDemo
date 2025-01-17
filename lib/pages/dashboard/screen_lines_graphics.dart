@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:testwithfirebase/components/body_widgets.dart';
+import 'package:testwithfirebase/components/formPatrts/body_widgets.dart';
 import 'package:testwithfirebase/graphics/lineChart/header_graphics.dart';
 import '../../graphics/lineChart/graphic_line_chart.dart';
 

@@ -2,7 +2,7 @@
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:testwithfirebase/components/custom_snackbar.dart';
+import 'package:testwithfirebase/components/formPatrts/custom_snackbar.dart';
 import '../../util/responsive.dart';
 import '../model_chart.dart';
 import 'line_chart_service.dart';

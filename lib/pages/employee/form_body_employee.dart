@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/components/firebase_reusable/firebase_value_dropdown_controller.dart';
-import '../../components/dropdown_list.dart';
+import '../../components/formPatrts/dropdown_list.dart';
 import '../../components/firebase_reusable/firebase_dropdown.dart';
 import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
 import '../../components/firebase_reusable/firebase_value_dropdown.dart';
-import '../../components/my_textfileld.dart';
+import '../../components/formPatrts/my_textfileld.dart';
 import '../../util/responsive.dart';
 
 class FormBodyEmployee extends StatefulWidget {
@@ -139,6 +139,55 @@ class _FormBodyEmployeeState extends State<FormBodyEmployee> {
           Row(
             children: [
               Expanded(
+                flex: 2,
+                  child: Column(
+                    children: [
+                      Text(
+                        'Sección',
+                        style: TextStyle(
+                            fontSize: responsiveFontSize(context, 20),
+                            fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10.0),
+                      FirebaseValueDropdown(
+                        controller: widget.controllerSection,
+                        collection: 'Secciones',
+                        field: 'Seccion',
+                        onChanged: (String value) {
+                          setState(() {
+                            selectedSection = value;
+                          });
+                          widget.onChangedFirebaseValue;
+                        },)
+                    ],
+                  )),
+              const SizedBox(width: 20.0),
+              Expanded(
+                flex: 4,
+                  child: Column(
+                    children: [
+                      Text(
+                        'Puesto',
+                        style: TextStyle(
+                            fontSize: responsiveFontSize(context, 20),
+                            fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10.0),
+                      FirebaseValueDropdown(
+                          controller: widget.controllerPuesto,
+                          onChanged: (String value) {
+                            widget.onChangedFirebaseValue;
+                          },
+                          collection: getCollectionForSection(selectedSection),
+                          field: 'Nombre')
+                    ],
+                  )),
+            ],
+          ),
+          const SizedBox(height: 15.0),
+          Row(
+            children: [
+              Expanded(
                   child: Column(
                     children: [
                       Text(
@@ -174,53 +223,6 @@ class _FormBodyEmployeeState extends State<FormBodyEmployee> {
                         textHint: 'Seleccione SARE',
                         enabled: widget.controllerOre.selectedDocument == null,
                       )
-                    ],
-                  )),
-            ],
-          ),
-          const SizedBox(height: 15.0),
-          Row(
-            children: [
-              Expanded(
-                  child: Column(
-                    children: [
-                      Text(
-                        'Sección',
-                        style: TextStyle(
-                            fontSize: responsiveFontSize(context, 20),
-                            fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10.0),
-                      FirebaseValueDropdown(
-                        controller: widget.controllerSection,
-                        collection: 'Secciones',
-                        field: 'Seccion',
-                        onChanged: (String value) {
-                        setState(() {
-                          selectedSection = value;
-                        });
-                        widget.onChangedFirebaseValue;
-                      },)
-                    ],
-                  )),
-              const SizedBox(width: 20.0),
-              Expanded(
-                  child: Column(
-                    children: [
-                      Text(
-                        'Puesto',
-                        style: TextStyle(
-                            fontSize: responsiveFontSize(context, 20),
-                            fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10.0),
-                      FirebaseValueDropdown(
-                          controller: widget.controllerPuesto,
-                          onChanged: (String value) {
-                            widget.onChangedFirebaseValue;
-                          },
-                          collection: getCollectionForSection(selectedSection),
-                          field: 'Nombre')
                     ],
                   )),
             ],

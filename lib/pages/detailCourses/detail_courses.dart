@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:testwithfirebase/components/actions_form_check.dart';
-import 'package:testwithfirebase/components/body_widgets.dart';
+import 'package:testwithfirebase/components/formPatrts/actions_form_check.dart';
+import 'package:testwithfirebase/components/formPatrts/body_widgets.dart';
 import 'package:testwithfirebase/pages/detailCourses/form_body_detail_courses.dart';
 import 'package:testwithfirebase/providers/edit_provider.dart';
 import 'package:testwithfirebase/service/detailCourseService/detailCourse_form_logic.dart';

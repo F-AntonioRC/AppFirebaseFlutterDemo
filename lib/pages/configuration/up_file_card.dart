@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:testwithfirebase/components/body_widgets.dart';
-import 'package:testwithfirebase/components/my_button.dart';
+import 'package:testwithfirebase/components/formPatrts/body_widgets.dart';
+import 'package:testwithfirebase/components/formPatrts/my_button.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
+import 'package:testwithfirebase/pages/message_send_file.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 
 class UpFileCard extends StatelessWidget {
@@ -25,7 +26,19 @@ class UpFileCard extends StatelessWidget {
               text: 'Seleccionar archivos',
               icon: const Icon(Icons.upload_file_outlined),
               buttonColor: greenColor,
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => Dialog(
+                    child: SizedBox(
+                      height: 300,
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      //height: MediaQuery.of(context).size.height * 0.8,
+                      child: const MessageSendFile(),
+                    ),
+                  ),
+                );
+              },
           )
         ],
       ),

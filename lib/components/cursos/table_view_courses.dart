@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:testwithfirebase/components/MyPaginatedTable.dart';
-import 'package:testwithfirebase/components/custom_snackbar.dart';
+import 'package:testwithfirebase/components/formPatrts/custom_snackbar.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/providers/edit_provider.dart';
 import 'package:testwithfirebase/service/coursesService/database_courses.dart';

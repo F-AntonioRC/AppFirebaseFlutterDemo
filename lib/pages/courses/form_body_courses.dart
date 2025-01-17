@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../components/date_textflied.dart';
-import '../../components/dropdown_list.dart';
+import '../../components/formPatrts/date_textflied.dart';
+import '../../components/formPatrts/dropdown_list.dart';
 import '../../components/firebase_reusable/firebase_dropdown.dart';
 import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
-import '../../components/my_textfileld.dart';
+import '../../components/formPatrts/my_textfileld.dart';
 import '../../util/responsive.dart';
 
 class FormBodyCourses extends StatefulWidget {

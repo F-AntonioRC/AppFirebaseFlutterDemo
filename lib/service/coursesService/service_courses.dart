@@ -3,7 +3,7 @@ import 'package:random_string/random_string.dart';
 import 'package:testwithfirebase/components/firebase_reusable/firebase_dropdown_controller.dart';
 import 'package:testwithfirebase/service/coursesService/database_courses.dart';
 
-import '../../components/custom_snackbar.dart';
+import '../../components/formPatrts/custom_snackbar.dart';
 import '../../dataConst/constand.dart';
 
 Future<void> addCourse(
