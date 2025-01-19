@@ -4,7 +4,7 @@ import 'package:testwithfirebase/graphics/model_chart.dart';
 
 Future<List<ChartData>> getDataEmployeeByDependency() async {
   final snapshot =
-  await FirebaseFirestore.instance.collection('Courses').get();
+  await FirebaseFirestore.instance.collection('Cursos').get();
   final Map<String, int> agrupadosPorDependencia = {};
 
   for (var doc in snapshot.docs) {
@@ -27,7 +27,7 @@ Future<List<ChartData>> getDataEmployeeByDependency() async {
 
 Future<List<ChartData>> getDataBySare() async {
   final snapshot =
-  await FirebaseFirestore.instance.collection('Employee').get();
+  await FirebaseFirestore.instance.collection('Empleado').get();
   final Map<String, int> agrupadosPorSare = {};
 
   for (var doc in snapshot.docs) {
@@ -50,7 +50,7 @@ Future<List<ChartData>> getDataBySare() async {
 
 Future<List<ChartData>> getDataByTrimestre() async {
   final snapshot =
-  await FirebaseFirestore.instance.collection('Courses').get();
+  await FirebaseFirestore.instance.collection('Cursos').get();
   final Map<String, int> agrupadosPorTrimestre = {};
 
   for (var doc in snapshot.docs) {

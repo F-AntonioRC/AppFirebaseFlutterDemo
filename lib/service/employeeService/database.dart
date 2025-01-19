@@ -6,7 +6,7 @@ class DatabaseMethods {
   Future addEmployeeDetails(
       Map<String, dynamic> employeeInfoMap, String id) async {
     return await FirebaseFirestore.instance
-        .collection("Employee")
+        .collection("Empleados")
         .doc(id)
         .set(employeeInfoMap);
   }
@@ -15,7 +15,7 @@ class DatabaseMethods {
   Future<List<Map<String, dynamic>>> getDataEmployee(bool active) async {
 
     QuerySnapshot querySnapshot =
-    await FirebaseFirestore.instance.collection('Employee')
+    await FirebaseFirestore.instance.collection('Empleados')
         .where('Estado', isEqualTo: active ?  'Activo' : 'Inactivo').get();
     return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
@@ -27,7 +27,7 @@ class DatabaseMethods {
     }
     try {
       await FirebaseFirestore.instance
-          .collection('Employee')
+          .collection('Empleados')
           .doc(id)
           .update(updatedData);
     } catch (e) {
@@ -39,7 +39,7 @@ class DatabaseMethods {
   //ELIMINAR
   Future deleteEmployeeDetail(String id) async {
   try{
-    DocumentReference documentReference = FirebaseFirestore.instance.collection('Employee').doc(id);
+    DocumentReference documentReference = FirebaseFirestore.instance.collection('Empleados').doc(id);
     await documentReference.update({'Estado' : 'Inactivo'});
   } catch(e) {
     print("Error: $e");
@@ -49,7 +49,7 @@ class DatabaseMethods {
   //ACTIVAR
   Future activateEmployeeDetail(String id) async {
     try{
-      DocumentReference documentReference = FirebaseFirestore.instance.collection('Employee').doc(id);
+      DocumentReference documentReference = FirebaseFirestore.instance.collection('Empleados').doc(id);
       await documentReference.update({'Estado' : 'Activo'});
     } catch(e) {
       print("Error: $e");
@@ -59,7 +59,7 @@ class DatabaseMethods {
   //BUSCAR UN EMPLEADO
   Future<List<Map<String, dynamic>>> searchEmployeesByName(String name) async {
     final querySnapshot = await FirebaseFirestore.instance
-        .collection('Employee')
+        .collection('Empleados')
         .where('Nombre', isGreaterThanOrEqualTo: name)
         .where('Nombre', isLessThan: '${name}z') // Para búsquedas "que empiezan con minuscula"
         .get();
@@ -71,7 +71,7 @@ class DatabaseMethods {
   static Future<void> addEmployeeCupo(String employeeId, String cupo) async {
     try {
       await FirebaseFirestore.instance
-          .collection('Employee')
+          .collection('Empleados')
           .doc(employeeId)
           .update({'CUPO' : cupo});
     } catch (e) {

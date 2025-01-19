@@ -4,7 +4,7 @@ class MethodsCourses {
   //REGISTRAR UN NUEVO CURSO
   Future addCourse(Map<String, dynamic> courseInfoMap, String id) async {
     return await FirebaseFirestore.instance
-        .collection("Courses")
+        .collection("Cursos")
         .doc(id)
         .set(courseInfoMap);
   }
@@ -12,7 +12,7 @@ class MethodsCourses {
   //OBTENER TODOS LOS CURSOS ACTIVOS E INACTIVOS
   Future<List<Map<String, dynamic>>> getDataCourses(bool active) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('Courses')
+        .collection('Cursos')
         .where('Estado', isEqualTo: active ? 'Activo' : 'Inactivo')
         .get();
     return querySnapshot.docs
@@ -24,7 +24,7 @@ class MethodsCourses {
   Future activateCoursesDetail(String id) async {
     try {
       DocumentReference documentReference =
-          FirebaseFirestore.instance.collection('Courses').doc(id);
+          FirebaseFirestore.instance.collection('Cursos').doc(id);
       await documentReference.update({'Estado': 'Activo'});
     } catch (e) {
       print("Error: $e");
@@ -38,7 +38,7 @@ class MethodsCourses {
     }
     try {
       return await FirebaseFirestore.instance
-          .collection("Courses")
+          .collection("Cursos")
           .doc(id)
           .update(updateData);
     } catch (e) {
@@ -50,7 +50,7 @@ class MethodsCourses {
   Future deleteCoursesDetail(String id) async {
     try {
       DocumentReference documentReference =
-          FirebaseFirestore.instance.collection('Courses').doc(id);
+          FirebaseFirestore.instance.collection('Cursos').doc(id);
       await documentReference.update({'Estado': 'Inactivo'});
     } catch (e) {
       print("Error: $e");
@@ -60,9 +60,9 @@ class MethodsCourses {
   //BUSCAR UN CURSO
   Future<List<Map<String, dynamic>>> searchCoursesByName(String name) async {
     final querySnapshot = await FirebaseFirestore.instance
-        .collection('Courses')
-        .where('NameCourse', isGreaterThanOrEqualTo: name)
-        .where('NameCourse',
+        .collection('Cursos')
+        .where('NombreCurso', isGreaterThanOrEqualTo: name)
+        .where('NombreCurso',
             isLessThan:
                 '${name}z') // Para búsquedas "que empiezan con minuscula"
         .get();

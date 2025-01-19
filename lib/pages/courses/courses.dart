@@ -71,7 +71,7 @@ class _CoursesState extends State<Courses> {
               );
             },
             onUpdate: () async {
-              final String documentId = widget.initialData?['IdCourse'];
+              final String documentId = widget.initialData?['IdCurso'];
               await updateCourse(
                   context,
                   widget.initialData,

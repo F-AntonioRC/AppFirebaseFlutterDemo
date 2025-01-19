@@ -40,10 +40,10 @@ class DetailCourseFormLogic {
           'Ore': provider.data?['Ore']
         });
       }
-      if (provider.data?['IdCourse'] != null) {
+      if (provider.data?['IdCurso'] != null) {
         controllerCourses.setDocument({
-          'Id': provider.data?['IdCourse'],
-          'NameCourse': provider.data?['NameCourse']
+          'Id': provider.data?['IdCurso'],
+          'NombreCurso': provider.data?['NombreCurso']
         });
       }
       if (provider.data?['IdSare'] != null) {

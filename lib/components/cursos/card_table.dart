@@ -33,7 +33,7 @@ class _CardTableState extends State<CardTableCourses> {
     if (_debounceTimer?.isActive ?? false) {
       _debounceTimer!.cancel();
     }
-    _debounceTimer = Timer(const Duration(milliseconds: 2000), () async {
+    _debounceTimer = Timer(const Duration(milliseconds: 1000), () async {
       if (query.isEmpty) {
         setState(() {
           _filteredData.clear();

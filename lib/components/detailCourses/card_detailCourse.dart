@@ -29,16 +29,21 @@ class _CardDetailcourseState extends State<CardDetailCourse> {
   }
 
   Future<void> _loadData({String? query}) async {
+    // Si el controlador está vacío y no hay una consulta proporcionada, salimos del metodo
+    if (query == null || query.trim().isEmpty) {
+      return;
+    }
+
     try {
-      setState(() => _isLoading = true);
-      final results = await methodsDetailCourses.getDataDetailCourse(
-        active: isActive,
-        courseName: query,
-          );
-      setState(() {
-        _filteredData = results;
-        _isLoading = false;
-      });
+  setState(() => _isLoading = true);
+  final results = await methodsDetailCourses.getDataSearchDetailCourse(
+    courseName: query,
+  );
+  setState(() {
+    _filteredData = results;
+    print('Resultados filtrados: $_filteredData');
+    _isLoading = false;
+  });
     } catch (e) {
       setState(() => _isLoading = false);
       if (mounted) {
@@ -57,7 +62,7 @@ class _CardDetailcourseState extends State<CardDetailCourse> {
     if (_debounceTimer?.isActive ?? false) {
       _debounceTimer!.cancel();
     }
-    _debounceTimer = Timer(const Duration(milliseconds: 2000), () async {
+    _debounceTimer = Timer(const Duration(milliseconds: 1000), () async {
       await _loadData(query: query.isNotEmpty ? query : null);
     });
   }

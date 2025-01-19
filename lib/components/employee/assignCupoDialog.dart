@@ -1,31 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/components/formPatrts/actions_form_check.dart';
-import 'package:testwithfirebase/components/firebase_reusable/firebase_dropdown.dart';
+import 'package:testwithfirebase/components/formPatrts/my_textfileld.dart';
 import 'package:testwithfirebase/service/employeeService/service_employee.dart';
-import '../firebase_reusable/firebase_dropdown_controller.dart';
 
-class DialogChanges extends StatefulWidget {
+class AssignCupoDialog extends StatefulWidget {
   final String dataChange;
   final String idChange;
   final Function() refreshTable;
 
-  const DialogChanges(
+  const AssignCupoDialog(
       {super.key,
       required this.dataChange,
       required this.idChange,
       required this.refreshTable});
 
   @override
-  State<DialogChanges> createState() => _DialogChangesState();
+  State<AssignCupoDialog> createState() => _AssignCupoDialogState();
 }
 
-class _DialogChangesState extends State<DialogChanges> {
+class _AssignCupoDialogState extends State<AssignCupoDialog> {
   late TextEditingController _textController;
 
   late TextEditingController _idController;
 
-  final FirebaseDropdownController _controllerCupo =
-      FirebaseDropdownController();
+  final TextEditingController _controllerCupo = TextEditingController();
 
   @override
   void initState() {
@@ -71,15 +69,14 @@ class _DialogChangesState extends State<DialogChanges> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0)))),
             const SizedBox(height: 10.0),
-            const Text("Seleccione CUPO",
+            const Text("Asignar CUPO",
                 style: TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 10.0),
-            FirebaseDropdown(
-              enabled: true,
+            MyTextfileld(
+                hindText: 'Digite el CUPO',
+                icon: const Icon( Icons.post_add),
                 controller: _controllerCupo,
-                collection: 'User',
-                data: 'CUPO',
-                textHint: 'Seleccione CUPO del empleado'),
+                keyboardType: TextInputType.number),
           ],
         ),
       ),

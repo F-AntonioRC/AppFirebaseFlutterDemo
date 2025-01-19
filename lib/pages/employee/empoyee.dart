@@ -76,7 +76,7 @@ class _EmployeeState extends State<Employee> {
                   () => _formLogic.refreshProviderData(context));
             },
             onUpdate: () async {
-              final String documentId = widget.initialData?['IdEmployee'];
+              final String documentId = widget.initialData?['IdEmpleado'];
               await updateEmployee(
                   context,
                   documentId,

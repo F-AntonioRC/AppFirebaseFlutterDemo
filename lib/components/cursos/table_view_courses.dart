@@ -24,7 +24,7 @@ class TableViewCourses extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String idKey = "IdCourse";
+    const String idKey = "IdCurso";
 
     return Consumer<EditProvider>(builder: (context, editProvider, child) {
       return FutureBuilder(
@@ -51,12 +51,12 @@ class TableViewCourses extends StatelessWidget {
               ],
               data: data,
               fieldKeys: const [
-                "NameCourse",
+                "NombreCurso",
                 "Dependencia",
                 "Trimestre",
                 "FechaInicioCurso",
-                "Fecharegistro",
-                "FechaenvioConstancia"
+                "FechaRegistro",
+                "FechaEnvioConstancia"
               ],
               onEdit: (String id) {
                 final selectedRow = data.firstWhere((row) => row[idKey] == id);

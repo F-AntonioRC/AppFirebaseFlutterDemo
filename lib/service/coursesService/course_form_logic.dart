@@ -45,12 +45,12 @@ class CourseFormLogic {
   void initializeControllers(BuildContext context, EditProvider provider) {
     if (isClearing) return;
     if (provider.data != null) {
-      nameCourseController.text = provider.data?['NameCourse'];
+      nameCourseController.text = provider.data?['NombreCurso'];
       nomenclaturaController.text = provider.data?['NomenclaturaCurso'];
       trimestreValue = provider.data?['Trimestre'];
       dateController.text = provider.data?['FechaInicioCurso'];
-      registroController.text = provider.data?['Fecharegistro'];
-      envioConstanciaController.text = provider.data?['FechaenvioConstancia'];
+      registroController.text = provider.data?['FechaRegistro'];
+      envioConstanciaController.text = provider.data?['FechaEnvioConstancia'];
       if (provider.data?['Dependencia'] != null) {
         controllerDependency.setDocument({
           'Id': provider.data?['IdDependencia'],

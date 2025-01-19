@@ -32,8 +32,8 @@ class FormBodyDetailCourses extends StatelessWidget {
         FirebaseDropdown(
           enabled: true,
           controller: controllerCourse,
-          collection: "Courses",
-          data: "NameCourse",
+          collection: "Cursos",
+          data: "NombreCurso",
           textHint: 'Seleccione un curso',
         ),
         const SizedBox(height: 10.0),

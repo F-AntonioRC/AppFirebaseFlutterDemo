@@ -26,6 +26,11 @@ Future<void> addCourse(
       return;
     }
 
+    if(controllerDependency.selectedDocument == null) {
+      showCustomSnackBar(context, "Por favor, seleccione una dependencia", Colors.red);
+      return;
+    }
+
     if(trimestreValue == null) {
       showCustomSnackBar(context, "Por favor, selecciona un Trimestre", Colors.red);
       return;
@@ -53,12 +58,12 @@ Future<void> addCourse(
 
     String id = randomAlphaNumeric(3);
     Map<String, dynamic> courseInfoMap = {
-      "IdCourse": id,
-      "NameCourse": nameCourseController.text,
+      "IdCurso": id,
+      "NombreCurso": nameCourseController.text.toUpperCase(),
       "NomenclaturaCurso": nomenclaturaController.text,
       "FechaInicioCurso": dateController.text,
-      "Fecharegistro": registroController.text,
-      "FechaenvioConstancia": envioConstanciaController.text,
+      "FechaRegistro": registroController.text,
+      "FechaEnvioConstancia": envioConstanciaController.text,
       "IdDependencia" : controllerDependency.selectedDocument?['IdDependencia'],
       "Dependencia" : controllerDependency.selectedDocument?['NombreDependencia'],
       "Trimestre": trimestreValue,
@@ -96,13 +101,13 @@ Future<void> updateCourse(
     ) async {
   try{
     Map<String, dynamic> updateInfoMap = {
-      "IdCourse": documentId,
-      "NameCourse": nameCourseController.text,
+      "IdCurso": documentId,
+      "NombreCurso": nameCourseController.text.toUpperCase(),
       "Trimestre": trimestreValue.toString(),
       "NomenclaturaCurso": nomenclaturaController.text,
       "FechaInicioCurso": dateController.text,
-      "Fecharegistro": registroController.text,
-      "FechaenvioConstancia": envioConstanciaController.text,
+      "FechaRegistro": registroController.text,
+      "FechaEnvioConstancia": envioConstanciaController.text,
       'Dependencia':
       controllerDependency.selectedDocument?['NombreDependencia'] ??
           initialData?['Dependencia'],

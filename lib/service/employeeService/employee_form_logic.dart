@@ -5,7 +5,7 @@ import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
 import '../../providers/edit_provider.dart';
 
 class EmployeeFormLogic {
-  final List<String> dropdownSex = ['M', 'F'];
+  final List<String> dropdownSex = ['H', 'M'];
   String? sexDropdownValue;
   String? valueFirebaseDropdown;
 
@@ -68,6 +68,8 @@ class EmployeeFormLogic {
       }
       if(provider.data?['Seccion'] != null) {
         controllerSection.setValue(provider.data?['Seccion']);
+      }
+      if(provider.data?['Puesto'] != null) {
         controllerPuesto.setValue(provider.data?['Puesto']);
       }
     }

@@ -29,8 +29,8 @@ class TableViewDetailCourses extends StatelessWidget {
     (context, editProvider, child) {
       return FutureBuilder(
         future: viewInactivos
-            ? methodsDetailCourses.getDataDetailCourseMejorado(false)
-            : methodsDetailCourses.getDataDetailCourseMejorado(true),
+            ? methodsDetailCourses.getDataDetailCourse(false)
+            : methodsDetailCourses.getDataDetailCourse(true),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -53,13 +53,13 @@ class TableViewDetailCourses extends StatelessWidget {
               ],
               data: data,
               fieldKeys: const [
-                "NameCourse",
+                "NombreCurso",
                 "Ore",
                 "sare",
                 "Estado",
                 "FechaInicioCurso",
-                "Fecharegistro",
-                "FechaenvioConstancia",
+                "FechaRegistro",
+                "FechaEnvioConstancia",
               ],
               onEdit: (String id) {
                 final selectedRow = data.firstWhere((row) => row[idKey] == id);

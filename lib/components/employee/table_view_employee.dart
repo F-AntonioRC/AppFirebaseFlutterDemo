@@ -5,7 +5,7 @@ import 'package:testwithfirebase/providers/edit_provider.dart';
 import 'package:testwithfirebase/service/employeeService/database.dart';
 import '../../dataConst/constand.dart';
 import '../formPatrts/custom_snackbar.dart';
-import 'dialogChanges.dart';
+import 'assignCupoDialog.dart';
 
 class TableViewEmployee extends StatelessWidget {
   final bool viewInactivos;
@@ -24,7 +24,7 @@ class TableViewEmployee extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String idKey = "IdEmployee";
+    const String idKey = "IdEmpleado";
 
     return Consumer<EditProvider>
       (builder: (context, editProvider, child) {
@@ -87,7 +87,7 @@ class TableViewEmployee extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return DialogChanges(
+                      return AssignCupoDialog(
                         dataChange: name,
                         idChange: idAdd,
                         refreshTable: refreshTable,

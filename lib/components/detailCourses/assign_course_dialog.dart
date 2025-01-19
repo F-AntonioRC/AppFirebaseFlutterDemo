@@ -4,14 +4,14 @@ import 'package:testwithfirebase/util/responsive.dart';
 import '../../dataConst/constand.dart';
 import '../formPatrts/custom_snackbar.dart';
 
-class CustomDialog extends StatefulWidget {
+class AssignCourseDialog extends StatefulWidget {
   final String? dataOne;
   final String? dataTwo;
   final String? dataThree;
   final VoidCallback accept;
   final String messageSuccess;
 
-  const CustomDialog(
+  const AssignCourseDialog(
       {super.key,
       required this.accept,
       this.dataOne,
@@ -20,10 +20,10 @@ class CustomDialog extends StatefulWidget {
       this.dataThree});
 
   @override
-  State<CustomDialog> createState() => _CustomDialogState();
+  State<AssignCourseDialog> createState() => _AssignCourseDialogState();
 }
 
-class _CustomDialogState extends State<CustomDialog> {
+class _AssignCourseDialogState extends State<AssignCourseDialog> {
   late TextEditingController _dataOneController;
 
   late TextEditingController _dataTwoController;

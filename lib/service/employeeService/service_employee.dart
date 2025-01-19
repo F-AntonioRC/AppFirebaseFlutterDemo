@@ -15,37 +15,31 @@ Future<void> addEmployee(BuildContext context,
     FirebaseDropdownController controllerOre,
     FirebaseDropdownController controllerSare,
     VoidCallback clearControllers,
-    VoidCallback refreshData
-    ) async {
+    VoidCallback refreshData) async {
   try {
-    // Validaciones de los campos
-    if (nameController.text.isEmpty) {
-      showCustomSnackBar(context, "Por favor, ingresa un nombre", Colors.red);
-      return;
-    }
+    final validationResult = validateFields(context: context,
+        nameController: nameController,
+        controllerPuesto: controllerPuesto,
+        controllerArea: controllerArea,
+        controllerSection: controllerSection,
+        sexDropdownValue: sexDropdownValue,
+        controllerOre: controllerOre,
+        controllerSare: controllerSare);
 
-    if(controllerArea.selectedValue == null) {
-      showCustomSnackBar(
-          context, "Por favor, selecciona un area", Colors.red);
-      return;
-    }
-
-    if (sexDropdownValue == null || sexDropdownValue.isEmpty) {
-      showCustomSnackBar(
-          context, "Por favor, selecciona un sexo", Colors.red);
-      return;
+    if (!validationResult.isValid) {
+      return; // Detiene la ejecución si hay errores
     }
 
 
     String id = randomAlphaNumeric(3);
     Map<String, dynamic> employeeInfoMap = {
-      "IdEmployee": id,
-      "Nombre": nameController.text,
+      "IdEmpleado": id,
+      "Nombre": nameController.text.toUpperCase(),
       "Sexo": sexDropdownValue,
       "Estado": "Activo",
       "Area": controllerArea.selectedValue,
-      "Sección" : controllerSection.selectedValue,
-      "Puesto" : controllerPuesto.selectedValue,
+      "Sección": controllerSection.selectedValue,
+      "Puesto": controllerPuesto.selectedValue,
       "IdSare": controllerSare.selectedDocument?['IdSare'],
       "Sare": controllerSare.selectedDocument?['sare'],
       "IdOre": controllerOre.selectedDocument?['IdOre'],
@@ -82,20 +76,22 @@ Future<void> updateEmployee(BuildContext context,
     FirebaseDropdownController controllerSare,
     Map<String, dynamic>? initialData,
     VoidCallback clearControllers,
-    VoidCallback refreshData
-    ) async {
+    VoidCallback refreshData) async {
   try {
+
     // Crear el mapa con los datos actualizados
     Map<String, dynamic> updateData = {
-      'IdEmployee': documentId,
-      'Nombre': nameController.text,
+      'IdEmpleado': documentId,
+      'Nombre': nameController.text.toUpperCase(),
       'Sexo': sexDropdownValue.toString(),
-      'IdOre': controllerOre.selectedDocument?['IdOre'] ?? initialData?['IdOre'],
+      'IdOre': controllerOre.selectedDocument?['IdOre'] ??
+          initialData?['IdOre'],
       'Ore': controllerOre.selectedDocument?['Ore'] ?? initialData?['Ore'],
-      'IdSare': controllerSare.selectedDocument?['IdSare'] ?? initialData?['IdSare'],
+      'IdSare': controllerSare.selectedDocument?['IdSare'] ??
+          initialData?['IdSare'],
       'Sare': controllerSare.selectedDocument?['sare'] ?? initialData?['Sare'],
-      'Seccion' : controllerSection.selectedValue ?? initialData?['Seccion'],
-      'Puesto' : controllerPuesto.selectedValue ?? initialData?['Puesto']
+      'Seccion': controllerSection.selectedValue ?? initialData?['Seccion'],
+      'Puesto': controllerPuesto.selectedValue ?? initialData?['Puesto']
     };
 
     // Llamar al metodo del servicio para actualizar los datos
@@ -110,7 +106,6 @@ Future<void> updateEmployee(BuildContext context,
       refreshData();
     }
     clearControllers();
-
   } catch (e) {
     if (context.mounted) {
       showCustomSnackBar(context, "Error: $e", Colors.red);
@@ -118,28 +113,77 @@ Future<void> updateEmployee(BuildContext context,
   }
 }
 
-Future<void> assignCupo (
-    BuildContext context,
-    FirebaseDropdownController controllerCupo,
-    String idChange,
-    Function refreshTable
-    ) async {
-  final String cupoSeleccionado = controllerCupo.selectedDocument?['CUPO'] ?? '';
+// Función para validar campos
+ValidationResult validateFields({
+  required BuildContext context,
+  required TextEditingController nameController,
+   FirebaseValueDropdownController? controllerPuesto,
+  required FirebaseValueDropdownController controllerArea,
+    FirebaseValueDropdownController? controllerSection,
+  required String? sexDropdownValue,
+  required FirebaseDropdownController controllerOre,
+  required FirebaseDropdownController controllerSare,
+}) {
+  final List<String> errors = [];
 
-  if(cupoSeleccionado.isNotEmpty) {
-    try {
-      await DatabaseMethods.addEmployeeCupo(idChange, cupoSeleccionado);
-      if(context.mounted) {
-        showCustomSnackBar(context, 'CUPO Asignado correctamente', greenColor);
-        Navigator.pop(context);
-        refreshTable();
-      }
-    } catch (e) {
-      if(context.mounted) {
-        showCustomSnackBar(context, "Error: $e", Colors.red);
-      }
+  if (nameController.text.isEmpty) {
+    errors.add("Por favor, ingresa un nombre");
+  }
+
+  if (controllerArea.selectedValue == null) {
+    errors.add("Por favor, selecciona un área");
+  }
+
+  if (sexDropdownValue == null || sexDropdownValue.isEmpty) {
+    errors.add("Por favor, selecciona un sexo");
+  }
+
+  if (controllerSection?.selectedValue == null) {
+    errors.add("Por favor, elige una sección");
+  }
+
+  if (controllerPuesto?.selectedValue == null) {
+    errors.add("Por favor, selecciona un puesto");
+  }
+
+  if (controllerOre.selectedDocument == null &&
+      controllerSare.selectedDocument == null) {
+    errors.add("Por favor, selecciona un ORE o Sare");
+  }
+
+  if (errors.isNotEmpty) {
+    // Muestra el primer error en pantalla
+    showCustomSnackBar(context, errors.first, Colors.red);
+    return ValidationResult(false, errors);
+  }
+
+  return ValidationResult(true, []);
+}
+
+// Clase para manejar el resultado de validaciones
+class ValidationResult {
+  final bool isValid;
+  final List<String> errors;
+
+  ValidationResult(this.isValid, this.errors);
+}
+
+Future<void> assignCupo(BuildContext context,
+    TextEditingController controllerCupo,
+    String idChange,
+    Function refreshTable) async {
+
+  try {
+
+    await DatabaseMethods.addEmployeeCupo(idChange, controllerCupo.text);
+    if (context.mounted) {
+      showCustomSnackBar(context, 'CUPO Asignado correctamente', greenColor);
+      Navigator.pop(context);
+      refreshTable();
     }
-  } else {
-    showCustomSnackBar(context, "Por favor selecciona una CUPO", greenColor);
+  } catch (e) {
+    if (context.mounted) {
+      showCustomSnackBar(context, "Error: $e", Colors.red);
+    }
   }
 }

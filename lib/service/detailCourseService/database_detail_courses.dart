@@ -49,7 +49,7 @@ class MethodsDetailCourses {
   }
 
 
-  Future<List<Map<String, dynamic>>> getDataDetailCourseMejorado(bool active) async {
+  Future<List<Map<String, dynamic>>> getDataDetailCourse(bool active) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     try {
       QuerySnapshot detalleCursosQuery = await firestore
@@ -61,12 +61,12 @@ class MethodsDetailCourses {
 
       List<Map<String, dynamic>> results = [];
       for (var detalleCursoDoc in detalleCursosQuery.docs) {
-        String idCourse = detalleCursoDoc['IdCourse'];
+        String idCourse = detalleCursoDoc['IdCurso'];
         String? idOre = detalleCursoDoc['IdOre'];
         String? idSare = detalleCursoDoc['IdSare'];
 
         // Consulta usando funciones auxiliares
-        var courseData = await firestore.collection('Courses').doc(idCourse).get();
+        var courseData = await firestore.collection('Cursos').doc(idCourse).get();
         var oreData = idOre != null
             ? await firestore.collection('Ore').doc(idOre).get()
             : null;
@@ -75,11 +75,11 @@ class MethodsDetailCourses {
             : null;
 
         results.add({
-          'IdDetailCourse': detalleCursoDoc.id,
-          'NameCourse': courseData.data()?['NameCourse'] ?? 'N/A',
+          'IdDetalleCurso': detalleCursoDoc.id,
+          'NombreCurso': courseData.data()?['NombreCurso'] ?? 'N/A',
           'FechaInicioCurso': courseData.data()?['FechaInicioCurso'] ?? 'N/A',
-          'Fecharegistro' : courseData.data()?['Fecharegistro'] ?? 'N/A',
-          'FechaenvioConstancia' : courseData.data()?['FechaenvioConstancia'],
+          'FechaRegistro' : courseData.data()?['FechaRegistro'] ?? 'N/A',
+          'FechaEnvioConstancia' : courseData.data()?['FechaEnvioConstancia'],
           'IdOre' : oreData?.data()?['IdOre'],
           'Ore': oreData?.data()?['Ore'] ?? 'N/A',
           'IdSare' : sareData?.data()?['IdSare'],
@@ -95,37 +95,37 @@ class MethodsDetailCourses {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getDataDetailCourse({
-    bool active = true,
-    String? courseName, // Parámetro opcional para filtrar por nombre
+  Future<List<Map<String, dynamic>>> getDataSearchDetailCourse({
+    String? courseName,
   }) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     try {
-      // Consulta inicial para DetalleCursos
-      Query detalleCursosQuery = firestore
-          .collection('DetalleCursos')
-          .where('Estado', isEqualTo: active ? 'Activo' : 'Inactivo');
-
-      // Si se proporciona un nombre de curso, se filtra
-      if (courseName != null && courseName.isNotEmpty) {
-        detalleCursosQuery = detalleCursosQuery
-            .where('NameCourse', isGreaterThanOrEqualTo: courseName)
-            .where('NameCourse', isLessThan: '${courseName}z');
-      }
-
+      // Consulta inicial: Obtiene todos los documentos de DetalleCursos
+      Query detalleCursosQuery = firestore.collection('DetalleCursos');
       QuerySnapshot detalleCursosSnapshot = await detalleCursosQuery.get();
+
       if (detalleCursosSnapshot.docs.isEmpty) return [];
 
       List<Map<String, dynamic>> results = [];
 
       for (var detalleCursoDoc in detalleCursosSnapshot.docs) {
-        String idCourse = detalleCursoDoc['IdCourse'];
+        String idCourse = detalleCursoDoc['IdCurso'];
         String? idOre = detalleCursoDoc['IdOre'];
         String? idSare = detalleCursoDoc['IdSare'];
 
-        // Consulta usando funciones auxiliares
-        var courseData = await firestore.collection('Courses').doc(idCourse).get();
+        // Consulta a Courses usando IdCourse
+        var courseDoc = await firestore.collection('Cursos').doc(idCourse).get();
+
+        // Filtra por NameCourse si se proporciona un nombre
+        String? nameCourse = courseDoc.data()?['NombreCurso'];
+        if (courseName != null &&
+            courseName.isNotEmpty &&
+            !(nameCourse?.toLowerCase().startsWith(courseName.toLowerCase()) ?? false)) {
+          continue; // Salta este documento si no coincide
+        }
+
+        // Obtiene datos adicionales de Ore y Sare (si existen)
         var oreData = idOre != null
             ? await firestore.collection('Ore').doc(idOre).get()
             : null;
@@ -133,12 +133,13 @@ class MethodsDetailCourses {
             ? await firestore.collection('Sare').doc(idSare).get()
             : null;
 
+        // Combina los datos
         results.add({
           'IdDetailCourse': detalleCursoDoc.id,
-          'NameCourse': courseData.data()?['NameCourse'] ?? 'N/A',
-          'FechaInicioCurso': courseData.data()?['FechaInicioCurso'] ?? 'N/A',
-          'Fecharegistro': courseData.data()?['Fecharegistro'] ?? 'N/A',
-          'FechaenvioConstancia': courseData.data()?['FechaenvioConstancia'],
+          'NombreCurso': nameCourse ?? 'N/A',
+          'FechaInicioCurso': courseDoc.data()?['FechaInicioCurso'] ?? 'N/A',
+          'FechaRegistro': courseDoc.data()?['FechaRegistro'] ?? 'N/A',
+          'FechaEnvioConstancia': courseDoc.data()?['FechaEnvioConstancia'],
           'IdOre': oreData?.data()?['IdOre'],
           'Ore': oreData?.data()?['Ore'] ?? 'N/A',
           'IdSare': sareData?.data()?['IdSare'],
@@ -149,10 +150,11 @@ class MethodsDetailCourses {
 
       return results;
     } catch (e) {
-      print('Error al obtener los datos: $e');
-      throw e;
+      print('Error al realizar la consulta: $e');
+      throw Exception('Error al realizar la consulta: $e');
     }
   }
+
 
 
 }
