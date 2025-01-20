@@ -1,28 +1,54 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class MethodsDetailCourses {
   //REGISTRAR UN DETALLE CURSO
   Future addDetailCourse(
       Map<String, dynamic> detailCourseInfoMap, String id) async {
-    return await FirebaseFirestore.instance
-        .collection("DetalleCursos")
-        .doc(id)
-        .set(detailCourseInfoMap);
+try {
+  return await FirebaseFirestore.instance
+      .collection("DetalleCursos")
+      .doc(id)
+      .set(detailCourseInfoMap);
+} on FirebaseException catch (exception, stackTrace) {
+  // Maneja excepciones específicas de Firebase
+  await Sentry.captureException(
+    exception,
+    stackTrace: stackTrace,
+    withScope: (scope) {
+      scope.setTag('firebase_error_code', exception.code);
+    },
+  );
+  rethrow; // Relanzar la excepción
+} catch (exception, stackTrace) {
+  // Maneja otras excepciones
+  await Sentry.captureException(exception, stackTrace: stackTrace);
+  rethrow;
+}
   }
 
   //ACTUALIZAR
   Future<void> updateDetalleCursos(
       String id, Map<String, dynamic> updateData) async {
-    if (id.isEmpty || updateData.isEmpty) {
-      throw Exception("El ID o los datos están vacíos.");
-    }
     try {
       await FirebaseFirestore.instance
           .collection('DetalleCursos')
           .doc(id)
           .update(updateData);
-    } catch (e) {
-      throw Exception("Error al actualizar el empleado: $e");
+    } on FirebaseException catch (exception, stackTrace) {
+      // Maneja excepciones específicas de Firebase
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+        withScope: (scope) {
+          scope.setTag('firebase_error_code', exception.code);
+        },
+      );
+      rethrow; // Relanzar la excepción
+    } catch (exception, stackTrace) {
+      // Maneja otras excepciones
+      await Sentry.captureException(exception, stackTrace: stackTrace);
+      rethrow;
     }
   }
 
@@ -32,19 +58,43 @@ class MethodsDetailCourses {
       DocumentReference documentReference =
           FirebaseFirestore.instance.collection('DetalleCursos').doc(id);
       await documentReference.update({'Estado': 'Inactivo'});
-    } catch (e) {
-      print("Error: $e");
+    } on FirebaseException catch (exception, stackTrace) {
+      // Maneja excepciones específicas de Firebase
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+        withScope: (scope) {
+          scope.setTag('firebase_error_code', exception.code);
+        },
+      );
+      rethrow; // Relanzar la excepción
+    } catch (exception, stackTrace) {
+      // Maneja otras excepciones
+      await Sentry.captureException(exception, stackTrace: stackTrace);
+      rethrow;
     }
   }
 
   //ACTIVAR
-  Future ActivarDetalleCurso(String id) async {
+  Future activarDetalleCurso(String id) async {
     try {
       DocumentReference documentReference =
           FirebaseFirestore.instance.collection('DetalleCursos').doc(id);
       await documentReference.update({'Estado': 'Activo'});
-    } catch (e) {
-      print("Error: $e");
+    } on FirebaseException catch (exception, stackTrace) {
+      // Maneja excepciones específicas de Firebase
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+        withScope: (scope) {
+          scope.setTag('firebase_error_code', exception.code);
+        },
+      );
+      rethrow; // Relanzar la excepción
+    } catch (exception, stackTrace) {
+      // Maneja otras excepciones
+      await Sentry.captureException(exception, stackTrace: stackTrace);
+      rethrow;
     }
   }
 
@@ -89,9 +139,20 @@ class MethodsDetailCourses {
       }
 
       return results;
-    } catch (e) {
-      print('Error al obtener los datos: $e');
-      throw e;
+    } on FirebaseException catch (exception, stackTrace) {
+      // Maneja excepciones específicas de Firebase
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+        withScope: (scope) {
+          scope.setTag('firebase_error_code', exception.code);
+        },
+      );
+      rethrow; // Relanzar la excepción
+    } catch (exception, stackTrace) {
+      // Maneja otras excepciones
+      await Sentry.captureException(exception, stackTrace: stackTrace);
+      rethrow;
     }
   }
 
@@ -149,12 +210,20 @@ class MethodsDetailCourses {
       }
 
       return results;
-    } catch (e) {
-      print('Error al realizar la consulta: $e');
-      throw Exception('Error al realizar la consulta: $e');
+    } on FirebaseException catch (exception, stackTrace) {
+      // Maneja excepciones específicas de Firebase
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+        withScope: (scope) {
+          scope.setTag('firebase_error_code', exception.code);
+        },
+      );
+      rethrow; // Relanzar la excepción
+    } catch (exception, stackTrace) {
+      // Maneja otras excepciones
+      await Sentry.captureException(exception, stackTrace: stackTrace);
+      rethrow;
     }
   }
-
-
-
 }

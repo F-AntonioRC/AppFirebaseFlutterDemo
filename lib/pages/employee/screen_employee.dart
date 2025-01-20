@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:testwithfirebase/components/employee/card_employee.dart';
 import 'package:testwithfirebase/pages/employee/empoyee.dart';
 import 'package:testwithfirebase/providers/edit_provider.dart';
-import 'package:testwithfirebase/service/employeeService/database.dart';
+import 'package:testwithfirebase/service/employeeService/database_methods_employee.dart';
 
 class ScreenEmployee extends StatefulWidget {
   const ScreenEmployee({super.key});
@@ -13,7 +13,7 @@ class ScreenEmployee extends StatefulWidget {
 }
 
 class _ScreenEmployeeState extends State<ScreenEmployee> {
-  final DatabaseMethods databaseMethods = DatabaseMethods();
+  final DatabaseMethodsEmployee databaseMethods = DatabaseMethodsEmployee();
   
   @override
   Widget build(BuildContext context) {

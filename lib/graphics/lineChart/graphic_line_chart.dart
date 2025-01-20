@@ -34,11 +34,11 @@ class _GraphicLineChartState extends State<GraphicLineChart> {
   }
 
   Future<void> _fetchChartData() async {
-    final String dataField = widget.viewOtherGraphics ? 'Activo' : 'Inactivo';
+    final String dataField = widget.viewOtherGraphics ? 'Sare' : 'Ore';
     try {
       // Llama a la función obtenerDatos()
       List<ChartData> chartData =
-          await _chartLineService.getDataBySelect('Courses', dataField);
+          await _chartLineService.getDataBySelect('Empleados', dataField);
 
       // Transforma los datos categóricos en puntos numéricos
       List<FlSpot> dataPoints = [];

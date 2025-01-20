@@ -27,8 +27,8 @@ class _ScreenLinesGraphicsState extends State<ScreenLinesGraphics> {
       children: [
         HeaderGraphics(
             title: _viewOtherGraphics
-                ? 'Empleados por Sare'
-                : 'Empleados por Area',
+                ? 'Empleados por Ore'
+                : 'Empleados por Sare',
             onToggleView: _toggleView,
             viewOtherGraphics: _viewOtherGraphics,
             viewOn: 'Ver por Sare',

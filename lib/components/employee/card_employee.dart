@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:testwithfirebase/components/formPatrts/body_widgets.dart';
 import 'package:testwithfirebase/components/employee/table_view_employee.dart';
 import 'package:testwithfirebase/components/header_search.dart';
-import 'package:testwithfirebase/service/employeeService/database.dart';
+import 'package:testwithfirebase/service/employeeService/database_methods_employee.dart';
 
 import '../formPatrts/custom_snackbar.dart';
 
@@ -15,7 +15,7 @@ class CardEmployee extends StatefulWidget {
 }
 
 class _CardEmployeeState extends State<CardEmployee> {
-  final DatabaseMethods databaseMethods = DatabaseMethods();
+  final DatabaseMethodsEmployee databaseMethods = DatabaseMethodsEmployee();
   TextEditingController searchInput = TextEditingController();
   bool viewInactivos = false;
   bool isActive = true;

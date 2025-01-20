@@ -12,14 +12,15 @@ class MainPieChart extends StatelessWidget {
       children: [
         Expanded(child: SizedBox(
           height: 400,
-          child: GraphicPieChart(graphicFunction: getDataEmployeeByDependency(), title: 'Empleados por Dependencia',),
+          child: GraphicPieChart(graphicFunction: getDataEmployeeForGraphic('Cursos', 'Dependencia'), title: 'Cursos por Dependencia',),
         )),
         Expanded(child:  SizedBox(
           height: 400,
-          child: GraphicPieChart(graphicFunction: getDataByTrimestre(), title: 'Cursos por Trimestre'),
+          child: GraphicPieChart(graphicFunction: getDataEmployeeForGraphic('Cursos', 'Trimestre'), title: 'Cursos por Trimestre'),
         ))
       ],
     );
 
   }
+  
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:testwithfirebase/components/MyPaginatedTable.dart';
 import 'package:testwithfirebase/providers/edit_provider.dart';
-import 'package:testwithfirebase/service/employeeService/database.dart';
+import 'package:testwithfirebase/service/employeeService/database_methods_employee.dart';
 import '../../dataConst/constand.dart';
 import '../formPatrts/custom_snackbar.dart';
 import 'assignCupoDialog.dart';
@@ -10,7 +10,7 @@ import 'assignCupoDialog.dart';
 class TableViewEmployee extends StatelessWidget {
   final bool viewInactivos;
   final List<Map<String, dynamic>> filteredData;
-  final DatabaseMethods databaseMethods;
+  final DatabaseMethodsEmployee databaseMethods;
   final bool isActive;
   final Function() refreshTable;
 

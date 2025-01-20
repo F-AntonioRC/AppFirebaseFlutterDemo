@@ -117,7 +117,7 @@ class TableViewDetailCourses extends StatelessWidget {
               onActive: isActive,
               activateFunction: (String id) async {
                 try {
-                  await methodsDetailCourses.ActivarDetalleCurso(id);
+                  await methodsDetailCourses.activarDetalleCurso(id);
                   refreshTable();
                   if (context.mounted) {
                     showCustomSnackBar(

@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:testwithfirebase/components/firebase_reusable/firebase_dropdown_controller.dart';
 import 'package:testwithfirebase/service/coursesService/database_courses.dart';
 
 import '../../components/formPatrts/custom_snackbar.dart';
 import '../../dataConst/constand.dart';
+import '../handle_error_sentry.dart';
 
 Future<void> addCourse(
     BuildContext context,
@@ -18,8 +21,6 @@ Future<void> addCourse(
     VoidCallback clearControllers,
     VoidCallback refreshData
     ) async {
-
-  try {
 
     if(nameCourseController.text.isEmpty) {
       showCustomSnackBar(context, "Por favor, ingresa un nombre de Curso", Colors.red);
@@ -69,7 +70,7 @@ Future<void> addCourse(
       "Trimestre": trimestreValue,
       "Estado": "Activo"
     };
-
+    try {
     await MethodsCourses().addCourse(courseInfoMap, id);
     if (context.mounted) {
       showCustomSnackBar(
@@ -78,10 +79,29 @@ Future<void> addCourse(
     clearControllers();
     refreshData();
 
-  } catch(e) {
+  }  on FirebaseException catch (e, stackTrace) {
+    // Reporta el error a Sentry con contexto adicional
     if (context.mounted) {
-      showCustomSnackBar(context, "Error: $e", Colors.red);
+      handleError(
+          context: context,
+          exception: e,
+          stackTrace: stackTrace,
+          operation: 'Agregar Curso',
+          customMessage: 'Error de Firebase: ${e.message}',
+          contextData: {
+            'IdCurso': id,
+            'Datos: ': courseInfoMap,
+          });
     }
+  } catch (e, stackTrace) {
+    // Reporta otros errores genéricos a Sentry
+    await Sentry.captureException(
+      e,
+      stackTrace: stackTrace,
+      withScope: (scope) {
+        scope.setTag('operation', 'addCourse');
+      },
+    );
   }
 }
 
@@ -99,7 +119,6 @@ Future<void> updateCourse(
     VoidCallback clearControllers,
     VoidCallback refreshData
     ) async {
-  try{
     Map<String, dynamic> updateInfoMap = {
       "IdCurso": documentId,
       "NombreCurso": nameCourseController.text.toUpperCase(),
@@ -115,7 +134,7 @@ Future<void> updateCourse(
       controllerDependency.selectedDocument?['IdDependencia'] ??
           initialData?['IdDependencia'],
     };
-
+    try{
     await MethodsCourses().updateCourse(documentId, updateInfoMap);
     if (context.mounted) {
       showCustomSnackBar(
@@ -128,9 +147,28 @@ Future<void> updateCourse(
     clearControllers();
     refreshData();
 
-  } catch (e) {
+  } on FirebaseException catch (e, stackTrace) {
+    // Reporta el error a Sentry con contexto adicional
     if (context.mounted) {
-      showCustomSnackBar(context, "Error: $e", Colors.red);
+      handleError(
+          context: context,
+          exception: e,
+          stackTrace: stackTrace,
+          operation: 'Editar Curso',
+          customMessage: 'Error de Firebase: ${e.message}',
+          contextData: {
+            'IdCurso': documentId,
+            'Datos: ': updateInfoMap,
+          });
     }
+  } catch (e, stackTrace) {
+    // Reporta otros errores genéricos a Sentry
+    await Sentry.captureException(
+      e,
+      stackTrace: stackTrace,
+      withScope: (scope) {
+        scope.setTag('operation', 'updateCourse');
+      },
+    );
   }
 }
