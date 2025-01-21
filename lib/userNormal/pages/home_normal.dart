@@ -54,7 +54,7 @@ class _HomeNormalState extends State<HomeNormal> {
           String cupo = userData['CUPO'];
 
           final employeeSnapshot = await FirebaseFirestore.instance
-              .collection('Employee')
+              .collection('Empleados')
               .where('CUPO', isEqualTo: cupo)
               .get();
 

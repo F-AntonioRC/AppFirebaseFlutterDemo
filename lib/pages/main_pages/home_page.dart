@@ -10,9 +10,10 @@ import 'package:testwithfirebase/pages/configuration/configuration.dart';
 import 'package:testwithfirebase/pages/dashboard/dashboard_main.dart';
 import 'package:testwithfirebase/pages/detailCourses/page_detail_courses.dart';
 import 'package:testwithfirebase/pages/courses/screen_cursos.dart';
+import 'package:testwithfirebase/pages/documents/trimesterview.dart';
 import 'package:testwithfirebase/pages/employee/screen_employee.dart';
 import 'package:testwithfirebase/pages/notification_icon_widget.dart';
-import 'package:testwithfirebase/pages/send_document.dart';
+import 'package:testwithfirebase/pages/send_document.dart';//primera parte de prueba
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -101,7 +102,7 @@ class _HomePageState extends State<HomePage> {
       case NavItem.emailView:
         return const PageDetailCourses();
       case NavItem.documentView:
-        return  const TrimestersView();
+        return  const TrimesterView();//nuevo cambio en la vista 
       case NavItem.logout:
         return const CerrarSesion();
       case NavItem.configuration:

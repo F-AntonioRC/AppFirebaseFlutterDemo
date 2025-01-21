@@ -29,7 +29,7 @@ class _DynamicCourseSelectionPageState
     try {
       print('Obteniendo datos del empleado...');
       final employeeSnapshot = await FirebaseFirestore.instance
-          .collection('Employee')
+          .collection('Empleados')
           .where('CUPO', isEqualTo: widget.cupo)
           .get();
 
@@ -51,7 +51,7 @@ class _DynamicCourseSelectionPageState
           .get();
 
       final courseIds = detailCoursesSnapshot.docs
-          .map((doc) => doc.data()['IdCourse'])
+          .map((doc) => doc.data()['IdCurso'])
           .toList();
       print('IDs de los cursos: $courseIds');
 
@@ -59,12 +59,12 @@ class _DynamicCourseSelectionPageState
       if (courseIds.isNotEmpty) {
         print('Obteniendo información de los cursos...');
         final coursesSnapshot = await FirebaseFirestore.instance
-            .collection('Courses')
+            .collection('Cursos')
             .where(FieldPath.documentId, whereIn: courseIds)
             .get();
 
         courses = coursesSnapshot.docs.map((doc) => doc.data()).toList();
-        print('Datos de los cursos: $courses');
+         
       }
 
       setState(() {
@@ -108,14 +108,14 @@ class _DynamicCourseSelectionPageState
                 itemBuilder: (context, index) {
                   final course = courses[index];
                   return CourseCard(
-                    courseName: course['NameCourse'],
+                    courseName: course['NombreCurso'],
                     trimester: course['Trimestre'],
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => CursosNormal(
-                            course: course['NameCourse'],
+                            course: course['NombreCurso'],
                             subCourse: null, // Actualiza si hay subcursos
                             trimester: course['Trimestre'],
                             dependecy: course['Dependencia'], // Pasa la dependencia

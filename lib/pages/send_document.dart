@@ -22,7 +22,7 @@ class _TrimestersViewState extends State<TrimestersView> {
   Future<void> _loadTrimesters() async {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
-      QuerySnapshot snapshot = await firestore.collection('Courses').get();
+      QuerySnapshot snapshot = await firestore.collection('Cursos').get();
 
       // Extraemos los trimestres únicos
       Set<String> uniqueTrimesters = {};
@@ -140,7 +140,7 @@ class _DependenciesViewState extends State<DependenciesView> {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       QuerySnapshot snapshot = await firestore
-          .collection('Courses')
+          .collection('Cursos')
           .where('Trimestre', isEqualTo: widget.trimester)
           .get();
 
@@ -273,7 +273,7 @@ class CoursesView extends StatelessWidget {
     appBar: AppBar(title: Text('Cursos de $dependencyName')),
     body: StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
-          .collection('Courses')
+          .collection('Cursos')
           .where('Trimestre', isEqualTo: trimester)
           .where('IdDependencia', isEqualTo: dependecyId)
           .snapshots(),
@@ -307,7 +307,7 @@ class CoursesView extends StatelessWidget {
              
 
               // Verifica si los datos existen antes de usarlos
-              String? courseName = course['NameCourse'];
+              String? courseName = course['NombreCurso'];
               String? dependency = course['Dependencia'];
               String? trimester = course['Trimestre'];
                print('Datos de los cursos: $courseName');
@@ -440,7 +440,7 @@ class _FilesListPageState extends State<FilesListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Archivos de ${widget.courseName}'),
-        backgroundColor: Colors.green,
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
       body: isLoading
           ? const Center(
