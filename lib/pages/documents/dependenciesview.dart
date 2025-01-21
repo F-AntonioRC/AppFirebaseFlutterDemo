@@ -46,7 +46,7 @@ Widget build(BuildContext context) {
                     itemBuilder: (context, index) {
                       final dependencia = dependencies[index];
                         return Material(
-                          color: Colors.white,
+                          //color: Colors.white,
                           borderRadius: BorderRadius.circular(12),
                           elevation: 5,
                           child: InkWell(

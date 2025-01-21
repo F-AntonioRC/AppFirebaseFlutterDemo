@@ -43,7 +43,7 @@ class _FilesListPageState extends State<FilesListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Archivos de ${widget.courseName}'),
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        //backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
       body: isLoading
           ? const Center(
