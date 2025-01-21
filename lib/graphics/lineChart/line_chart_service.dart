@@ -35,7 +35,7 @@ class LineChartService {
         exception,
         stackTrace: stackTrace,
         withScope: (scope) {
-          scope.setTag('firebase_error_code', exception.code);
+          scope.setTag('firebase_error_graphic', exception.code);
         },
       );
       rethrow; // Relanzar la excepción

@@ -31,10 +31,9 @@ class UpFileCard extends StatelessWidget {
                   context: context,
                   builder: (context) => Dialog(
                     child: SizedBox(
-                      height: 300,
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      //height: MediaQuery.of(context).size.height * 0.8,
-                      child: const MessageSendFile(),
+                      height: 350,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: const BodyWidgets(body: MessageSendFile()),
                     ),
                   ),
                 );

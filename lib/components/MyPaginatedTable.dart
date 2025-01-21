@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 
-class MyPaginatedTable extends StatelessWidget {
+class MyPaginatedTable extends StatefulWidget {
   final List<String> headers; // Cabeceras de la tabla
   final List<String> fieldKeys; // Atributos que se muestran
   final List<Map<String, dynamic>> data; // Datos almacenados
@@ -31,7 +31,15 @@ class MyPaginatedTable extends StatelessWidget {
   });
 
   @override
+  State<MyPaginatedTable> createState() => _MyPaginatedTableState();
+}
+
+class _MyPaginatedTableState extends State<MyPaginatedTable> {
+  int _rowsPerPage = 5; // Número inicial de filas por página
+
+  @override
   Widget build(BuildContext context) {
+
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           return SingleChildScrollView(
@@ -39,7 +47,7 @@ class MyPaginatedTable extends StatelessWidget {
               width: constraints.maxWidth,
               child: PaginatedDataTable(
                 columns: [
-                  ...headers.map((header) {
+                  ...widget.headers.map((header) {
                     return DataColumn(
                       label: Expanded(child: Text(
                         header,
@@ -55,20 +63,26 @@ class MyPaginatedTable extends StatelessWidget {
                   ),
                 ],
                 source: _TableDataSource(
-                  data: data,
-                  fieldKeys: fieldKeys,
-                  idKey: idKey,
-                  onEdit: onEdit,
-                  onDelete: onDelete,
-                  onActive: onActive,
-                  activateFunction: activateFunction,
-                  onAssign: onAssign,
-                  iconAssign: iconAssign,
-                  tooltipAssign: tooltipAssign,
+                  data: widget.data,
+                  fieldKeys: widget.fieldKeys,
+                  idKey: widget.idKey,
+                  onEdit: widget.onEdit,
+                  onDelete: widget.onDelete,
+                  onActive: widget.onActive,
+                  activateFunction: widget.activateFunction,
+                  onAssign: widget.onAssign,
+                  iconAssign: widget.iconAssign,
+                  tooltipAssign: widget.tooltipAssign,
                 ),
-                rowsPerPage: 5, // Número de filas por página
-                availableRowsPerPage: const [5, 10, 15],
-                onRowsPerPageChanged: (value) {},
+                rowsPerPage: _rowsPerPage, // Número de filas por página
+                availableRowsPerPage: const [5, 10],
+                onRowsPerPageChanged: (value) {
+                  setState(() {
+                    if(value != null) {
+                      _rowsPerPage = value;
+                    }
+                  });
+                },
               ),
             ),
           );
