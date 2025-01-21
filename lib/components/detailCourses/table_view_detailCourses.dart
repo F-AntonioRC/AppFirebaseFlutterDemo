@@ -23,7 +23,7 @@ class TableViewDetailCourses extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String idKey = "IdDetailCourse";
+    const String idKey = "IdDetalleCurso";
 
     return Consumer<EditProvider>(builder:
     (context, editProvider, child) {
@@ -84,14 +84,14 @@ class TableViewDetailCourses extends StatelessWidget {
                 final selectedRow = data.firstWhere((row) => row[idKey] == id, orElse: () => {});
 
                 if(selectedRow.isNotEmpty) {
-                  final nameCourse = selectedRow['NameCourse'];
-                  final dateInit = selectedRow['FechaInicioCurso'];
-                  final dateRegister = selectedRow['Fecharegistro'];
-                  final dateSendDocument = selectedRow['FechaenvioConstancia'];
-                  final oreSelected = selectedRow['Ore'];
-                  final sareSelected = selectedRow['sare'];
-                  final idOreSelected = selectedRow['IdOre'];
-                  final idSareSelected = selectedRow['IdSare'];
+                  final nameCourse = selectedRow['NombreCurso'] ?? '';
+                  final dateInit = selectedRow['FechaInicioCurso'] ?? '';
+                  final dateRegister = selectedRow['FechaRegistro'] ?? '';
+                  final dateSendDocument = selectedRow['FechaEnvioConstancia'] ?? '';
+                  final oreSelected = selectedRow['Ore'] ?? '';
+                  final sareSelected = selectedRow['sare'] ?? '';
+                  final idOreSelected = selectedRow['IdOre'] ?? '';
+                  final idSareSelected = selectedRow['IdSare'] ?? '';
 
                   showDialog(
                     context: context,

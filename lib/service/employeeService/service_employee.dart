@@ -12,6 +12,7 @@ import 'database_methods_employee.dart';
 Future<void> addEmployee(
     BuildContext context,
     TextEditingController nameController,
+    TextEditingController emailController,
     FirebaseValueDropdownController controllerPuesto,
     FirebaseValueDropdownController controllerArea,
     FirebaseValueDropdownController controllerSection,
@@ -47,6 +48,7 @@ Future<void> addEmployee(
     "Sare": controllerSare.selectedDocument?['sare'],
     "IdOre": controllerOre.selectedDocument?['IdOre'],
     "Ore": controllerOre.selectedDocument?['Ore'],
+    "Correo" : emailController.text.trim()
   };
 
   try {
@@ -92,6 +94,7 @@ Future<void> updateEmployee(
     BuildContext context,
     String documentId,
     TextEditingController nameController,
+    TextEditingController emailController,
     FirebaseValueDropdownController controllerPuesto,
     FirebaseValueDropdownController controllerArea,
     FirebaseValueDropdownController controllerSection,
@@ -106,6 +109,7 @@ Future<void> updateEmployee(
     Map<String, dynamic> updateData = {
       'IdEmpleado': documentId,
       'Nombre': nameController.text.toUpperCase(),
+      'Correo' : emailController.text,
       'Sexo': sexDropdownValue.toString(),
       'IdOre':
           controllerOre.selectedDocument?['IdOre'] ?? initialData?['IdOre'],
@@ -114,7 +118,7 @@ Future<void> updateEmployee(
           controllerSare.selectedDocument?['IdSare'] ?? initialData?['IdSare'],
       'Sare': controllerSare.selectedDocument?['sare'] ?? initialData?['Sare'],
       'Seccion': controllerSection.selectedValue ?? initialData?['Seccion'],
-      'Puesto': controllerPuesto.selectedValue ?? initialData?['Puesto']
+      'Puesto': controllerPuesto.selectedValue ?? initialData?['Puesto'],
     };
 
     try {

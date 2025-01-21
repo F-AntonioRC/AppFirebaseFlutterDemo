@@ -19,6 +19,7 @@ class EmployeeFormLogic {
       FirebaseDropdownController();
 
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
   bool isClearing = false;
 
@@ -31,7 +32,7 @@ class EmployeeFormLogic {
     controllerSection.clearDocument();
     controllerPuesto.clearDocument();
     controllerArea.clearDocument();
-
+    emailController.clear();
   }
 
   /// Limpia los datos del proveedor
@@ -52,6 +53,7 @@ class EmployeeFormLogic {
 
     if (provider.data != null) {
       nameController.text = provider.data?['Nombre'] ?? '';
+      emailController.text = provider.data?['Correo'] ?? '';
       sexDropdownValue = provider.data?['Sexo'] ?? '';
 
       if(provider.data?['Area'] != null) {

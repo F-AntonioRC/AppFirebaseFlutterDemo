@@ -3,6 +3,7 @@ import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:random_string/random_string.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 Future<void> importExcelWithSareToFirebase() async {
   // Obtener el mapa de Sares con sus IDs
@@ -37,7 +38,6 @@ Future<void> importExcelWithSareToFirebase() async {
 
         // Si el IdSare no existe, manejarlo (puedes lanzar un error o ignorar la fila)
         if (idSare == null) {
-          print('El Sare "$sareName" no existe en la colección Sare.');
           continue; // Ignorar esta fila y pasar a la siguiente
         }
 
@@ -46,25 +46,43 @@ Future<void> importExcelWithSareToFirebase() async {
 
         // Crear el mapa de datos para el empleado
         Map<String, dynamic> data = {
-          'id': id,
+          'IdEmpleado': id,
           'CUPO': row[0]?.value?.toString() ?? '',
           'Estado': row[1]?.value?.toString() ?? '',
           'Nombre': row[2]?.value?.toString() ?? '',
           'Puesto': row[3]?.value?.toString() ?? '',
-          'correo': row[4]?.value?.toString() ?? '',
-          'Sare': sareName, // Nombre del Sare (opcional)
+          'Correo': row[4]?.value?.toString() ?? '',
+          'Sare': sareName, // Nombre del Sare
           'IdSare': idSare, // ID del Sare relacionado
           'Sexo': row[6]?.value?.toString() ?? '',
           'Area': row[7]?.value?.toString() ?? '',
         };
 
-        // Subir los datos a Firebase
-        await FirebaseFirestore.instance.collection('Empleados').doc(id).set(data);
+        try {
+          // Subir los datos a Firebase
+          await FirebaseFirestore.instance.collection('Empleados').doc(id).set(
+              data);
+        } on FirebaseException catch (e, stackTrace) {
+          // Reporta el error a Sentry
+          await Sentry.captureException(
+            e,
+            stackTrace: stackTrace,
+            withScope: (scope) {
+              scope.setTag('operation', 'UpDataByExcel');
+            },
+          );
+        } catch (e, stackTrace) {
+          // Reporta otros errores genéricos a Sentry
+          await Sentry.captureException(
+            e,
+            stackTrace: stackTrace,
+            withScope: (scope) {
+              scope.setTag('operation', 'UpDataByExcel');
+            },
+          );
+        }
       }
     }
-    print("Datos importados exitosamente.");
-  } else {
-    print("No se seleccionó ningún archivo.");
   }
 }
 
@@ -78,6 +96,5 @@ Future<Map<String, String>> fetchSareIds() async {
   for (var doc in snapshot.docs) {
     sareMap[doc['sare']] = doc.id; // Asegúrate de que 'nombre' es el campo correcto en tu colección Sare
   }
-
   return sareMap;
 }

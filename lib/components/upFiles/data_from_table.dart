@@ -9,7 +9,6 @@ List<DataColumn> createColumns() {
     const DataColumn(label: Text('Area')),
     const DataColumn(label: Text('Puesto')),
     const DataColumn(label: Text('Sare')),
-    const DataColumn(label: Text('Ore')),
   ];
 }
 
@@ -22,7 +21,6 @@ List<DataRow> createRows() {
       DataCell(Text('Cupo.Nombre@becasbenitojuarez.gob.mx')),
       DataCell(Text('RECURSOS HUMANOS')),
       DataCell(Text('AUXILIAR DE ARCHIVO')),
-      DataCell(Text('')),
       DataCell(Text('ORE')),
     ]),
     const DataRow(cells: [
@@ -33,7 +31,6 @@ List<DataRow> createRows() {
       DataCell(Text('JURIDICO')),
       DataCell(Text('APOYO JURIDICO')),
       DataCell(Text('2001')),
-      DataCell(Text('')),
     ]),
   ];
 }

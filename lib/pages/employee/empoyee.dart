@@ -57,7 +57,7 @@ class _EmployeeState extends State<Employee> {
               _formLogic.valueFirebaseDropdown = value;
             },
             controllerSection: _formLogic.controllerSection,
-            controllerOre: _formLogic.controllerOre,
+            controllerOre: _formLogic.controllerOre, emailController: _formLogic.emailController,
           ),
           const SizedBox(height: 20.0),
           ActionsFormCheck(
@@ -66,6 +66,7 @@ class _EmployeeState extends State<Employee> {
               await addEmployee(
                   context,
                   _formLogic.nameController,
+                  _formLogic.emailController,
                   _formLogic.controllerPuesto,
                   _formLogic.controllerArea,
                   _formLogic.controllerSection,
@@ -73,7 +74,8 @@ class _EmployeeState extends State<Employee> {
                   _formLogic.controllerOre,
                   _formLogic.controllerSare,
                   _formLogic.clearControllers,
-                  () => _formLogic.refreshProviderData(context));
+                  () => _formLogic.refreshProviderData(context)
+              );
             },
             onUpdate: () async {
               final String documentId = widget.initialData?['IdEmpleado'];
@@ -81,6 +83,7 @@ class _EmployeeState extends State<Employee> {
                   context,
                   documentId,
                   _formLogic.nameController,
+                  _formLogic.emailController,
                   _formLogic.controllerPuesto,
                   _formLogic.controllerArea,
                   _formLogic.controllerSection,

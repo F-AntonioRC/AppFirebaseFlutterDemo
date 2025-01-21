@@ -196,7 +196,7 @@ try {
 
         // Combina los datos
         results.add({
-          'IdDetailCourse': detalleCursoDoc.id,
+          'IdDetalleCurso': detalleCursoDoc.id,
           'NombreCurso': nameCourse ?? 'N/A',
           'FechaInicioCurso': courseDoc.data()?['FechaInicioCurso'] ?? 'N/A',
           'FechaRegistro': courseDoc.data()?['FechaRegistro'] ?? 'N/A',
