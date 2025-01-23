@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/ink_component.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 
@@ -12,7 +13,7 @@ class MyPaginatedTable extends StatefulWidget {
   final bool onActive; // Estado del botón dinámico
   final Function(String id) activateFunction;
   final Function(String id)? onAssign; // Función opcional
-  final Icon? iconAssign; // Icono del método opcional
+  final Icon? iconAssign; // Icono del metodo opcional
   final String? tooltipAssign;
 
   const MyPaginatedTable({
@@ -131,21 +132,15 @@ class _TableDataSource extends DataTableSource {
         DataCell(
           Row(
             children: [
-              Ink(
-                  decoration: const ShapeDecoration(shape: CircleBorder(), color: ligth),
-                child: IconButton(
-                  tooltip: "Editar",
-                  icon: const Icon(Icons.edit, color: greenColor),
-                  onPressed: () => onEdit(rowData[idKey].toString()),
-                ),
-              ),
-              Ink(
-                  decoration: const ShapeDecoration(shape: CircleBorder(), color: ligth),
-                child: IconButton(
+              InkComponent(tooltip: 'Editar',
+                  iconInk: const Icon(Icons.edit, color: greenColor),
+                  inkFunction: () => onEdit(rowData[idKey].toString())),
+              InkComponent(
                   tooltip: onActive ? "Eliminar" : "Activar",
-                  icon: Icon(onActive ? Icons.delete_forever_sharp : Icons.power_settings_new),
-                  color: onActive ? Colors.red : Colors.red,
-                  onPressed: () {
+                  iconInk: Icon(onActive ? Icons.delete_forever_sharp : Icons.power_settings_new,
+                  color: Colors.red,
+                  ),
+                  inkFunction: () {
                     if (onActive) {
                       try {
                         onDelete(rowData[idKey].toString());
@@ -155,18 +150,12 @@ class _TableDataSource extends DataTableSource {
                     } else {
                       activateFunction(rowData[idKey].toString());
                     }
-                  },
-                ),
-              ),
+                  },),
               if (onAssign != null)
-                Ink(
-                  decoration: const ShapeDecoration(shape: CircleBorder(), color: ligth),
-                  child: IconButton(
-                    tooltip: tooltipAssign,
-                    icon: iconAssign ?? const Icon(Icons.assignment),
-                    onPressed: () => onAssign!(rowData[idKey].toString()),
-                  ),
-                ),
+                InkComponent(
+                    tooltip: tooltipAssign!,
+                    iconInk: iconAssign ?? const Icon(Icons.assignment),
+                    inkFunction: () => onAssign!(rowData[idKey].toString())),
             ],
           ),
         ),

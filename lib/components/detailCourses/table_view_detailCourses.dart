@@ -82,16 +82,15 @@ class TableViewDetailCourses extends StatelessWidget {
               },
               onAssign: (String id) {
                 final selectedRow = data.firstWhere((row) => row[idKey] == id, orElse: () => {});
-
                 if(selectedRow.isNotEmpty) {
                   final nameCourse = selectedRow['NombreCurso'] ?? '';
                   final dateInit = selectedRow['FechaInicioCurso'] ?? '';
                   final dateRegister = selectedRow['FechaRegistro'] ?? '';
                   final dateSendDocument = selectedRow['FechaEnvioConstancia'] ?? '';
-                  final oreSelected = selectedRow['Ore'] ?? '';
-                  final sareSelected = selectedRow['sare'] ?? '';
-                  final idOreSelected = selectedRow['IdOre'] ?? '';
-                  final idSareSelected = selectedRow['IdSare'] ?? '';
+                  final oreSelected = selectedRow['Ore'] ?? 'N/A';
+                  final sareSelected = selectedRow['sare'] ?? 'N/A';
+                  final idOreSelected = selectedRow['IdOre'] ?? 'N/A';
+                  final idSareSelected = selectedRow['IdSare'] ?? 'N/A';
 
                   showDialog(
                     context: context,

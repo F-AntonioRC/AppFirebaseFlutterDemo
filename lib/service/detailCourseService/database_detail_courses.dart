@@ -16,13 +16,17 @@ try {
     exception,
     stackTrace: stackTrace,
     withScope: (scope) {
-      scope.setTag('firebase_error_code', exception.code);
+      scope.setTag('firebase_error_Add_Detail_Course', exception.code);
     },
   );
   rethrow; // Relanzar la excepción
 } catch (exception, stackTrace) {
   // Maneja otras excepciones
-  await Sentry.captureException(exception, stackTrace: stackTrace);
+  await Sentry.captureException(exception, stackTrace: stackTrace,
+  withScope: (scope) {
+    scope.setTag('Firebase_error_addDetailCourse', detailCourseInfoMap as String);
+  }
+  );
   rethrow;
 }
   }
@@ -41,13 +45,16 @@ try {
         exception,
         stackTrace: stackTrace,
         withScope: (scope) {
-          scope.setTag('firebase_error_code', exception.code);
+          scope.setTag('firebase_error_update_Detail_Courses', exception.code);
         },
       );
       rethrow; // Relanzar la excepción
     } catch (exception, stackTrace) {
       // Maneja otras excepciones
-      await Sentry.captureException(exception, stackTrace: stackTrace);
+      await Sentry.captureException(exception, stackTrace: stackTrace,
+      withScope: (scope) {
+        scope.setTag('Firebase_error_updateDetalleCursos', id);
+      });
       rethrow;
     }
   }
@@ -87,13 +94,17 @@ try {
         exception,
         stackTrace: stackTrace,
         withScope: (scope) {
-          scope.setTag('firebase_error_code', exception.code);
+          scope.setTag('firebase_error_Activate_Detail_Course', exception.code);
         },
       );
       rethrow; // Relanzar la excepción
     } catch (exception, stackTrace) {
       // Maneja otras excepciones
-      await Sentry.captureException(exception, stackTrace: stackTrace);
+      await Sentry.captureException(exception, stackTrace: stackTrace,
+      withScope: (scope) {
+        scope.setTag('Firebase_error_activarDetalleCurso', id);
+      }
+      );
       rethrow;
     }
   }
@@ -145,7 +156,7 @@ try {
         exception,
         stackTrace: stackTrace,
         withScope: (scope) {
-          scope.setTag('firebase_error_code', exception.code);
+          scope.setTag('firebase_error_getDetailCourse', exception.code);
         },
       );
       rethrow; // Relanzar la excepción
@@ -216,7 +227,7 @@ try {
         exception,
         stackTrace: stackTrace,
         withScope: (scope) {
-          scope.setTag('firebase_error_code', exception.code);
+          scope.setTag('firebase_error_getDataSearchDetailCourse', exception.code);
         },
       );
       rethrow; // Relanzar la excepción

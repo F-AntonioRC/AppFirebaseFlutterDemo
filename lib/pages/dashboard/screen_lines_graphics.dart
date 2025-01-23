@@ -31,8 +31,8 @@ class _ScreenLinesGraphicsState extends State<ScreenLinesGraphics> {
                 : 'Empleados por Sare',
             onToggleView: _toggleView,
             viewOtherGraphics: _viewOtherGraphics,
-            viewOn: 'Ver por Sare',
-            viewOff: 'Ver por Area'),
+            viewOn: 'Ver por ORE',
+            viewOff: 'Ver por Sare'),
         const SizedBox(height: 10.0),
         SizedBox(
           height: 300,

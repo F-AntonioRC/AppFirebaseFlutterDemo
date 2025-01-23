@@ -1,63 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SendEmailMethods {
-  // Obtener los empleados por campo
-  Future<List<String>> getEmpleadosPorCampo(String campo, String valor) async {
-    try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('Empleados')
-          .where(campo, isEqualTo: valor)
-          .get();
-
-      // Extraer los correos directamente del campo 'correo'
-      return querySnapshot.docs
-          .map((doc) => doc['correo']?.toString())
-          .where((correo) => correo != null)
-          .cast<String>()
-          .toList();
-    } catch (e) {
-      print('Error obteniendo correos: $e');
-      return [];
-    }
-  }
-
   // Enviar correos
-  Future<void> sendEmail(String campo,
-      String valor,
-      String nameCourse,
-      String dateInit,
-      String dateRegister,
-      String dateSend,
-      String body,) async {
-    List<String> correos = await getEmpleadosPorCampo(campo, valor);
-
-    if (correos.isEmpty) {
-      await Sentry.captureMessage('¡Lista de correos vacia!');
-      return;
-    }
+  Future<void> sendEmail(
+    String nameCourse,
+    String dateInit,
+    String dateRegister,
+    String dateSend,
+    String body,
+  ) async {
 
     String bodyFinal = ('$body\n'
         'Fecha de inicio: $dateInit\n'
         'Fecha de registro: $dateRegister\n'
         'Envío de constancia: $dateSend');
 
-    final String emailList = correos.join(',');
-
     try {
       if (_isChromeTargetTopScheme('mailto')) {
-        await launchEmailWebFallback(
-            emailList, 'Curso: $nameCourse', bodyFinal);
+        await launchEmailWebFallback('Curso: $nameCourse', bodyFinal);
       } else {
-        await launchEmailWebFallback(
-            emailList, 'Curso: $nameCourse', bodyFinal);
+        await launchEmailWebFallback('Curso: $nameCourse', bodyFinal);
       }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error enviando el correo: $e');
-      }
+    } catch (e, stackTrace) {
+      await Sentry.captureException(
+        e,
+        stackTrace: stackTrace,
+        withScope: (scope) {
+          scope.setTag('Url_launcher_error', 'sendEmail');
+          scope.setContexts('Data: ', nameCourse);
+        }
+      );
     }
   }
 
@@ -68,106 +43,105 @@ class SendEmailMethods {
       'https',
       'http',
     };
-    final String? scheme = Uri
-        .tryParse(url)
-        ?.scheme;
+    final String? scheme = Uri.tryParse(url)?.scheme;
     return chromeTargetTopSchemes.contains(scheme);
   }
 
-  // Métodos específicos para Ore y sare
-  Future<void> sendEmailToOre(String idOre,
-      String nameCourse,
-      String dateInit,
-      String dateRegister,
-      String dateSend,
-      String body,) async {
-    await sendEmail(
-        'IdOre',
-        idOre,
-        nameCourse,
-        dateInit,
-        dateRegister,
-        dateSend,
-        body);
-  }
-
-  Future<void> sendEmailToSare(String idSare,
-      String nameSare,
-      String dateInit,
-      String dateRegister,
-      String dateSend,
-      String body,) async {
-    await sendEmail(
-        'IdSare',
-        idSare,
-        nameSare,
-        dateInit,
-        dateRegister,
-        dateSend,
-        body);
-  }
-
-  // METODO PARA ENVIAR EMAIL A OUTLOOK
-  Future<void> launchEmailWebWithOutlook(String email, String subject,
-      String body) async {
-    final Uri outlookUrl = Uri(
-        scheme: 'https',
-        host: 'outlook.live.com',
-        path: '/owa/',
-        query:
-        'subject=${Uri.encodeComponent(subject)}&body=${Uri.encodeComponent(
-            body)}');
-
-    if (await canLaunchUrl(outlookUrl)) {
-      await launchUrl(outlookUrl);
+  Future<void> copyEmailsToClipboard(List<String> emails) async {
+    if (emails.isNotEmpty) {
+      final emailList = emails.join(', ');
+      try {
+        await Clipboard.setData(ClipboardData(text: emailList));
+      } catch (e, stackTrace) {
+        await Sentry.captureException(e, stackTrace: stackTrace,
+        withScope: (scope) {
+          scope.setTag('Error_Copy_Emails_to_Clipboard', emailList);
+        });
+      }
     } else {
-      throw 'No se puede lanzar la URL para Outlook';
+      await Sentry.captureMessage('copyEmailsToClipboard: No hay correos para copiar.');
     }
   }
 
-  List<List<String>> _splitList(List<String> list, int batchSize) {
-    List<List<String>> batches = [];
-    for (var i = 0; i < list.length; i += batchSize) {
-      batches.add(
-        list.sublist(
-            i, i + batchSize > list.length ? list.length : i + batchSize),
-      );
-    }
-    return batches;
+  // Métodos específicos para Ore y sare
+  Future<void> sendEmailToOre(
+    String nameCourse,
+    String dateInit,
+    String dateRegister,
+    String dateSend,
+    String body,
+  ) async {
+
+    await sendEmail(
+        nameCourse, dateInit, dateRegister, dateSend, body);
   }
 
-  void _validateUrlLength(Uri uri) {
-    if (uri.toString().length > 2000) {
-      throw 'La URL generada excede el límite permitido.';
+  Future<void> sendEmailToSare(
+    String nameCourse,
+    String dateInit,
+    String dateRegister,
+    String dateSend,
+    String body,
+  ) async {
+
+    await sendEmail(
+        nameCourse, dateInit, dateRegister, dateSend, body);
+  }
+
+  // Obtener los empleados por campo
+  Future<List<String>> getEmpleadosPorCampo(String campo, String valor) async {
+    if (valor.isEmpty) {
+      await Sentry.captureMessage(
+          'Error: El valor para el campo "$campo" está vacío.');
+      return [];
     }
+
+    // Ejecutar la consulta a Firestore
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('Empleados')
+        .where(campo, isEqualTo: valor)
+        .get();
+
+    // Extraer y retornar los correos
+    final correos = querySnapshot.docs
+        .map((doc) => doc['Correo']?.toString())
+        .where((correo) => correo != null)
+        .cast<String>()
+        .toList();
+
+    return correos;
+  }
+
+  Future<List<String>> getFilteredEmails(String campo, String valor) async {
+    if (valor.isEmpty || valor == 'N/A') {
+      await Sentry.captureMessage('Error in getFilteredEmails: $valor');
+      return [];
+    }
+
+    List<String> correos = await SendEmailMethods().getEmpleadosPorCampo(campo, valor);
+    return correos;
   }
 
   //METODO PARA ENVIAR EMAIL POR MAILTO
-  Future<void> launchEmailWebFallback(String email, String subject,
-      String body) async {
-    const int maxEmailsPerBatch = 50; // Ajusta el tamaño según lo necesites
-    List<String> emails = email.split(',');
-    List<List<String>> emailBatches = _splitList(emails, maxEmailsPerBatch);
+  Future<void> launchEmailWebFallback(String subject, String body) async {
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: 'correo@.com',
+      query:
+          'subject=${Uri.encodeComponent(subject)}&body=${Uri.encodeComponent(body)}',
+    );
 
-    for (var batch in emailBatches) {
-      final Uri emailUri = Uri(
-        scheme: 'mailto',
-        path: batch.join(','),
-        query:
-        'subject=${Uri.encodeComponent(subject)}&body=${Uri.encodeComponent(
-            body)}',
-      );
-
-      try {
-        if (await canLaunchUrl(emailUri)) {
-          _validateUrlLength(emailUri);
-          await launchUrl(emailUri);
-        } else {
-          throw 'No se puede abrir el cliente de correo.';
-        }
-      } catch (e) {
-        print('Error lanzando el correo: $e');
+    try {
+      if (await canLaunchUrl(emailUri)) {
+        await launchUrl(emailUri);
+      } else {
+        throw 'No se puede abrir el cliente de correo.';
       }
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace,
+          withScope: (scope) {
+        scope.setTag('Url_launch_error', 'launchEmailWebFallback');
+      });
     }
   }
 }

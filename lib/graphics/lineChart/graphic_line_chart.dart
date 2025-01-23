@@ -34,7 +34,7 @@ class _GraphicLineChartState extends State<GraphicLineChart> {
   }
 
   Future<void> _fetchChartData() async {
-    final String dataField = widget.viewOtherGraphics ? 'Sare' : 'Ore';
+    final String dataField = widget.viewOtherGraphics ? 'Ore' : 'Sare';
     try {
       // Llama a la función obtenerDatos()
       List<ChartData> chartData =
