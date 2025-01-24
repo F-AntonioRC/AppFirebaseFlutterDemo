@@ -1,10 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
+
 class DatabaseMethodsEmployee {
-  //AGREGAR UN NUEVO EMPLEADO
+
+
+/// La función `addEmployeeDetails` añade un nuevo documento a la colección de firestore, contiene
+/// manejo de excepciones de Firebase y captura de las mismas con Sentry para el seguimiento de errores
+/// 
+/// Argumentos:
+///   employeeInfoMap (Map<String, dynamic>): Un mapa con los datos para añadir
+/// a la base de datos. Incluye parametros como nombre, puesto, etc..
+/// id (String): El parámetro `id` de la función `addEmployeeDetails` se utiliza para especificar el
+/// ID del documento con el que se almacenarán los detalles del empleado en la colección "Empleados" en
+/// Firestore. Identifica de forma única el documento del empleado que se agrega.
+/// Retorna:
+///   La función `addEmployeeDetails` retorna un `Future<void>`.
   Future<void> addEmployeeDetails(
       Map<String, dynamic> employeeInfoMap, String id) async {
+    //Ciclo de validación para la función
     try {
       return await FirebaseFirestore.instance
           .collection("Empleados")
@@ -27,7 +41,8 @@ class DatabaseMethodsEmployee {
     }
   }
 
-  //OBTENER TODOS LOS EMPLEADOS ACTIVOS E INACTIVOS
+
+  ///Función para obtener el filtrado de los empleados
   Future<List<Map<String, dynamic>>> getDataEmployee(bool active) async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:testwithfirebase/components/ink_component.dart';
+import 'package:testwithfirebase/components/formPatrts/ink_component.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 

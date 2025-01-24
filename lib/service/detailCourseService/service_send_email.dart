@@ -48,22 +48,29 @@ Future<void> sendEmail(
   }
 }
 
-Future<void> copyEmail (
+Future<void> copyEmail(
     BuildContext context,
     String? idOre,
-    String? idSare
-    ) async {
-  if (idOre != null && idOre != 'N/A') {
-    List<String> correos = await SendEmailMethods().getFilteredEmails("IdOre", idOre);
+    String? idSare) async {
+  List<String> correos = [];
 
-    if (correos.isNotEmpty) {
-      await SendEmailMethods().copyEmailsToClipboard(correos);
-    }
+  if (idOre != null && idOre != 'N/A') {
+    // Obtener correos filtrados por idOre
+    List<String> correosIdOre = await SendEmailMethods().getFilteredEmails("IdOre", idOre);
+    correos.addAll(correosIdOre);
   }
+
   if (idSare != null && idSare != 'N/A') {
-    List<String> correos = await SendEmailMethods().getFilteredEmails("IdSare", idSare);
-    if (correos.isNotEmpty) {
-      await SendEmailMethods().copyEmailsToClipboard(correos);
-    }
+    // Obtener correos filtrados por idSare
+    List<String> correosIdSare = await SendEmailMethods().getFilteredEmails("IdSare", idSare);
+    correos.addAll(correosIdSare);
+  }
+
+  // Eliminar correos duplicados (opcional)
+  correos = correos.toSet().toList();
+
+  // Copiar correos al portapapeles si hay resultados
+  if (correos.isNotEmpty) {
+    await SendEmailMethods().copyEmailsToClipboard(correos);
   }
 }

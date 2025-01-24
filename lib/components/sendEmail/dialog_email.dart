@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/components/formPatrts/actions_form_check.dart';
-import 'package:testwithfirebase/components/build_field.dart';
-import 'package:testwithfirebase/components/ink_component.dart';
+import 'package:testwithfirebase/components/formPatrts/build_field.dart';
+import 'package:testwithfirebase/components/formPatrts/ink_component.dart';
 import 'package:testwithfirebase/components/sendEmail/body_card_detailCourse.dart';
 import 'package:testwithfirebase/service/detailCourseService/service_send_email.dart';
 import '../../dataConst/constand.dart';

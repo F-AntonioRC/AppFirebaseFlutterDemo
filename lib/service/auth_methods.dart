@@ -39,7 +39,6 @@ Future<void> register(BuildContext context, String cupo, String email,
 
       await FirebaseFirestore.instance.collection('User').doc(uid).set({
         'CUPO': cupo.trim(),
-        'email' : email.trim(),
         'uid' : uid
       });
     } catch (e, stackTrace) {

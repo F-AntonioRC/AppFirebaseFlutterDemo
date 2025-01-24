@@ -137,6 +137,7 @@ try {
 
         results.add({
           'IdDetalleCurso': detalleCursoDoc.id,
+          'IdCurso' : courseData.data()?['IdCurso'],
           'NombreCurso': courseData.data()?['NombreCurso'] ?? 'N/A',
           'FechaInicioCurso': courseData.data()?['FechaInicioCurso'] ?? 'N/A',
           'FechaRegistro' : courseData.data()?['FechaRegistro'] ?? 'N/A',

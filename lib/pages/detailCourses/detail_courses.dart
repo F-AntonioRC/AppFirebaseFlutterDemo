@@ -41,7 +41,7 @@ class _DetailCoursesState extends State<DetailCourses> {
     setState(() {
       // Actualizar las variables de instancia directamente
       selectedCourse =
-      _detailCourseFormLogic.controllerCourses.selectedDocument?['NameCourse'];
+      _detailCourseFormLogic.controllerCourses.selectedDocument?['NombreCurso'];
       selectedOre =
       _detailCourseFormLogic.controllerOre.selectedDocument?['Ore'];
       selectedSare =
@@ -85,7 +85,7 @@ class _DetailCoursesState extends State<DetailCourses> {
               },
               onUpdate: () async {
                 _updateData();
-                final String documentId = widget.initialData?['IdDetailCourse'];
+                final String documentId = widget.initialData?['IdDetalleCurso'];
                 updateDetailCourses(
                     context,
                     documentId,
@@ -100,6 +100,7 @@ class _DetailCoursesState extends State<DetailCourses> {
                     () => _detailCourseFormLogic.refreshProviderData(context)
                 );
                 _detailCourseFormLogic.clearControllers();
+                _detailCourseFormLogic.refreshProviderData(context);
               },
               onCancel: () {
                 _detailCourseFormLogic.clearControllers();

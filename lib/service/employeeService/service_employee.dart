@@ -24,6 +24,7 @@ Future<void> addEmployee(
   final validationResult = validateFields(
       context: context,
       nameController: nameController,
+      emailController: emailController,
       controllerPuesto: controllerPuesto,
       controllerArea: controllerArea,
       controllerSection: controllerSection,
@@ -172,8 +173,8 @@ Future<void> assignCupo(
     if (context.mounted) {
       showCustomSnackBar(context, 'CUPO Asignado correctamente', greenColor);
       Navigator.pop(context);
-      refreshTable();
     }
+    refreshTable();
   } on FirebaseException catch (e, stackTrace) {
     // Reporta el error a Sentry con contexto adicional
     if (context.mounted) {
@@ -205,6 +206,7 @@ Future<void> assignCupo(
 ValidationResult validateFields({
   required BuildContext context,
   required TextEditingController nameController,
+  required TextEditingController emailController,
   FirebaseValueDropdownController? controllerPuesto,
   required FirebaseValueDropdownController controllerArea,
   FirebaseValueDropdownController? controllerSection,
@@ -237,6 +239,10 @@ ValidationResult validateFields({
   if (controllerOre.selectedDocument == null &&
       controllerSare.selectedDocument == null) {
     errors.add("Por favor, selecciona un ORE o Sare");
+  }
+
+  if(emailController.text.isEmpty) {
+    errors.add("Por favor escriba un correo");
   }
 
   if (errors.isNotEmpty) {
