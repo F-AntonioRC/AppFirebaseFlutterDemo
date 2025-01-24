@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/auth/auth_service.dart';
 import 'cursos_normal.dart';
 
 class DynamicCourseSelectionPage extends StatefulWidget {
@@ -26,57 +28,74 @@ class _DynamicCourseSelectionPageState
   }
 
   Future<void> _loadCourses() async {
-    try {
-      print('Obteniendo datos del empleado...');
-      final employeeSnapshot = await FirebaseFirestore.instance
-          .collection('Empleados')
-          .where('CUPO', isEqualTo: widget.cupo)
-          .get();
+  try {
+    print('Obteniendo datos del empleado...');
+    final employeeSnapshot = await FirebaseFirestore.instance
+        .collection('Empleados')
+        .where('CUPO', isEqualTo: widget.cupo)
+        .get();
 
-      if (employeeSnapshot.docs.isEmpty) {
-        throw Exception('Empleado no encontrado');
-      }
-
-      final employeeData = employeeSnapshot.docs.first.data();
-      print('Datos del empleado: $employeeData');
-
-      final idArea = employeeData['IdArea'];
-      final idSare = employeeData['IdSare'];
-
-      print('Obteniendo IDs de los cursos asignados...');
-      final detailCoursesSnapshot = await FirebaseFirestore.instance
-          .collection('DetalleCursos')
-          .where('IdArea', isEqualTo: idArea)
-          .where('IdSare', isEqualTo: idSare)
-          .get();
-
-      final courseIds = detailCoursesSnapshot.docs
-          .map((doc) => doc.data()['IdCurso'])
-          .toList();
-      print('IDs de los cursos: $courseIds');
-
-      // 3. Combinar con la información de cursos
-      if (courseIds.isNotEmpty) {
-        print('Obteniendo información de los cursos...');
-        final coursesSnapshot = await FirebaseFirestore.instance
-            .collection('Cursos')
-            .where(FieldPath.documentId, whereIn: courseIds)
-            .get();
-
-        courses = coursesSnapshot.docs.map((doc) => doc.data()).toList();
-         
-      }
-
-      setState(() {
-        isLoading = false;
-      });
-    } catch (e) {
-      print('Error al cargar cursos: $e');
-      setState(() {
-        isLoading = false;
-      });
+    if (employeeSnapshot.docs.isEmpty) {
+      throw Exception('Empleado no encontrado');
     }
+
+    final employeeData = employeeSnapshot.docs.first.data() as Map<String, dynamic>;
+    print('Datos del empleado: $employeeData');
+
+    final idOre = employeeData['IdOre'];
+    final idSare = employeeData['IdSare'];
+
+    if (idOre == null && idSare == null) {
+      throw Exception('El empleado no tiene asignado un ORE ni un SARE.');
+    }
+
+    print('Obteniendo IDs de los cursos asignados...');
+    Query query = FirebaseFirestore.instance.collection('DetalleCursos');
+
+    // Filtrar por IdOre o IdSare según corresponda
+    if (idOre != null) {
+      query = query.where('IdOre', isEqualTo: idOre);
+    }
+    if (idSare != null) {
+      query = query.where('IdSare', isEqualTo: idSare);
+    }
+
+    final detailCoursesSnapshot = await query.get();
+
+    // Mapear y filtrar los datos para evitar errores
+    final courseIds = detailCoursesSnapshot.docs
+        .map((doc) {
+          final data = doc.data() as Map<String, dynamic>; // Convertir a Map
+          return data['IdCurso'];
+        })
+        .where((idCurso) => idCurso != null) // Filtrar valores nulos
+        .toList();
+    print('IDs de los cursos: $courseIds');
+
+    // 3. Combinar con la información de cursos
+    if (courseIds.isNotEmpty) {
+      print('Obteniendo información de los cursos...');
+      final coursesSnapshot = await FirebaseFirestore.instance
+          .collection('Cursos')
+          .where(FieldPath.documentId, whereIn: courseIds)
+          .get();
+
+      courses = coursesSnapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>) // Convertir a Map
+          .toList();
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  } catch (e) {
+    print('Error al cargar cursos: $e');
+    setState(() {
+      isLoading = false;
+    });
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

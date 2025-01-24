@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class FirebaseService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -8,67 +9,144 @@ class FirebaseService {
 
   // Obtener trimestres únicos
   Future<List<String>> getTrimesters() async {
-    try {
-      QuerySnapshot snapshot = await _firestore.collection('Cursos').get();
+  try {
+    QuerySnapshot snapshot = await _firestore.collection('Cursos').get();
 
-      Set<String> uniqueTrimesters = {};
-      for (var doc in snapshot.docs) {
-        String? trimester = doc['Trimestre'];
-        if (trimester != null) {
-          uniqueTrimesters.add(trimester);
-        }
+    Set<String> uniqueTrimesters = {};
+    for (var doc in snapshot.docs) {
+      String? trimester = doc['Trimestre'];
+      if (trimester != null) {
+        uniqueTrimesters.add(trimester);
       }
-
-      return uniqueTrimesters.toList()..sort();
-    } catch (e) {
-      print('Error al obtener trimestres: $e');
-      return [];
     }
+
+    return uniqueTrimesters.toList()..sort();
+
+  } on FirebaseException catch (exception, stackTrace) {
+    // Maneja excepciones específicas de Firebase
+    await Sentry.captureException(
+      exception,
+      stackTrace: stackTrace,
+      withScope: (scope) {
+        scope.setTag('firebase_error_code', exception.code);
+      },
+    );
+    rethrow; // Relanzar la excepción después de capturarla
+
+  } catch (exception, stackTrace) {
+    // Captura cualquier otra excepción
+    await Sentry.captureException(
+      exception,
+      stackTrace: stackTrace,
+      withScope: (scope) {
+        scope.setTag('error_type', 'unknown_exception');
+      },
+    );
+    rethrow; // Relanzar la excepción después de capturarla
   }
+}
+
 
   // Obtener dependencias únicas por trimestre
-  Future<List<Map<String, dynamic>>> getDependencies(String trimester) async {
-    try {
-      QuerySnapshot snapshot = await _firestore
-          .collection('Cursos')
-          .where('Trimestre', isEqualTo: trimester)
-          .get();
+ Future<List<Map<String, dynamic>>> getDependencies(String trimester) async {
+  try {
+    QuerySnapshot snapshot = await _firestore
+        .collection('Cursos')
+        .where('Trimestre', isEqualTo: trimester)
+        .get();
 
-      Set<String> uniqueDependencies = {};
-      List<Map<String, dynamic>> dependencies = [];
+    Set<String> uniqueDependencies = {};
+    List<Map<String, dynamic>> dependencies = [];
 
-      for (var doc in snapshot.docs) {
-        String idDependencia = doc['IdDependencia'];
+    for (var doc in snapshot.docs) {
+      String idDependencia = doc['IdDependencia'];
 
-        if (!uniqueDependencies.contains(idDependencia)) {
-          uniqueDependencies.add(idDependencia);
+      if (!uniqueDependencies.contains(idDependencia)) {
+        uniqueDependencies.add(idDependencia);
 
-          DocumentSnapshot dependenciaDoc =
-              await _firestore.collection('Dependencia').doc(idDependencia).get();
+        DocumentSnapshot dependenciaDoc =
+            await _firestore.collection('Dependencia').doc(idDependencia).get();
 
-          if (dependenciaDoc.exists) {
-            dependencies.add({
-              'IdDependencia': idDependencia,
-              'NombreDependencia': dependenciaDoc['NombreDependencia'],
-            });
-          }
+        if (dependenciaDoc.exists) {
+          dependencies.add({
+            'IdDependencia': idDependencia,
+            'NombreDependencia': dependenciaDoc['NombreDependencia'],
+          });
         }
       }
-
-      return dependencies;
-    } catch (e) {
-      print('Error al obtener dependencias: $e');
-      return [];
     }
+
+    return dependencies;
+  } on FirebaseException catch (exception, stackTrace) {
+    // Captura errores específicos de Firebase y los envía a Sentry
+    await Sentry.captureException(
+      exception,
+      stackTrace: stackTrace,
+      withScope: (scope) {
+        scope.setTag('firebase_error_code', exception.code);
+        scope.setContexts('function', {
+          'name': 'getDependencies',
+          'trimester': trimester,
+        });
+      },
+    );
+    rethrow; // Relanza la excepción después de capturarla
+  } catch (exception, stackTrace) {
+    // Captura cualquier otro error inesperado y lo envía a Sentry
+    await Sentry.captureException(
+      exception,
+      stackTrace: stackTrace,
+      withScope: (scope) {
+        scope.setTag('error_type', 'unknown_exception');
+        scope.setContexts('function', {
+          'name': 'getDependencies',
+          'trimester': trimester,
+        });
+      },
+    );
+    rethrow; // Relanza la excepción después de capturarla
   }
+}
 
   // Obtener cursos por trimestre y dependencia
   Stream<QuerySnapshot> getCourses(String trimester, String dependecyId) {
-    return _firestore
-        .collection('Cursos')
-        .where('Trimestre', isEqualTo: trimester)
-        .where('IdDependencia', isEqualTo: dependecyId)
-        .snapshots();
+    try {
+      return _firestore
+          .collection('Cursos')
+          .where('Trimestre', isEqualTo: trimester)
+          .where('IdDependencia', isEqualTo: dependecyId)
+          .snapshots();
+    } on FirebaseException catch (exception, stackTrace) {
+      // Captura errores de Firebase y los envía a Sentry
+      Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+        withScope: (scope) {
+          scope.setTag('firebase_error_code', exception.code);
+          scope.setContexts('function', {
+            'name': 'getCourses',
+            'trimester': trimester,
+            'dependencyId': dependecyId,
+          });
+        },
+      );
+      rethrow;
+    } catch (exception, stackTrace) {
+      // Captura otros errores inesperados
+      Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+        withScope: (scope) {
+          scope.setTag('error_type', 'unknown_exception');
+          scope.setContexts('function', {
+            'name': 'getCourses',
+            'trimester': trimester,
+            'dependencyId': dependecyId,
+          });
+        },
+      );
+      rethrow;
+    }
   }
 
   // Obtener archivos de un curso en Firebase Storage
@@ -87,17 +165,60 @@ class FirebaseService {
       }
 
       return files;
-    } catch (e) {
-      print('Error al obtener archivos: $e');
+    } on FirebaseException catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+        withScope: (scope) {
+          scope.setTag('firebase_error_code', exception.code);
+          scope.setContexts('function', {
+            'name': 'getCourseFiles',
+            'trimester': trimester,
+            'dependency': dependency,
+            'courseName': courseName,
+          });
+        },
+      );
+      return {};
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+        withScope: (scope) {
+          scope.setTag('error_type', 'unknown_exception');
+          scope.setContexts('function', {
+            'name': 'getCourseFiles',
+            'trimester': trimester,
+            'dependency': dependency,
+            'courseName': courseName,
+          });
+        },
+      );
       return {};
     }
   }
-  Future<void>downloadFile(String fileUrl) async {
-    final Uri uri = Uri.parse(fileUrl);
-  
-    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      throw 'No se puede abrir el archivo';
+
+  // Descargar archivo
+  Future<void> downloadFile(String fileUrl) async {
+    try {
+      final Uri uri = Uri.parse(fileUrl);
+
+      if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+        throw Exception('No se puede abrir el archivo');
+      }
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+        withScope: (scope) {
+          scope.setTag('error_type', 'download_file_exception');
+          scope.setContexts('function', {
+            'name': 'downloadFile',
+            'fileUrl': fileUrl,
+          });
+        },
+      );
+      rethrow;
     }
   }
-
 }

@@ -68,7 +68,7 @@ class _NotificationIconWidgetState extends State<NotificationIconWidget> {
                 child: Text(
                   '${snapshot.data!.docs.length}',
                   style: const TextStyle(
-                    color: Colors.white,
+                    //color: Colors.white,
                     fontSize: 10,
                   ),
                 ),
@@ -97,7 +97,7 @@ class NotificationDrawer extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           width: MediaQuery.of(context).size.width * 0.4,
           decoration: BoxDecoration(
-            color: Colors.white,
+            //color: Colors.white,
             borderRadius: BorderRadius.circular(8),
             boxShadow: [
               BoxShadow(
@@ -158,10 +158,10 @@ class NotificationDrawer extends StatelessWidget {
 
                         return ListTile(
                           leading: CircleAvatar(
-                            backgroundColor: isRead ? Colors.grey : Colors.blueAccent,
+                            //backgroundColor: isRead ? Colors.grey : Colors.blueAccent,
                             child: Icon(
                               isRead ? Icons.check : Icons.new_releases,
-                              color: Colors.white,
+                              //color: Colors.white,
                             ),
                           ),
                           title: Text(

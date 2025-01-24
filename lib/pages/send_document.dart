@@ -19,6 +19,10 @@ class _TrimestersViewState extends State<TrimestersView> {
     _loadTrimesters();
   }
 
+ /// The above Dart code is defining an asynchronous function `_loadTrimesters` that retrieves data from
+ /// a Firestore collection named 'Cursos'. It queries the collection to get all documents and extracts
+ /// unique trimesters from the retrieved data. It uses a `Set` to store unique trimester values and
+ /// adds each trimester value to the set if it is not null.
   Future<void> _loadTrimesters() async {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
