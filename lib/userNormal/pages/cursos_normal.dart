@@ -10,13 +10,16 @@ class CursosNormal extends StatefulWidget {
   final String course; // Curso principal
   final String? subCourse; // Subcurso opcional
   final String trimester; // Trimestre al que pertenece
-  final String dependecy; //dependencia al que pertenece
+  final String dependecy;
+  final String idCurso;
+  //dependencia al que pertenece
 
   const CursosNormal({
     required this.course,
     this.subCourse,
     required this.trimester, // Nuevo parámetro para el trimestre
     required this.dependecy,
+   required this.idCurso,
     Key? key,
   }) : super(key: key);
 
@@ -33,8 +36,9 @@ class _CursosNormalState extends State<CursosNormal> {
     super.initState();
     user = FirebaseAuth.instance.currentUser;
   }
-
+  
   Future<void> _uploadPDF() async {
+    
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -68,12 +72,14 @@ class _CursosNormalState extends State<CursosNormal> {
 
         // Obtener URL de descarga
         String downloadURL = await storageRef.getDownloadURL();
-
+          
         // Agregar notificación al Firestore
         await FirebaseFirestore.instance.collection('notifications').add({
           'trimester': widget.trimester, // Trimestre
           'dependecy': widget.dependecy,
           'course': widget.course,
+          'IdCurso': widget.idCurso,
+          'uid': user?.uid ?? 'Usuario desconocido',
           'subCourse': widget.subCourse ?? 'Sin subcurso',
           'fileName': fileName,
           'uploader': user?.email ?? 'Usuario desconocido',
@@ -81,7 +87,12 @@ class _CursosNormalState extends State<CursosNormal> {
           'isRead': false,
           'pdfUrl': downloadURL,
         });
-
+        print('Datos para notificación:');
+print('UID: ${user?.uid}');
+print('Curso ID: ${widget.idCurso}');
+print('Trimestre: ${widget.trimester}');
+print('Dependencia: ${widget.dependecy}');
+print('Archivo: $fileName');
         print('Archivo subido: $downloadURL');
       } catch (e) {
         print('Error al subir el archivo: $e');

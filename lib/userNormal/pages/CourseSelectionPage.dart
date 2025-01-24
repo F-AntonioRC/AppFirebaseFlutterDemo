@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/auth/auth_service.dart';
 import 'cursos_normal.dart';
@@ -17,19 +16,54 @@ class DynamicCourseSelectionPage extends StatefulWidget {
 
 class _DynamicCourseSelectionPageState
     extends State<DynamicCourseSelectionPage> {
-
-  List<Map<String, dynamic>> courses = [];
+  List<Map<String, dynamic>> cursosPendientes = [];
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _loadCourses();
+    cargarCursosPendientes();
   }
 
-  Future<void> _loadCourses() async {
+  Future<void> cargarCursosPendientes() async {
+    try {
+      // Obtener UID del usuario actual
+      final userId = AuthService().getCurrentUserUid();
+      if (userId == null) {
+        throw Exception('Usuario no autenticado');
+      }
+
+      // Obtener cursos pendientes
+      final cursos = await obtenerCursosPendientes(userId);
+
+      setState(() {
+        cursosPendientes = cursos;
+        isLoading = false;
+      });
+        if (cursos.isEmpty) {
+      print('El usuario no tiene cursos pendientes.');
+    }
+    } catch (e) {
+      print('Error al cargar cursos pendientes: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+ Future<List<Map<String, dynamic>>> obtenerCursosPendientes(String userId) async {
   try {
-    print('Obteniendo datos del empleado...');
+    // Obtener los IDs de los cursos completados
+    final completadosSnapshot = await FirebaseFirestore.instance
+        .collection('CursosCompletados')
+        .where('uid', isEqualTo: userId)
+        .get();
+
+    final cursosCompletados = completadosSnapshot.docs
+        .map((doc) => doc['IdCurso'])
+        .toSet(); // Convertir a Set para búsquedas rápidas
+
+    // Obtener los cursos asignados basados en el CUPO del usuario
     final employeeSnapshot = await FirebaseFirestore.instance
         .collection('Empleados')
         .where('CUPO', isEqualTo: widget.cupo)
@@ -40,8 +74,6 @@ class _DynamicCourseSelectionPageState
     }
 
     final employeeData = employeeSnapshot.docs.first.data() as Map<String, dynamic>;
-    print('Datos del empleado: $employeeData');
-
     final idOre = employeeData['IdOre'];
     final idSare = employeeData['IdSare'];
 
@@ -49,10 +81,7 @@ class _DynamicCourseSelectionPageState
       throw Exception('El empleado no tiene asignado un ORE ni un SARE.');
     }
 
-    print('Obteniendo IDs de los cursos asignados...');
     Query query = FirebaseFirestore.instance.collection('DetalleCursos');
-
-    // Filtrar por IdOre o IdSare según corresponda
     if (idOre != null) {
       query = query.where('IdOre', isEqualTo: idOre);
     }
@@ -60,39 +89,39 @@ class _DynamicCourseSelectionPageState
       query = query.where('IdSare', isEqualTo: idSare);
     }
 
-    final detailCoursesSnapshot = await query.get();
+    final detalleCursosSnapshot = await query.get();
 
-    // Mapear y filtrar los datos para evitar errores
-    final courseIds = detailCoursesSnapshot.docs
-        .map((doc) {
-          final data = doc.data() as Map<String, dynamic>; // Convertir a Map
-          return data['IdCurso'];
-        })
-        .where((idCurso) => idCurso != null) // Filtrar valores nulos
+    // Filtrar los IDs de cursos no completados
+    final cursosPendientesId = detalleCursosSnapshot.docs
+        .map((doc) => doc['IdCurso'])
+        .where((idCurso) => idCurso != null && !cursosCompletados.contains(idCurso))
         .toList();
-    print('IDs de los cursos: $courseIds');
 
-    // 3. Combinar con la información de cursos
-    if (courseIds.isNotEmpty) {
-      print('Obteniendo información de los cursos...');
-      final coursesSnapshot = await FirebaseFirestore.instance
-          .collection('Cursos')
-          .where(FieldPath.documentId, whereIn: courseIds)
-          .get();
+    print('Cursos asignados encontrados: ${detalleCursosSnapshot.docs.length}');
+    print('Cursos pendientes encontrados: ${cursosPendientesId.length}');
+    print('IDs de cursos pendientes: $cursosPendientesId');
 
-      courses = coursesSnapshot.docs
-          .map((doc) => doc.data() as Map<String, dynamic>) // Convertir a Map
-          .toList();
+    // Si no hay cursos pendientes, retorna una lista vacía
+    if (cursosPendientesId.isEmpty) {
+      return [];
     }
 
-    setState(() {
-      isLoading = false;
-    });
+    // Obtener los datos de los cursos pendientes desde la colección 'Cursos'
+    final cursosSnapshot = await FirebaseFirestore.instance
+        .collection('Cursos')
+        .where(FieldPath.documentId, whereIn: cursosPendientesId)
+        .get();
+
+    // Combinar los datos de los cursos con la información de la colección 'Cursos'
+    final cursosPendientes = cursosSnapshot.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+
+    print('Cursos pendientes encontrados: $cursosPendientes');
+    return cursosPendientes;
   } catch (e) {
-    print('Error al cargar cursos: $e');
-    setState(() {
-      isLoading = false;
-    });
+    print('Error al obtener cursos pendientes: $e');
+    return [];
   }
 }
 
@@ -100,56 +129,44 @@ class _DynamicCourseSelectionPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Vista general de los cursos disponibles',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            const SizedBox(height: 20),
-            // GridView para mostrar las tarjetas de cursos principales
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // Número de columnas en la cuadrícula
-                  crossAxisSpacing: 16.0, // Espacio horizontal entre tarjetas
-                  mainAxisSpacing: 16.0, // Espacio vertical entre tarjetas
-                  childAspectRatio: 3 / 2, // Relación de aspecto de las tarjetas
-                ),
-                itemCount: courses.length,
-                itemBuilder: (context, index) {
-                  final course = courses[index];
-                  return CourseCard(
-                    courseName: course['NombreCurso'],
-                    trimester: course['Trimestre'],
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CursosNormal(
-                            course: course['NombreCurso'],
-                            subCourse: null, // Actualiza si hay subcursos
-                            trimester: course['Trimestre'],
-                            dependecy: course['Dependencia'], // Pasa la dependencia
-                          ),
-                        ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : cursosPendientes.isEmpty
+              ? const Center(child: Text('No hay cursos pendientes.'))
+              : Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0,
+                      childAspectRatio: 3 / 2,
+                    ),
+                    itemCount: cursosPendientes.length,
+                    itemBuilder: (context, index) {
+                      final curso = cursosPendientes[index];
+                      return CourseCard(
+                        courseName: curso['NombreCurso'],
+                        trimester: curso['Trimestre'],
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CursosNormal(
+                                course: curso['NombreCurso'],
+                                subCourse: null,
+                                trimester: curso['Trimestre'],
+                                dependecy: curso['Dependencia'],
+                                idCurso: curso['IdCurso'],
+                              ),
+                            ),
+                          );
+                        },
+                        imagePath: 'assets/images/logo.jpg',
                       );
                     },
-                    imagePath: 'assets/images/logo.jpg',
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+                  ),
+                ),
     );
   }
 }

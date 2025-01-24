@@ -18,22 +18,11 @@ class _NotificationIconWidgetState extends State<NotificationIconWidget> {
   @override
   void initState() {
     super.initState();
-    _checkIfAdmin();
+    
   }
 
   /// Verifica si el usuario es administrador
-  Future<void> _checkIfAdmin() async {
-    if (user == null) return;
-
-    final adminDoc = await FirebaseFirestore.instance
-        .collection('admins') // Asegúrate de tener una colección 'admins'
-        .doc(user!.uid)
-        .get();
-
-    setState(() {
-      isAdmin = adminDoc.exists;
-    });
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +57,7 @@ class _NotificationIconWidgetState extends State<NotificationIconWidget> {
                 child: Text(
                   '${snapshot.data!.docs.length}',
                   style: const TextStyle(
-                    //color: Colors.white,
+                    color: Colors.white,
                     fontSize: 10,
                   ),
                 ),
@@ -85,7 +74,21 @@ class NotificationDrawer extends StatelessWidget {
   final bool isAdmin;
 
   const NotificationDrawer({super.key, required this.isAdmin});
-
+   Future<void> marcarCursoCompletado(String userId, String cursoId, String evidenciaUrl) async {
+  try {
+    await FirebaseFirestore.instance.collection('CursosCompletados').add({
+      'uid': userId,
+      'IdCurso': cursoId,
+      'completado': true,
+      'timestamp': FieldValue.serverTimestamp(),
+      'evidenciaUrl': evidenciaUrl,
+      //'administradorId': FirebaseAuth.instance.currentUser?.uid,
+    });
+    print('Curso marcado como completado.');
+  } catch (e) {
+    print('Error al marcar curso como completado: $e');
+  }
+}
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -97,7 +100,7 @@ class NotificationDrawer extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           width: MediaQuery.of(context).size.width * 0.4,
           decoration: BoxDecoration(
-            //color: Colors.white,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(8),
             boxShadow: [
               BoxShadow(
@@ -157,72 +160,94 @@ class NotificationDrawer extends StatelessWidget {
                         final isRead = notification['isRead'] ?? false;
 
                         return ListTile(
-                          leading: CircleAvatar(
-                            //backgroundColor: isRead ? Colors.grey : Colors.blueAccent,
-                            child: Icon(
-                              isRead ? Icons.check : Icons.new_releases,
-                              //color: Colors.white,
-                            ),
-                          ),
-                          title: Text(
-                            notification['fileName'] ?? 'Notificación',
-                            style: TextStyle(
-                              fontWeight: isRead ? FontWeight.normal : FontWeight.bold,
-                            ),
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                notification['uploader']??'usuario desconocido',
-                                style:const TextStyle(fontSize: 12, color: Colors.grey),
-                              ),
-                              Text(
-                                timestamp != null
-                                    ? timeago.format(timestamp)
-                                    : 'Fecha no disponible',
-                              ),
-                            ],
-                          ),
-                          trailing: isAdmin
-                              ? IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () {
-                              FirebaseFirestore.instance
-                                  .collection('notifications')
-                                  .doc(notification.id)
-                                  .delete();
-                            },
-                          )
-                              : null,
-                          onTap: () async {
-                            final pdfUrl = notification['pdfUrl'];
-                            FirebaseFirestore.instance
-                                .collection('notifications')
-                                .doc(notification.id)
-                                .update({'isRead': true});
-                            if(pdfUrl !=null && pdfUrl.isNotEmpty){
-                              try{
-                                if(await canLaunch(pdfUrl)){
-                                  await launch(pdfUrl);
-                                } else{
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('no se puede abrir el archivo pdf')),
-                                  );
-                                }
+  leading: CircleAvatar(
+    child: Icon(
+      isRead ? Icons.check : Icons.new_releases,
+    ),
+  ),
+  title: Text(
+    notification['fileName'] ?? 'Notificación',
+    style: TextStyle(
+      fontWeight: isRead ? FontWeight.normal : FontWeight.bold,
+    ),
+  ),
+  subtitle: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        notification['uploader'] ?? 'Usuario desconocido',
+        style: const TextStyle(fontSize: 12, color: Colors.grey),
+      ),
+      Text(
+        timestamp != null
+            ? timeago.format(timestamp)
+            : 'Fecha no disponible',
+      ),
+    ],
+  ),
+  trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.check_circle, color: Colors.green),
+              onPressed: () async {
+                final userId = notification['uid']; // ID del usuario
+                final cursoId = notification['IdCurso']; // ID del curso
+                final evidenciaUrl = notification['pdfUrl']; // URL de la evidencia
+                if (userId != null && cursoId != null && evidenciaUrl != null) {
+                  await marcarCursoCompletado(userId, cursoId, evidenciaUrl);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Curso marcado como completado.'),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Faltan datos para marcar el curso como completado.'),
+                    ),
+                  );
+                }
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red),
+              onPressed: () {
+                FirebaseFirestore.instance
+                    .collection('notifications')
+                    .doc(notification.id)
+                    .delete();
+              },
+            ),
+          ],
+        ),
+      
+  onTap: () async {
+    final pdfUrl = notification['pdfUrl'];
+    FirebaseFirestore.instance
+        .collection('notifications')
+        .doc(notification.id)
+        .update({'isRead': true});
+    if (pdfUrl != null && pdfUrl.isNotEmpty) {
+      try {
+        if (await canLaunch(pdfUrl)) {
+          await launch(pdfUrl);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('No se puede abrir el archivo PDF')),
+          );
+        }
+      } catch (e) {
+        print('Error al abrir el archivo PDF: $e');
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No se puede abrir el archivo PDF')),
+      );
+    }
+  },
+);
 
-                              }
-                              catch(e){
-                                print('error al abrir el archivo PDF: $e');
-                              }
-                            }else{
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('no se puede abrir el archivo pdf')),
-                              );
-                            }
-
-                          },
-                        );
                       },
                     );
                   },
