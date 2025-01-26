@@ -54,7 +54,6 @@ dependencies:
   firebase_storage: ^12.3.6
   file_picker: ^8.1.4
   timeago: ^3.2.2
-  flutter_dotenv: ^5.2.1
   sentry_flutter: ^8.12.0
   excel: ^4.0.6
 
@@ -88,7 +87,6 @@ flutter:
      - assets/images/personIcon.jpg
      - assets/images/logoActualizado.jpg
      - assets/images/logoIcon.JPG
-     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

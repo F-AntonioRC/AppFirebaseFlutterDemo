@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// La clase `CustomInputDecoration` proporciona un método estático para crear una decoración 
+/// de entrada personalizada para textfields en la aplicación Flutter.
 class CustomInputDecoration {
   static InputDecoration inputDecoration(BuildContext context) {
     final theme = Theme.of(context);

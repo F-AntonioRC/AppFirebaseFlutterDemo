@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+/// La clase `DateTextField` es un StatefulWidget en dart que recibe como parametro:
+/// controller tipo TextEditingController.
+/// Permite a los usuarios seleccionar una fecha y
+/// actualiza un controlador de texto con la fecha seleccionada en un formato específico.
 class DateTextField extends StatefulWidget {
   final TextEditingController controller;
 
@@ -27,12 +31,19 @@ class _DateTextFieldState extends State<DateTextField> {
     }
   }
 
+/// Esta función crea un widget TextField con un ícono de calendario y una decoración específica
+///  para seleccionar una fecha.
+/// 
+/// Devuelve:
+/// Se devuelve un widget `TextField` con una decoración específica que incluye un ícono de prefijado,
+/// hintText y estilo de borde. El `TextField` está configurado para ser de solo lectura 
+/// y tiene una función `onTap` que llama a `_selectDate(context)` cuando se toca.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return TextField(
-      controller: widget.controller,  // Usa el controlador pasado
+      controller: widget.controller,
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.calendar_month),
         hintText: 'Seleccione una fecha',
@@ -46,8 +57,8 @@ class _DateTextFieldState extends State<DateTextField> {
               borderSide: BorderSide(color: theme.hintColor),
               borderRadius: BorderRadius.circular(10.0))
       ),
-      readOnly: true,  // El campo no es editable directamente
-      onTap: () => _selectDate(context),  // Abre el DatePicker al tocar
+      readOnly: true, 
+      onTap: () => _selectDate(context),  
     );
   }
 }

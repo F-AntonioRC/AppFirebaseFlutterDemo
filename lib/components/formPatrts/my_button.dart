@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 
+/// La clase `MyButton` es un StatelessWidget en dart que recibe como parametros:
+/// text tipo String, icon tipo Icon, onPressed tipo Function y buttonColor tipo Color.
 class MyButton extends StatelessWidget {
   final String text;
   final void Function()? onPressed;
@@ -10,6 +12,12 @@ class MyButton extends StatelessWidget {
   const MyButton(
       {super.key, required this.text, this.onPressed, required this.icon, required this.buttonColor});
 
+/// Esta función crea una fila centrada que contiene un botón elevado con un ícono y texto.
+  /// 
+/// Devuelve:
+/// Se devuelve un widget `Row` que contiene un widget `ElevatedButton.icon` con las propiedades y 
+/// el estilo especificados. El widget `ElevatedButton.icon` incluye un ícono, un texto de etiqueta
+///  y una función de devolución de llamada `onPressed`.
   @override
   Widget build(BuildContext context) {
     return Row(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:passwordfield/passwordfield.dart';
 
+/// La clase `PasswordInput` es un StatelessWidget en dart que recibe como parametros:
+/// controller tipo TextEditingController, hindText tipo String, y messageadd tipo bool.
 class PasswordInput extends StatelessWidget {
   final TextEditingController controller;
   final String hindText;
@@ -12,6 +14,12 @@ class PasswordInput extends StatelessWidget {
       required this.hindText,
       required this.messageadd});
 
+/// Devuelve:
+/// Se devuelve un widget PasswordField con varias propiedades, como color, hintText,
+/// controlador y borde. La propiedad de borde se personaliza con diferentes estilos de 
+/// borde para estados normales, enfocados y de error. Además, se proporciona un errorMessage 
+/// en función de una condición, ya sea solicitando al usuario que ingrese una contraseña o
+/// brindando recomendaciones para crear una contraseña segura.
   @override
   Widget build(BuildContext context) {
     return PasswordField(

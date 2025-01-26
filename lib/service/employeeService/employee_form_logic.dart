@@ -4,6 +4,8 @@ import 'package:testwithfirebase/components/firebase_reusable/firebase_value_dro
 import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
 import '../../providers/edit_provider.dart';
 
+/// La clase `EmployeeFormLogic` contiene métodos y controladores para administrar datos de formularios 
+/// e interactuar con Firebase en la aplicación Flutter.
 class EmployeeFormLogic {
   final List<String> dropdownSex = ['H', 'M'];
   String? sexDropdownValue;
@@ -23,7 +25,8 @@ class EmployeeFormLogic {
 
   bool isClearing = false;
 
-  /// Limpia los controladores
+/// La función `clearControllers` borra los valores de varios controladores y menús desplegables en
+/// la aplicación flutter.
   void clearControllers() {
     nameController.clear();
     sexDropdownValue = null;
@@ -35,19 +38,40 @@ class EmployeeFormLogic {
     emailController.clear();
   }
 
-  /// Limpia los datos del proveedor
+/// La función `clearProviderData` borra los datos almacenados en un `EditProvider` usando el paquete 
+/// Provider en flutter.
+///   Contexto (BuildContext): El parámetro `context` en la función `clearProviderData` es del tipo
+/// `BuildContext`. Se utiliza normalmente en Flutter para proporcionar información sobre la ubicación de un
+/// widget dentro del árbol de widgets.
   void clearProviderData(BuildContext context) {
     final provider = Provider.of<EditProvider>(context, listen: false);
     provider.clearData();
   }
 
-  /// Actualizar la vista
+/// La función `refreshProviderData` recupera una instancia de `EditProvider` usando el paquete Provider
+/// en flutter y llama al método `refreshData` en él  para actualizar la UI.
+/// Contexto (BuildContext): El parámetro `context` en la función `refreshProviderData` es del tipo
+/// `BuildContext`. Se utiliza normalmente en Flutter para proporcionar información sobre la ubicación de un
+/// widget dentro del árbol de widgets.
   void refreshProviderData(BuildContext context) {
     final provier = Provider.of<EditProvider>(context, listen: false);
     provier.refreshData();
   }
 
-  /// Inicializa los controladores con datos del proveedor
+/// Inicializa los controladores con datos del provider si existen.
+/// 
+/// Argumentos:
+/// - contexto (BuildContext): El parámetro `context` en la función `initializeControllers` es
+/// típicamente una referencia al BuildContext del widget donde se llama a la función. Le permite
+/// acceder a información sobre el árbol de widgets y navegar a otros widgets en la
+/// jerarquía. Este parámetro se usa para mostrar el provider (EditProvider): 
+/// El parámetro `provider` en la función `initializeControllers` es una instancia de la clase 
+/// `EditProvider`. Se usa para acceder a propiedades de datos como 'Nombre','Correo', 'Sexo', 'Area', 
+/// 'Ore', 'Sare', 'Seccion' y 'Puesto'.
+/// 
+/// Retorna:
+/// Si la condición `isClearing` es verdadera, la función `initializeControllers` retornará sin
+/// ejecutar el resto del bloque de código.
   void initializeControllers(BuildContext context, EditProvider provider) {
     if (isClearing) return;
 

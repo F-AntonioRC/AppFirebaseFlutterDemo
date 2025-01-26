@@ -7,6 +7,24 @@ import 'package:testwithfirebase/components/formPatrts/custom_snackbar.dart';
 import '../auth/login_or_register.dart';
 import '../dataConst/constand.dart';
 
+/// Esta función de Dart maneja el proceso de inicio de sesión validando los campos de entrada e 
+/// intentando iniciar sesión con correo electrónico y contraseña usando un AuthService.
+/// 
+/// Argumentos:
+/// contexto (BuildContext): El parámetro `BuildContext context` en la función `login` se usa para
+/// proporcionar el contexto del widget actual en el árbol de widgets. Se usa comúnmente para acceder
+/// a información sobre la ubicación del widget en el árbol de widgets y para mostrar elementos de la 
+/// IU como SnackBars, diálogos, etc.
+/// correo electrónico (String): El parámetro `email` en la función `login` es una cadena que 
+/// representa la dirección de correo electrónico ingresada por el usuario para iniciar sesión.
+/// contraseña (String): El parámetro `password` en la función `login` es una cadena que representa
+/// la contraseña ingresada por el usuario para la autenticación. Se usa para intentar iniciar sesión con la
+/// combinación de correo electrónico y contraseña proporcionada.
+/// 
+/// Retorna:
+/// Si el correo electrónico o la contraseña están vacíos, se muestra una snackbar personalizado
+/// con un mensaje "Por favor, complete todos los campos." en color rojo usando la función 
+/// `showCustomSnackBar` y luego la función retorna sin realizar la operación de inicio de sesión.
 Future<void> login(BuildContext context, String email, String password) async {
   final authService = AuthService();
 
@@ -26,6 +44,26 @@ Future<void> login(BuildContext context, String email, String password) async {
   }
 }
 
+/// La función `register` en Dart registra a un usuario con correo electrónico y contraseña, almacena su información
+/// en Firebase Firestore y maneja errores con mensajes de error personalizados y registro de Sentry.
+/// 
+/// Argumentos:
+/// cupo (String): El parámetro `cupo` en la función `register` representa un identificador
+/// específico relacionado con el usuario. Se almacena en la base de datos de Firestore bajo el
+/// campo 'CUPO' para el documento de usuario. Es importante tener en cuenta que se recorta antes 
+/// de guardar para eliminar cualquier espacio al inicio o final.
+/// email (String): El parámetro `email` en la función `register` es una cadena que representa la
+/// dirección de correo electrónico del usuario que se está registrando. Se utiliza como parte del 
+/// proceso de registro del usuario para crear una nueva cuenta con la dirección de correo electrónico 
+/// proporcionada.
+/// password (String): El parámetro `password` en la función `register` es una cadena que representa
+/// la contraseña ingresada por el usuario durante el proceso de registro. Se utiliza para crear una 
+/// nueva cuenta de usuario con la dirección de correo electrónico proporcionada.
+/// confirmPassword (Cadena): El parámetro `confirmPassword` en la función `register` se utiliza para
+/// almacenar la contraseña confirmada ingresada por el usuario durante el proceso de registro. 
+/// Este parámetro se compara con el parámetro `password` para garantizar que el usuario haya ingresado 
+/// la misma contraseña correctamente dos veces antes de continuar con el registro. 
+/// Si las contraseñas no coinciden muestra un mensaje con la función `showCustomSnackBar`.
 Future<void> register(BuildContext context, String cupo, String email,
     String password, String confirmPassword) async {
   final authService = AuthService();
@@ -59,6 +97,20 @@ Future<void> register(BuildContext context, String cupo, String email,
   }
 }
 
+/// La función `sendPasswordReset` en Dart envía un correo electrónico de restablecimiento de 
+/// contraseña a la dirección de correo electrónico proporcionada, manejando errores y mostrando 
+/// mensajes apropiados.
+/// 
+/// Argumentos:
+/// contexto (BuildContext): el parámetro `BuildContext` en la función `sendPasswordReset` se usa
+/// para proporcionar el contexto del widget actual en el árbol de widgets. Se usa normalmente para 
+/// mostrar elementos de la interfaz de usuario como SnackBars, diálogos o navegar a diferentes 
+/// pantallas. 
+/// Correo electrónico (String): el parámetro `email` en la función `sendPasswordReset` 
+/// es una cadena que representa la dirección de correo electrónico a la que se enviará el enlace 
+/// de restablecimiento de contraseña. Se usa para enviar el correo electrónico de restablecimiento 
+/// de contraseña a la dirección de correo electrónico especificada para que el usuario restablezca 
+/// su contraseña.
 Future<void> sendPasswordReset(BuildContext context, String email) async {
   final authService = AuthService();
   // Validar el correo

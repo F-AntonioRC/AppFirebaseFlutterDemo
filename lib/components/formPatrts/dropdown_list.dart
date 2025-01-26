@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// La clase `DropdownList` en Dart representa un widget desplegable con una lista de elementos, 
+/// un ícono y una función de devolución de llamada para manejar el valor seleccionado. 
 class DropdownList extends StatefulWidget {
   final List<String> items; // Lista de elementos para el dropdown
   final Function(String?)? onChanged; // Callback para obtener el valor seleccionado
@@ -37,6 +39,18 @@ class _DropdownListState extends State<DropdownList> {
     }
   }
 
+
+/// Esta función de Dart crea un widget DropdownButtonFormField con estilo personalizable y
+/// funcionalidad.
+/// 
+/// Devuelve:
+/// El fragmento de código es un método de creación de widgets de Flutter que devuelve un 
+/// widget DropdownButtonFormField. Este widget se utiliza para mostrar un botón desplegable 
+/// con un campo de formulario que permite al usuario seleccionar un valor de una lista de 
+/// elementos. 
+/// El botón desplegable tiene un valor especificado, un icono, una decoración, un texto de 
+/// sugerencia, una lista de elementos y una función de devolución de llamada onChanged para
+///  manejar los cambios de valor.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

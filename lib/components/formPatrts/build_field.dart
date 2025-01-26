@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-
 import '../../util/responsive.dart';
 
+/// La clase `BuildField` es un StatelessWidget en dart que recibe como parametros:
+/// title tipo String, controller tipo TextEditingController, y theme tipo ThemeData.
 class BuildField extends StatelessWidget {
   final String title;
   final TextEditingController controller;
@@ -12,6 +13,14 @@ class BuildField extends StatelessWidget {
     required this.controller,
     required this.theme});
 
+/// Esta función de Dart crea una columna con un texto de título y un campo de texto de 
+/// solo lectura con un estilo específico.
+/// 
+/// Devuelve:
+/// Se devuelve un widget Column, que contiene un widget Text que muestra un título con un estilo
+/// especificado, seguido de un widget SizedBox con una altura de 10.0 y un widget TextField con 
+/// propiedades de decoración específicas como readOnly, controller y InputDecoration con 
+/// prefixIcon, enabledBorder, focusBorder y disabledBorder.
   @override
   Widget build(BuildContext context) {
     return Column(
