@@ -49,7 +49,7 @@ class EmployeeFormLogic {
   }
 
 /// La función `refreshProviderData` recupera una instancia de `EditProvider` usando el paquete Provider
-/// en flutter y llama al método `refreshData` en él  para actualizar la UI.
+/// en flutter y llama al metodo `refreshData` en él  para actualizar la UI.
 /// Contexto (BuildContext): El parámetro `context` en la función `refreshProviderData` es del tipo
 /// `BuildContext`. Se utiliza normalmente en Flutter para proporcionar información sobre la ubicación de un
 /// widget dentro del árbol de widgets.

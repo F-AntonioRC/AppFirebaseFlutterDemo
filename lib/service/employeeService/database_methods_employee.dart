@@ -182,7 +182,7 @@ class DatabaseMethodsEmployee {
 /// maneja excepciones de Firebase y las captura con Sentry para el seguimiento de errores.
 /// 
 /// Argumentos:
-/// name (String): La función `searchEmployeesByName` es un método que busca empleados por nombre
+/// name (String): La función `searchEmployeesByName` es un metodo que busca empleados por nombre
 /// en una colección de Firestore llamada 'Empleados'. Utiliza el parámetro de entrada `name` para
 /// consultar empleados cuyos nombres sean mayores o iguales que el valor proporcionado.
 /// 

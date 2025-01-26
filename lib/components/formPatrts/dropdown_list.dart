@@ -44,7 +44,7 @@ class _DropdownListState extends State<DropdownList> {
 /// funcionalidad.
 /// 
 /// Devuelve:
-/// El fragmento de código es un método de creación de widgets de Flutter que devuelve un 
+/// El fragmento de código es un metodo de creación de widgets de Flutter que devuelve un
 /// widget DropdownButtonFormField. Este widget se utiliza para mostrar un botón desplegable 
 /// con un campo de formulario que permite al usuario seleccionar un valor de una lista de 
 /// elementos. 
