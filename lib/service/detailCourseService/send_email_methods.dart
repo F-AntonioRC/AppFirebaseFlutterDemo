@@ -89,6 +89,24 @@ class SendEmailMethods {
   }
 
   // Obtener los empleados por campo
+  Future<List<String>> getAllCorreosByEmpleados() async {
+
+    // Ejecutar la consulta a Firestore
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('Empleados')
+        .get();
+
+    // Extraer y retornar los correos
+    final correos = querySnapshot.docs
+        .map((doc) => doc['Correo']?.toString())
+        .where((correo) => correo != null)
+        .cast<String>()
+        .toList();
+
+    return correos;
+  }
+
+  // Obtener los empleados por campo
   Future<List<String>> getEmpleadosPorCampo(String campo, String valor) async {
     if (valor.isEmpty) {
       await Sentry.captureMessage(

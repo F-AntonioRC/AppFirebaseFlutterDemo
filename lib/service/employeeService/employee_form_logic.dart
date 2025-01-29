@@ -11,9 +11,9 @@ class EmployeeFormLogic {
   String? sexDropdownValue;
   String? valueFirebaseDropdown;
 
-  final FirebaseValueDropdownController controllerSection = FirebaseValueDropdownController();
-  final FirebaseValueDropdownController controllerArea = FirebaseValueDropdownController();
-  final FirebaseValueDropdownController controllerPuesto = FirebaseValueDropdownController();
+  final FirebaseValueDropdownController controllerSection = FirebaseValueDropdownController(null);
+  final FirebaseValueDropdownController controllerArea = FirebaseValueDropdownController(null);
+  final FirebaseValueDropdownController controllerPuesto = FirebaseValueDropdownController(null);
 
   final FirebaseDropdownController controllerOre =
       FirebaseDropdownController();

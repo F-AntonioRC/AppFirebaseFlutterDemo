@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:testwithfirebase/components/formPatrts/decoration_dropdown.dart';
 import 'package:testwithfirebase/components/firebase_reusable/firebase_dropdown_controller.dart';
 
+/// La clase `FirebaseDropdown``es widget que muestra un `DropdownButtonFormField` dinámico, cargando 
+/// valores desde la base de datos en tiempo real.
+///
+/// Este dropdown permite seleccionar un documento de una colección específica en Firebase y sincroniza 
+/// la selección con un controlador personalizado (`FirebaseDropdownController`).
 class FirebaseDropdown extends StatefulWidget {
-  final FirebaseDropdownController controller;
-  final String collection;
-  final String data;
-  final String textHint;
-  final bool enabled;
+  final FirebaseDropdownController controller; // Controlador para gestionar la selección del dropdown.
+  final String collection; // Nombre de la colección en Firestore desde donde se obtendrán los datos
+  final String data; // Clave del campo en los documentos que se usará como etiqueta en el dropdown.
+  final String textHint; // Texto que se mostrará como hint cuando no haya selección.
+  final bool enabled; // Habilita o deshabilita la interacción con el dropdown.
 
   const FirebaseDropdown({
     super.key,
@@ -24,12 +29,17 @@ class FirebaseDropdown extends StatefulWidget {
 }
 
 class _FirebaseDropdownState extends State<FirebaseDropdown> {
+
+  //Agrega un listener al controller para que cuando cambie el estado del controlador, 
+  //se llame a _updateState() y se redibuje el widget cuando el controlador cambia.
   @override
   void initState() {
     super.initState();
     widget.controller.addListener(_updateState);
   }
 
+  // La funcion dispose() se ejecuta cuando el widget es eliminado de la interfaz y su State 
+  //ya no es necesario.
   @override
   void dispose() {
     widget.controller.removeListener(_updateState);
@@ -46,6 +56,7 @@ class _FirebaseDropdownState extends State<FirebaseDropdown> {
     final theme = Theme.of(context);
 
     return StreamBuilder<List<Map<String, dynamic>>>(
+      /// Escucha en tiempo real los documentos de la colección de Firestore.
       stream: FirebaseFirestore.instance.collection(widget.collection).snapshots().map(
             (snapshot) {
           return snapshot.docs.map((doc) {
@@ -57,7 +68,7 @@ class _FirebaseDropdownState extends State<FirebaseDropdown> {
       ),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator(); // Indicador de carga
+          return const CircularProgressIndicator(); // Muestra un indicador de carga.
         }
 
         if (snapshot.hasError) {
@@ -76,6 +87,7 @@ class _FirebaseDropdownState extends State<FirebaseDropdown> {
             widget.controller.synchronizeSelection(fetchedDocuments);
           });
 
+          // Mostrar un mensaje cuando no se obtengan datos 
           if (fetchedDocuments.isEmpty) {
             return Text(
               'No hay datos disponibles',
@@ -86,6 +98,7 @@ class _FirebaseDropdownState extends State<FirebaseDropdown> {
           return DropdownButtonFormField<Map<String, dynamic>?>(
             decoration: CustomInputDecoration.inputDecoration(context),
             dropdownColor: theme.cardColor,
+            // Define el valor seleccionado basado en el controlador.
             value: widget.controller.selectedDocument == null
                 ? null
                 : fetchedDocuments.firstWhere(
@@ -93,12 +106,14 @@ class _FirebaseDropdownState extends State<FirebaseDropdown> {
               orElse: () => {},
             ),
             hint: Text(widget.textHint),
+            // Genera las opciones del dropdown a partir de los documentos.
             items: fetchedDocuments.map<DropdownMenuItem<Map<String, dynamic>?>>((document) {
               return DropdownMenuItem<Map<String, dynamic>?>(
                 value: document,
                 child: Text(document[widget.data] ?? 'Sin datos'),
               );
             }).toList(),
+            // Maneja los cambios de selección.
             onChanged: widget.enabled
             ? (Map<String, dynamic>? newValue) {
               if(newValue == null) {
@@ -108,6 +123,7 @@ class _FirebaseDropdownState extends State<FirebaseDropdown> {
               }
             }
             : null,
+            // Validacion para la seleccion de un valor.
             validator: (value) {
               if (value == null) {
                 return 'Por favor selecciona un valor';

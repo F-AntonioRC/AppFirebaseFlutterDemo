@@ -199,6 +199,7 @@ Future<void> updateEmployee(
       'Nombre': nameController.text.toUpperCase(),
       'Correo' : emailController.text,
       'Sexo': sexDropdownValue.toString(),
+      'Area' : controllerArea.selectedValue ?? initialData?['Area'],
       'IdOre':
           controllerOre.selectedDocument?['IdOre'] ?? initialData?['IdOre'],
       'Ore': controllerOre.selectedDocument?['Ore'] ?? initialData?['Ore'],
