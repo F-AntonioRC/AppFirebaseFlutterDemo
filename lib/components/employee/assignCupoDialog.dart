@@ -91,7 +91,7 @@ class _AssignCupoDialogState extends State<AssignCupoDialog> {
         Center(
           child: ActionsFormCheck(
             isEditing: true,
-             // Acción al presionar "Aceptar", llama al método para asignar cupo con los valores
+             // Acción al presionar "Aceptar", llama al metodo para asignar cupo con los valores
              // recibidos, manejando errores con Sentry para visualizar las excepciones.
             onUpdate: () async {
               try {

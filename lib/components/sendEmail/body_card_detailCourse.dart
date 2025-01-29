@@ -79,7 +79,7 @@ class BodyCardDetailCourse extends StatelessWidget {
       ],
     );
   }
-  /// Método privado dentro de la clase para crear el borde personalizado
+  /// Metodo privado dentro de la clase para crear el borde personalizado
   InputBorder _buildDisabledBorder(ThemeData theme) {
   return OutlineInputBorder(
     borderSide: BorderSide(color: theme.hintColor),

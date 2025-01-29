@@ -40,7 +40,7 @@ class _CardDetailcourseState extends State<CardDetailCourse> {
 /// consulta (String): La función `_loadData` es responsable de cargar datos en funcion de una
 /// cadena de consulta proporcionada. Si la cadena de consulta está vacía o es nula, la función 
 /// saldra antes. De lo contrario, establecerá el estado `_isLoading` en verdadero, obtendrá datos 
-/// usando el método `getDataSearchDetailCourse` con la cadena de consulta proporcionada.
+/// usando el metodo `getDataSearchDetailCourse` con la cadena de consulta proporcionada.
 /// 
 /// Retorna:
 ///   El metdod `_loadData` returns a `Future<void>`.
@@ -57,7 +57,6 @@ class _CardDetailcourseState extends State<CardDetailCourse> {
   );
   setState(() {
     _filteredData = results;
-    print('Resultados filtrados: $_filteredData');
     _isLoading = false;
   });
     } catch (e) {
@@ -98,7 +97,7 @@ class _CardDetailcourseState extends State<CardDetailCourse> {
 /// Argumentos:
 /// consulta (String): el parámetro `query` en la función `_searchDetalleCurso` es una cadena que
 /// representa la consulta de búsqueda de detalle cursos. Esta consulta se utiliza para buscar 
-/// cursos por nombre utilizando el método `getDataSearchDetailCourse`.
+/// cursos por nombre utilizando el metodo `getDataSearchDetailCourse`.
 /// 
 /// Retorna:
 ///   La función `_searchDetalleCurso` returna un `Future<void>`.

@@ -41,7 +41,7 @@ class _CardTableState extends State<CardTableCourses> {
 /// Argumentos:
 /// consulta (String): el parámetro `query` en la función `_searchCourses` es una cadena que
 /// representa la consulta de búsqueda de cursos. Esta consulta se utiliza para buscar cursos por 
-/// nombre utilizando el método `searchCoursesByName`.
+/// nombre utilizando el metodo `searchCoursesByName`.
 /// 
 /// Retorna:
 ///   La función `_searchCourses` returna un `Future<void>`.
@@ -81,7 +81,7 @@ class _CardTableState extends State<CardTableCourses> {
 /// y la capacidad de alternar entre cursos activos e inactivos.
 /// 
 /// Argumentos:
-/// contexto (BuildContext): el parámetro `context` en el método `build` de un widget de Flutter
+/// contexto (BuildContext): el parámetro `context` en el metodo `build` de un widget de Flutter
 /// representa la ubicación del widget en el árbol de widgets. Proporciona acceso a varias propiedades
 /// y metodos relacionados con el contexto de compilación actual, como tema, localización y navegación.
 /// 
