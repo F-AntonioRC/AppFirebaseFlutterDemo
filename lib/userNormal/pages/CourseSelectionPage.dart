@@ -1,21 +1,19 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/auth/auth_service.dart';
+import 'package:testwithfirebase/userNormal/serviceuser/firebase_service.dart';
 import 'cursos_normal.dart';
 
 class DynamicCourseSelectionPage extends StatefulWidget {
   final String cupo;
 
-  const DynamicCourseSelectionPage({Key? key, required this.cupo})
-      : super(key: key);
+  const DynamicCourseSelectionPage({Key? key, required this.cupo}) : super(key: key);
 
   @override
-  _DynamicCourseSelectionPageState createState() =>
-      _DynamicCourseSelectionPageState();
+  _DynamicCourseSelectionPageState createState() => _DynamicCourseSelectionPageState();
 }
 
-class _DynamicCourseSelectionPageState
-    extends State<DynamicCourseSelectionPage> {
+class _DynamicCourseSelectionPageState extends State<DynamicCourseSelectionPage> {
+  final FirebaseService _firebaseService = FirebaseService();
   List<Map<String, dynamic>> cursosPendientes = [];
   bool isLoading = true;
 
@@ -27,22 +25,21 @@ class _DynamicCourseSelectionPageState
 
   Future<void> cargarCursosPendientes() async {
     try {
-      // Obtener UID del usuario actual
       final userId = AuthService().getCurrentUserUid();
       if (userId == null) {
         throw Exception('Usuario no autenticado');
       }
 
-      // Obtener cursos pendientes
-      final cursos = await obtenerCursosPendientes(userId);
+      final cursos = await _firebaseService.obtenerCursosPendientes(userId, widget.cupo);
 
       setState(() {
         cursosPendientes = cursos;
         isLoading = false;
       });
-        if (cursos.isEmpty) {
-      print('El usuario no tiene cursos pendientes.');
-    }
+
+      if (cursos.isEmpty) {
+        print('El usuario no tiene cursos pendientes.');
+      }
     } catch (e) {
       print('Error al cargar cursos pendientes: $e');
       setState(() {
@@ -50,81 +47,6 @@ class _DynamicCourseSelectionPageState
       });
     }
   }
-
- Future<List<Map<String, dynamic>>> obtenerCursosPendientes(String userId) async {
-  try {
-    // Obtener los IDs de los cursos completados
-    final completadosSnapshot = await FirebaseFirestore.instance
-        .collection('CursosCompletados')
-        .where('uid', isEqualTo: userId)
-        .get();
-
-    final cursosCompletados = completadosSnapshot.docs
-        .map((doc) => doc['IdCurso'])
-        .toSet(); // Convertir a Set para búsquedas rápidas
-
-    // Obtener los cursos asignados basados en el CUPO del usuario
-    final employeeSnapshot = await FirebaseFirestore.instance
-        .collection('Empleados')
-        .where('CUPO', isEqualTo: widget.cupo)
-        .get();
-
-    if (employeeSnapshot.docs.isEmpty) {
-      throw Exception('Empleado no encontrado');
-    }
-
-    final employeeData = employeeSnapshot.docs.first.data() as Map<String, dynamic>;
-    final idOre = employeeData['IdOre'];
-    final idSare = employeeData['IdSare'];
-
-    if (idOre == null && idSare == null) {
-      throw Exception('El empleado no tiene asignado un ORE ni un SARE.');
-    }
-
-    Query query = FirebaseFirestore.instance.collection('DetalleCursos');
-    if (idOre != null) {
-      query = query.where('IdOre', isEqualTo: idOre);
-    }
-    if (idSare != null) {
-      query = query.where('IdSare', isEqualTo: idSare);
-    }
-
-    final detalleCursosSnapshot = await query.get();
-
-    // Filtrar los IDs de cursos no completados
-    final cursosPendientesId = detalleCursosSnapshot.docs
-        .map((doc) => doc['IdCurso'])
-        .where((idCurso) => idCurso != null && !cursosCompletados.contains(idCurso))
-        .toList();
-
-    print('Cursos asignados encontrados: ${detalleCursosSnapshot.docs.length}');
-    print('Cursos pendientes encontrados: ${cursosPendientesId.length}');
-    print('IDs de cursos pendientes: $cursosPendientesId');
-
-    // Si no hay cursos pendientes, retorna una lista vacía
-    if (cursosPendientesId.isEmpty) {
-      return [];
-    }
-
-    // Obtener los datos de los cursos pendientes desde la colección 'Cursos'
-    final cursosSnapshot = await FirebaseFirestore.instance
-        .collection('Cursos')
-        .where(FieldPath.documentId, whereIn: cursosPendientesId)
-        .get();
-
-    // Combinar los datos de los cursos con la información de la colección 'Cursos'
-    final cursosPendientes = cursosSnapshot.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
-
-    print('Cursos pendientes encontrados: $cursosPendientes');
-    return cursosPendientes;
-  } catch (e) {
-    print('Error al obtener cursos pendientes: $e');
-    return [];
-  }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +96,7 @@ class _DynamicCourseSelectionPageState
 class CourseCard extends StatelessWidget {
   final String courseName;
   final String trimester;
-  final String? startDate; // Nueva información
+  final String? startDate;
   final VoidCallback onTap;
   final String imagePath;
 
