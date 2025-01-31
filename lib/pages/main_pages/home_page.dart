@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
     onPressed: () {
       showDialog(
         context: context,
-        builder: (context) => drawer.NotificationDrawer(), // 🔹 Usamos el alias 'drawer'
+        builder: (context) => drawer.NotificationDrawer(), 
       );
     },
   )
