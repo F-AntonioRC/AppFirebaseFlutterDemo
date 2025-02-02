@@ -1,64 +1,91 @@
-//import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:testwithfirebase/components/formPatrts/custom_snackbar.dart';
 import '../../util/responsive.dart';
 import '../model_chart.dart';
 import 'line_chart_service.dart';
 
-class GraphicLineChart extends StatefulWidget {
-  final bool viewOtherGraphics; // Parámetro para alternar vista
+  /// El Widget `GraphicLineChart` muestra un gráfico de líneas basado en datos asíncronos.
+  ///
+  /// Permite alternar la vista entre diferentes conjuntos de datos a través del parámetro
+  /// [viewOtherGraphics]. Dependiendo de este parámetro, se solicitarán datos distintos para
+  /// renderizar el gráfico.
 
+class GraphicLineChart extends StatefulWidget {
+  final bool viewOtherGraphics; // Parámetro que indica si se debe mostrar otro conjunto de gráficos.
+
+  // Constructor del widget.
   const GraphicLineChart({super.key, required this.viewOtherGraphics});
 
   @override
   State<GraphicLineChart> createState() => _GraphicLineChartState();
 }
 
+  /// Estado asociado a [GraphicLineChart] que se encarga de la lógica de carga y renderizado
+  /// del gráfico de líneas.
 class _GraphicLineChartState extends State<GraphicLineChart> {
+  // Colores usados para el degradado en el gráfico.
   List<Color> gradientColors = [
     Colors.cyan,
     Colors.blue,
   ];
 
+  // Servicio para obtener los datos que se mostrarán en el gráfico.
   final LineChartService _chartLineService = LineChartService();
-  List<FlSpot> _dataPoints = []; // Lista de puntos para el gráfico
-  Map<int, String> _xLabels = {}; // Etiquetas para el eje X
-  bool _isLoading = true;
+  List<FlSpot> _dataPoints = []; // Lista de puntos (spots) que se utilizarán para renderizar el gráfico.
+  Map<int, String> _xLabels = {}; // Mapa que relaciona índices numéricos con etiquetas para el eje X.
+  bool _isLoading = true; // Indicador de carga que muestra si los datos aún se están obteniendo.
 
+  // Funcion para inicializar la carga de datos
   @override
   void initState() {
     super.initState();
     _fetchChartData();
   }
 
+  /// La funcion `_fetchChartData` obtiene y procesa los datos para el gráfico de líneas de forma asíncrona.
+  ///
+  /// Se determina el campo de datos a solicitar en función del parámetro [viewOtherGraphics].
+  /// Luego se transforma la información recibida en una lista de puntos ([FlSpot]) y en un
+  /// mapa de etiquetas para el eje X.
+  ///
+  /// En caso de error, se muestra un mensaje de error en pantalla.
   Future<void> _fetchChartData() async {
+    // Se selecciona el campo de datos a usar según el parámetro viewOtherGraphics.
     final String dataField = widget.viewOtherGraphics ? 'Ore' : 'Sare';
     try {
-      // Llama a la función obtenerDatos()
+      // Se obtienen los datos desde el servicio.
       List<ChartData> chartData =
           await _chartLineService.getDataBySelect('Empleados', dataField);
 
-      // Transforma los datos categóricos en puntos numéricos
+      // Se preparan los puntos del gráfico y las etiquetas para el eje X.
       List<FlSpot> dataPoints = [];
       Map<int, String> xLabels = {}; // Mapa para las etiquetas del eje X
 
       for (int i = 0; i < chartData.length; i++) {
         dataPoints.add(FlSpot(i.toDouble(), chartData[i].valor.toDouble()));
         xLabels[i] =
-            chartData[i].campo; // Asignamos la etiqueta correspondiente
+            chartData[i].campo; // Se asigna la etiqueta correspondiente
       }
 
+      // Actualiza el estado con los nuevos datos y desactiva el indicador de carga.
       setState(() {
         _dataPoints = dataPoints;
         _xLabels = xLabels;
         _isLoading = false;
       });
-    } catch (e) {
+    } catch (e, stackTrace) {
+      // En caso de error, muestra un SnackBar personalizado y actualiza el indicador de carga
+      // ademas de enviar los errores a Sentry.
       if (mounted) {
         showCustomSnackBar(context, 'Error: $e', Colors.red);
       }
+      Sentry.captureException(e, stackTrace: stackTrace,
+      withScope: (scope) {
+        scope.setTag('Error_Widget__fetchChartData', _xLabels as String);
+      }
+      );
       setState(() {
         _isLoading = false;
       });
@@ -68,6 +95,7 @@ class _GraphicLineChartState extends State<GraphicLineChart> {
   @override
   void didUpdateWidget(covariant GraphicLineChart oldWidget) {
     super.didUpdateWidget(oldWidget);
+    // Si el parámetro viewOtherGraphics cambia, se recargan los datos.
     if (oldWidget.viewOtherGraphics != widget.viewOtherGraphics) {
       _isLoading = true;
       _fetchChartData(); // Actualiza los datos cuando cambia el estado
@@ -76,21 +104,24 @@ class _GraphicLineChartState extends State<GraphicLineChart> {
 
   @override
   Widget build(BuildContext context) {
+    // Si se están cargando los datos, muestra un indicador de carga.
     if (_isLoading) {
       return const Center(
         child: CircularProgressIndicator(), // Indicador de carga
       );
     }
 
+    // Cuando los datos están listos, renderiza el gráfico de líneas.
     return LineChart(
       LineChartData(
+        // Configuración de la línea del gráfico.
         lineBarsData: [
           LineChartBarData(
-            spots: _dataPoints,
-            isCurved: true,
-            gradient: LinearGradient(colors: gradientColors),
-            barWidth: 5,
-            isStrokeCapRound: true,
+            spots: _dataPoints, // Datos para mostrar en el eje y
+            isCurved: true, // Valor que dibuja la línea de la grafica con bordes curvos
+            gradient: LinearGradient(colors: gradientColors),  // Colores del grafico
+            barWidth: 5, // Determina el grosor de la línea de dibujo.
+            isStrokeCapRound: true, // Determina el estilo del límite de la línea.
             belowBarData: BarAreaData(
               show: true,
               gradient: LinearGradient(
@@ -102,6 +133,7 @@ class _GraphicLineChartState extends State<GraphicLineChart> {
             dotData: const FlDotData(show: false),
           ),
         ],
+        // Configuración de las líneas de la cuadrícula.
         gridData: FlGridData(
           show: true,
           drawVerticalLine: true,
@@ -120,6 +152,7 @@ class _GraphicLineChartState extends State<GraphicLineChart> {
             );
           },
         ),
+        // Configuración de los títulos y etiquetas en los ejes.
         titlesData: FlTitlesData(
           leftTitles: const AxisTitles(
             sideTitles: SideTitles(
@@ -132,9 +165,9 @@ class _GraphicLineChartState extends State<GraphicLineChart> {
             sideTitles: SideTitles(
               showTitles: true,
               interval: 1,
+              // Función para obtener el widget que muestra la etiqueta en el eje X.
               getTitlesWidget: (value, meta) {
                 return SideTitleWidget(
-                
                   axisSide: meta.axisSide,
                   child: Text(
                     _xLabels[value.toInt()] ?? '',
@@ -155,17 +188,18 @@ class _GraphicLineChartState extends State<GraphicLineChart> {
             sideTitles: SideTitles(showTitles: false),
           ),
         ),
+        // Configuración del borde del gráfico.
         borderData: FlBorderData(
           show: true,
           border: Border.all(color: const Color(0xff37434d)),
         ),
+        // Configuración del rango de los ejes X e Y según los datos.
         minX: 0,
         maxX: _dataPoints.isNotEmpty ? _dataPoints.last.x : 0,
-        // Ajusta el rango según los datos
         minY: 0,
         maxY: _dataPoints.isNotEmpty
             ? _dataPoints.map((e) => e.y).reduce((a, b) => a > b ? a : b)
-            : 0, // Ajusta el rango según los datos
+            : 0,
       ),
     );
   }

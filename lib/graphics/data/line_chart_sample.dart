@@ -1,19 +1,23 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/dataConst/constand.dart';
 
-class LineChartSample2 extends StatefulWidget {
-  const LineChartSample2({super.key});
+  /// Este widget renderiza un [LineChart] de ejemplo dentro de una tarjeta y permite alternar
+  /// entre la visualización de datos "normales" y un promedio (avg) mediante un botón.
+class LineChartSample extends StatefulWidget {
+  const LineChartSample({super.key});
 
   @override
-  State<LineChartSample2> createState() => _LineChartSample2State();
+  State<LineChartSample> createState() => _LineChartSampleState();
 }
 
-class _LineChartSample2State extends State<LineChartSample2> {
+class _LineChartSampleState extends State<LineChartSample> {
+  // Colores que se usan para generar un degradado en la línea del gráfico.
   List<Color> gradientColors = [
     Colors.cyan,
     Colors.blue,
   ];
-
+  // Bandera para alternar entre la visualización de datos principales y el promedio.
   bool showAvg = false;
 
   @override
@@ -21,6 +25,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
     return Card(
       child: Stack(
         children: [
+          // Área que contiene el gráfico de líneas con un aspect ratio personalizado.
           AspectRatio(
             aspectRatio: 1.70,
             child: Padding(
@@ -31,10 +36,12 @@ class _LineChartSample2State extends State<LineChartSample2> {
                 bottom: 12,
               ),
               child: LineChart(
+                // Se muestra el gráfico principal o el promedio según el estado.
                 showAvg ? avgData() : mainData(),
               ),
             ),
           ),
+          // Botón para alternar la visualización entre los datos principales y el promedio.
           SizedBox(
             width: 60,
             height: 34,
@@ -48,7 +55,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
                 'avg',
                 style: TextStyle(
                   fontSize: 12,
-                  color: showAvg ? Colors.white.withAlpha((0.3 * 255).toInt()) : Colors.white,
+                  color: showAvg ? ligthBackground: darkBackground,
                 ),
               ),
             ),
@@ -58,21 +65,26 @@ class _LineChartSample2State extends State<LineChartSample2> {
     );
   }
 
+  /// Widget que construye las etiquetas del eje X (inferior) del gráfico.
+  ///
+  /// Dependiendo del valor, se muestran las abreviaturas de los meses.
+
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 16,
     );
     Widget text;
+    // Valores para mostrar en el eje X
     switch (value.toInt()) {
       case 2:
-        text = const Text('MAR', style: style);
+        text = const Text('ENERO', style: style);
         break;
       case 5:
-        text = const Text('JUN', style: style);
+        text = const Text('FEBRERO', style: style);
         break;
       case 8:
-        text = const Text('SEP', style: style);
+        text = const Text('MARZO', style: style);
         break;
       default:
         text = const Text('', style: style);
@@ -85,21 +97,26 @@ class _LineChartSample2State extends State<LineChartSample2> {
     );
   }
 
+  /// Widget que construye las etiquetas del eje Y (izquierdo) del gráfico.
+  ///
+  /// Se asignan etiquetas específicas a ciertos valores del eje Y.
+
   Widget leftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 15,
     );
     String text;
+    // Valores para mostrar en el eje Y
     switch (value.toInt()) {
       case 1:
-        text = '10K';
+        text = '50';
         break;
       case 3:
-        text = '30k';
+        text = '100';
         break;
       case 5:
-        text = '50k';
+        text = '150';
         break;
       default:
         return Container();
@@ -107,6 +124,11 @@ class _LineChartSample2State extends State<LineChartSample2> {
 
     return Text(text, style: style, textAlign: TextAlign.left);
   }
+
+  /// Configura y retorna los datos principales para el gráfico de líneas.
+  ///
+  /// Se configuran los ejes, la cuadrícula, los títulos y la apariencia de la línea,
+  /// incluyendo el degradado, el ancho de la línea y la zona sombreada debajo de la línea.
 
   LineChartData mainData() {
     return LineChartData(
@@ -157,10 +179,12 @@ class _LineChartSample2State extends State<LineChartSample2> {
         show: true,
         border: Border.all(color: const Color(0xff37434d)),
       ),
+      // Rango del eje X e Y
       minX: 0,
       maxX: 11,
       minY: 0,
       maxY: 6,
+      // Configuración de la línea del gráfico
       lineBarsData: [
         LineChartBarData(
           spots: const [
@@ -193,6 +217,11 @@ class _LineChartSample2State extends State<LineChartSample2> {
       ],
     );
   }
+
+  /// Configura y retorna los datos para mostrar el promedio en el gráfico de líneas.
+  ///
+  /// En este modo, la línea se representa de forma uniforme (sin fluctuaciones) para
+  /// indicar un valor promedio constante. También se configura la cuadrícula y los títulos.
 
   LineChartData avgData() {
     return LineChartData(

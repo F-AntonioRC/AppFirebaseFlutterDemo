@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:testwithfirebase/components/formPatrts/body_widgets.dart';
-import 'package:testwithfirebase/graphics/data/line_chart_sample2.dart';
+import 'package:testwithfirebase/graphics/data/line_chart_sample.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 class CardGraphicsNormal extends StatefulWidget {
   const CardGraphicsNormal({super.key});
@@ -25,7 +25,7 @@ class _CardGraphicsNormalState extends State<CardGraphicsNormal> {
                   fontSize: responsiveFontSize(context, 18),
                   fontWeight: FontWeight.bold
               )),
-          const LineChartSample2()
+          const LineChartSample()
         ],
       ),
     ));

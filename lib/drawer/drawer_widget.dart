@@ -5,6 +5,13 @@ import 'package:testwithfirebase/bloc/drawer_event.dart';
 import 'package:testwithfirebase/bloc/drawer_state.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 
+  /// La clase privada `_NavigationItem` representa un ítem de navegación en el Drawer.
+  ///
+  /// Cada objeto de [_NavigationItem] contiene:
+  /// - [item]: Valor del enum [NavItem] que identifica la vista o funcionalidad.
+  /// - [title]: Texto que se mostrará como título en el Drawer.
+  /// - [icon]: Ícono asociado a la opción del Drawer.
+
 class _NavigationItem {
   final NavItem item;
   final String title;
@@ -14,17 +21,25 @@ class _NavigationItem {
       {required this.item, required this.title, required this.icon});
 }
 
-class NavDrawerWidget extends StatefulWidget {
-  final String? userEmail;
+  /// Widget que representa el menú lateral (Drawer) de la aplicación.
+  ///
+  /// Este widget muestra la información del usuario (nombre y correo) y una lista
+  /// de opciones de navegación. Al seleccionar una opción, se actualiza el estado del
+  /// Bloc [NavDrawerBloc] y, en dispositivos con pantallas pequeñas, se cierra el Drawer.
 
+  class NavDrawerWidget extends StatefulWidget {
+  final String? userEmail; // Correo electrónico del usuario que se mostrará en el header del Drawer.
+
+  /// Constructor del [NavDrawerWidget].
   const NavDrawerWidget({super.key, this.userEmail});
 
   @override
   State<NavDrawerWidget> createState() => _NavDrawerWidgetState();
 }
 
-class _NavDrawerWidgetState extends State<NavDrawerWidget> {
-  // Items del Drawer
+  /// Estado asociado al [NavDrawerWidget] que construye y gestiona la interfaz del Drawer.
+  class _NavDrawerWidgetState extends State<NavDrawerWidget> {
+    // Lista de ítems que se mostrarán en el Drawer.
   final List<_NavigationItem> _drawerItems = [
     _NavigationItem(
         item: NavItem.homeView,
@@ -65,11 +80,15 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
         )),
   ];
 
+  //Contrucción del Widget donde se mostraran los elementos del _drawerItems
   @override
   Widget build(BuildContext context) => Drawer(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // Header del Drawer con información del usuario, se configuro para mostrar un texto
+          // predeterminado junto con el correo del usuario e imagenes de decoración y de avatar
+          // en la sesión.
           UserAccountsDrawerHeader(
             accountName: const Text(
               'Bienvenido',
@@ -96,6 +115,7 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
               itemCount: _drawerItems.length,
               shrinkWrap: true,
               itemBuilder: (context, i) {
+                // Utiliza BlocBuilder para reconstruir solo el ítem que cambie de estado.
                 return BlocBuilder<NavDrawerBloc, NavDrawerState>(
                   buildWhen: (previous, current) =>
                       previous.selectedItem != current.selectedItem,
@@ -106,14 +126,25 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
         ],
       ));
 
+  /// Construye cada uno de los ítems del Drawer.
+  ///
+  /// [data] contiene la información del ítem (título, icono y el enum [NavItem]).
+  /// [state] es el estado actual del Bloc, el cual se utiliza para determinar si el
+  /// ítem está seleccionado.
+  ///
+  /// Devuelve un [ListTile] que, al ser presionado, actualiza el estado del Bloc y
+  /// cierra el Drawer en dispositivos con pantallas pequeñas.
+
   Widget _buildDrawerItem(_NavigationItem data, NavDrawerState state) {
     return ListTile(
       title: Text(
         data.title,
         style: TextStyle(
+          // Resalta el texto si el ítem es el seleccionado
           fontWeight: data.item == state.selectedItem
               ? FontWeight.bold
               : FontWeight.w400,
+          // Cambia el color del texto si el ítem es el seleccionado.
           color: data.item == state.selectedItem
               ? darkBackground
               : Theme.of(context).textTheme.bodyMedium!.color,
@@ -123,8 +154,7 @@ class _NavDrawerWidgetState extends State<NavDrawerWidget> {
       onTap: () {
         // Actualiza el estado del Bloc cuando se selecciona un ítem
         BlocProvider.of<NavDrawerBloc>(context).add(NavigateTo(data.item));
-
-        // En pantallas pequeñas, cierra el Drawer
+        // Si es posible volver atrás (por ejemplo, en pantallas pequeñas), cierra el Drawer.
         if (Navigator.canPop(context)) {
           Navigator.pop(context);
         }

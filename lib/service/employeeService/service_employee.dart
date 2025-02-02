@@ -80,7 +80,7 @@ Future<void> addEmployee(
     return; // Detiene la ejecución si hay errores
   }
 
-  String id = randomAlphaNumeric(3);
+  String id = randomAlphaNumeric(4);
   Map<String, dynamic> employeeInfoMap = {
     "IdEmpleado": id,
     "Nombre": nameController.text.toUpperCase(),
