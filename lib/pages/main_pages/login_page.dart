@@ -107,24 +107,29 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 20.0),
-                  Text(
-                    '¿No tienes una cuenta? ',
-                    style: TextStyle(
-                        fontSize: responsiveFontSize(context, 20),
-                        fontWeight: FontWeight.bold),
-                  ),
-                  // Al pulsar se ejecuta el callback [onTap] definido en el widget.
-                  GestureDetector(
-                    onTap: widget.onTap,
-                    child: Text(
-                      'Registrate',
-                      style: TextStyle(
-                          fontSize: responsiveFontSize(context, 20),
-                          fontWeight: FontWeight.bold,
-                          color: greenColor,
-                          decoration: TextDecoration.underline,
-                          decorationColor: greenColor),
-                    ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '¿No tienes una cuenta? ',
+                        style: TextStyle(
+                            fontSize: responsiveFontSize(context, 18),
+                            fontWeight: FontWeight.bold),
+                      ),
+                      // Al pulsar se ejecuta el callback [onTap] definido en el widget.
+                      GestureDetector(
+                        onTap: widget.onTap,
+                        child: Text(
+                          'Registrate',
+                          style: TextStyle(
+                              fontSize: responsiveFontSize(context, 18),
+                              fontWeight: FontWeight.bold,
+                              color: greenColor,
+                              decoration: TextDecoration.underline,
+                              decorationColor: greenColor),
+                        ),
+                      )
+                    ],
                   )
                 ],
               )

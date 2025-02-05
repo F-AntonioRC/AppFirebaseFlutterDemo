@@ -16,9 +16,12 @@ import 'package:testwithfirebase/util/responsive.dart';
 /// Los datos ingresados se envían a la función [register] para proceder con el proceso de registro.
 
 class RegisterPage extends StatelessWidget {
-  final TextEditingController _cupoController = TextEditingController();  // Controlador para el CUPO.
-  final TextEditingController _emailController = TextEditingController(); // Controlador para el email.
-  final TextEditingController _passwordController = TextEditingController(); // Controlador para la contraseña.
+  final TextEditingController _cupoController =
+      TextEditingController(); // Controlador para el CUPO.
+  final TextEditingController _emailController =
+      TextEditingController(); // Controlador para el email.
+  final TextEditingController _passwordController =
+      TextEditingController(); // Controlador para la contraseña.
   final TextEditingController _confirmPasswordController =
       TextEditingController(); // Controlador para verificar la contraseña.
 
@@ -27,12 +30,12 @@ class RegisterPage extends StatelessWidget {
 
   // Constructor del widget [RegisterPage].
   RegisterPage({super.key, this.onTap});
-  
+
   @override
   Widget build(BuildContext context) {
     // Widget personalizado para el fondo de la pantalla.
     return BackgruondMain(
-      // Se utiliza SingleChildScrollView para evitar desbordamientos en pantallas pequeñas.
+        // Se utiliza SingleChildScrollView para evitar desbordamientos en pantallas pequeñas.
         formInit: SingleChildScrollView(
       child: Column(
         children: [
@@ -91,25 +94,30 @@ class RegisterPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                '¿Ya tienes una cuenta? ',
-                style: TextStyle(
-                    fontSize: responsiveFontSize(context, 20),
-                    fontWeight: FontWeight.bold),
-              ),
-              // Al pulsar este enlace se ejecuta la función callback [onTap] para navegar a la
-              // pantalla de login.
-              GestureDetector(
-                onTap: onTap,
-                child: Text(
-                  'Inicia sesión',
-                  style: TextStyle(
-                      fontSize: responsiveFontSize(context, 20),
-                      fontWeight: FontWeight.bold,
-                      color: greenColor,
-                      decoration: TextDecoration.underline,
-                      decorationColor: greenColor),
-                ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '¿Ya tienes una cuenta? ',
+                    style: TextStyle(
+                        fontSize: responsiveFontSize(context, 18),
+                        fontWeight: FontWeight.bold),
+                  ),
+                  // Al pulsar este enlace se ejecuta la función callback [onTap] para navegar a la
+                  // pantalla de login.
+                  GestureDetector(
+                    onTap: onTap,
+                    child: Text(
+                      'Inicia sesión',
+                      style: TextStyle(
+                          fontSize: responsiveFontSize(context, 18),
+                          fontWeight: FontWeight.bold,
+                          color: greenColor,
+                          decoration: TextDecoration.underline,
+                          decorationColor: greenColor),
+                    ),
+                  )
+                ],
               )
             ],
           )

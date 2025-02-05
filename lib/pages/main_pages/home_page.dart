@@ -12,9 +12,16 @@ import 'package:testwithfirebase/pages/detailCourses/page_detail_courses.dart';
 import 'package:testwithfirebase/pages/courses/screen_cursos.dart';
 import 'package:testwithfirebase/pages/documents/trimesterview.dart';
 import 'package:testwithfirebase/pages/employee/screen_employee.dart';
-
 import 'package:testwithfirebase/pages/notification/notification_new.dart';
-//import 'package:testwithfirebase/pages/notification_icon_widget.dart';
+
+/// Pantalla principal de la aplicación.
+///
+/// Este widget es la página principal que organiza la navegación interna de la app
+/// a través de un Drawer (menú lateral) y un AppBar. Dependiendo de la opción seleccionada
+/// en el Drawer (representada por [NavItem]), se muestra el contenido correspondiente.
+///
+/// Se utiliza [BlocProvider] y [BlocConsumer] para gestionar el estado del Drawer a través
+/// de [NavDrawerBloc] y actualizar la interfaz de forma reactiva.
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
