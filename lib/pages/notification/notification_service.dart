@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class NotificationService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -25,7 +24,7 @@ class NotificationService {
         'completado': true, // 🔹 Mantener este campo como referencia
       }, SetOptions(merge: true)); // 🔹 Evita sobrescribir datos anteriores
 
-      print('Curso marcado como completado.');
+      print('Curso marcado como completado2.');
     } catch (e) {
       print('Error al marcar curso como completado: $e');
     }
