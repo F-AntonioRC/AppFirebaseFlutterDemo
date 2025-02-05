@@ -5,11 +5,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:random_string/random_string.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
+ /// La funcion `importExcelWithSareToFirebase` importa datos existentes en un archivo excel 'xlsx' a la
+ /// base de datos para su visualizacion en el sistema.
 Future<void> importExcelWithSareToFirebase() async {
   // Obtener el mapa de Sares con sus IDs
   Map<String, String> sareMap = await fetchSareIds();
 
-  // Seleccionar el archivo Excel
+  // Seleccionar el archivo Excel con el administrador de archivos
   FilePickerResult? result = await FilePicker.platform.pickFiles(
     type: FileType.custom,
     allowedExtensions: ['xlsx'], // Solo archivos Excel
@@ -63,7 +65,7 @@ Future<void> importExcelWithSareToFirebase() async {
           await FirebaseFirestore.instance.collection('Empleados').doc(id).set(
               data);
         } on FirebaseException catch (e, stackTrace) {
-          // Reporta el error a Sentry
+          // Reporta el error a Sentry en caso de ocurrir
           await Sentry.captureException(
             e,
             stackTrace: stackTrace,
@@ -86,6 +88,8 @@ Future<void> importExcelWithSareToFirebase() async {
   }
 }
 
+/// Funcion para relacionar los datos existentes en el archivo excel con la coleccion encargada de tener
+/// los valores de identificacion para el Sare en la base de datos
 Future<Map<String, String>> fetchSareIds() async {
   Map<String, String> sareMap = {};
 

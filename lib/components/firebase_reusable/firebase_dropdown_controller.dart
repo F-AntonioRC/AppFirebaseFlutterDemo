@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
+///Controlador para el Widget personalizado `FirebaseDropdown` con las acciones para poder utilizar el
+///widget en la UI.
 class FirebaseDropdownController extends ChangeNotifier {
+  //Documento seleccionado de tipo Map<String, dynamic>? aceptando valores nulos
   Map<String, dynamic>? _selectedDocument;
 
   // Metodo para obtener el valor seleccionado

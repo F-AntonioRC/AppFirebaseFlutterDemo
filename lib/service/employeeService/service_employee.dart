@@ -80,7 +80,7 @@ Future<void> addEmployee(
     return; // Detiene la ejecución si hay errores
   }
 
-  String id = randomAlphaNumeric(3);
+  String id = randomAlphaNumeric(4);
   Map<String, dynamic> employeeInfoMap = {
     "IdEmpleado": id,
     "Nombre": nameController.text.toUpperCase(),
@@ -199,6 +199,7 @@ Future<void> updateEmployee(
       'Nombre': nameController.text.toUpperCase(),
       'Correo' : emailController.text,
       'Sexo': sexDropdownValue.toString(),
+      'Area' : controllerArea.selectedValue ?? initialData?['Area'],
       'IdOre':
           controllerOre.selectedDocument?['IdOre'] ?? initialData?['IdOre'],
       'Ore': controllerOre.selectedDocument?['Ore'] ?? initialData?['Ore'],

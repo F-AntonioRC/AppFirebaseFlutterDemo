@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 
+  /// La clase `HeaderGraphics` es un StatelessWidget que recibe parametros para mostrar la grafica
+  /// de linea, alternando segun el valor del `viewOtherGraphics`.
 class HeaderGraphics extends StatelessWidget {
-  final String title;
-  final VoidCallback onToggleView;
-  final bool viewOtherGraphics;
-  final String viewOn;
-  final String viewOff;
+  final String title; // Titulo del grafico, cambiara segun el valor de `viewOtherGraphics`.
+  final VoidCallback onToggleView; // Función para cambiar los valores de la busqueda.
+  final bool viewOtherGraphics; // Valor para alternar los datos del grafico.
+  final String viewOn; // Valor para mostrar segun el valor del `viewOtherGraphics`.
+  final String viewOff; // Valor para mostrar segun el valor del `viewOtherGraphics`.
 
   const HeaderGraphics(
       {super.key,
@@ -24,6 +26,7 @@ class HeaderGraphics extends StatelessWidget {
       children: [
         Expanded(
             flex: 4,
+            //Widget para mostrar el valor del `title`.
             child: Text(
               title,
               style: TextStyle(
@@ -32,6 +35,7 @@ class HeaderGraphics extends StatelessWidget {
             )),
         Expanded(
             flex: 2,
+            //Widget para alternar el valor de la grafica con los pametros establecidos.
             child: Ink(
               decoration: const ShapeDecoration(
                   shape: CircleBorder(), color: ligthBackground),

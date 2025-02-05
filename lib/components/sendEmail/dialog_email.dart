@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:testwithfirebase/components/formPatrts/actions_form_check.dart';
 import 'package:testwithfirebase/components/formPatrts/build_field.dart';
 import 'package:testwithfirebase/components/formPatrts/ink_component.dart';
@@ -8,15 +9,17 @@ import '../../dataConst/constand.dart';
 import '../../util/responsive.dart';
 import '../formPatrts/custom_snackbar.dart';
 
+/// Este widget muestra un cuadro de diálogo para gestionar el envío de correos electrónicos
+/// relacionados con un curso.
 class DialogEmail extends StatefulWidget {
-  final String nameCourse;
-  final String dateInit;
-  final String dateRegister;
-  final String sendDocument;
-  final String? nameOre;
-  final String? nameSare;
-  final String? idOre;
-  final String? idSare;
+  final String nameCourse; //Parametro obligatorio, representa el nombre del curso seleccionado.
+  final String dateInit; //Parametro obligatorio, la fecha de inicio del curso.
+  final String dateRegister; //Valor obligatorio, la fecha de registro del curso.
+  final String sendDocument; //Valor obligatorio, la fecha de envío del documento.
+  final String? nameOre; //Valor opcional, el nombre del ORE asignado.
+  final String? nameSare; //Valor opcional, el nombre del SARE asignado.
+  final String? idOre; //Valor opcional, el Id del ORE.
+  final String? idSare; //Valor opcional, el Id del Sare.
 
   const DialogEmail({
     super.key,
@@ -35,6 +38,7 @@ class DialogEmail extends StatefulWidget {
 }
 
 class _DialogEmailState extends State<DialogEmail> {
+  // Controladores para los campos del diálogo
   late final TextEditingController _nameCourseController;
   late final TextEditingController _dateInitController;
   late final TextEditingController _dateRegisterController;
@@ -43,6 +47,7 @@ class _DialogEmailState extends State<DialogEmail> {
   final TextEditingController _nameSareController = TextEditingController();
   TextEditingController bodyEmailController = TextEditingController();
 
+    /// Limpieza de recursos: Libera los controladores para evitar fugas de memoria.
   @override
   void dispose() {
     _nameCourseController.dispose();
@@ -54,6 +59,9 @@ class _DialogEmailState extends State<DialogEmail> {
     super.dispose();
   }
 
+  /// Inicialización de los controladores para los campos de texto
+  /// Los valores iniciales de los controladores se asignan desde las propiedades 
+  /// `nameCourse`, `dateInit`, `dateRegister`, `sendDocument`, `nameOre` y `nameSare`.
   @override
   void initState() {
     super.initState();
@@ -74,10 +82,11 @@ class _DialogEmailState extends State<DialogEmail> {
     }
   }
 
+  /// Construcción del widget principal.
+  /// Muestra un `AlertDialog` con los detalles del curso asignado y un campo para crear el correo.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
     return AlertDialog(
       scrollable: true,
       title: const Text(
@@ -103,12 +112,14 @@ class _DialogEmailState extends State<DialogEmail> {
               secondTitle: "Envio constancia",
               secondIcon: const Icon(Icons.event_available_sharp)),
           const SizedBox(height: 10.0),
+          // Muestra el Ore asignado, si está definido.
           if (widget.nameOre != 'N/A') ...[
             BuildField(
                 title: 'ORE Asignado',
                 controller: _nameOreController,
                 theme: theme),
           ],
+          // Muestra el Sare asignado, si está definido.
           if (widget.nameSare != 'N/A') ...[
             BuildField(
                 title: 'SARE Asignado',
@@ -128,6 +139,7 @@ class _DialogEmailState extends State<DialogEmail> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
+               // Botón para copiar correos al portapapeles
               Expanded(
                   flex: 1,
                   child: InkComponent(
@@ -143,11 +155,16 @@ class _DialogEmailState extends State<DialogEmail> {
                             showCustomSnackBar(context,
                                 "Correos copiados al portapapeles", greenColor);
                           }
-                        } catch (e) {
+                        } catch (e, stacktrace) {
                           if (context.mounted) {
                             showCustomSnackBar(
                                 context, "Error: $e", Colors.red);
                           }
+                          Sentry.captureException(e,
+                          stackTrace: stacktrace,
+                          withScope: (scope) {
+                            scope.setTag('Error_Widget_DialogEmail_copyEmail', 'Error en Id Sare u Ore');
+                          });
                         }
                       })),
             ],
@@ -172,10 +189,13 @@ class _DialogEmailState extends State<DialogEmail> {
       ),
       actions: [
         Center(
+          //Uso del componente ´ActionsFormCheck´ para la vista de las acciones
           child: ActionsFormCheck(
             isEditing: true,
             onUpdate: () async {
               try {
+                // Ejecuta el metodo para enviar un correo con los datos proporcionados y muestra un 
+                //mensaje de éxito con manejo de excepciones.
                 await sendEmail(
                     context,
                     bodyEmailController,
@@ -191,12 +211,19 @@ class _DialogEmailState extends State<DialogEmail> {
                   showCustomSnackBar(
                       context, "Email generado con exito", greenColor);
                 }
-              } catch (e) {
+              } catch (e, stacktrace) {
                 if (context.mounted) {
                   showCustomSnackBar(context, "Error: $e", Colors.red);
                 }
+                Sentry.captureException(e,
+                stackTrace: stacktrace,
+                withScope: (scope) {
+                  scope.setTag('Error_Widget_DialogEmail_sendEmail', 'Error en Id Sare u Ore');
+                }
+                );
               }
             },
+            // Acción al presionar "Cancelar".
             onCancel: () => Navigator.pop(context),
           ),
         )

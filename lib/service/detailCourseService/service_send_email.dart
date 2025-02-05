@@ -61,9 +61,14 @@ Future<void> copyEmail(
   }
 
   if (idSare != null && idSare != 'N/A') {
-    // Obtener correos filtrados por idSare
-    List<String> correosIdSare = await SendEmailMethods().getFilteredEmails("IdSare", idSare);
-    correos.addAll(correosIdSare);
+    if(idSare == '10101') {
+      List<String> totalCorreos = await SendEmailMethods().getAllCorreosByEmpleados();
+      correos.addAll(totalCorreos);
+    } else {
+      // Obtener correos filtrados por idSare
+      List<String> correosIdSare = await SendEmailMethods().getFilteredEmails("IdSare", idSare);
+      correos.addAll(correosIdSare);
+    }
   }
 
   // Eliminar correos duplicados (opcional)

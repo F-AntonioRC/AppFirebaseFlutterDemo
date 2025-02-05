@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 
+/// Crea una lista de columnas para el Widget `TableExample`.
+///
+/// Cada `DataColumn` representa un encabezado en la tabla, valores importantes para poder 
+/// subir nuevos registros a la base de datos.
+/// Es importante destacar que los datos no deben tener acento salvo en el campo Nombre
+/// ya que conforme a la estructura de la base de datos, los valores no se registran correctamente
 List<DataColumn> createColumns() {
   return [
-    const DataColumn(label: Text('CUPO')),
-    const DataColumn(label: Text('Estado')),
-    const DataColumn(label: Text('Nombre')),
-    const DataColumn(label: Text('Correo')),
-    const DataColumn(label: Text('Area')),
-    const DataColumn(label: Text('Puesto')),
-    const DataColumn(label: Text('Sare')),
+    const DataColumn(label: Text('CUPO')), // Número de identificación del empleado
+    const DataColumn(label: Text('Estado')), // Estado actual del empleado (Activo/Inactivo)
+    const DataColumn(label: Text('Nombre')), // Nombre completo del empleado
+    const DataColumn(label: Text('Correo')), // Correo electrónico institucional del empleado
+    const DataColumn(label: Text('Area')), // Área de trabajo del empleado
+    const DataColumn(label: Text('Puesto')), // Puesto o cargo del empleado
+    const DataColumn(label: Text('Sare')), // Código de identificación de la unidad en la que este el empleado
   ];
 }
 
+/// Crea una lista de filas con datos para el Widget `TableExample`.
+///
+/// Cada `DataRow` representa un empleado con su respectiva información.
 List<DataRow> createRows() {
   return [
     const DataRow(cells: [

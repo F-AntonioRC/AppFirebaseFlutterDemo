@@ -4,12 +4,15 @@ import 'package:testwithfirebase/util/responsive.dart';
 import '../../dataConst/constand.dart';
 import '../formPatrts/custom_snackbar.dart';
 
+/// `AssignCourseDialog`
+/// Un widget que muestra un cuadro de diálogo (dialog) utilizado para confirmar
+/// la selección de un curso y su asignación, con detalles adicionales relacionados.
 class AssignCourseDialog extends StatefulWidget {
-  final String? dataOne;
-  final String? dataTwo;
-  final String? dataThree;
-  final VoidCallback accept;
-  final String messageSuccess;
+  final String? dataOne; //Un `String?` opcional que representa el curso seleccionado.
+  final String? dataTwo; //Un `String?` opcional que representa el ORE asignado.
+  final String? dataThree; //Un `String?` opcional que representa el Sare asignado.
+  final VoidCallback accept; //Requerido para la acción a ejecutar cuando se confirma la asignación.
+  final String messageSuccess; //Un `String` requerido que contiene el mensaje a mostrar en caso de éxito.
 
   const AssignCourseDialog(
       {super.key,
@@ -24,29 +27,33 @@ class AssignCourseDialog extends StatefulWidget {
 }
 
 class _AssignCourseDialogState extends State<AssignCourseDialog> {
+  // Controladores para los campos del diálogo
   late TextEditingController _dataOneController;
-
   late TextEditingController _dataTwoController;
-
   late TextEditingController _dataThreeController;
+
+  /// Inicialización de los controladores para los campos de texto
+  /// Los valores iniciales de los controladores se asignan desde las propiedades 
+  /// `dataOne`, `dataTwo` y `dataThree`.
   @override
   void initState() {
     super.initState();
-    // Inicializa el controlador con el valor de dataChange
     _dataOneController = TextEditingController(text: widget.dataOne);
     _dataTwoController = TextEditingController(text: widget.dataTwo);
     _dataThreeController = TextEditingController(text: widget.dataThree);
   }
 
+  /// Limpieza de recursos: Libera los controladores para evitar fugas de memoria.
   @override
   void dispose() {
-    // Libera el controlador para evitar fugas de memoria
     _dataOneController.dispose();
     _dataTwoController.dispose();
     _dataThreeController.dispose();
     super.dispose();
   }
 
+  /// Construcción del widget principal.
+  /// Muestra un `AlertDialog` con los detalles del curso seleccionado y opciones para confirmar o cancelar.
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -55,6 +62,7 @@ class _AssignCourseDialogState extends State<AssignCourseDialog> {
       title: const Text("¿Esta seguro que la selección en correcta?"),
       content: Column(
         children: [
+          // Muestra el curso seleccionado, si está definido.
           if (widget.dataOne != null)
             Text(
               "Curso seleccionado",
@@ -74,6 +82,7 @@ class _AssignCourseDialogState extends State<AssignCourseDialog> {
               )
           ),
           const SizedBox(height: 10.0),
+          // Muestra el ORE asignado, si está definido.
           if (widget.dataTwo != null) ... [
             Text(
               "ORE asigando",
@@ -92,6 +101,7 @@ class _AssignCourseDialogState extends State<AssignCourseDialog> {
                       borderRadius: BorderRadius.circular(10.0)),
           ),),
           const SizedBox(height: 10.0), ],
+          // Muestra el Sare asignado, si está definido.
           if (widget.dataThree != null) ... [
             Text(
               "Sare asigando",
@@ -114,22 +124,26 @@ class _AssignCourseDialogState extends State<AssignCourseDialog> {
       ),
       actions: [
         Center(
-          child: ActionsFormCheck(isEditing: true,
+          child: 
+          //Uso del componente ´ActionsFormCheck´ para la vista de las acciones
+          ActionsFormCheck(isEditing: true,
           onUpdate: () async {
             try {
+              // Ejecuta la acción de aceptación y muestra un mensaje de éxito.
               widget.accept();
               if (context.mounted) {
                 showCustomSnackBar(
                     context, widget.messageSuccess, greenColor);
               }
             } catch (e) {
+              // Muestra un mensaje de error en caso de que ocurra una excepción.
               if (context.mounted) {
                 showCustomSnackBar(context, "Error: $e", Colors.red);
               }
             }
             Navigator.pop(context);
-            //Navigator.of(context).pop();
           },
+          // Acción al presionar "Cancelar".
           onCancel: () => Navigator.pop(context),
           ),
         )
