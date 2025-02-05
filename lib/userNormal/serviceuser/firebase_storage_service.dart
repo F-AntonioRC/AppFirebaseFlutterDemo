@@ -79,7 +79,7 @@ class FirebaseStorageService {
       await uploadTask;
 
       // Obtener URL de descarga
-      String downloadURL = await storageRef.getDownloadURL();
+       String downloadURL = await storageRef.getDownloadURL();
 
       // Guardar información en Firestore
       await _firestore.collection('notifications').add({
@@ -95,6 +95,8 @@ class FirebaseStorageService {
         'isRead': false,
         'pdfUrl': downloadURL,
       });
+
+
 
       print('Archivo subido exitosamente: $downloadURL');
     } catch (e) {

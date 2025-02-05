@@ -74,21 +74,30 @@ class NotificationDrawer extends StatelessWidget {
   final bool isAdmin;
 
   const NotificationDrawer({super.key, required this.isAdmin});
-   Future<void> marcarCursoCompletado(String userId, String cursoId, String evidenciaUrl) async {
+ Future<void> marcarCursoCompletado(String userId, String cursoId, String evidenciaUrl) async {
   try {
-    await FirebaseFirestore.instance.collection('CursosCompletados').add({
+    DocumentReference userDocRef = FirebaseFirestore.instance.collection('CursosCompletados').doc(userId);
+
+    // Obtener timestamp manualmente
+    Timestamp timestamp = Timestamp.now();
+
+    await userDocRef.set({
       'uid': userId,
-      'IdCurso': cursoId,
-      'completado': true,
-      'timestamp': FieldValue.serverTimestamp(),
-      'evidenciaUrl': evidenciaUrl,
-      //'administradorId': FirebaseAuth.instance.currentUser?.uid,
-    });
+      'IdCursosCompletados': FieldValue.arrayUnion([cursoId]), // 🔹 Agregar curso al array
+      'FechaCursoCompletado': FieldValue.arrayUnion([timestamp]), // 🔹 Agregar fecha manualmente
+      'Evidencias': FieldValue.arrayUnion([evidenciaUrl]), // 🔹 Agregar URL de la evidencia
+      'completado': true, // 🔹 Mantener este campo como referencia
+    }, SetOptions(merge: true)); // 🔹 Evita sobrescribir datos anteriores
+
     print('Curso marcado como completado.');
   } catch (e) {
     print('Error al marcar curso como completado: $e');
   }
 }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -146,7 +155,7 @@ class NotificationDrawer extends StatelessWidget {
                     final notifications = snapshot.data!.docs;
                     if (notifications.isEmpty) {
                       return const Center(
-                        child: Text('No hay notificaciones'),
+                        child: Text('No hay notificacione NOWs'),
                       );
                     }
 

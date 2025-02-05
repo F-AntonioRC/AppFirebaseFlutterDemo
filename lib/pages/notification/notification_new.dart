@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testwithfirebase/pages/notification/notification_service.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
-class NotificationDrawer extends StatelessWidget {
+class NotificationNew extends StatelessWidget {
   final NotificationService _notificationService = NotificationService();
 
-   NotificationDrawer({super.key});
+   NotificationNew({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -12,8 +12,9 @@ import 'package:testwithfirebase/pages/detailCourses/page_detail_courses.dart';
 import 'package:testwithfirebase/pages/courses/screen_cursos.dart';
 import 'package:testwithfirebase/pages/documents/trimesterview.dart';
 import 'package:testwithfirebase/pages/employee/screen_employee.dart';
-import 'package:testwithfirebase/pages/notification_icon_widget.dart';
-import 'package:testwithfirebase/pages/send_document.dart';//primera parte de prueba
+
+import 'package:testwithfirebase/pages/notification/notification_new.dart';
+//import 'package:testwithfirebase/pages/notification_icon_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -67,8 +68,17 @@ class _HomePageState extends State<HomePage> {
                   scrolledUnderElevation: 10.0,
                   centerTitle: true,
                   systemOverlayStyle: SystemUiOverlayStyle.dark,
-                  actions: const [
-                    NotificationIconWidget()
+                 actions: [
+                    IconButton(
+    icon: const Icon(Icons.notifications),
+    tooltip: 'Notificaciones',
+    onPressed: () {
+      showDialog(
+        context: context,
+        builder: (context) => NotificationNew(), 
+      );
+    },
+  ),
                   ],
                 ),
                 // Drawer se muestra dependiendo del tamaño de pantalla
