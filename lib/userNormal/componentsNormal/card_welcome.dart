@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 
+/// Un widget que muestra un mensaje recordatorio dentro de una tarjeta (`Card`).
+///
+/// Esta tarjeta contiene un icono, un título y un subtítulo con un mensaje
+/// informativo sobre el envío de constancias y la revisión del correo.
+///
+/// ### Características:
+/// - Utiliza `ListTile` para estructurar el contenido.
+/// - Ajusta dinámicamente el tamaño del texto usando `responsiveFontSize`.
+/// - Se envuelve en un `Container` con márgenes para un mejor espaciado.
+
 class CardWelcome extends StatelessWidget {
+  // Constructor de la tarjeta de bienvenida.
   const CardWelcome({super.key});
 
   @override

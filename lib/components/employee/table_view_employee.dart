@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:testwithfirebase/components/MyPaginatedTable.dart';
+import 'package:testwithfirebase/components/table/MyPaginatedTable.dart';
 import 'package:testwithfirebase/providers/edit_provider.dart';
 import 'package:testwithfirebase/service/employeeService/database_methods_employee.dart';
 import '../../dataConst/constand.dart';

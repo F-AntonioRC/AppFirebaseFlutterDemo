@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:testwithfirebase/pages/configuration/card_colors.dart';
-import 'package:testwithfirebase/pages/configuration/theme_color.dart';
+import 'package:testwithfirebase/components/configuration/card_colors.dart';
+import 'package:testwithfirebase/components/configuration/theme_color.dart';
 
 class ConfigurationNormal extends StatelessWidget {
   const ConfigurationNormal({super.key});

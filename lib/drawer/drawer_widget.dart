@@ -96,8 +96,7 @@ class _NavigationItem {
                 color: darkBackground,
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0),
-            ),
-            accountEmail: Text(widget.userEmail ?? 'No Email',
+            ), accountEmail: Text(widget.userEmail ?? 'No Email',
                 style: const TextStyle(
                     color: dark, fontWeight: FontWeight.bold)),
             decoration: const BoxDecoration(

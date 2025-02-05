@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/components/formPatrts/body_widgets.dart';
-import 'package:testwithfirebase/components/header_search.dart';
+import 'package:testwithfirebase/components/table/header_search.dart';
 import '../formPatrts/custom_snackbar.dart';
 import 'table_view_courses.dart';
 import 'package:testwithfirebase/service/coursesService/database_courses.dart';

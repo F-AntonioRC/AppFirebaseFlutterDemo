@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/auth/login_or_register.dart';
 import 'package:testwithfirebase/pages/main_pages/home_page.dart';
-import 'package:testwithfirebase/service/methods.dart';
+import 'package:testwithfirebase/service/role_select.dart';
 import 'package:testwithfirebase/userNormal/pages/home_normal.dart';
 
 class AuthGate extends StatelessWidget {

@@ -2,22 +2,29 @@ import 'package:flutter/cupertino.dart';
 import '../../components/firebase_reusable/firebase_dropdown.dart';
 import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
 
+  /// Estructura del formulario para añadir/editar la asignación de cursos
+  ///
+  /// Este widget muestra diversos campos de entrada y controladores como [FirebaseDropdownController],
+  /// para registrar la información de un curso asignado, como el nombre, sare u Ore,
+  /// almacenando los valores capturados para añadir o editar un curso que este asigno.
+
 class FormBodyDetailCourses extends StatelessWidget {
-  final FirebaseDropdownController controllerCourse;
-  final FirebaseDropdownController controllerSare;
-  final FirebaseDropdownController controllerArea;
-  final String title;
+  final FirebaseDropdownController controllerCourse; // Controlador personalizado con la información del curso.
+  final FirebaseDropdownController controllerSare; // Controlador personalizado con la información del Sare.
+  final FirebaseDropdownController controllerOre; // Controlador personalizado con la información del Ore.
+  final String title; // Titulo de la cabecera.
 
   const FormBodyDetailCourses({super.key,
     required this.controllerCourse,
     required this.controllerSare,
-    required this.controllerArea,
+    required this.controllerOre,
     required this.title});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // Título del formulario.
         Text(
           title,
           style:
@@ -25,6 +32,7 @@ class FormBodyDetailCourses extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 10.0),
+        // Primera fila: Nombre del curso asignado.
         const Text('Curso',
             style: TextStyle(
                 fontSize: 20.0, fontWeight: FontWeight.bold)),
@@ -37,6 +45,7 @@ class FormBodyDetailCourses extends StatelessWidget {
           textHint: 'Seleccione un curso',
         ),
         const SizedBox(height: 10.0),
+        // Segunda fila: Sare y Ore asignados.
         Row(
           children: [
             Expanded(child: Column(
@@ -47,7 +56,7 @@ class FormBodyDetailCourses extends StatelessWidget {
                 const SizedBox(height: 10.0),
                 FirebaseDropdown(
                     enabled: true,
-                    controller: controllerArea,
+                    controller: controllerOre,
                     collection: "Ore",
                     data: "Ore",
                     textHint: "Seleccione un ORE"),

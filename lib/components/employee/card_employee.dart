@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/components/formPatrts/body_widgets.dart';
 import 'package:testwithfirebase/components/employee/table_view_employee.dart';
-import 'package:testwithfirebase/components/header_search.dart';
+import 'package:testwithfirebase/components/table/header_search.dart';
 import 'package:testwithfirebase/service/employeeService/database_methods_employee.dart';
 import '../formPatrts/custom_snackbar.dart';
 

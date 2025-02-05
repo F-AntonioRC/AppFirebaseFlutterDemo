@@ -7,19 +7,26 @@ import '../../components/firebase_reusable/firebase_value_dropdown.dart';
 import '../../components/formPatrts/my_textfileld.dart';
 import '../../util/responsive.dart';
 
+/// Estructura del formulario para añadir/editar empleados
+///
+/// Este widget muestra diversos campos de entrada y controladores como [FirebaseDropdownController],
+/// [TextEditingController], [FirebaseValueDropdownController], listas de valores (List<String>),
+/// entre otros para registrar la información de un empleado, como el nombre, email, puesto, area,
+/// sección, sare, ore y sexo, almacenando los valores capturados para añadir o editar un empleado.
+
 class FormBodyEmployee extends StatefulWidget {
-  final TextEditingController nameController;
-  final TextEditingController emailController;
-  final FirebaseValueDropdownController controllerPuesto;
-  final FirebaseValueDropdownController controllerArea;
-  final FirebaseValueDropdownController controllerSection;
-  final FirebaseDropdownController controllerSare;
-  final FirebaseDropdownController controllerOre;
-  final List<String> dropdownSex;
-  final String? sexDropdownValue;
-  final Function(String?)? onChangedDropdownList;
-  final Function(String?)? onChangedFirebaseValue;
-  final String title;
+  final TextEditingController nameController; // Controlador del nombre del empleado
+  final TextEditingController emailController; // Controlador del email
+  final FirebaseValueDropdownController controllerPuesto; // Controlador personalizado para seleccionar el puesto.
+  final FirebaseValueDropdownController controllerArea; // Controlador personalizado para seleccionar el area.
+  final FirebaseValueDropdownController controllerSection; // Controlador personalizado para seleccionar la sección.
+  final FirebaseDropdownController controllerSare; // Controlador personalizado para seleccionar el Sare.
+  final FirebaseDropdownController controllerOre; // Controlador personalizado para seleccionar el Ore.
+  final List<String> dropdownSex; // Lista de valores para seleccionar el sexo del empleado.
+  final String? sexDropdownValue; // Valor seleccionado para el sexo
+  final Function(String?)? onChangedDropdownList; // Función que se ejecuta al cambiar la opción del sexo.
+  final Function(String?)? onChangedFirebaseValue; // Función que se ejecuta al cambiar la opción del FirebaseValueDropdownController.
+  final String title; // Titulo de la cabecera.
 
   const FormBodyEmployee(
       {super.key,
@@ -41,10 +48,14 @@ class FormBodyEmployee extends StatefulWidget {
 }
 
 class _FormBodyEmployeeState extends State<FormBodyEmployee> {
+  // Declaración de valores para el FirebaseValueDropdownController
   String? selectedSection;
-  String? staticValue;
+  //String? staticValue;
 
-  // Define cómo mapear el valor de la sección a la colección correspondiente
+
+  /// Esta función cambia dinamicamente la colección seleccionada en el [FirebaseValueDropdownController]
+  /// de [controllerPuesto] segun el valor del [controllerSection] para poder
+  /// relacionarla con la colección en la base de datos correspondiente.
   String getCollectionForSection(String? section) {
     switch (section) {
       case 'Analista':
@@ -70,6 +81,7 @@ class _FormBodyEmployeeState extends State<FormBodyEmployee> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // Título del formulario.
         Text(
           widget.title,
           style: TextStyle(
@@ -77,6 +89,7 @@ class _FormBodyEmployeeState extends State<FormBodyEmployee> {
               fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
+        // Primera fila: Nombre del empleado y Area.
         Row(
           children: [
             Expanded(
@@ -141,6 +154,7 @@ class _FormBodyEmployeeState extends State<FormBodyEmployee> {
           ],
         ),
         const SizedBox(height: 15.0),
+        // Segunda fila: sección del empleado y Puesto.
         Row(
           children: [
             Expanded(
@@ -191,6 +205,7 @@ class _FormBodyEmployeeState extends State<FormBodyEmployee> {
           ],
         ),
         const SizedBox(height: 15.0),
+        // Tercera fila: Ore del empleado y Sare.
         Row(
           children: [
             Expanded(
@@ -234,6 +249,7 @@ class _FormBodyEmployeeState extends State<FormBodyEmployee> {
           ],
         ),
         const SizedBox(height: 15.0),
+        // Cuarta fila: email del empleado.
         Row(
           children: [
             Expanded(

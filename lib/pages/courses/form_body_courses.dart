@@ -6,17 +6,32 @@ import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
 import '../../components/formPatrts/my_textfileld.dart';
 import '../../util/responsive.dart';
 
+  /// Estructura del formulario para añadir/editar cursos
+  ///
+  /// Este widget muestra diversos campos de entrada y controladores como [FirebaseDropdownController],
+  /// [TextEditingController], listas de valores (List<String>), entre otros
+  /// para registrar la información de un curso, como el nombre, dependencia, nomenclatura,
+  /// trimestre, fechas de inicio, registro y envío de constancia, almacenando los valores
+  /// capturados para añadir o editar un curso.
+
 class FormBodyCourses extends StatefulWidget {
-  final String title;
-  final FirebaseDropdownController controllerDependency;
-  final TextEditingController nameCourseController;
-  final TextEditingController nomenclaturaController;
-  final List<String> dropdowntrimestre;
-  final String? trimestreValue;
-  final Function(String?)? onChangedDropdownList;
-  final TextEditingController dateController;
-  final TextEditingController registroController;
-  final TextEditingController envioConstanciaController;
+  final String title; // Titulo de la cabecera.
+  final FirebaseDropdownController
+      controllerDependency; // Controlador personalizado de la dependencia.
+  final TextEditingController
+      nameCourseController; // Controlador del nombre de curso.
+  final TextEditingController
+      nomenclaturaController; // Controlador de la nomenclatura del curso.
+  final List<String> dropdowntrimestre; // Lista de opciones para el trimestre.
+  final String? trimestreValue; // Valor seleccionado del trimestre.
+  final Function(String?)?
+      onChangedDropdownList; // Función que se ejecuta al cambiar la opción del trimestre.
+  final TextEditingController
+      dateController; // Controlador de la fecha de inicio del curso.
+  final TextEditingController
+      registroController; // Controlador de la fecha de registro del curso.
+  final TextEditingController
+      envioConstanciaController; // Controlador de la fecha de envio de constancia.
 
   const FormBodyCourses(
       {super.key,
@@ -29,7 +44,7 @@ class FormBodyCourses extends StatefulWidget {
       required this.dateController,
       required this.registroController,
       required this.envioConstanciaController,
-        required this.controllerDependency});
+      required this.controllerDependency});
 
   @override
   State<FormBodyCourses> createState() => _FormBodyCoursesState();
@@ -40,54 +55,61 @@ class _FormBodyCoursesState extends State<FormBodyCourses> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // Título del formulario.
         Text(widget.title,
             style: TextStyle(
                 fontSize: responsiveFontSize(context, 24),
                 fontWeight: FontWeight.bold),
             textAlign: TextAlign.center),
         const SizedBox(height: 10.0),
-Row(
-  children: [
-    Expanded(child: Column(
-      children: [
-        Text(
-          "Nombre del curso",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: responsiveFontSize(context, 20),
-              fontWeight: FontWeight.bold),
+        // Primera fila: Nombre del curso y Dependencia.
+        Row(
+          children: [
+            Expanded(
+                child: Column(
+              children: [
+                Text(
+                  "Nombre del curso",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: responsiveFontSize(context, 20),
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10.0),
+                // Widget personalizado para el campo de texto del nombre del curso.
+                MyTextfileld(
+                    hindText: "Campo obligatorio*",
+                    icon: const Icon(
+                      Icons.fact_check_sharp,
+                    ),
+                    controller: widget.nameCourseController,
+                    keyboardType: TextInputType.text),
+              ],
+            )),
+            const SizedBox( width: 20.0 ),
+            Expanded(
+                child: Column(
+              children: [
+                Text(
+                  'Dependencia',
+                  style: TextStyle(
+                      fontSize: responsiveFontSize(context, 20),
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10.0),
+                FirebaseDropdown(
+                  controller: widget.controllerDependency,
+                  collection: 'Dependencia',
+                  data: 'NombreDependencia',
+                  textHint: 'Seleccione una opción',
+                  enabled: true,
+                )
+              ],
+            )),
+          ],
         ),
         const SizedBox(height: 10.0),
-        MyTextfileld(
-            hindText: "Campo obligatorio*",
-            icon: const Icon(
-              Icons.fact_check_sharp,
-            ),
-            controller: widget.nameCourseController,
-            keyboardType: TextInputType.text),
-      ],
-    )),
-    const SizedBox(width: 20.0,),
-    Expanded(
-        child: Column(
-          children: [
-            Text(
-              'Dependencia',
-              style: TextStyle(
-                  fontSize: responsiveFontSize(context, 20),
-                  fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10.0),
-            FirebaseDropdown(
-                controller: widget.controllerDependency,
-                collection: 'Dependencia',
-                data: 'NombreDependencia',
-                textHint: 'Seleccione una opción', enabled: true,)
-          ],
-        )),
-  ],
-),
-        const SizedBox(height: 10.0),
+        // Segunda fila: Nomenclatura y Trimestre del curso.
         Row(
           children: [
             Expanded(
@@ -129,9 +151,8 @@ Row(
             ))
           ],
         ),
-        const SizedBox(
-          height: 10.0,
-        ),
+        const SizedBox( height: 10.0, ),
+        // Tercera fila: Fechas (Inicio del curso, Fecha de registro y Envio de constancia).
         Row(
           children: [
             Expanded(

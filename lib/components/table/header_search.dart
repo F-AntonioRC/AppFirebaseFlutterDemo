@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
-import '../dataConst/constand.dart';
-import '../util/responsive.dart';
+import '../../dataConst/constand.dart';
+import '../../util/responsive.dart';
+
+  /// Este widget se utiliza para la cabecera del componente [MyPaginatedTable] donde se
+  /// requiere:
+  /// - Mostrar un título.
+  /// - Permitir la búsqueda mediante un [TextField].
+  /// - Alternar entre dos modos de vista (por ejemplo, activos/inactivos) mediante un botón.
 
 class HeaderSearch extends StatelessWidget {
-  final TextEditingController searchInput;
-  final ValueChanged<String> onSearch;
-  final VoidCallback onToggleView;
-  final bool viewInactivos;
-  final String title;
-  final String viewOn;
-  final String viewOff;
+  final TextEditingController searchInput; // Controlador para el campo de búsqueda.
+  final ValueChanged<String> onSearch; // Callback que se invoca cuando el usuario escribe en el campo de búsqueda.
+  final VoidCallback onToggleView; // Callback que se invoca al presionar el botón para alternar la vista.
+  final bool viewInactivos; // Indicador para la vista de elementos inactivos
+  final String title; // Título que se muestra en la cabecera.
+  final String viewOn; // Texto que se muestra en el tooltip del botón cuando la vista activa está habilitada.
+  final String viewOff; // Texto que se muestra en el tooltip del botón cuando la vista inactiva está habilitada.
 
   const HeaderSearch({super.key,
     required this.searchInput,
@@ -24,6 +30,7 @@ class HeaderSearch extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        // Título del encabezado.
         Expanded(
             flex: 3,
             child: Text(title, style: TextStyle(
@@ -31,6 +38,7 @@ class HeaderSearch extends StatelessWidget {
               fontWeight: FontWeight.bold,
             )),
         ),
+        // Campo de búsqueda.
         Expanded(
             flex: 2,
             child: TextField(
@@ -43,6 +51,7 @@ class HeaderSearch extends StatelessWidget {
             )
         ),
         const SizedBox(width: 10.0),
+        // Botón para alternar la vista entre activos/inactivos.
         Ink(
           decoration: const ShapeDecoration(
             shape: CircleBorder(),

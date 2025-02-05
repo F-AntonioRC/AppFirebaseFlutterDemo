@@ -6,19 +6,20 @@ import '../../providers/edit_provider.dart';
 /// La clase `CourseFormLogic` contiene métodos y controladores para administrar datos de formularios 
 /// e interactuar con Firebase en la aplicación Flutter.
 class CourseFormLogic {
+  // Valores del trimestre.
   final List<String> dropdowntrimestre = [
     '1',
     '2',
     '3',
     '4'
   ];
-  String? trimestreValue;
-  TextEditingController nameCourseController = TextEditingController();
-  TextEditingController nomenclaturaController = TextEditingController();
-  TextEditingController dateController = TextEditingController();
-  TextEditingController registroController = TextEditingController();
-  TextEditingController envioConstanciaController = TextEditingController();
-  FirebaseDropdownController controllerDependency = FirebaseDropdownController();
+  String? trimestreValue; // Valor de trimestre seleccionado.
+  TextEditingController nameCourseController = TextEditingController(); // Controlador del nombre del curso.
+  TextEditingController nomenclaturaController = TextEditingController(); // Controlador de la nomenclatura del curso
+  TextEditingController dateController = TextEditingController(); // Controlador de la fecha de inicio del curso.
+  TextEditingController registroController = TextEditingController(); // Controlador de la fecha de registro del curso.
+  TextEditingController envioConstanciaController = TextEditingController(); // Controlador de la fecha de envio de constancia del curso.
+  FirebaseDropdownController controllerDependency = FirebaseDropdownController(); // Controlador personalizado para seleccionar la dependencia del curso.
 
   bool isClearing = false;
 

@@ -78,13 +78,13 @@ class _LineChartSampleState extends State<LineChartSample> {
     // Valores para mostrar en el eje X
     switch (value.toInt()) {
       case 2:
-        text = const Text('ENERO', style: style);
+        text = const Text('ENE', style: style);
         break;
       case 5:
-        text = const Text('FEBRERO', style: style);
+        text = const Text('FEB', style: style);
         break;
       case 8:
-        text = const Text('MARZO', style: style);
+        text = const Text('MAR', style: style);
         break;
       default:
         text = const Text('', style: style);
@@ -110,13 +110,13 @@ class _LineChartSampleState extends State<LineChartSample> {
     // Valores para mostrar en el eje Y
     switch (value.toInt()) {
       case 1:
-        text = '50';
+        text = '5';
         break;
       case 3:
-        text = '100';
+        text = '15';
         break;
       case 5:
-        text = '150';
+        text = '20';
         break;
       default:
         return Container();

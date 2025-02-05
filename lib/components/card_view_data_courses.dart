@@ -11,7 +11,7 @@ class CardViewDataCourses extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String imagePath = 'assets/images/logoActualizado.jpg';
+    const String imagePath = 'assets/images/logoActualizado.jpg';
 
     // Obtener dimensiones de la pantalla
     final screenWidth = MediaQuery.of(context).size.width;

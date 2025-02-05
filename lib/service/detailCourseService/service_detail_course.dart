@@ -8,6 +8,25 @@ import 'package:testwithfirebase/service/detailCourseService/database_detail_cou
 import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
 import '../handle_error_sentry.dart';
 
+/// Agrega un nuevo curso asignafo a la base de datos.
+///
+/// La función `addDetailCourse` recopila la información ingresada por el usuario a través de varios
+/// controladores personalizados. Valida que los campos requeridos no estén vacíos y, en caso
+/// contrario, muestra un mensaje de error.
+/// Si la validación es exitosa, genera un identificador aleatorio para el curso asignado, crea un mapa
+/// con los datos del curso asignado y llama a [MethodsDetailCourses] para agregar el curso en la base
+/// de datos. Al finalizar, muestra un mensaje de éxito, limpia los controladores y refresca la UI.
+///
+/// Parámetros:
+/// - [context]: Contexto actual de la aplicación.
+/// - [controllerSare]: Controlador para el Sare del curso Asignado.
+/// - [controllerOre]: Controlador para el Ore del curso Asignado.
+/// - [controllerCourse]: Controlador para seleccionar el valor del curso Asignado.
+/// - [clearControllers]: Callback para limpiar los controladores tras el registro.
+/// - [refreshData]: Callback para refrescar la UI o los datos luego de agregar el curso.
+///
+/// En caso de errores, se capturan y reportan a Sentry y se muestra un mensaje de error.
+
 Future<void> addDetailCourse(
     BuildContext context,
     FirebaseDropdownController controllerSare,
@@ -16,7 +35,7 @@ Future<void> addDetailCourse(
     VoidCallback clearControllers,
     VoidCallback refreshData
     ) async {
-
+    // Validación de los controladores.
     if(controllerCourse.selectedDocument == null) {
         showCustomSnackBar(context, 'Por favor seleccione un Curso para asignar', Colors.red);
         return;
@@ -27,7 +46,7 @@ Future<void> addDetailCourse(
         return;
     }
 
-    // Datos seleccionados
+    // Datos seleccionados para mostrar en el Widget personalizado `AssignCourseDialog`.
     String? selectedCourse = controllerCourse.selectedDocument?['NombreCurso'];
     String? selectedArea = controllerOre.selectedDocument?['Ore'];
     String? selectedSare = controllerSare.selectedDocument?['sare'];
@@ -35,6 +54,7 @@ Future<void> addDetailCourse(
     String? idOre = controllerOre.selectedDocument?['IdOre'];
     String? idSare = controllerSare.selectedDocument?['IdSare'];
 
+    // Mostrar el dialog con los parametros.
     showDialog(context: context, builder: (BuildContext context) {
         return AssignCourseDialog(
             dataOne: selectedCourse,
@@ -82,6 +102,24 @@ Future<void> addDetailCourse(
     });
 }
 
+/// Actualiza la información de un curso asignado existente en la base de datos.
+///
+/// La función `updateDetailCourses` toma la información actualizada del curso asignado desde
+/// varios controladores personalizados, construye un mapa con la información actualizada y
+/// llama a [MethodsDetailCourses] para actualizar el documento correspondiente en la base
+/// de datos. Tras la actualización, se muestra un mensaje de éxito, se limpian los controladores y se
+/// refrescan los datos.
+/// Parámetros:
+/// - [context]: Contexto actual de la aplicación.
+/// - [documentId]: Identificador del documento del curso asignado a actualizar.
+/// - [idCourse]: Controlador opcional para el curso del curso Asignado.
+/// - [idOre]: Controlador opcional para el Ore del curso Asignado.
+/// - [idSare]: Controlador opcional para el Sare del curso Asignado.
+/// - [selectedCourse]: Controlador opcional para el nombre del curso Asignado.
+/// - [selectedOre]: Controlador opcional para el nombre del Ore Asignado.
+/// - [selectedSare]: Controlador opcional para el nombre del Sare Asignado.
+/// - [clearControllers]: Callback para limpiar los controladores tras el registro.
+/// - [refreshData]: Callback para refrescar la UI o los datos luego de agregar el curso.
 Future<void> updateDetailCourses(
     BuildContext context,
     String documentId,
@@ -96,7 +134,7 @@ Future<void> updateDetailCourses(
     VoidCallback refreshData
     ) async {
 try{
-
+    // Mostrar el dialog con los parametros.
     showDialog(context: context, builder: (BuildContext context) {
         return AssignCourseDialog(
             dataOne: selectedCourse,

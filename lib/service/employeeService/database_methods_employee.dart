@@ -2,8 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 
+/// La clase `DatabaseMethodsEmployee` contiene las funciones para realizar las diferentes operaciones
+/// relacionadas con el manejo de los registros en la base de datos.
 class DatabaseMethodsEmployee {
-
 
 /// La función `addEmployeeDetails` añade un nuevo documento a la colección de firestore, contiene
 /// manejo de excepciones de Firebase y captura de las mismas con Sentry para el seguimiento de errores
@@ -119,7 +120,7 @@ class DatabaseMethodsEmployee {
   }
 
 /// La función `deleteEmployeeDetail` elimina el detalle de un empleado actualizando su estado a
-/// 'Inactivo' en una colección de Firestore, manejando excepciones de Firebase y capturándolas 
+/// 'Inactivo' en la colección de Firestore, manejando excepciones de Firebase y capturándolas
 /// con Sentry para seguimiento de errores.
 /// 
 /// Argumentos:
@@ -155,7 +156,7 @@ class DatabaseMethodsEmployee {
 /// Argumentos:
 /// id (String): El parámetro `id` en la función `activateEmployeeDetail` es un identificador único
 /// para el empleado cuyos detalles deben activarse. Esta función actualiza el campo 'Estado' del
-/// documento del empleado en la colección 'Empleados' en Firestore para establecer el estado en 'Activo'.
+/// documento del empleado en la colección 'Empleados' en Firestore para cambiar el estado a'Activo'.
   Future activateEmployeeDetail(String id) async {
     try {
       DocumentReference documentReference =
@@ -178,12 +179,12 @@ class DatabaseMethodsEmployee {
     }
   }
 
-/// La función `searchEmployeesByName` busca empleados por nombre en una colección de Firestore,
+/// La función `searchEmployeesByName` busca empleados por nombre en la colección de Firestore,
 /// maneja excepciones de Firebase y las captura con Sentry para el seguimiento de errores.
 /// 
 /// Argumentos:
 /// name (String): La función `searchEmployeesByName` es un metodo que busca empleados por nombre
-/// en una colección de Firestore llamada 'Empleados'. Utiliza el parámetro de entrada `name` para
+/// en la colección de Firestore llamada 'Empleados'. Utiliza el parámetro de entrada `name` para
 /// consultar empleados cuyos nombres sean mayores o iguales que el valor proporcionado.
 /// 
 /// Retorna:
@@ -194,12 +195,12 @@ class DatabaseMethodsEmployee {
 /// que el nombre seguido de 'z' (para búsquedas que comienzan con minusculas).
   Future<List<Map<String, dynamic>>> searchEmployeesByName(String name) async {
     try {
+      // Establecer el valor de la busqueda en mayuscula
+      String nameFinal = name.toUpperCase();
       final querySnapshot = await FirebaseFirestore.instance
           .collection('Empleados')
-          .where('Nombre', isGreaterThanOrEqualTo: name)
-          .where('Nombre',
-          isLessThan:
-          '${name}z') // Para búsquedas "que empiezan con minuscula"
+          .where('Nombre', isGreaterThanOrEqualTo: nameFinal)
+          .where('Nombre', isLessThan: '${nameFinal}z') // Limitar los resultados
           .get();
 
       return querySnapshot.docs.map((doc) => doc.data()).toList();
@@ -221,7 +222,7 @@ class DatabaseMethodsEmployee {
     }
 
 /// Esta función de Dart actualiza el campo 'CUPO' de un empleado específico en Firestore y maneja
-// las excepciones de Firebase al capturarlas con Sentry para el seguimiento de errores.
+/// las excepciones de Firebase al capturarlas con Sentry para el seguimiento de errores.
 /// 
 /// Argumentos:
 /// employeeId (String): El parámetro `employeeId` es un `String` que representa el identificador único

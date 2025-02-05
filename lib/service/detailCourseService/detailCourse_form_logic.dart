@@ -6,6 +6,7 @@ import '../../providers/edit_provider.dart';
 // La clase `DetailCourseFormLogic` contiene métodos para borrar controladores, actualizar datos 
 //del provider, refrescar datos del provider e inicializar controladores con datos de un provider.
 class DetailCourseFormLogic {
+  // Controladores personalizados para seleccionar un valor desde una coleccion en Firebase
   final FirebaseDropdownController controllerOre = FirebaseDropdownController();
   final FirebaseDropdownController controllerSare = FirebaseDropdownController();
   final FirebaseDropdownController controllerCourses = FirebaseDropdownController();

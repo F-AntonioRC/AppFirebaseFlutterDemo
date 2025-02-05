@@ -203,8 +203,6 @@ class _DialogEmailState extends State<DialogEmail> {
                     widget.dateInit,
                     widget.dateRegister,
                     widget.sendDocument,
-                    widget.nameOre,
-                    widget.nameSare,
                     widget.idOre,
                     widget.idSare);
                 if (context.mounted) {

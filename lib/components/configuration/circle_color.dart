@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
+  /// La clase `CircleColor` es un StatelessWidget que recibe como parametro el valor circleColor
+  /// de tipo Color para realizar una vista hacerca de los colores del tema en la UI mediante
+  /// la visualizacion de circulos responsivos.
 class CircleColor extends StatelessWidget {
   final Color circleColor;
 
@@ -7,11 +10,11 @@ class CircleColor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Obtener el ancho y la altura de la pantalla
+    // Se obtiene el ancho y la altura de la pantalla
     double screenSize= MediaQuery.of(context).size.width;
 
-    // Definir el tamaño del círculo como un porcentaje de la pantalla
-    double circleSize = screenSize < 600 ? screenSize * 0.05 : screenSize * 0.02; // Por ejemplo, 15% del ancho de la pantalla
+    // Se define el tamaño del círculo como un porcentaje de la pantalla
+    double circleSize = screenSize < 600 ? screenSize * 0.05 : screenSize * 0.02;
 
     return Container(
       width: circleSize,

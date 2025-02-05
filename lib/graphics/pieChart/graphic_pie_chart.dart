@@ -36,6 +36,7 @@ class _GraphicPieChartState extends State<GraphicPieChart> {
 
   @override
   Widget build(BuildContext context) {
+
     return FutureBuilder<List<ChartData>>(
       // Muestra un indicador de carga mientras se obtienen los datos.
       future: _futureChartData,
@@ -134,11 +135,12 @@ class _GraphicPieChartState extends State<GraphicPieChart> {
       final double percentage = (chartData.valor / total) * 100;
 
       return PieChartSectionData(
+
         color: _getColor(index),
         value: chartData.valor.toDouble(),
         title: '${percentage.toStringAsFixed(1)}%',
         // Ajusta el radio de la sección según si está seleccionada.
-        radius: isTouched ? 120 : 100,
+        radius: isTouched ? 100 : 120,
         titlePositionPercentageOffset: 0.55,
         // Configura el borde de la sección.
         borderSide: isTouched

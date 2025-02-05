@@ -9,50 +9,29 @@ import '../../components/firebase_reusable/firebase_dropdown_controller.dart';
 import '../handle_error_sentry.dart';
 import 'database_methods_employee.dart';
 
-/// La función `addEmployee` en flutter agrega un nuevo empleado a una base de datos con validación de 
-/// entrada y manejo de errores.
-/// 
-/// Argumentos:
-/// - contexto (BuildContext): El parámetro `BuildContext context` en la función `addEmployee` se usa
-/// para proporcionar el contexto en el que se lleva a cabo la operación de adición de empleados. Este contexto es
-/// generalmente necesario para tareas como mostrar cuadros de diálogo, barras de refrigerio o navegar a diferentes pantallas
-/// dentro de la aplicación. Permite que la función interactúe con difentes elementos.
-/// - nameController (TextEditingController): Un `TextEditingController` para capturar el nombre del 
-/// empleado. Se utiliza para recuperar el texto ingresado en el campo de nombre en la IU donde el 
-/// usuario ingresa el nombre del empleado.
-/// - emailController (TextEditingController): El parámetro `emailController` en la función `addEmployee`
-/// es un `TextEditingController` que se utiliza para controlar y recuperar el texto ingresado para el
-/// campo de correo electrónico del empleado que se agrega. Le permite acceder y manipular el texto 
-/// ingresado por el usuario en el campo de entrada de correo electrónico.
-/// - controllerPuesto (FirebaseValueDropdownController): `FirebaseValueDropdownController` para
-/// seleccionar el puesto o el cargo de un empleado de una lista desplegable que se completa desde 
-/// Firebase.
-/// - controllerArea (FirebaseValueDropdownController): el parámetro `controllerArea` en la
-/// función `addEmployee` es un `FirebaseValueDropdownController` que se usa para administrar la
-/// selección del menú desplegable para el área del empleado dentro de la organización. 
-/// - controllerSection (FirebaseValueDropdownController): El parámetro `controllerSection` en la
-/// función `addEmployee` es del tipo `FirebaseValueDropdownController`. Este controlador se usa para
-/// administrar el valor seleccionado para la sección del empleado dentro de una lista desplegable. 
-/// - sexDropdownValue (String): El parámetro `sexDropdownValue` en la función `addEmployee`
-/// representa el valor seleccionado para el género o sexo del empleado que se agrega. Es una variable de tipo String
-/// que contiene el valor seleccionado de un menú desplegable o campo de entrada que indica el género
-/// del empleado (por ejemplo, "H", "M").
-/// - controllerOre (FirebaseDropdownController): El parámetro `controllerOre` en la función `addEmployee`
-/// es del tipo `FirebaseDropdownController`. Este controlador se utiliza para administrar la selección
-/// del menú desplegable relacionada con el campo "Ore" para agregar un empleado. 
-/// - controllerSare (FirebaseDropdownController): `FirebaseDropdownController` para seleccionar
-/// valores de SARE de una colección de Firebase.
-/// - clearControllers (VoidCallback): El parámetro `clearControllers` en la función `addEmployee` es
-/// un tipo `VoidCallback`. Es una función que no toma ningún argumento y no devuelve ningún
-/// valor. Se utiliza para borrar los controladores de texto o cualquier otro estado que deba ser
-/// restablecido después
-/// - refreshData (VoidCallback): El parámetro `refreshData` en la función `addEmployee` es un
-/// tipo `VoidCallback`. Es una función que no toma ningún argumento y no devuelve ningún
-/// valor. En este contexto, se utiliza para activar una acción de actualización después de agregar 
-/// un empleado, para actualizar la interfaz de usuario.
-/// 
-/// Returna:
-///   La función `addEmployee` returna un `Future<void>`.
+/// Agrega un nuevo empleado a la base de datos.
+///
+/// La función `addEmployee` recopila la información ingresada por el usuario a través de varios
+/// controladores y un controlador para un desplegable (sexo). Valida que los campos requeridos no
+/// estén vacíos y, en caso contrario, muestra un mensaje de error.
+/// Si la validación es exitosa, genera un identificador aleatorio para el empleado, crea un mapa
+/// con los datos del empleado y llama a [DatabaseMethodsEmployee] para agregar el empleado en la base
+/// de datos. Al finalizar, muestra un mensaje de éxito, limpia los controladores y refresca la UI.
+///
+/// Parámetros:
+/// - [context]: Contexto actual de la aplicación.
+/// - [nameController]: Controlador para el nombre del empleado.
+/// - [emailController]: Controlador para el email del empleado.
+/// - [controllerPuesto]: Controlador personalizado para el puesto del empleado.
+/// - [controllerArea]: Controlador personalizado para el area del empleado.
+/// - [controllerSection]: Controlador personalizado para la sección del empleado.
+/// - [sexDropdownValue]: Valor seleccionado del sexo.
+/// - [controllerOre]: Controlador personalizado para el Ore del empleado.
+/// - [controllerSare]: Controlador personalizado para el Sare del empleado.
+/// - [clearControllers]: Callback para limpiar los controladores tras el registro.
+/// - [refreshData]: Callback para refrescar la UI o los datos luego de agregar el curso.
+///
+/// En caso de errores, se capturan y reportan a Sentry y se muestra un mensaje de error.
 Future<void> addEmployee(
     BuildContext context,
     TextEditingController nameController,
@@ -76,11 +55,14 @@ Future<void> addEmployee(
       controllerOre: controllerOre,
       controllerSare: controllerSare);
 
+  // Validación de los controladores.
   if (!validationResult.isValid) {
     return; // Detiene la ejecución si hay errores
   }
 
+  // Generación de los Id's aleatorios.
   String id = randomAlphaNumeric(4);
+  // Crea el mapa con la información del curso.
   Map<String, dynamic> employeeInfoMap = {
     "IdEmpleado": id,
     "Nombre": nameController.text.toUpperCase(),
@@ -97,6 +79,7 @@ Future<void> addEmployee(
   };
 
   try {
+    // Intenta agregar el empleado a la base de datos.
     await DatabaseMethodsEmployee().addEmployeeDetails(employeeInfoMap, id);
 
     if (context.mounted) {
@@ -136,48 +119,28 @@ Future<void> addEmployee(
 }
 
 
-/// La función `updateEmployee` en Dart actualiza los detalles de los empleados en una base de datos y maneja los informes de errores
-/// mediante Firebase y Sentry.
-/// 
-/// Argumentos:
-/// - context (BuildContext): El parámetro `context` en la función `updateEmployee` es de tipo
-/// `BuildContext` y se utiliza para proporcionar el contexto en el que se realiza la operación de 
-/// actualización. 
-/// - documentId (String): El parámetro `documentId` es el identificador único del documento del empleado
-/// en la base de datos que desea actualizar.
-/// - nameController (TextEditingController): el parametro `nameController` es un `TextEditingController`
-/// que se utiliza para controlar y recuperar la entrada de texto para el nombre del empleado.
-/// - emailController (TextEditingController): `emailController` es un `TextEditingController` que
-/// se utiliza para controlar y recuperar el texto ingresado para el campo de correo electrónico en 
-/// el formulario de actualización de empleados.
-/// - controllerPuesto (FirebaseValueDropdownController): El parámetro `controllerPuesto` en la
-/// función `updateEmployee` es del tipo `FirebaseValueDropdownController`. Este controlador se usa para
-/// administrar el estado de un widget desplegable que se completa con valores de Firebase. 
-/// - controllerArea (FirebaseValueDropdownController): El parámetro `controllerArea` en la función 
-/// `updateEmployee` es del tipo `FirebaseValueDropdownController`. 
-/// - controllerSection (FirebaseValueDropdownController): El parámetro `controllerSection` en la
-/// función `updateEmployee` es del tipo `FirebaseValueDropdownController`. Este controlador se utiliza para
-/// administrar el valor seleccionado de una lista desplegable relacionada con la sección de un empleado. 
-/// - sexDropdownValue (String): El parámetro `sexDropdownValue` en la función `updateEmployee` es una
-/// cadena que representa el valor seleccionado para el género del empleado. Se utiliza para actualizar el
-/// campo 'Sexo' en los datos del empleado con el valor de género seleccionado.
-/// - controllerOre (FirebaseDropdownController): El parámetro `controllerOre` en la función 
-/// `updateEmployee` es del tipo `FirebaseDropdownController`. Este controlador se utiliza para 
-/// administrar la selección del menú desplegable para el campo "Ore" en los datos del empleado.
-/// - controllerSare (FirebaseDropdownController): `FirebaseDropdownController` para seleccionar
-/// valores de SARE de una colección de Firebase.
-/// initialData (Map<String, dynamic>): El parámetro `initialData` en la función `updateEmployee`
-/// es un mapa que contiene los datos iniciales del empleado que se está actualizando. Este mapa incluye
-/// pares clave-valor que representan varios atributos del empleado, como su ID, nombre, correo electrónico, sexo,
-/// puesto, sección, etc. Estos datos iniciales son mostrados en la UI para la edición mediante el formulario.
-/// - clearControllers (VoidCallback): El parámetro `clearControllers` en la función `updateEmployee` es
-/// un tipo `VoidCallback`. Es una función que no toma ningún argumento y no devuelve ningún
-/// valor. Se utiliza para borrar los controladores de texto o cualquier otro estado que deba ser
-/// restablecido después
-/// - refreshData (VoidCallback): El parámetro `refreshData` en la función `updateEmployee` es un
-/// tipo `VoidCallback`. Es una función que no toma ningún argumento y no devuelve ningún
-/// valor. En este contexto, se utiliza para activar una acción de actualización después de agregar 
-/// un empleado, para actualizar la interfaz de usuario.
+/// Actualiza la información de un empleado existente en la base de datos.
+///
+/// La función `updateEmployee` toma la información actualizada del empleado desde varios controladores
+/// y un controlador para un desplegable, construye un mapa con la información actualizada y
+/// llama a [DatabaseMethodsEmployee] para actualizar el documento correspondiente en la base
+/// de datos. Tras la actualización, se muestra un mensaje de éxito, se limpian los controladores y se
+/// refrescan los datos.
+///
+/// Parámetros:
+/// - [context]: Contexto actual de la aplicación.
+/// - [initialData]: Datos iniciales del empleado que se están editando (opcional).
+/// - [documentId]: Identificador del documento del empleado a actualizar.
+/// - [nameController]: Controlador para el nombre del empleado.
+/// - [emailController]: Controlador para el email del empleado.
+/// - [controllerPuesto]: Controlador personalizado para el puesto del empleado.
+/// - [controllerArea]: Controlador personalizado para el area del empleado.
+/// - [controllerSection]: Controlador personalizado para la sección del empleado.
+/// - [sexDropdownValue]: Valor seleccionado del sexo.
+/// - [controllerOre]: Controlador personalizado para el Ore del empleado.
+/// - [controllerSare]: Controlador personalizado para el Sare del empleado.
+/// - [clearControllers]: Callback para limpiar los controladores tras el registro.
+/// - [refreshData]: Callback para refrescar la UI o los datos luego de agregar el curso.
 Future<void> updateEmployee(
     BuildContext context,
     String documentId,
@@ -250,30 +213,21 @@ Future<void> updateEmployee(
   }
 }
 
-/// La función `assignCupo` asigna un cupo a un empleado en una aplicación Flutter, manejando 
+/// La función `assignCupo` asigna un cupo a un empleado en la aplicación, manejando
 /// excepciones de Firebase y reportando errores a Sentry.
 ///
-/// Argumentos:
-/// - context (BuildContext): El parámetro `context` en la función `assignCupo` es de tipo
-/// `BuildContext` y se utiliza para proporcionar el contexto en el que se realiza la asignación de cupo.
-/// - controllerCupo (TextEditingController): El parámetro `controllerCupo` es un
-/// `TextEditingController` que se usa para controlar el texto que se edita en un campo de entrada. Le permite
-/// recuperar el valor actual del texto, borrar el texto, establecer un texto nuevo y más. En este 
-/// fragmento de código se usa para obtener el texto.
-/// - idChange (String): El parámetro `idChange` en la función `assignCupo` es una variable String que
-/// representa el identificador del empleado cuyo cupo se está asignando. Se utiliza para
-/// identificar de forma única al empleado en la base de datos y realizar la operación de asignación de 
-/// cupo específicamente para ese empleado.
-/// - refreshTable (Función): El parámetro `refreshTable` en la función `assignCupo` es una función
-/// que se pasa como argumento. Es una función de devolución de llamada que se llama después de que el cupo (cuota)
-/// se asigna correctamente a un empleado. Esta función es responsable de actualizar la tabla o la interfaz de usuario para
-/// reflejar los cambios.
+/// Parámetros:
+/// - [context]: Contexto actual de la aplicación.
+/// - [controllerCupo]: Datos registrados por el controlador para asignar el CUPO
+/// - [idChange]: Identificador del documento del empleado a asignar CUPO.
+/// - [refreshTable]: Callback para refrescar la UI o los datos luego de agregar el curso.
 Future<void> assignCupo(
     BuildContext context,
     TextEditingController controllerCupo,
     String idChange,
     Function refreshTable) async {
   try {
+    // Intentar actualiza la colección
     await DatabaseMethodsEmployee.addEmployeeCupo(
         idChange, controllerCupo.text);
     if (context.mounted) {
@@ -312,7 +266,7 @@ Future<void> assignCupo(
 /// controladores y devuelve una lista de errores, si los hay, además de mostrar los errores 
 /// con la función ´showCustomSnackBar´.
 /// 
-/// Argumentos:
+/// Parametros:
 /// - context (BuildContext): El parametro `context` es requerido para acceder al BuildContext en Flutter,
 /// es necesario para mostrar diversos elementos y mensajes en la UI.
 /// - nameController (TextEditingController): El pametro `nameController` es un `TextEditingController`

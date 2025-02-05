@@ -78,17 +78,18 @@ class _NavDrawerWidgetNormalState extends State<NavDrawerWidgetNormal> {
             accountName: const Text(
               'Bienvenido',
               style: TextStyle(
-                  color: Colors.white,
+                  color: darkBackground,
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0),
             ), accountEmail: Text(widget.userEmail ?? 'No Email',
             style: const TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+                color: dark, fontWeight: FontWeight.bold)),
         decoration: const BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
                 image: AssetImage('assets/images/logoActualizado.jpg'))),
           currentAccountPicture: const CircleAvatar(
+            radius: 2,
             backgroundImage: AssetImage('assets/images/logo.jpg'),
           ),
         ),
