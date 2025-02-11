@@ -34,15 +34,27 @@ class _CardColorsState extends State<CardColors> {
               SizedBox(height: 5),
               CircleColor(circleColor: dark),
               SizedBox(height: 5),
-              CircleColor(circleColor: greenColor),
+              CircleColor(circleColor: greenColorLight),
             ],
             ),
             SizedBox(width: 5.0),
             Column(
               children: [
-                CircleColor(circleColor: ligthBackground),
+                CircleColor(circleColor: lightBackground),
                 SizedBox(height: 5),
-                CircleColor(circleColor: ligth)
+                CircleColor(circleColor: light),
+                SizedBox(height: 5),
+                CircleColor(circleColor: wineLight)
+              ],
+            ),
+            SizedBox(width: 5.0),
+            Column(
+              children: [
+                CircleColor(circleColor: Colors.black),
+                SizedBox(height: 5),
+                CircleColor(circleColor: pantone872c),
+                SizedBox(height: 5),
+                CircleColor(circleColor: wineDark)
               ],
             )
 

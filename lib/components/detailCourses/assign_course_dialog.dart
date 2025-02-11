@@ -133,7 +133,12 @@ class _AssignCourseDialogState extends State<AssignCourseDialog> {
               widget.accept();
               if (context.mounted) {
                 showCustomSnackBar(
-                    context, widget.messageSuccess, greenColor);
+                    context, widget.messageSuccess, greenColorLight);
+              }
+
+              // Cierra el diálogo después de ejecutar la acción.
+              if (context.mounted) {
+                Navigator.pop(context);
               }
             } catch (e) {
               // Muestra un mensaje de error en caso de que ocurra una excepción.
@@ -141,7 +146,6 @@ class _AssignCourseDialogState extends State<AssignCourseDialog> {
                 showCustomSnackBar(context, "Error: $e", Colors.red);
               }
             }
-            Navigator.pop(context);
           },
           // Acción al presionar "Cancelar".
           onCancel: () => Navigator.pop(context),

@@ -15,7 +15,6 @@ class CourseFormLogic {
   ];
   String? trimestreValue; // Valor de trimestre seleccionado.
   TextEditingController nameCourseController = TextEditingController(); // Controlador del nombre del curso.
-  TextEditingController nomenclaturaController = TextEditingController(); // Controlador de la nomenclatura del curso
   TextEditingController dateController = TextEditingController(); // Controlador de la fecha de inicio del curso.
   TextEditingController registroController = TextEditingController(); // Controlador de la fecha de registro del curso.
   TextEditingController envioConstanciaController = TextEditingController(); // Controlador de la fecha de envio de constancia del curso.
@@ -27,7 +26,6 @@ class CourseFormLogic {
 /// la aplicación flutter.
   void clearControllers() {
     nameCourseController.clear();
-    nomenclaturaController.clear();
     trimestreValue = null;
     dateController.clear();
     registroController.clear();
@@ -75,7 +73,6 @@ class CourseFormLogic {
     if (isClearing) return;
     if (provider.data != null) {
       nameCourseController.text = provider.data?['NombreCurso'];
-      nomenclaturaController.text = provider.data?['NomenclaturaCurso'];
       trimestreValue = provider.data?['Trimestre'];
       dateController.text = provider.data?['FechaInicioCurso'];
       registroController.text = provider.data?['FechaRegistro'];

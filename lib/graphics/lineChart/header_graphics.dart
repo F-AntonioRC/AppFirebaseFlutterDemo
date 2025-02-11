@@ -38,7 +38,7 @@ class HeaderGraphics extends StatelessWidget {
             //Widget para alternar el valor de la grafica con los pametros establecidos.
             child: Ink(
               decoration: const ShapeDecoration(
-                  shape: CircleBorder(), color: ligthBackground),
+                  shape: CircleBorder(), color: lightBackground),
               child: IconButton(
                 onPressed: onToggleView,
                 tooltip: viewOtherGraphics ? viewOff : viewOn,

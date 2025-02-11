@@ -153,7 +153,7 @@ class _DialogEmailState extends State<DialogEmail> {
                           await copyEmail(context, widget.idOre, widget.idSare);
                           if (context.mounted) {
                             showCustomSnackBar(context,
-                                "Correos copiados al portapapeles", greenColor);
+                                "Correos copiados al portapapeles", greenColorLight);
                           }
                         } catch (e, stacktrace) {
                           if (context.mounted) {
@@ -207,7 +207,8 @@ class _DialogEmailState extends State<DialogEmail> {
                     widget.idSare);
                 if (context.mounted) {
                   showCustomSnackBar(
-                      context, "Email generado con exito", greenColor);
+                      context, "Email generado con exito", greenColorLight);
+                  Navigator.pop(context);
                 }
               } catch (e, stacktrace) {
                 if (context.mounted) {

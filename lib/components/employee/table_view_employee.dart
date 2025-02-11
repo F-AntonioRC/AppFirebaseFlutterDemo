@@ -92,7 +92,7 @@ class TableViewEmployee extends StatelessWidget {
                     refreshTable();
                     if (context.mounted) {
                       showCustomSnackBar(
-                          context, "Empleado eliminado Correctamente", greenColor);
+                          context, "Empleado eliminado Correctamente", greenColorLight);
                     }
                   } catch (e) {
                     if (context.mounted) {
@@ -135,7 +135,7 @@ class TableViewEmployee extends StatelessWidget {
                     refreshTable();
                     if (context.mounted) {
                       showCustomSnackBar(
-                          context, "Empleado restaurado Correctamente", greenColor);
+                          context, "Empleado restaurado Correctamente", greenColorLight);
                     }
                   } catch (e) {
                     if (context.mounted) {

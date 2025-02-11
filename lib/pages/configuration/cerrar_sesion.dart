@@ -41,7 +41,6 @@ class _CerrarSesionState extends State<CerrarSesion> {
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: responsiveFontSize(context, 20),
-                color: Colors.red,
                 fontWeight: FontWeight.bold),
           ),
         ),
@@ -71,7 +70,7 @@ class _CerrarSesionState extends State<CerrarSesion> {
               onPressed: () {
                 // Función para cerrar la sesión
                 _logout(context);
-              }, buttonColor: greenColor,
+              }, buttonColor: greenColorLight,
             )
           ],
         )

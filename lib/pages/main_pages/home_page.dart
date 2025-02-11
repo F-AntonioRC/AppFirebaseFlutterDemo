@@ -71,25 +71,28 @@ class _HomePageState extends State<HomePage> {
                     _getAppbarTitle(state.selectedItem),
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  shadowColor: Colors.black ,
+                  shadowColor: Colors.black,
                   scrolledUnderElevation: 10.0,
                   centerTitle: true,
                   systemOverlayStyle: SystemUiOverlayStyle.dark,
-                 actions: [
+                  // Acciones para mostrar datos referentes al rol que ha iniciado sesión.
+                  actions: [
                     IconButton(
-    icon: const Icon(Icons.notifications),
-    tooltip: 'Notificaciones',
-    onPressed: () {
-      showDialog(
-        context: context,
-        builder: (context) => NotificationNew(), 
-      );
-    },
-  ),
+                      icon: const Icon(Icons.notifications),
+                      tooltip: 'Notificacione s',
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => NotificationNew(),
+                        );
+                      },
+                    ),
                   ],
                 ),
                 // Drawer se muestra dependiendo del tamaño de pantalla
-                drawer: isLargeScreen ? null : NavDrawerWidget(userEmail: userEmail),
+                drawer: isLargeScreen
+                    ? null
+                    : NavDrawerWidget(userEmail: userEmail),
                 body: Row(
                   children: [
                     if (isLargeScreen)
@@ -119,12 +122,12 @@ class _HomePageState extends State<HomePage> {
       case NavItem.emailView:
         return const PageDetailCourses();
       case NavItem.documentView:
-        return  const TrimesterView();//nuevo cambio en la vista 
+        return const TrimesterView(); //nuevo cambio en la vista
       case NavItem.logout:
         return const CerrarSesion();
       case NavItem.configuration:
         return const Configuration();
-      }
+    }
   }
 
   String _getAppbarTitle(NavItem selectedItem) {
@@ -143,6 +146,6 @@ class _HomePageState extends State<HomePage> {
         return "Configuración";
       case NavItem.logout:
         return "Cerrar Sesión";
-      }
+    }
   }
 }

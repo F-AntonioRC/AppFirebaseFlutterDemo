@@ -86,7 +86,7 @@ Future<void> addEmployee(
       showCustomSnackBar(
         context,
         "Empleado agregado correctamente",
-        greenColor,
+        greenColorLight,
       );
     }
     // Limpiar y actualizar las entradas
@@ -182,7 +182,7 @@ Future<void> updateEmployee(
       showCustomSnackBar(
         context,
         "Empleado actualizado correctamente",
-        greenColor,
+        greenColorLight,
       );
       refreshData();
     }
@@ -231,7 +231,7 @@ Future<void> assignCupo(
     await DatabaseMethodsEmployee.addEmployeeCupo(
         idChange, controllerCupo.text);
     if (context.mounted) {
-      showCustomSnackBar(context, 'CUPO Asignado correctamente', greenColor);
+      showCustomSnackBar(context, 'CUPO Asignado correctamente', greenColorLight);
       Navigator.pop(context);
     }
     refreshTable();

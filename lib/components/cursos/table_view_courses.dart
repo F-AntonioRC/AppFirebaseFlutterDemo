@@ -60,9 +60,9 @@ class TableViewCourses extends StatelessWidget {
                 "Nombre",
                 "Dependencia",
                 "Trimestre",
-                "Inicio curso",
+                "Inicio",
                 "Registro",
-                "Envio Constancia"
+                "Constancia"
               ],
               //Datos extraidos de la base de datos, junto con el nombre del campo para mostrar su valor
               //en las filas del componente MyPaginatedTable
@@ -90,7 +90,7 @@ class TableViewCourses extends StatelessWidget {
                   await methodsCourses.deleteCoursesDetail(id);
                   refreshTable();
                   if(context.mounted) {
-                    showCustomSnackBar(context, "Curso eliminado correctamente", greenColor);
+                    showCustomSnackBar(context, "Curso eliminado correctamente", greenColorLight);
                   }
                 } catch (e, stackTrace) {
                   if(context.mounted) {
@@ -115,7 +115,7 @@ class TableViewCourses extends StatelessWidget {
                   await methodsCourses.activateCoursesDetail(id);
                   refreshTable();
                   if(context.mounted) {
-                    showCustomSnackBar(context, "Curso restaurado correctamente", greenColor);
+                    showCustomSnackBar(context, "Curso restaurado correctamente", greenColorLight);
                   }
                 } catch (e, stackTrace) {
                   if(context.mounted) {

@@ -20,7 +20,6 @@ import '../handle_error_sentry.dart';
 /// Parámetros:
 /// - [context]: Contexto actual de la aplicación.
 /// - [nameCourseController]: Controlador para el nombre del curso.
-/// - [nomenclaturaController]: Controlador para la nomenclatura del curso.
 /// - [dateController]: Controlador para la fecha de inicio del curso.
 /// - [registroController]: Controlador para la fecha de registro del curso.
 /// - [envioConstanciaController]: Controlador para la fecha de envío de constancia.
@@ -33,7 +32,6 @@ import '../handle_error_sentry.dart';
 Future<void> addCourse(
     BuildContext context,
     TextEditingController nameCourseController,
-    TextEditingController nomenclaturaController,
     TextEditingController dateController,
     TextEditingController registroController,
     TextEditingController envioConstanciaController,
@@ -83,7 +81,6 @@ Future<void> addCourse(
     Map<String, dynamic> courseInfoMap = {
       "IdCurso": id,
       "NombreCurso": nameCourseController.text.toUpperCase(),
-      "NomenclaturaCurso": nomenclaturaController.text,
       "FechaInicioCurso": dateController.text,
       "FechaRegistro": registroController.text,
       "FechaEnvioConstancia": envioConstanciaController.text,
@@ -96,7 +93,7 @@ Future<void> addCourse(
     await MethodsCourses().addCourse(courseInfoMap, id); // Intenta agregar el curso a la base de datos.
     if (context.mounted) {
       showCustomSnackBar(
-          context, "Curso añadido correctamente", greenColor);
+          context, "Curso añadido correctamente", greenColorLight);
     }
     clearControllers();
     refreshData();
@@ -140,7 +137,6 @@ Future<void> addCourse(
 /// - [initialData]: Datos iniciales del curso que se están editando (opcional).
 /// - [documentId]: Identificador del documento del curso a actualizar.
 /// - [nameCourseController]: Controlador para el nombre del curso.
-/// - [nomenclaturaController]: Controlador para la nomenclatura del curso.
 /// - [dateController]: Controlador para la fecha de inicio del curso.
 /// - [registroController]: Controlador para la fecha de registro del curso.
 /// - [envioConstanciaController]: Controlador para la fecha de envío de constancia.
@@ -155,7 +151,6 @@ Future<void> updateCourse(
     Map<String, dynamic>? initialData,
     String documentId,
     TextEditingController nameCourseController,
-    TextEditingController nomenclaturaController,
     TextEditingController dateController,
     TextEditingController registroController,
     TextEditingController envioConstanciaController,
@@ -168,7 +163,6 @@ Future<void> updateCourse(
       "IdCurso": documentId,
       "NombreCurso": nameCourseController.text.toUpperCase(),
       "Trimestre": trimestreValue.toString(),
-      "NomenclaturaCurso": nomenclaturaController.text,
       "FechaInicioCurso": dateController.text,
       "FechaRegistro": registroController.text,
       "FechaEnvioConstancia": envioConstanciaController.text,
@@ -185,7 +179,7 @@ Future<void> updateCourse(
       showCustomSnackBar(
         context,
         "Curso actualizado correctamente",
-        greenColor,
+        greenColorLight,
       );
     }
     // Limpiar los controladores

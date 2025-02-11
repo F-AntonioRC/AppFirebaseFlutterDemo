@@ -28,7 +28,7 @@ class BackgruondMain extends StatelessWidget {
     double widthFactor = screenWidth < 600 ? 0.90 : 0.60;
 
     return Scaffold(
-      backgroundColor: ligthBackground,
+      backgroundColor: lightBackground,
       body: SafeArea(
           child: Stack(
             children: [
@@ -40,7 +40,7 @@ class BackgruondMain extends StatelessWidget {
                     width: 30,
                     height: 30,
                     decoration: const BoxDecoration(
-                        color: greenColor, shape: BoxShape.circle),
+                        color: greenColorLight, shape: BoxShape.circle),
                   )),
               Positioned(
                   top: 10,
@@ -49,7 +49,7 @@ class BackgruondMain extends StatelessWidget {
                     width: 150,
                     height: 150,
                     decoration: const BoxDecoration(
-                        color: greenColor, shape: BoxShape.circle),
+                        color: greenColorLight, shape: BoxShape.circle),
                   )),
               Positioned(
                   bottom: 100,
@@ -58,7 +58,7 @@ class BackgruondMain extends StatelessWidget {
                     width: 30,
                     height: 30,
                     decoration: const BoxDecoration(
-                        color: greenColor, shape: BoxShape.circle),
+                        color: greenColorLight, shape: BoxShape.circle),
                   )),
               Positioned(
                   bottom: 10,
@@ -67,27 +67,29 @@ class BackgruondMain extends StatelessWidget {
                     width: 100,
                     height: 100,
                     decoration: const BoxDecoration(
-                        color: greenColor, shape: BoxShape.circle),
+                        color: greenColorLight, shape: BoxShape.circle),
                   )),
               // Contenido principal centrado en la pantalla.
               Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // Imagen de fondo o logo de la aplicación, ajustada a un 40% del ancho disponible.
-                    FractionallySizedBox(
-                      widthFactor: Responsive.isMobile(context) ? 0.8 : 0.5,
-                      child: const ImageBackgroundMain(),
-                    ),
-                    const SizedBox(height: 20.0,),
-                    // Área que contiene el formulario o widget principal,
-                    // cuyo ancho se ajusta en función del tamaño de la pantalla.
-                    FractionallySizedBox(
-                      widthFactor: widthFactor,
-                      child: BodyWidgets(body: formInit),
-                    ),
-                  ],
+                child: SingleChildScrollView(
+                  child:  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Imagen de fondo o logo de la aplicación, ajustada a un 40% del ancho disponible.
+                      FractionallySizedBox(
+                        widthFactor: Responsive.isMobile(context) ? 0.9 : 0.5,
+                        child: const ImageBackgroundMain(),
+                      ),
+                      const SizedBox(height: 20.0,),
+                      // Área que contiene el formulario o widget principal,
+                      // cuyo ancho se ajusta en función del tamaño de la pantalla.
+                      FractionallySizedBox(
+                        widthFactor: widthFactor,
+                        child: BodyWidgets(body: formInit),
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],

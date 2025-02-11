@@ -21,14 +21,14 @@ class ThemeColor extends StatelessWidget {
         Text(
           "Modo oscuro",
           style: TextStyle(
-            fontSize: responsiveFontSize(context, 22),
+            fontSize: responsiveFontSize(context, 20),
             fontWeight: FontWeight.bold,
           ),
           textAlign: TextAlign.center,
         ),
         const SizedBox(width: 5.0),
         // Icono predeterminado del tema [Modo claro]
-        const Icon(Icons.sunny),
+        const Icon(Icons.sunny, size: 25),
         const SizedBox(width: 5.0),
         // Switch que llama al Provider para cambiar los colores del tema al modo oscuro
         Switch(
@@ -39,7 +39,7 @@ class ThemeColor extends StatelessWidget {
         ),
         const SizedBox(width: 5.0),
         // Icono del modo oscuro
-        const Icon(Icons.dark_mode),
+        const Icon(Icons.dark_mode, size: 25),
       ],
     ),));
   }

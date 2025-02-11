@@ -52,12 +52,13 @@ class _GraphicLineChartState extends State<GraphicLineChart> {
   ///
   /// En caso de error, se muestra un mensaje de error en pantalla.
   Future<void> _fetchChartData() async {
-    // Se selecciona el campo de datos a usar según el parámetro viewOtherGraphics.
-    final String dataField = widget.viewOtherGraphics ? 'Ore' : 'Sare';
     try {
       // Se obtienen los datos desde el servicio.
       List<ChartData> chartData =
-          await _chartLineService.getDataBySelect('Empleados', dataField);
+      // Se selecciona el campo de datos a usar según el parámetro viewOtherGraphics.
+      widget.viewOtherGraphics
+          ? await _chartLineService.getArrayDataByDate('CursosCompletados', 'FechaCursoCompletado')
+        : await _chartLineService.getDataBySelect('Empleados', 'Sare');
 
       // Se preparan los puntos del gráfico y las etiquetas para el eje X.
       List<FlSpot> dataPoints = [];
@@ -83,7 +84,7 @@ class _GraphicLineChartState extends State<GraphicLineChart> {
       }
       Sentry.captureException(e, stackTrace: stackTrace,
       withScope: (scope) {
-        scope.setTag('Error_Widget__fetchChartData', _xLabels as String);
+        scope.setTag('Error_Widget_GraphicLineChart', e.toString());
       }
       );
       setState(() {
@@ -157,7 +158,7 @@ class _GraphicLineChartState extends State<GraphicLineChart> {
           leftTitles: const AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
-              interval: 1,
+              interval: 50,
               reservedSize: 42,
             ),
           ),

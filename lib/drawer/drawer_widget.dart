@@ -98,15 +98,11 @@ class _NavigationItem {
                   fontSize: 20.0),
             ), accountEmail: Text(widget.userEmail ?? 'No Email',
                 style: const TextStyle(
-                    color: dark, fontWeight: FontWeight.bold)),
+                    color: Colors.black, fontWeight: FontWeight.bold)),
             decoration: const BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.cover,
                     image: AssetImage('assets/images/logo.jpg'))),
-            currentAccountPicture: const CircleAvatar(
-              radius: 2,
-              backgroundImage: AssetImage('assets/images/logoIcon.jpg'),
-            ),
           ),
           // Drawer items
           ListView.builder(

@@ -62,7 +62,6 @@ class _CoursesState extends State<Courses> {
           FormBodyCourses(
             title: widget.initialData != null ? "Editar Curso" : "Añadir Curso",
             nameCourseController: _courseLogic.nameCourseController,
-            nomenclaturaController: _courseLogic.nomenclaturaController,
             dropdowntrimestre: _courseLogic.dropdowntrimestre,
             trimestreValue: _courseLogic.trimestreValue,
             dateController: _courseLogic.dateController,
@@ -84,7 +83,6 @@ class _CoursesState extends State<Courses> {
               await addCourse(
                   context,
                   _courseLogic.nameCourseController,
-                  _courseLogic.nomenclaturaController,
                   _courseLogic.dateController,
                   _courseLogic.registroController,
                   _courseLogic.envioConstanciaController,
@@ -103,7 +101,6 @@ class _CoursesState extends State<Courses> {
                   widget.initialData,
                   documentId,
                   _courseLogic.nameCourseController,
-                  _courseLogic.nomenclaturaController,
                   _courseLogic.dateController,
                   _courseLogic.registroController,
                   _courseLogic.envioConstanciaController,

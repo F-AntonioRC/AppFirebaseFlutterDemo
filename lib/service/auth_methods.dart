@@ -124,7 +124,7 @@ Future<void> sendPasswordReset(BuildContext context, String email) async {
     await authService.sendPasswordReset(email.trim());
     if (context.mounted) {
       showCustomSnackBar(context,
-          "Revisa tu correo para restablecer tu contraseña", greenColor);
+          "Revisa tu correo para restablecer tu contraseña", greenColorLight);
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const LoginOrRegister()));
     }

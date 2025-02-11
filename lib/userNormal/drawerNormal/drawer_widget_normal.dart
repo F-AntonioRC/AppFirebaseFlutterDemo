@@ -83,15 +83,11 @@ class _NavDrawerWidgetNormalState extends State<NavDrawerWidgetNormal> {
                   fontSize: 20.0),
             ), accountEmail: Text(widget.userEmail ?? 'No Email',
             style: const TextStyle(
-                color: dark, fontWeight: FontWeight.bold)),
+                color: Colors.black, fontWeight: FontWeight.bold)),
         decoration: const BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/logoActualizado.jpg'))),
-          currentAccountPicture: const CircleAvatar(
-            radius: 2,
-            backgroundImage: AssetImage('assets/images/logo.jpg'),
-          ),
+                image: AssetImage('assets/images/logo.jpg'))),
         ),
         // Drawer Items
         ListView.builder(

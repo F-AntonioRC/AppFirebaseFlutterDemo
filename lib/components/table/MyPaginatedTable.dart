@@ -50,51 +50,50 @@ class _MyPaginatedTableState extends State<MyPaginatedTable> {
 
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          return SingleChildScrollView(
-            child: SizedBox(
-              width: constraints.maxWidth,
-              child: PaginatedDataTable(
-                // Construcción de las columnas a partir de los encabezados recibidos.
+          return SizedBox(
+            width: constraints.maxWidth,
+            child: PaginatedDataTable(
+              columnSpacing: 20,
+              // Construcción de las columnas a partir de los encabezados recibidos.
               columns: [
-                  ...widget.headers.map((header) {
-                    return DataColumn(
-                      label: Expanded(child: Text(
-                        header,
-                        style: TextStyle(fontSize: responsiveFontSize(context, 18), fontWeight: FontWeight.bold),
-                      )),
-                    );
-                  }),
-                // Columna adicional para las acciones (editar, eliminar, asignar).
-                  DataColumn(
+                ...widget.headers.map((header) {
+                  return DataColumn(
                     label: Expanded(child: Text(
-                      'Acciones',
-                      style: TextStyle(fontSize: responsiveFontSize(context, 18), fontWeight: FontWeight.bold),
+                      header,
+                      style: TextStyle(fontSize: responsiveFontSize(context, 16), fontWeight: FontWeight.bold),
                     )),
-                  ),
-                ],
-                // Fuente de datos personalizada para la tabla.
-                source: _TableDataSource(
-                  data: widget.data,
-                  fieldKeys: widget.fieldKeys,
-                  idKey: widget.idKey,
-                  onEdit: widget.onEdit,
-                  onDelete: widget.onDelete,
-                  onActive: widget.onActive,
-                  activateFunction: widget.activateFunction,
-                  onAssign: widget.onAssign,
-                  iconAssign: widget.iconAssign,
-                  tooltipAssign: widget.tooltipAssign,
+                  );
+                }),
+                // Columna adicional para las acciones (editar, eliminar, asignar).
+                DataColumn(
+                  label: Expanded(child: Text(
+                    'Acciones',
+                    style: TextStyle(fontSize: responsiveFontSize(context, 16), fontWeight: FontWeight.bold),
+                  )),
                 ),
-                rowsPerPage: _rowsPerPage, // Número de filas por pagina.
-                availableRowsPerPage: const [5, 10], // Valores para cambiar el numero de registros por pagina.
-                onRowsPerPageChanged: (value) {
-                  setState(() {
-                    if(value != null) {
-                      _rowsPerPage = value;
-                    }
-                  });
-                },
+              ],
+              // Fuente de datos personalizada para la tabla.
+              source: _TableDataSource(
+                data: widget.data,
+                fieldKeys: widget.fieldKeys,
+                idKey: widget.idKey,
+                onEdit: widget.onEdit,
+                onDelete: widget.onDelete,
+                onActive: widget.onActive,
+                activateFunction: widget.activateFunction,
+                onAssign: widget.onAssign,
+                iconAssign: widget.iconAssign,
+                tooltipAssign: widget.tooltipAssign,
               ),
+              rowsPerPage: _rowsPerPage, // Número de filas por pagina.
+              availableRowsPerPage: const [5, 10], // Valores para cambiar el numero de registros por pagina.
+              onRowsPerPageChanged: (value) {
+                setState(() {
+                  if(value != null) {
+                    _rowsPerPage = value;
+                  }
+                });
+              },
             ),
           );
         });
@@ -140,12 +139,29 @@ class _TableDataSource extends DataTableSource {
     final rowData = data[index];
     return DataRow(
       cells: [
-        // Genera una celda para cada clave de campo.
-        ...fieldKeys.map((key) {
-          return DataCell(Text(
-            rowData[key]?.toString() ?? '',
-            style: const TextStyle(fontSize: 16),
-          ));
+        // Primera celda con un ancho mayor
+        DataCell(
+          SizedBox(
+            width: 300, // Ajusta este valor según sea necesario
+            child: Text(
+              rowData[fieldKeys.first]?.toString() ?? '',
+              style: const TextStyle(fontSize: 15),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ),
+        // Otras celdas con un ancho menor
+        ...fieldKeys.skip(1).map((key) {
+          return DataCell(
+            SizedBox(
+              width: 150, // Ancho estándar para las demás celdas
+              child: Text(
+                rowData[key]?.toString() ?? '',
+                style: const TextStyle(fontSize: 15),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          );
         }),
         // Celda de acciones que contiene botones para editar, eliminar/activar y asignar.
         DataCell(
@@ -153,7 +169,7 @@ class _TableDataSource extends DataTableSource {
             children: [
               // Botón de editar.
               InkComponent(tooltip: 'Editar',
-                  iconInk: const Icon(Icons.edit, color: greenColor),
+                  iconInk: const Icon(Icons.edit, color: greenColorLight),
                   inkFunction: () => onEdit(rowData[idKey].toString())),
               // Botón para eliminar o activar, dependiendo del estado.
               InkComponent(

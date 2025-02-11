@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:testwithfirebase/components/upFiles/data_from_table.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 
-/// Un widget que muestra una tabla (`DataTable`) con datos de ejemplo para poder realizar la escritura
-/// de nuevos registros en la base de datos.
+/// La clase `TableExample` es un widget reutilizable que muestra una tabla (`DataTable`) con datos
+/// de ejemplo para poder mostrar en la UI.
 class TableExample extends StatelessWidget {
-  const TableExample({super.key});
+  // Recibe los datos a mostrar para las columnas y filas.
+  final List<DataColumn> dataColumn;
+  final List<DataRow> dataRow;
+
+  const TableExample({super.key, required this.dataColumn, required this.dataRow});
 
   @override
   Widget build(BuildContext context) {
-    return DataTable(
-        columns: createColumns(), rows: createRows(),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: DataTable(
+        columns: dataColumn, rows: dataRow,
         dividerThickness: 2,
-      headingTextStyle: const TextStyle(
-        fontWeight: FontWeight.bold,
-        color: Colors.white
+        headingTextStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white
+        ),
+        //Color de los headers en la tabla
+        headingRowColor: WidgetStateProperty.resolveWith((states) => greenColorLight),
       ),
-      //Color de los headers en la tabla
-      headingRowColor: WidgetStateProperty.resolveWith((states) => greenColor),
     );
   }
 }

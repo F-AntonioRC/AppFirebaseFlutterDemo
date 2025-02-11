@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/formPatrts/body_widgets.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 
 /// Un widget que muestra un mensaje recordatorio dentro de una tarjeta (`Card`).
@@ -17,27 +18,15 @@ class CardWelcome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(10.0),
-      child: Card(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 100,
-              child: ListTile(
-                leading: const Icon(
-                  Icons.fact_check_outlined, weight: 10.0, size: 50,),
-                title: Text("Recuerda enviar tus constancias a tiempo",
-                  style: TextStyle(fontSize: responsiveFontSize(context, 20),
-                      fontWeight: FontWeight.bold),),
-                subtitle: Text("Revisa tu correo también para verificar tus cursos",
-                  style: TextStyle(fontSize: responsiveFontSize(context, 17),
-                      fontWeight: FontWeight.bold),),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+    return BodyWidgets(body: ListTile(
+      leading: const Icon(
+        Icons.fact_check_outlined, weight: 10.0, size: 50,),
+      title: Text("Recuerda enviar tus constancias a tiempo",
+        style: TextStyle(fontSize: responsiveFontSize(context, 20),
+            fontWeight: FontWeight.bold),),
+      subtitle: Text("Revisa tu correo también para verificar tus cursos",
+        style: TextStyle(fontSize: responsiveFontSize(context, 17),
+            fontWeight: FontWeight.bold),),
+    ));
   }
 }

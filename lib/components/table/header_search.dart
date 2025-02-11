@@ -55,7 +55,7 @@ class HeaderSearch extends StatelessWidget {
         Ink(
           decoration: const ShapeDecoration(
             shape: CircleBorder(),
-            color: greenColor,
+            color: greenColorLight,
           ),
           child: IconButton(
             onPressed: onToggleView,

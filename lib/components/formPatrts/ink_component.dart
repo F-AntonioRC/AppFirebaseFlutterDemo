@@ -25,7 +25,7 @@ class _InkComponentState extends State<InkComponent> {
   @override
   Widget build(BuildContext context) {
     return Ink(
-      decoration: const ShapeDecoration(shape: CircleBorder(), color: ligth),
+      decoration: const ShapeDecoration(shape: CircleBorder(), color: light),
       child: IconButton(onPressed: widget.inkFunction, icon: widget.iconInk,
       tooltip: widget.tooltip,
       ),

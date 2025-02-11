@@ -55,7 +55,7 @@ class _LineChartSampleState extends State<LineChartSample> {
                 'avg',
                 style: TextStyle(
                   fontSize: 12,
-                  color: showAvg ? ligthBackground: darkBackground,
+                  color: showAvg ? lightBackground: darkBackground,
                 ),
               ),
             ),

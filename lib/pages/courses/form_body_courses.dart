@@ -20,8 +20,6 @@ class FormBodyCourses extends StatefulWidget {
       controllerDependency; // Controlador personalizado de la dependencia.
   final TextEditingController
       nameCourseController; // Controlador del nombre de curso.
-  final TextEditingController
-      nomenclaturaController; // Controlador de la nomenclatura del curso.
   final List<String> dropdowntrimestre; // Lista de opciones para el trimestre.
   final String? trimestreValue; // Valor seleccionado del trimestre.
   final Function(String?)?
@@ -37,7 +35,6 @@ class FormBodyCourses extends StatefulWidget {
       {super.key,
       required this.title,
       required this.nameCourseController,
-      required this.nomenclaturaController,
       required this.dropdowntrimestre,
       this.trimestreValue,
       this.onChangedDropdownList,
@@ -109,67 +106,48 @@ class _FormBodyCoursesState extends State<FormBodyCourses> {
           ],
         ),
         const SizedBox(height: 10.0),
-        // Segunda fila: Nomenclatura y Trimestre del curso.
+        // Segunda fila: Trimestre del curso y Fecha de inicio del curso.
         Row(
           children: [
             Expanded(
                 child: Column(
-              children: [
-                Text(
-                  "Nomenclatura del Documento",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      fontSize: responsiveFontSize(context, 20),
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10.0),
-                MyTextfileld(
-                    hindText: "Campo Obligatorio*",
-                    icon: const Icon(Icons.document_scanner_sharp),
-                    controller: widget.nomenclaturaController,
-                    keyboardType: TextInputType.text),
-              ],
-            )),
+                  children: [
+                    Text(
+                      'Trimestre del curso',
+                      style: TextStyle(
+                          fontSize: responsiveFontSize(context, 20),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10.0),
+                    DropdownList(
+                      items: widget.dropdowntrimestre,
+                      icon: const Icon(Icons.arrow_downward_rounded),
+                      value: widget.trimestreValue,
+                      onChanged: widget.onChangedDropdownList,
+                    ),
+                  ],
+                )),
             const SizedBox(width: 20.0),
             Expanded(
                 child: Column(
-              children: [
-                Text(
-                  'Trimestre del curso',
-                  style: TextStyle(
-                      fontSize: responsiveFontSize(context, 20),
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10.0),
-                DropdownList(
-                  items: widget.dropdowntrimestre,
-                  icon: const Icon(Icons.arrow_downward_rounded),
-                  value: widget.trimestreValue,
-                  onChanged: widget.onChangedDropdownList,
-                ),
-              ],
-            ))
+                  children: [
+                    Text(
+                      "Inicio del curso",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          fontSize: responsiveFontSize(context, 20),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10.0),
+                    DateTextField(controller: widget.dateController),
+                  ],
+                ))
           ],
         ),
         const SizedBox( height: 10.0, ),
-        // Tercera fila: Fechas (Inicio del curso, Fecha de registro y Envio de constancia).
+        // Tercera fila: Fechas (Fecha de registro y Envio de constancia).
         Row(
           children: [
-            Expanded(
-                child: Column(
-              children: [
-                Text(
-                  "Inicio del curso",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      fontSize: responsiveFontSize(context, 20),
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10.0),
-                DateTextField(controller: widget.dateController),
-              ],
-            )),
-            const SizedBox(width: 10.0),
             Expanded(
                 child: Column(
               children: [

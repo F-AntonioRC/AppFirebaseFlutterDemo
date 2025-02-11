@@ -61,7 +61,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               onPressed: () =>
                   sendPasswordReset(context, _emailController.text),
               icon: const Icon(Icons.forward_to_inbox),
-              buttonColor: greenColor,
+              buttonColor: greenColorLight,
             ),
             // Sección que permite al usuario regresar a la pantalla de inicio de sesión.
             Row(
@@ -87,9 +87,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     style: TextStyle(
                         fontSize: responsiveFontSize(context, 20),
                         fontWeight: FontWeight.bold,
-                        color: greenColor,
+                        color: greenColorLight,
                         decoration: TextDecoration.underline,
-                        decorationColor: greenColor),
+                        decorationColor: greenColorLight),
                   ),
                 )
               ],

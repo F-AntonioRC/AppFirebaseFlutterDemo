@@ -32,14 +32,14 @@ class ActionsFormCheck extends StatelessWidget {
               text: 'Agregar',
               icon: const Icon(Icons.person_add_alt_rounded),
               onPressed: onAdd,
-              buttonColor: greenColor,
+              buttonColor: greenColorLight,
             ),
           if (isEditing) ...[
             MyButton(
               text: 'Aceptar',
               icon: const Icon(Icons.check_circle_outline),
               onPressed: onUpdate,
-              buttonColor: greenColor,
+              buttonColor: greenColorLight,
             ),
             const SizedBox(
               width: 10.0,
@@ -47,7 +47,7 @@ class ActionsFormCheck extends StatelessWidget {
             MyButton(
               text: "Cancelar",
               icon: const Icon(Icons.cancel_outlined),
-              buttonColor: Colors.red,
+              buttonColor: wineLight,
               onPressed: onCancel,
             )
           ],

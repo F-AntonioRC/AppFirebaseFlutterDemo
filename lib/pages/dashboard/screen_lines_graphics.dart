@@ -8,7 +8,7 @@ import '../../graphics/lineChart/graphic_line_chart.dart';
   ///
   /// El widget alterna entre dos vistas distintas según el valor de [_viewOtherGraphics]:
   /// - Si es `false`, se muestra el gráfico "Empleados por Sare".
-  /// - Si es `true`, se muestra el gráfico "Empleados por Ore".
+  /// - Si es `true`, se muestra el gráfico "Cursos completados por mes".
   ///
   /// La pantalla utiliza un encabezado (HeaderGraphics) que permite alternar la vista
   /// mediante un botón.
@@ -22,7 +22,7 @@ class ScreenLinesGraphics extends StatefulWidget {
 
 class _ScreenLinesGraphicsState extends State<ScreenLinesGraphics> {
   /// Variable de estado que indica cuál vista de gráfico se está mostrando.
-  /// Cuando es `false`, se muestra el gráfico de "Sare"; cuando es `true`, se muestra el de "Ore".
+  /// Cuando es `false`, se muestra el gráfico de "Sare"; cuando es `true`, se muestra el de "Cursos completados por mes".
   bool _viewOtherGraphics = false;
 
   /// Función que alterna el valor de [_viewOtherGraphics] y actualiza la UI.
@@ -42,16 +42,16 @@ class _ScreenLinesGraphicsState extends State<ScreenLinesGraphics> {
               // Encabezado que muestra el título del gráfico y un botón para alternar la vista.
               HeaderGraphics(
                   title: _viewOtherGraphics
-                      ? 'Empleados por Ore'
+                      ? 'Cursos completados por mes'
                       : 'Empleados por Sare',
                   onToggleView: _toggleView,
                   viewOtherGraphics: _viewOtherGraphics,
-                  viewOn: 'Ver por ORE',
+                  viewOn: 'Ver cursos completados por mes',
                   viewOff: 'Ver por Sare'),
               const SizedBox(height: 10.0),
               // Área que contiene el gráfico de líneas. Su altura se fija en 300.
               SizedBox(
-                height: 300,
+                height: 500,
                 child: GraphicLineChart(viewOtherGraphics: _viewOtherGraphics),
               )
             ],

@@ -91,7 +91,7 @@ class TableViewDetailCourses extends StatelessWidget {
                   refreshTable();
                   if (context.mounted) {
                     showCustomSnackBar(
-                        context, "Curso eliminado correctamente", greenColor);
+                        context, "Curso eliminado correctamente", greenColorLight);
                   }
                 } catch (e) {
                   if (context.mounted) {
@@ -154,7 +154,7 @@ class TableViewDetailCourses extends StatelessWidget {
                   refreshTable();
                   if (context.mounted) {
                     showCustomSnackBar(
-                        context, "Curso restaurado correctamente", greenColor);
+                        context, "Curso restaurado correctamente", greenColorLight);
                   }
                 } catch (e) {
                   if (context.mounted) {

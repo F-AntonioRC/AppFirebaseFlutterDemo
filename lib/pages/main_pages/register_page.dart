@@ -76,7 +76,7 @@ class RegisterPage extends StatelessWidget {
           PasswordInput(
               controller: _confirmPasswordController,
               hindText: "CONFIRMAR CONTRASEÑA",
-              messageadd: false),
+              messageadd: true),
           const SizedBox(height: 10.0),
           // Botón para enviar la solicitud de registro.
           MyButton(
@@ -88,7 +88,7 @@ class RegisterPage extends StatelessWidget {
                 _passwordController.text,
                 _confirmPasswordController.text),
             icon: const Icon(Icons.add_task),
-            buttonColor: greenColor,
+            buttonColor: greenColorLight,
           ),
           // Sección con el enlace para ir a la pantalla de inicio de sesión.
           Row(
@@ -112,9 +112,9 @@ class RegisterPage extends StatelessWidget {
                       style: TextStyle(
                           fontSize: responsiveFontSize(context, 18),
                           fontWeight: FontWeight.bold,
-                          color: greenColor,
+                          color: greenColorLight,
                           decoration: TextDecoration.underline,
-                          decorationColor: greenColor),
+                          decorationColor: greenColorLight),
                     ),
                   )
                 ],

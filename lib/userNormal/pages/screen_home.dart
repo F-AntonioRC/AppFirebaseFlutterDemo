@@ -11,7 +11,8 @@ class ScreenHome extends StatelessWidget {
     return const Column(
       children: [
         CardWelcome(),
-        Expanded(child: SizedBox(height: 300,
+        Expanded(child: SizedBox(
+          height: 300,
         child: ViewDataUserNormal(),
         ))
       ],

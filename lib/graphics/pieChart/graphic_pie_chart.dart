@@ -71,7 +71,7 @@ class _GraphicPieChartState extends State<GraphicPieChart> {
                     size: touchedIndex == index ? 18 : 16,
                     textColor: touchedIndex == index
                         ? darkBackground
-                        : ligthBackground,
+                        : lightBackground,
                   );
                 }).toList(),
               ),
@@ -140,7 +140,7 @@ class _GraphicPieChartState extends State<GraphicPieChart> {
         value: chartData.valor.toDouble(),
         title: '${percentage.toStringAsFixed(1)}%',
         // Ajusta el radio de la sección según si está seleccionada.
-        radius: isTouched ? 100 : 120,
+        radius: isTouched ? 120 : 100,
         titlePositionPercentageOffset: 0.55,
         // Configura el borde de la sección.
         borderSide: isTouched

@@ -32,13 +32,13 @@ final ThemeData darkTheme = ThemeData(
   hintColor: Colors.white,
   iconTheme: const IconThemeData(color: Colors.white), // Color de los iconos
   textTheme: const TextTheme(
-    bodySmall: TextStyle(color: Colors.white),
-    bodyLarge: TextStyle(color: Colors.white),
-    bodyMedium: TextStyle(color: Colors.white)
+    bodySmall: TextStyle(color: Colors.black),
+    bodyLarge: TextStyle(color: Colors.black),
+    bodyMedium: TextStyle(color: Colors.black)
   ),
   scaffoldBackgroundColor: darkBackground,
   colorScheme: const ColorScheme.dark(
-    primary: ligth,
+    primary: light,
     surface: dark,
   ),
     drawerTheme: const DrawerThemeData(
@@ -69,7 +69,7 @@ inputDecorationTheme: const InputDecorationTheme(
 
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
-    cardColor: ligth, // Color de la card
+    cardColor: light, // Color de la card
     hintColor: Colors.black,
   iconTheme: const IconThemeData(color: Colors.black), // Color de los iconos
     textTheme: const TextTheme(
@@ -77,16 +77,16 @@ final ThemeData lightTheme = ThemeData(
         bodyLarge: TextStyle(color: Colors.black),
         bodyMedium: TextStyle(color: Colors.black)
     ),
-  scaffoldBackgroundColor: ligthBackground,
+  scaffoldBackgroundColor: lightBackground,
   colorScheme: const ColorScheme.light(
-      surface: ligth,
+      surface: light,
       primary: darkBackground,
   ),
   appBarTheme: const AppBarTheme(
-      backgroundColor: ligth
+      backgroundColor: light
   ),
   drawerTheme: const DrawerThemeData(
-    backgroundColor: ligth
+    backgroundColor: light
   ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,

@@ -35,7 +35,7 @@ class UpFileCard extends StatelessWidget {
                   MyButton(
                     text: 'Seleccionar archivos',
                     icon: const Icon(Icons.upload_file_outlined),
-                    buttonColor: greenColor,
+                    buttonColor: greenColorLight,
                     onPressed: () {
                       // Muestra un Dialog con un alto predeterminado y un ancho responsivo
                       showDialog(

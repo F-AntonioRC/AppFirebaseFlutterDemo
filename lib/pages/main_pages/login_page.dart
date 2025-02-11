@@ -80,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                     login(context, _emailController.text,
                         _passwordController.text),
                 icon: const Icon(Icons.login),
-                buttonColor: greenColor,
+                buttonColor: greenColorLight,
               ),
               const SizedBox(
                 height: 10,
@@ -96,11 +96,11 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text(
                     "Olvide mi contraseña",
                     style: TextStyle(
-                        color: Colors.red,
+                        color: greenColorLight,
                         fontSize: responsiveFontSize(context, 18),
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline,
-                        decorationColor: Colors.red),
+                        decorationColor: wineDark),
                   )),
               // Enlace para ir a la pantalla de registro.
               Row(
@@ -124,9 +124,9 @@ class _LoginPageState extends State<LoginPage> {
                           style: TextStyle(
                               fontSize: responsiveFontSize(context, 18),
                               fontWeight: FontWeight.bold,
-                              color: greenColor,
+                              color: greenColorLight,
                               decoration: TextDecoration.underline,
-                              decorationColor: greenColor),
+                              decorationColor: wineDark),
                         ),
                       )
                     ],
