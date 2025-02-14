@@ -7,6 +7,7 @@ import 'package:testwithfirebase/pages/configuration/cerrar_sesion.dart';
 import 'package:testwithfirebase/userNormal/blockNormal/drawer_block_normal.dart';
 import 'package:testwithfirebase/userNormal/blockNormal/drawer_state_normal.dart';
 import 'package:testwithfirebase/userNormal/pages/CourseSelectionPage.dart';
+import 'package:testwithfirebase/userNormal/pages/UserNotificationsPage.dart';
 import 'package:testwithfirebase/userNormal/pages/configuration_normal.dart';
 import 'package:testwithfirebase/userNormal/pages/dashboard_normal.dart';
 
@@ -124,17 +125,20 @@ class _HomeNormalState extends State<HomeNormal> {
                   centerTitle: true,
                   systemOverlayStyle: SystemUiOverlayStyle.dark,
                   actions: [
-                    // Widget que muestra un ícono de notificaciones.
-                    IconButton(
-                      splashRadius: 35.0,
-                      iconSize: 30.0,
-                      tooltip: 'Notificaciones',
-                      icon: const Icon(
-                        Icons.notifications_rounded,
-                      ),
-                      onPressed: () {},
-                    ),
-                  ],
+  IconButton(
+    splashRadius: 35.0,
+    iconSize: 30.0,
+    tooltip: 'Notificaciones',
+    icon: const Icon(Icons.notifications_rounded),
+    onPressed: () {
+      showDialog(
+        context: context,
+        builder: (context) => UserNotificationsPage(),
+      );
+    },
+  ),
+],
+
                 ),
                 // En pantallas pequeñas se muestra el Drawer como menú lateral.
                 drawer: isLargeScreen ? null : NavDrawerWidgetNormal(userEmail: userEmailNormal),

@@ -57,34 +57,50 @@ class _DynamicCourseSelectionPageState extends State<DynamicCourseSelectionPage>
               ? const Center(child: Text('No hay cursos pendientes.'))
               : Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16.0,
-                      mainAxisSpacing: 16.0,
-                      childAspectRatio: 3 / 2,
-                    ),
-                    itemCount: cursosPendientes.length,
-                    itemBuilder: (context, index) {
-                      final curso = cursosPendientes[index];
-                      return CourseCard(
-                        courseName: curso['NombreCurso'],
-                        trimester: curso['Trimestre'],
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CursosNormal(
-                                course: curso['NombreCurso'],
-                                subCourse: null,
-                                trimester: curso['Trimestre'],
-                                dependecy: curso['Dependencia'],
-                                idCurso: curso['IdCurso'],
-                              ),
-                            ),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      int crossAxisCount = 2;
+                      double childAspectRatio = 1.2;
+
+                      if (constraints.maxWidth > 600) {
+                        crossAxisCount = 3; 
+                        childAspectRatio = 1.4;
+                      }
+                      if (constraints.maxWidth > 900) {
+                        crossAxisCount = 4; 
+                        childAspectRatio = 1.5;
+                      }
+
+                      return GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: MediaQuery.of(context).size.width > 800 ? 3 : 2, 
+                          crossAxisSpacing: 16.0,
+                          mainAxisSpacing: 16.0,
+                          childAspectRatio: MediaQuery.of(context).size.width > 800 ? 1.5 : 1,
+                        ),
+                        itemCount: cursosPendientes.length,
+                        itemBuilder: (context, index) {
+                          final curso = cursosPendientes[index];
+                          return CourseCard(
+                            courseName: curso['NombreCurso'],
+                            trimester: curso['Trimestre'],
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CursosNormal(
+                                    course: curso['NombreCurso'],
+                                    subCourse: null,
+                                    trimester: curso['Trimestre'],
+                                    dependecy: curso['Dependencia'],
+                                    idCurso: curso['IdCurso'],
+                                  ),
+                                ),
+                              );
+                            },
+                            imagePath: 'assets/images/logo.jpg',
                           );
                         },
-                        imagePath: 'assets/images/logo.jpg',
                       );
                     },
                   ),
@@ -125,15 +141,15 @@ class CourseCard extends StatelessWidget {
             children: [
               Image.asset(
                 imagePath,
-                height: 100,
+                height: MediaQuery.of(context).size.width < 400 ? 80 : 100, 
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
               const SizedBox(height: 16),
               Text(
                 courseName,
-                style: const TextStyle(
-                  fontSize: 18,
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width < 400 ? 14 : 18, 
                   fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,

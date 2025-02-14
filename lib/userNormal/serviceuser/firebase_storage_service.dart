@@ -11,14 +11,14 @@ class FirebaseStorageService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  /// Método para subir archivos PDF con barra de progreso y validaciones.
   Future<void> subirArchivo({
+    required BuildContext context,
     required String trimester,
     required String dependency,
     required String course,
     required String idCurso,
     String? subCourse,
-    required Function(double) onProgress, // Callback para actualizar la UI
+    required Function(double) onProgress,
   }) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -26,81 +26,104 @@ class FirebaseStorageService {
     );
 
     if (result == null) {
-      print('No se seleccionó ningún archivo.');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('No se seleccionó archivo'),
+          content: Text('Debes seleccionar un archivo para continuar.'),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(context), child: Text('Aceptar')),
+          ],
+        ),
+      );
       return;
     }
 
     String fileName = basename(result.files.single.name);
     String storagePath = '2024/CAPACITACIONES_LISTA_ASISTENCIA_PAPEL_SARES/Cursos_2024/$trimester/$dependency/$course/';
-
-    if (subCourse != null) {
-      storagePath += '$subCourse/';
-    }
+    if (subCourse != null) storagePath += '$subCourse/';
     storagePath += fileName;
 
     final storageRef = _storage.ref().child(storagePath);
     final metadata = SettableMetadata(contentType: 'application/pdf');
 
     try {
-      // Obtener usuario autenticado
       User? user = _auth.currentUser;
-      if (user == null) {
-        throw Exception("Usuario no autenticado");
-      }
+      if (user == null) throw Exception("Usuario no autenticado");
 
-      // Verificar si el archivo ya existe en Firebase Storage
       try {
         await storageRef.getDownloadURL();
-        print('Archivo ya existe en Firebase Storage.');
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Archivo existente'),
+            content: Text('El archivo ya existe en el almacenamiento.'),
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('Aceptar'))],
+          ),
+        );
         return;
-      } catch (e) {
-        print('Archivo no existe, procediendo a subirlo.');
-      }
+      } catch (_) {}
 
       UploadTask uploadTask;
-
       if (result.files.single.bytes != null) {
         uploadTask = storageRef.putData(result.files.single.bytes!, metadata);
       } else if (result.files.single.path != null) {
         File file = File(result.files.single.path!);
         uploadTask = storageRef.putFile(file, metadata);
       } else {
-        print('No se pudo obtener los datos del archivo.');
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Error'),
+            content: Text('No se pudo obtener los datos del archivo.'),
+            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('Aceptar'))],
+          ),
+        );
         return;
       }
 
-      // Monitorear el progreso de la subida
       uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
         double progress = (snapshot.bytesTransferred / snapshot.totalBytes);
         onProgress(progress);
       });
 
-      // Esperar a que termine la subida
       await uploadTask;
+      String downloadURL = await storageRef.getDownloadURL();
 
-      // Obtener URL de descarga
-       String downloadURL = await storageRef.getDownloadURL();
-
-      // Guardar información en Firestore
       await _firestore.collection('notifications').add({
+        'estado': 'pendiente',
         'trimester': trimester,
         'dependecy': dependency,
         'course': course,
         'IdCurso': idCurso,
         'uid': user.uid,
-        'subCourse': subCourse ?? 'Sin subcurso',
         'fileName': fileName,
         'uploader': user.email ?? 'Usuario desconocido',
         'timestamp': FieldValue.serverTimestamp(),
         'isRead': false,
         'pdfUrl': downloadURL,
+        'filePaht': storagePath,
+        'status': 'activo',
+        'mensajeAdmin': '',
       });
 
-
-
-      print('Archivo subido exitosamente: $downloadURL');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Éxito'),
+          content: Text('El archivo se subió correctamente.'),
+          actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('Aceptar'))],
+        ),
+      );
     } catch (e) {
-      print('Error al subir el archivo: $e');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error al subir'),
+          content: Text('Error al subir el archivo: $e'),
+          actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('Aceptar'))],
+        ),
+      );
     }
   }
 }

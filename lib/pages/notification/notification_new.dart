@@ -1,12 +1,13 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testwithfirebase/pages/notification/notification_service.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
+
 class NotificationNew extends StatelessWidget {
   final NotificationService _notificationService = NotificationService();
 
-   NotificationNew({super.key});
+  NotificationNew({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -93,29 +94,27 @@ class NotificationNew extends StatelessWidget {
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
+                              // 🔹 Botón para marcar curso como completado
                               IconButton(
                                 icon: const Icon(Icons.check_circle, color: Colors.green),
-                                onPressed: () async {
-                                  final userId = notification['uid'];
-                                  final cursoId = notification['IdCurso'];
-                                  final evidenciaUrl = notification['pdfUrl'];
-                                  if (userId != null && cursoId != null && evidenciaUrl != null) {
-                                    await _notificationService.marcarCursoCompletado(userId, cursoId, evidenciaUrl);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text('Curso marcado como completado.')),
-                                    );
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text('Faltan datos para marcar el curso como completado.')),
-                                    );
-                                  }
-                                },
+                                onPressed: () => _confirmarCompletado(
+                                  context,
+                                  notification['uid'],
+                                  notification['IdCurso'],
+                                  notification['pdfUrl'],
+                                  notification.id,
+                                ),
                               ),
+
+                              // 🔹 Botón para rechazar la evidencia
                               IconButton(
-                                icon: const Icon(Icons.delete, color: Colors.red),
-                                onPressed: () {
-                                  _notificationService.eliminarNotificacion(notification.id);
-                                },
+                                icon: const Icon(Icons.close, color: Colors.red),
+                                onPressed: () => _rechazarEvidencia(
+                                  context,
+                                  notification['uid'],
+                                  notification.id,
+                                  notification['filePaht'],
+                                ),
                               ),
                             ],
                           ),
@@ -123,33 +122,90 @@ class NotificationNew extends StatelessWidget {
                             final pdfUrl = notification['pdfUrl'];
                             _notificationService.marcarNotificacionLeida(notification.id);
                             if (pdfUrl != null && pdfUrl.isNotEmpty) {
-                              try {
-                                if (await canLaunch(pdfUrl)) {
-                                  await launch(pdfUrl);
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('No se puede abrir el archivo PDF')),
-                                  );
-                                }
-                              } catch (e) {
-                                print('Error al abrir el archivo PDF: $e');
+                              if (await canLaunch(pdfUrl)) {
+                                await launch(pdfUrl);
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('No se puede abrir el archivo PDF')),
+                                );
                               }
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('No se puede abrir el archivo PDF')),
-                              );
                             }
                           },
                         );
                       },
                     );
+
                   },
                 ),
               ),
+              
             ],
+
           ),
         ),
+
       ),
     );
   }
+
+  /// **Confirmación antes de marcar como completado**
+  void _confirmarCompletado(BuildContext context, String userId, String cursoId, String evidenciaUrl, String notificationId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Confirmar"),
+        content: const Text("¿Está seguro de marcar este curso como completado?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("Cancelar"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await _notificationService.marcarCursoCompletado(userId, cursoId, evidenciaUrl);
+              await _notificationService.marcarNotificacionInactiva(notificationId);
+              await _notificationService.Aprobado(notificationId);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Curso marcado como completado y notificación eliminada.")),
+              );
+            },
+            child: const Text("Sí, completar"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// **Rechazar evidencia y notificar al usuario**
+  /// **Rechazar evidencia y eliminar archivo**
+void _rechazarEvidencia(BuildContext context, String userId, String notificationId, String filePath) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text("Rechazar Evidencia"),
+      content: const Text("¿Está seguro de rechazar la evidencia? Se eliminará el archivo y el usuario deberá subir uno nuevo."),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text("Cancelar"),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            Navigator.of(context).pop();
+            await _notificationService.rechazarEvidencia(userId, filePath, notificationId);
+            await _notificationService.marcarNotificacionInactiva(notificationId);
+           if (context.mounted) {
+           ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Evidencia rechazada, archivo eliminado y usuario notificado.")),
+              );
+            }
+          },
+          child: const Text("Sí, rechazar"),
+        ),
+      ],
+    ),
+  );
+}
+
 }
