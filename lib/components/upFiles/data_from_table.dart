@@ -9,20 +9,22 @@ class TableExampleData {
 /// ya que conforme a la estructura de la base de datos, los valores no se registran correctamente
 
 static final List<DataColumn> columns =  [
-    const DataColumn(label: Text('CUPO')),
     // Número de identificación del empleado
-    const DataColumn(label: Text('Estado')),
+    const DataColumn(label: Text('CUPO')),
     // Estado actual del empleado (Activo/Inactivo)
-    const DataColumn(label: Text('Nombre')),
+    const DataColumn(label: Text('Estado')),
     // Nombre completo del empleado
-    const DataColumn(label: Text('Correo')),
-    // Correo electrónico institucional del empleado
-    const DataColumn(label: Text('Area')),
-    // Área de trabajo del empleado
+    const DataColumn(label: Text('Nombre')),
+    // Puesto de trabajo del empleado
     const DataColumn(label: Text('Puesto')),
-    // Puesto o cargo del empleado
+    // Correo institucional del empleado
+    const DataColumn(label: Text('Correo')),
+    // Sare del empleado
     const DataColumn(label: Text('Sare')),
-    // Código de identificación de la unidad en la que este el empleado
+    // Sexo del empleado
+    const DataColumn(label: Text('Sexo')),
+    // Area del empleado
+    const DataColumn(label: Text('Area')),
   ];
 
 /// Crea una lista de filas con datos para el Widget `TableExample`.
@@ -33,19 +35,21 @@ static final List<DataColumn> columns =  [
       DataCell(Text('200023')),
       DataCell(Text('Activo')),
       DataCell(Text('Nombre Completo')),
-      DataCell(Text('Cupo.Nombre@becasbenitojuarez.gob.mx')),
-      DataCell(Text('RECURSOS HUMANOS')),
       DataCell(Text('AUXILIAR DE ARCHIVO')),
+      DataCell(Text('Cupo.Nombre@becasbenitojuarez.gob.mx')),
       DataCell(Text('ORE')),
+      DataCell(Text('M')),
+      DataCell(Text('RECURSOS HUMANOS')),
     ]),
     const DataRow(cells: [
       DataCell(Text('299956')),
       DataCell(Text('Inactivo')),
       DataCell(Text('Nombre Completo')),
-      DataCell(Text('Cupo.Nombre@becasbenitojuarez.gob.mx')),
-      DataCell(Text('JURIDICO')),
       DataCell(Text('APOYO JURIDICO')),
+      DataCell(Text('Cupo.Nombre@becasbenitojuarez.gob.mx')),
       DataCell(Text('2001')),
+      DataCell(Text('H')),
+      DataCell(Text('JURIDICO')),
     ]),
   ];
 }

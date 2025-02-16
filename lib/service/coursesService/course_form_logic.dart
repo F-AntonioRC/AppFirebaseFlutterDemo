@@ -49,10 +49,9 @@ class CourseFormLogic {
 /// `BuildContext`. Se utiliza normalmente en Flutter para proporcionar información sobre la ubicación de un
 /// widget dentro del árbol de widgets.
   void refreshProviderData(BuildContext context) {
-    final provier = Provider.of<EditProvider>(context, listen: false);
-    provier.refreshData();
+    final provider = Provider.of<EditProvider>(context, listen: false);
+    provider.refreshData();
   }
-
 
 /// Inicializa los controladores con datos del provider si existen.
 /// 

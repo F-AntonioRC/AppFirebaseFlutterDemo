@@ -242,7 +242,6 @@ class _FormBodyEmployeeState extends State<FormBodyEmployee> {
                   collection: 'Sare',
                   data: 'sare',
                   textHint: 'Seleccione SARE',
-                  enabled: widget.controllerOre.selectedDocument == null,
                 )
               ],
             )),

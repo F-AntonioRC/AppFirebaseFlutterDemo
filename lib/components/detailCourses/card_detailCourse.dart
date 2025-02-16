@@ -86,8 +86,8 @@ class _CardDetailcourseState extends State<CardDetailCourse> {
   }
 
 /// La función `_refreshTable` actualiza la tabla cuando se actualizan los datos.
-  void refreshTable() {
-    _loadData(); // Refresca la tabla al actualizar datos
+  void _refreshTable() {
+    setState(() {}); // Refresca la tabla al actualizar datos
   }
 
 /// Esta función Flutter `_searchDetalleCurso` realiza una debounced search de detalle cursos en 
@@ -131,7 +131,7 @@ class _CardDetailcourseState extends State<CardDetailCourse> {
                   filteredData: _filteredData,
                   methodsDetailCourses: methodsDetailCourses,
                   isActive: isActive,
-                  refreshTable: refreshTable)
+                  refreshTable: _refreshTable)
         ],
       ),
     ));

@@ -96,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text(
                     "Olvide mi contraseña",
                     style: TextStyle(
-                        color: greenColorLight,
+                        color: Colors.red,
                         fontSize: responsiveFontSize(context, 18),
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline,
