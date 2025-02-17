@@ -104,6 +104,7 @@ class FirebaseStorageService {
         'pdfUrl': downloadURL,
         'filePaht': storagePath,
         'status': 'activo',
+        'statusUser':'activo',
         'mensajeAdmin': '',
       });
 

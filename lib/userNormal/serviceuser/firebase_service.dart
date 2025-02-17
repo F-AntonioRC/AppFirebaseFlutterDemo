@@ -66,4 +66,23 @@ class FirebaseService {
       return [];
     }
   }
+   Future<void> deleteNotification(String notificationId) async {
+   try {
+    await _firestore.collection('notifications').doc(notificationId).update({
+      'statusUser': 'inactivo' // Esta cambiado a inactivo
+    });
+    print('Notificación marcada como inactiva.');
+  } catch (e) {
+    print('Error al marcar notificación como inactiva: $e');
+  }
+  }
+
+ Stream<QuerySnapshot> getUserNotifications(String userId) {
+  return _firestore
+      .collection('notifications')
+      .where('uid', isEqualTo: userId)
+      .where('statusUser', isEqualTo: 'activo') 
+      .orderBy('timestamp', descending: true)
+      .snapshots();
+}
 }
