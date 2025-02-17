@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:testwithfirebase/auth/auth_service.dart';
 import 'package:testwithfirebase/userNormal/serviceuser/firebase_service.dart';
+import 'package:testwithfirebase/util/responsive.dart';
 import 'cursos_normal.dart';
 
 class DynamicCourseSelectionPage extends StatefulWidget {
@@ -149,7 +150,7 @@ class CourseCard extends StatelessWidget {
               Text(
                 courseName,
                 style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width < 400 ? 14 : 18, 
+                  fontSize: responsiveFontSize(context, 18), 
                   fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,
@@ -157,7 +158,7 @@ class CourseCard extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 'Trimestre: $trimester',
-                style: const TextStyle(fontSize: 14),
+                style: TextStyle(fontSize: responsiveFontSize(context, 14) ),
                 textAlign: TextAlign.center,
               ),
               if (startDate != null) ...[

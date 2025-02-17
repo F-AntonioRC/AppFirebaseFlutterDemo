@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:testwithfirebase/util/responsive.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:testwithfirebase/userNormal/serviceuser/firebase_service.dart';
@@ -26,7 +27,7 @@ class UserNotificationsPage extends StatelessWidget {
         child: Container(
           margin: const EdgeInsets.only(top: 60, right: 10),
           padding: const EdgeInsets.all(16),
-          width: MediaQuery.of(context).size.width * 0.5,
+          width: MediaQuery.of(context).size.width * (Responsive.isMobile(context)?0.9 : 0.5),
           decoration: BoxDecoration(
             
             color: Theme.of(context).colorScheme.surface,
@@ -40,7 +41,7 @@ class UserNotificationsPage extends StatelessWidget {
             ],
           ),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             children: [
               
               Row(
