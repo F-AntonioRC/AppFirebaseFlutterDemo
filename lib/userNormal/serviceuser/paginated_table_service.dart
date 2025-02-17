@@ -56,7 +56,8 @@ class PaginatedTableService {
         tempRows.addAll(cursosSnapshot.docs.map((doc) {
           dynamic idCurso = doc["IdCurso"];
           return {
-            "Nombre del curso": doc["NombreCurso"] ?? "N/A",
+            "Nombre del curso": doc['NombreCurso'] ?? 'N/A',
+            "Trimestre": doc['Trimestre'] ?? 'N/A',
             "Fecha de envio de Constancia": idCursoFechaMap[idCurso] ?? "Fecha no disponible",
           };
         }).toList());
