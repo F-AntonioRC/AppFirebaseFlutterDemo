@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:testwithfirebase/auth/auth_service.dart';
 import 'package:testwithfirebase/bloc/drawer_bloc.dart';
 import 'package:testwithfirebase/bloc/drawer_state.dart';
+import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/drawer/drawer_widget.dart';
 import 'package:testwithfirebase/pages/configuration/cerrar_sesion.dart';
 import 'package:testwithfirebase/pages/configuration/configuration.dart';
@@ -75,19 +77,62 @@ class _HomePageState extends State<HomePage> {
                   scrolledUnderElevation: 10.0,
                   centerTitle: true,
                   systemOverlayStyle: SystemUiOverlayStyle.dark,
-                  // Acciones para mostrar datos referentes al rol que ha iniciado sesión.
+                 
                   actions: [
                     IconButton(
-                      icon: const Icon(Icons.notifications),
+                      splashRadius: 35.0,
+                      iconSize: 30.0,
                       tooltip: 'Notificaciones',
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => NotificationNew(),
-                        );
-                      },
-                    ),
-                  ],
+                      icon: Stack(
+                        children: [
+                          const Icon(Icons.notifications_rounded),
+                          Positioned(
+                            right: 0,
+                            top: 0,
+                            child: StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('notifications')
+                                  .where('isRead', isEqualTo: false)
+                                  .where('status', isEqualTo: 'activo') // Solo notificaciones activas
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                                  return const SizedBox.shrink();
+                                }
+                                int unreadCount = snapshot.data!.docs.length;
+
+                                return Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: const BoxDecoration(
+                                    color: wineDark,
+                                    shape: BoxShape.circle,
+                                  
+                                  ),
+                                  
+                                  child: Text(
+                                    unreadCount > 9 ? '9+' : '$unreadCount',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                    ],
+    ),
+    onPressed: () {
+      showDialog(
+        context: context,
+        builder: (context) => NotificationNew(), // Muestra el panel lateral de notificaciones
+      );
+    },
+  ),
+],
+
                 ),
                 // Drawer se muestra dependiendo del tamaño de pantalla
                 drawer: isLargeScreen

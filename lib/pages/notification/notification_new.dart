@@ -105,7 +105,8 @@ class NotificationNew extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  icon: const Icon(Icons.check_circle, color: Colors.green),
+                                  
+                                  icon: const Icon(Icons.check_circle, color: greenColorLight),
                                   onPressed: () => _confirmarCompletado(
                                     context,
                                     notification['uid'],
@@ -115,7 +116,7 @@ class NotificationNew extends StatelessWidget {
                                   ),
                                 ),
                                 IconButton(
-                                  icon: const Icon(Icons.close, color: Colors.red),
+                                  icon: const Icon(Icons.cancel_outlined, color: wineLight),
                                   onPressed: () => _rechazarEvidencia(
                                     context,
                                     notification['uid'],
@@ -179,24 +180,7 @@ class NotificationNew extends StatelessWidget {
               )
             ],
           ),
-          /*
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text("Cancelar"),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.of(context).pop();
-              await _notificationService.marcarCursoCompletado(userId, cursoId, evidenciaUrl);
-              await _notificationService.marcarNotificacionInactiva(notificationId);
-              await _notificationService.Aprobado(notificationId);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Curso marcado como completado y notificación eliminada.")),
-              );
-            },
-            child: const Text("Sí, completar"),
-          ),
-          */
+      
         ],
       ),
     );
@@ -228,25 +212,7 @@ class NotificationNew extends StatelessWidget {
               )
             ],
           ),
-/*
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text("Cancelar"),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.of(context).pop();
-              await _notificationService.rechazarEvidencia(userId, filePath, notificationId);
-              await _notificationService.marcarNotificacionInactiva(notificationId);
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Evidencia rechazada, archivo eliminado y usuario notificado.")),
-                );
-              }
-            },
-            child: const Text("Sí, rechazar"),
-          ),
-          */
+
         ],
       ),
     );

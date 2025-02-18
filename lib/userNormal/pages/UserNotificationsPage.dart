@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:testwithfirebase/components/formPatrts/actions_form_check.dart';
+import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
@@ -27,7 +29,7 @@ class UserNotificationsPage extends StatelessWidget {
         child: Container(
           margin: const EdgeInsets.only(top: 60, right: 10),
           padding: const EdgeInsets.all(16),
-          width: MediaQuery.of(context).size.width * (Responsive.isMobile(context)?0.9 : 0.5),
+          width: MediaQuery.of(context).size.width * (Responsive.isMobile(context) ? 0.9 : 0.5),
           decoration: BoxDecoration(
             
             color: Theme.of(context).colorScheme.surface,
@@ -43,7 +45,6 @@ class UserNotificationsPage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -88,59 +89,45 @@ class UserNotificationsPage extends StatelessWidget {
                         final timestamp = (notification['timestamp'] as Timestamp?)?.toDate();
                         final estado = notification['estado'] ?? 'Pendiente';
                         final mensajeAdmin = notification['mensajeAdmin'] ?? '';
-
-                        return Card(
-                          margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              child: Icon(
-                                estado == 'Aprobado'
-                                    ? Icons.check_circle
-                                    : estado == 'Rechazado'
-                                        ? Icons.cancel
-                                        : Icons.info,
-                                color: estado == 'Aprobado'
-                                    ? Colors.green
-                                    : estado == 'Rechazado'
-                                        ? Colors.red
-                                        : Colors.orange,
-                              ),
+                        
+                        return ListTile(
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                          leading: CircleAvatar(
+                            backgroundColor: light,
+                            child: Icon(
+                              estado == 'Aprobado'
+                                  ? Icons.check_circle
+                                  : estado == 'Rechazado'
+                                      ? Icons.cancel
+                                      : Icons.info,
+                              color: estado == 'Aprobado'
+                                  ? greenColorLight
+                                  : estado == 'Rechazado'
+                                      ? wineLight
+                                      : darkBackground,
                             ),
-                            title: Text(
-                              notification['fileName'] ?? 'Notificación',
-                              style: const TextStyle(fontWeight: FontWeight.bold),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Estado: $estado"),
-                                if (mensajeAdmin.isNotEmpty)
-                                  Text(
-                                    "Mensaje: $mensajeAdmin",
-                                    style: const TextStyle(color: Colors.red),
-                                  ),
-                                Text(timestamp != null ? timeago.format(timestamp) : 'Fecha no disponible'),
-                              ],
-                            ),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.delete, color: Colors.red),
-                              onPressed: () => _confirmDelete(context, notification.id),
-                            ),
-                            onTap: () async {
-                              final pdfUrl = notification['pdfUrl'];
-                              if (pdfUrl != null && pdfUrl.isNotEmpty) {
-                                if (await canLaunch(pdfUrl)) {
-                                  await launch(pdfUrl);
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('No se puede abrir el archivo PDF')),
-                                  );
-                                }
-                              }
-                            },
+                          ),
+                          title: Text(
+                            notification['fileName'] ?? 'Notificación',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Estado: $estado"),
+                              if (mensajeAdmin.isNotEmpty)
+                                Text(
+                                  "Mensaje: $mensajeAdmin",
+                                  style: const TextStyle(color: wineLight),
+                                ),
+                              Text(timestamp != null ? timeago.format(timestamp) : 'Fecha no disponible'),
+                            ],
+                          ),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete, color: wineLight),
+                            onPressed: () => _confirmDelete(context, notification.id),
                           ),
                         );
                       },
@@ -164,20 +151,22 @@ class UserNotificationsPage extends StatelessWidget {
           title: const Text('Eliminar Notificación'),
           content: const Text('¿Está seguro de que desea eliminar esta notificación?'),
           actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancelar'),
-            ),
-            TextButton(
-              onPressed: () {
-                _firebaseService.deleteNotification(notificationId);
-                Navigator.of(context).pop();
+            ActionsFormCheck(isEditing: true,
+            onCancel: () => Navigator.of(context).pop(),
+            onUpdate: () async {
+              Navigator.of(context).pop();
+              _firebaseService.deleteNotification(notificationId);
+              if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Notificación eliminada correctamente.')),
+                  const SnackBar(content: Text("Notificacion eliminada correctamente")),
                 );
-              },
-              child: const Text('Eliminar'),
-            ),
+              }
+
+            },
+
+            )
+            
+            
           ],
         );
       },

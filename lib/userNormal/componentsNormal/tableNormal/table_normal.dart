@@ -14,7 +14,7 @@ class TableNormal extends StatefulWidget {
 class _TableNormalState extends State<TableNormal> {
   bool isLoading = true;
   List<Map<String, dynamic>> rows = [];
-  final List<String> columns = ['Nombre del curso', 'Fecha de envío de Constancia'];
+  final List<String> columns = ['Nombre del curso', 'Trimestre', 'Fecha de envío de Constancia'];
 
   @override
   void initState() {

@@ -5,6 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/formPatrts/my_button.dart';
+import 'package:testwithfirebase/dataConst/constand.dart';
 
 class FirebaseStorageService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -32,7 +34,7 @@ class FirebaseStorageService {
           title: Text('No se seleccionó archivo'),
           content: Text('Debes seleccionar un archivo para continuar.'),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: Text('Aceptar')),
+            MyButton(text: "Aceptar", icon: Icon(Icons.check_circle_outline), buttonColor: greenColorLight, onPressed: () => Navigator.pop(context),),
           ],
         ),
       );
@@ -58,7 +60,7 @@ class FirebaseStorageService {
           builder: (context) => AlertDialog(
             title: Text('Archivo existente'),
             content: Text('El archivo ya existe en el almacenamiento.'),
-            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('Aceptar'))],
+            actions: [MyButton(text: "Aceptar", icon: Icon(Icons.check_circle_outline), buttonColor: greenColorLight, onPressed: () => Navigator.pop(context),)],
           ),
         );
         return;
@@ -76,7 +78,7 @@ class FirebaseStorageService {
           builder: (context) => AlertDialog(
             title: Text('Error'),
             content: Text('No se pudo obtener los datos del archivo.'),
-            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('Aceptar'))],
+            actions: [MyButton(text: "Aceptar", icon: Icon(Icons.check_circle_outline), buttonColor: greenColorLight, onPressed: () => Navigator.pop(context),)],
           ),
         );
         return;
@@ -113,7 +115,10 @@ class FirebaseStorageService {
         builder: (context) => AlertDialog(
           title: Text('Éxito'),
           content: Text('El archivo se subió correctamente.'),
-          actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('Aceptar'))],
+          actions: [
+            MyButton(text: "Aceptar", icon: Icon(Icons.check_circle_outline), buttonColor: greenColorLight, onPressed: () => Navigator.pop(context),)
+
+          ],
         ),
       );
     } catch (e) {
@@ -122,7 +127,9 @@ class FirebaseStorageService {
         builder: (context) => AlertDialog(
           title: Text('Error al subir'),
           content: Text('Error al subir el archivo: $e'),
-          actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('Aceptar'))],
+          actions: [
+            MyButton(text: "Aceptar", icon: Icon(Icons.check_circle_outline), buttonColor: greenColorLight, onPressed: () => Navigator.pop(context),)
+            ],
         ),
       );
     }

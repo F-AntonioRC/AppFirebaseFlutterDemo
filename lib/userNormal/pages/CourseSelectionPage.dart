@@ -137,39 +137,41 @@ class CourseCard extends StatelessWidget {
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(15.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                imagePath,
-                height: MediaQuery.of(context).size.width < 400 ? 80 : 100, 
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                courseName,
-                style: TextStyle(
-                  fontSize: responsiveFontSize(context, 18), 
-                  fontWeight: FontWeight.bold,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  imagePath,
+                  height: MediaQuery.of(context).size.width < 400 ? 80 : 100,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Trimestre: $trimester',
-                style: TextStyle(fontSize: responsiveFontSize(context, 14) ),
-                textAlign: TextAlign.center,
-              ),
-              if (startDate != null) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: 15),
                 Text(
-                  'Inicio: $startDate',
-                  style: const TextStyle(fontSize: 14),
+                  courseName,
+                  style: TextStyle(
+                    fontSize: responsiveFontSize(context, 15),
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: 8),
+                Text(
+                  'Trimestre: $trimester',
+                  style: TextStyle(fontSize: responsiveFontSize(context, 14)),
+                  textAlign: TextAlign.center,
+                ),
+                if (startDate != null) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    'Inicio: $startDate',
+                    style: TextStyle(fontSize: responsiveFontSize(context, 14)),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),

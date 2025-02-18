@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:testwithfirebase/auth/auth_service.dart';
+import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/pages/configuration/cerrar_sesion.dart';
 import 'package:testwithfirebase/userNormal/blockNormal/drawer_block_normal.dart';
 import 'package:testwithfirebase/userNormal/blockNormal/drawer_state_normal.dart';
@@ -125,15 +126,55 @@ class _HomeNormalState extends State<HomeNormal> {
                   centerTitle: true,
                   systemOverlayStyle: SystemUiOverlayStyle.dark,
                   actions: [
-  IconButton(
-    splashRadius: 35.0,
-    iconSize: 30.0,
-    tooltip: 'Notificaciones',
-    icon: const Icon(Icons.notifications_rounded),
+                    IconButton(
+                      splashRadius: 35.0,
+                      iconSize: 30.0,
+                      tooltip: 'Notificaciones',
+                      icon: Stack(
+                        children: [
+                          const Icon(Icons.notifications_rounded),
+                          Positioned(
+                            right: 0,
+                            top: 0,
+                            child: StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('notifications')
+                                  .where('isRead', isEqualTo: false)
+                                  .where('status', isEqualTo: 'activo') // Solo notificaciones activas
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                                  return const SizedBox.shrink();
+                                }
+                                int unreadCount = snapshot.data!.docs.length;
+
+                                return Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: const BoxDecoration(
+                                    color: wineDark,
+                                    shape: BoxShape.circle,
+                                  
+                                  ),
+                                  
+                                  child: Text(
+                                    unreadCount > 9 ? '9+' : '$unreadCount',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                    ],
+    ),
     onPressed: () {
       showDialog(
         context: context,
-        builder: (context) => UserNotificationsPage(),
+        builder: (context) => UserNotificationsPage(), // Muestra el panel lateral de notificaciones
       );
     },
   ),
