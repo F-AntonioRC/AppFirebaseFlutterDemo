@@ -41,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     // Widget personalizado para el fondo de la pantalla.
     return BackgruondMain(
       // Se utiliza SingleChildScrollView para evitar overflow en pantallas pequeñas.
@@ -96,11 +97,15 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text(
                     "Olvide mi contraseña",
                     style: TextStyle(
-                        color: Colors.red,
+                        color: theme.brightness ==  Brightness.dark
+                            ? Colors.white
+                            : wineLight,
                         fontSize: responsiveFontSize(context, 18),
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline,
-                        decorationColor: wineDark),
+                        decorationColor: theme.brightness ==  Brightness.dark
+                            ? greenColorLight
+                            : greenColorLight),
                   )),
               // Enlace para ir a la pantalla de registro.
               Row(
@@ -124,9 +129,13 @@ class _LoginPageState extends State<LoginPage> {
                           style: TextStyle(
                               fontSize: responsiveFontSize(context, 18),
                               fontWeight: FontWeight.bold,
-                              color: pantone1255,
+                              color: theme.brightness ==  Brightness.dark
+                                  ? Colors.white
+                                  : wineLight,
                               decoration: TextDecoration.underline,
-                              decorationColor: wineDark),
+                              decorationColor: theme.brightness ==  Brightness.dark
+                                  ? greenColorLight
+                                  : greenColorLight),
                         ),
                       )
                     ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:testwithfirebase/components/formPatrts/actions_form_check.dart';
+import 'package:testwithfirebase/components/formPatrts/ink_component.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -125,9 +126,12 @@ class UserNotificationsPage extends StatelessWidget {
                               Text(timestamp != null ? timeago.format(timestamp) : 'Fecha no disponible'),
                             ],
                           ),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete, color: wineLight),
-                            onPressed: () => _confirmDelete(context, notification.id),
+                          trailing: CircleAvatar(
+                            backgroundColor: light,
+                            child: IconButton(
+                                tooltip: 'Eliminar',
+                                onPressed: () => _confirmDelete(context, notification.id),
+                                icon: const Icon(Icons.delete_forever, color: wineLight,)),
                           ),
                         );
                       },

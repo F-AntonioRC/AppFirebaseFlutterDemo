@@ -33,6 +33,7 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     // Widget personalizado para el fondo de la pantalla.
     return BackgruondMain(
         // Se utiliza SingleChildScrollView para evitar desbordamientos en pantallas pequeñas.
@@ -112,7 +113,9 @@ class RegisterPage extends StatelessWidget {
                       style: TextStyle(
                           fontSize: responsiveFontSize(context, 18),
                           fontWeight: FontWeight.bold,
-                          color: pantone1255,
+                          color: theme.brightness ==  Brightness.dark
+                              ? Colors.white
+                              : wineLight,
                           decoration: TextDecoration.underline,
                           decorationColor: wineDark),
                     ),

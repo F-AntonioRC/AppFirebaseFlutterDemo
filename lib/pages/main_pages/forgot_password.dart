@@ -26,6 +26,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     // Widget personalizado para el fondo de la pantalla.
     return BackgruondMain(
       // Utiliza un SingleChildScrollView para evitar problemas de desbordamiento
@@ -87,9 +88,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     style: TextStyle(
                         fontSize: responsiveFontSize(context, 20),
                         fontWeight: FontWeight.bold,
-                        color: pantone1255,
+                        color: theme.brightness ==  Brightness.dark
+                        ? Colors.white
+                        : greenColorLight,
                         decoration: TextDecoration.underline,
-                        decorationColor: wineDark),
+                        decorationColor: theme.brightness ==  Brightness.dark
+                            ? greenColorLight
+                            : wineLight,),
                   ),
                 )
               ],

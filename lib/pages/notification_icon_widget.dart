@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:testwithfirebase/components/formPatrts/ink_component.dart';
+import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -219,15 +221,14 @@ class NotificationDrawer extends StatelessWidget {
                 }
               },
             ),
-            IconButton(
-              icon: const Icon(Icons.delete, color: Colors.red),
-              onPressed: () {
-                FirebaseFirestore.instance
-                    .collection('notifications')
-                    .doc(notification.id)
-                    .delete();
-              },
-            ),
+            InkComponent(tooltip: 'Eliminar', 
+                iconInk: const Icon(Icons.delete, color: wineLight,), 
+                inkFunction: () {
+                  FirebaseFirestore.instance
+                      .collection('notifications')
+                      .doc(notification.id)
+                      .delete();
+                }),
           ],
         ),
       
