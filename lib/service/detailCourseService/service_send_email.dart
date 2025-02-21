@@ -90,7 +90,7 @@ Future<void> copyEmail(
     correos.addAll(correosIdOre);
   }
   if (idSare != null && idSare != 'N/A') {
-    // Obtener correos filtrados por idOre
+    // Obtener correos Generales por idSare
     if(idSare == '10101') {
       List<String> totalCorreos = await SendEmailMethods().getAllCorreosByEmpleados();
       correos.addAll(totalCorreos);
