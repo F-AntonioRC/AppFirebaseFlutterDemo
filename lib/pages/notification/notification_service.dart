@@ -8,7 +8,7 @@ class NotificationService {
   Stream<QuerySnapshot> getNotifications() {
   return _firestore
       .collection('notifications')
-      .where('status', isEqualTo: 'activo') // 🔹 Solo traer notificaciones activas
+      .where('status', isEqualTo: 'activo') //Solo traer notificaciones activas
       .orderBy('timestamp', descending: true)
       .snapshots()
       .handleError((error) {
@@ -77,6 +77,6 @@ Future<void> marcarNotificacionInactiva(String notificationId) async {
     await _firestore.collection('notifications').doc(notificationId).update({'isRead': true});
   }
    Future<void> Aprobado(String notificationId) async {
-    await _firestore.collection('notifications').doc(notificationId).update({'mensajeAdmin': 'Aprobado'});
+    await _firestore.collection('notifications').doc(notificationId).update({'estado': 'Aprobado'});
   }
 }

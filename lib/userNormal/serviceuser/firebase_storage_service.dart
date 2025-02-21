@@ -53,6 +53,32 @@ class FirebaseStorageService {
       User? user = _auth.currentUser;
       if (user == null) throw Exception("Usuario no autenticado");
 
+       QuerySnapshot querySnapshot = await _firestore
+        .collection('notifications')
+        .where('uid', isEqualTo: user.uid)
+        .where('IdCurso', isEqualTo: idCurso)
+        .where('status', isEqualTo: 'activo') // Solo archivos activos
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Archivo ya existente'),
+          content: Text('Ya has subido un archivo para este curso. No puedes subir otro.'),
+          actions: [
+            MyButton(
+              text: "Aceptar",
+              icon: Icon(Icons.check_circle_outline),
+              buttonColor: greenColorLight,
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        ),
+      );
+      return;
+      }
+
       try {
         await storageRef.getDownloadURL();
         showDialog(
