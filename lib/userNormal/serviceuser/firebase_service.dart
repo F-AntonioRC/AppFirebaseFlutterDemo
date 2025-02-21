@@ -40,9 +40,14 @@ class FirebaseService {
         query = query.where('IdOre', isEqualTo: idOre);
       }
       if (idSare != null) {
-        query = query.where('IdSare', isEqualTo: idSare);
+          query = query.where(Filter.or(
+          Filter('IdSare', isEqualTo: idSare), 
+          Filter('IdSare', isEqualTo: "10101"),
+          Filter('IdSare', isEqualTo: "ORE"),
+          ));
+        
       }
-
+      query = query.where('Estado', isEqualTo: 'Activo');
       final detalleCursosSnapshot = await query.get();
 
       // Filtrar los IDs de cursos no completados
@@ -85,4 +90,13 @@ class FirebaseService {
       .orderBy('timestamp', descending: true)
       .snapshots();
 }
+ Stream<QuerySnapshot> getUserNotificationsCount(String userId) {
+  return _firestore
+      .collection('notifications')
+      .where('uid', isEqualTo: userId)
+      .where('statusUser', isEqualTo: 'activo') 
+      .orderBy('timestamp', descending: true)
+      .snapshots();
+}
+
 }

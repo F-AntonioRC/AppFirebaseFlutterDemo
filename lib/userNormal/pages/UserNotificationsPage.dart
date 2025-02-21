@@ -98,7 +98,7 @@ class UserNotificationsPage extends StatelessWidget {
                               estado == 'Aprobado'
                                   ? Icons.check_circle
                                   : estado == 'Rechazado'
-                                      ? Icons.cancel
+                                      ? Icons.cancel_outlined
                                       : Icons.info,
                               color: estado == 'Aprobado'
                                   ? greenColorLight
@@ -142,7 +142,7 @@ class UserNotificationsPage extends StatelessWidget {
     );
   }
 
-  /// 🔹 **Confirmar eliminación de notificación**
+  ///**Confirmar eliminación de notificación**
   void _confirmDelete(BuildContext context, String notificationId) {
     showDialog(
       context: context,

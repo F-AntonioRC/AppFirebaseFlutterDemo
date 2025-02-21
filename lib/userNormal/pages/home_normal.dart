@@ -11,7 +11,7 @@ import 'package:testwithfirebase/userNormal/pages/CourseSelectionPage.dart';
 import 'package:testwithfirebase/userNormal/pages/UserNotificationsPage.dart';
 import 'package:testwithfirebase/userNormal/pages/configuration_normal.dart';
 import 'package:testwithfirebase/userNormal/pages/dashboard_normal.dart';
-
+import 'package:testwithfirebase/userNormal/serviceuser/firebase_service.dart';
 import '../drawerNormal/drawer_widget_normal.dart';
 
   /// Pantalla principal de la aplicación.
@@ -96,7 +96,8 @@ class _HomeNormalState extends State<HomeNormal> {
   Widget build(BuildContext context) {
     // Se obtiene el correo del usuario actual para pasarlo al Drawer.
     String? userEmailNormal = authServiceNormal.getCurrentUserEmail();
-
+    
+  String? uid = authServiceNormal.getCurrentUserUid();
     return BlocProvider(
       // Se provee el NavDrawerBlocNormal para que el resto de la interfaz pueda reaccionar
       // a los cambios en la navegación.
@@ -139,8 +140,8 @@ class _HomeNormalState extends State<HomeNormal> {
                             child: StreamBuilder<QuerySnapshot>(
                               stream: FirebaseFirestore.instance
                                   .collection('notifications')
-                                  .where('isRead', isEqualTo: false)
-                                  .where('status', isEqualTo: 'activo') // Solo notificaciones activas
+                                  .where('uid', isEqualTo: uid)
+                                  .where('statusUser', isEqualTo: 'activo') // Solo notificaciones activas
                                   .snapshots(),
                               builder: (context, snapshot) {
                                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
