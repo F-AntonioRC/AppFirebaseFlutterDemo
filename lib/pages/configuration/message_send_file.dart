@@ -51,9 +51,8 @@ class _MessageSendFileState extends State<MessageSendFile> {
             // Validacion del documento con manejo de errores y envio a sentry.
             onUpdate: () async {
               try {
-                await importExcelWithSareToFirebase();
+                await importExcelWithSareToFirebase(context);
                 if(context.mounted) {
-                  showCustomSnackBar(context, 'Datos agregados correctamente', greenColorLight);
                   Navigator.pop(context);
                 }
               } catch (e, stackTrace) {

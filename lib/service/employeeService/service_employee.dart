@@ -332,9 +332,8 @@ ValidationResult validateFields({
     errors.add("Por favor, selecciona un puesto");
   }
 
-  if (controllerOre.selectedDocument == null &&
-      controllerSare.selectedDocument == null) {
-    errors.add("Por favor, selecciona un ORE o Sare");
+  if (controllerSare.selectedDocument == null) {
+    errors.add("Por favor, selecciona una SARE");
   }
 
   if(emailController.text.isEmpty) {
