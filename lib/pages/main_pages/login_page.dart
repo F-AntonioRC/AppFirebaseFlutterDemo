@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                           style: TextStyle(
                               fontSize: responsiveFontSize(context, 18),
                               fontWeight: FontWeight.bold,
-                              color: greenColorLight,
+                              color: pantone1255,
                               decoration: TextDecoration.underline,
                               decorationColor: wineDark),
                         ),

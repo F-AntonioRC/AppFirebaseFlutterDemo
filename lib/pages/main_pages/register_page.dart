@@ -112,7 +112,7 @@ class RegisterPage extends StatelessWidget {
                       style: TextStyle(
                           fontSize: responsiveFontSize(context, 18),
                           fontWeight: FontWeight.bold,
-                          color: greenColorLight,
+                          color: pantone1255,
                           decoration: TextDecoration.underline,
                           decorationColor: wineDark),
                     ),
