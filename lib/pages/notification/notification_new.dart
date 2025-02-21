@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testwithfirebase/components/formPatrts/actions_form_check.dart';
 import 'package:testwithfirebase/components/formPatrts/custom_snackbar.dart';
+import 'package:testwithfirebase/components/formPatrts/ink_component.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/pages/notification/notification_service.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -104,25 +105,32 @@ class NotificationNew extends StatelessWidget {
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                IconButton(
-                                  
-                                  icon: const Icon(Icons.check_circle, color: greenColorLight),
-                                  onPressed: () => _confirmarCompletado(
+                                CircleAvatar(
+                                  backgroundColor: light,
+                                  child: IconButton(
+                                      onPressed: () => _confirmarCompletado(
                                     context,
                                     notification['uid'],
                                     notification['IdCurso'],
                                     notification['pdfUrl'],
                                     notification.id,
                                   ),
+                                      icon: const Icon(Icons.check_circle_outline, color: greenColorLight,),
+                                      tooltip: 'Aceptar',
+                                  ),
                                 ),
-                                IconButton(
-                                  
-                                  icon: const Icon(Icons.cancel_outlined, color: wineLight),
-                                  onPressed: () => _rechazarEvidencia(
-                                    context,
-                                    notification['uid'],
-                                    notification.id,
-                                    notification['filePaht'],
+                                const SizedBox(width: 5.0),
+                                CircleAvatar(
+                                  backgroundColor: light,
+                                  child: IconButton(
+                                    onPressed: () => _rechazarEvidencia(
+                                      context,
+                                      notification['uid'],
+                                      notification.id,
+                                      notification['filePaht'],
+                                    ),
+                                    icon: const Icon(Icons.cancel_outlined, color: wineLight,),
+                                    tooltip: 'Rechazar',
                                   ),
                                 ),
                               ],

@@ -2,8 +2,8 @@
 class TableDataExampleNormal {
   /// Crea una lista de columnas para el Widget `TableExample`.
 
-  static List<String> getColumns() =>  [ 'Nombre del curso', 'Trimestre',
-  'Fecha de envio de Constancia'];
+  static List<String> getColumns() =>  [ 'NOMBRE DEL CURSO', 'TRIMESTRE',
+  'FECHA DE FINALIZACIÓN'];
 
   /// Crea una lista de filas con datos para el Widget `TableExample`.
 
