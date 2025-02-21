@@ -116,6 +116,7 @@ class NotificationNew extends StatelessWidget {
                                   ),
                                 ),
                                 IconButton(
+                                  
                                   icon: const Icon(Icons.cancel_outlined, color: wineLight),
                                   onPressed: () => _rechazarEvidencia(
                                     context,
