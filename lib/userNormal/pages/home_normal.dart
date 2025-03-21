@@ -2,16 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:testwithfirebase/auth/auth_service.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/pages/configuration/cerrar_sesion.dart';
 import 'package:testwithfirebase/userNormal/blockNormal/drawer_block_normal.dart';
 import 'package:testwithfirebase/userNormal/blockNormal/drawer_state_normal.dart';
-import 'package:testwithfirebase/userNormal/pages/CourseSelectionPage.dart';
-import 'package:testwithfirebase/userNormal/pages/UserNotificationsPage.dart';
+import 'package:testwithfirebase/userNormal/pages/course_selection_page.dart';
+import 'package:testwithfirebase/userNormal/pages/user_notifications_page.dart';
 import 'package:testwithfirebase/userNormal/pages/configuration_normal.dart';
 import 'package:testwithfirebase/userNormal/pages/dashboard_normal.dart';
-import 'package:testwithfirebase/userNormal/serviceuser/firebase_service.dart';
 import '../drawerNormal/drawer_widget_normal.dart';
 
   /// Pantalla principal de la aplicación.
@@ -54,44 +54,55 @@ class _HomeNormalState extends State<HomeNormal> {
   }
 
   Future<void> _loadUserCupo() async {
-    try {
-      // Se obtiene el correo del usuario actual para pasarlo al Drawer.
-      String? uid = authServiceNormal.getCurrentUserUid();
-      print('UID del usuario: $uid');
-      if (uid != null) {
-        final userSnapshot = await FirebaseFirestore.instance
-            .collection('User')
-            .where('uid', isEqualTo: uid)
-            .get();
-
-        if (userSnapshot.docs.isNotEmpty) {
-          final userData = userSnapshot.docs.first.data();
-          String cupo = userData['CUPO'];
-
-          final employeeSnapshot = await FirebaseFirestore.instance
-              .collection('Empleados')
-              .where('CUPO', isEqualTo: cupo)
-              .get();
-
-          if (employeeSnapshot.docs.isNotEmpty) {
-            setState(() {
-              userCupo = cupo;
-              print('CUPO obtenido: $userCupo');
-            });
-          } else {
-            print('Empleado no encontrado');
-          }
-        } else {
-          print('Usuario no encontrado');
-        }
-      } else {
-        print('UID es nulo');
-      }
-    } catch (e) {
-      print('Error al obtener CUPO: $e');
+  try {
+    // Se obtiene el UID del usuario autenticado
+    String? uid = authServiceNormal.getCurrentUserUid();
+    
+    if (uid == null) {
+      throw Exception("El UID del usuario es nulo.");
     }
-  }
 
+    // Obtener datos del usuario desde la colección "User"
+    final userSnapshot = await FirebaseFirestore.instance
+        .collection('User')
+        .where('uid', isEqualTo: uid)
+        .get();
+
+    if (userSnapshot.docs.isEmpty) {
+      throw Exception("No se encontró el usuario en la base de datos.");
+    }
+
+    final userData = userSnapshot.docs.first.data();
+    String cupo = userData['CUPO'];
+
+    // Obtener datos del empleado desde la colección "Empleados"
+    final employeeSnapshot = await FirebaseFirestore.instance
+        .collection('Empleados')
+        .where('CUPO', isEqualTo: cupo)
+        .get();
+
+    if (employeeSnapshot.docs.isEmpty) {
+      throw Exception("No se encontró un empleado con el CUPO correspondiente.");
+    }
+
+    // Actualizar el estado con el CUPO encontrado
+    setState(() {
+      userCupo = cupo;
+    });
+
+  } catch (exception, stackTrace) {
+    
+
+    // Captura la excepción en Sentry
+    await Sentry.captureException(
+      exception,
+      stackTrace: stackTrace,
+      withScope: (scope) {
+        scope.setTag("error_type", "load_user_cupo");
+      },
+    );
+  }
+}
   @override
   Widget build(BuildContext context) {
     // Se obtiene el correo del usuario actual para pasarlo al Drawer.

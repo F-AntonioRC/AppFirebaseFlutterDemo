@@ -16,8 +16,8 @@ class CursosNormal extends StatefulWidget {
     required this.trimester,
     required this.dependecy,
     required this.idCurso,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<CursosNormal> createState() => _CursosNormalState();

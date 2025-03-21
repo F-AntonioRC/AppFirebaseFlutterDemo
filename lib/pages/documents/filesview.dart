@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testwithfirebase/pages/documents/firebaseservice.dart';
 
 class FilesListPage extends StatefulWidget {
@@ -8,11 +7,11 @@ class FilesListPage extends StatefulWidget {
   final String trimester;
 
   const FilesListPage({
-    Key? key,
+    super.key,
     required this.courseName,
     required this.dependency,
     required this.trimester,
-  }) : super(key: key);
+  });
 
   @override
   State<FilesListPage> createState() => _FilesListPageState();
@@ -43,7 +42,6 @@ class _FilesListPageState extends State<FilesListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Archivos de ${widget.courseName}'),
-        //backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
       body: isLoading
           ? const Center(

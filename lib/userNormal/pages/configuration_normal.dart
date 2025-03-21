@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:testwithfirebase/components/configuration/card_colors.dart';
 import 'package:testwithfirebase/components/configuration/theme_color.dart';
+import 'package:testwithfirebase/dataConst/constand.dart';
+import 'package:testwithfirebase/userNormal/pages/service_apk.dart';
 
 class ConfigurationNormal extends StatelessWidget {
   const ConfigurationNormal({super.key});
@@ -12,9 +15,10 @@ class ConfigurationNormal extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ThemeColor(),
-        CardColors()
+        CardColors(),
+        GetApk(),
       ],
-    ),
-    );
+    )
+    ); 
   }
 }

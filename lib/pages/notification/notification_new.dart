@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testwithfirebase/components/formPatrts/actions_form_check.dart';
 import 'package:testwithfirebase/components/formPatrts/custom_snackbar.dart';
-import 'package:testwithfirebase/components/formPatrts/ink_component.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/pages/notification/notification_service.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -139,12 +138,17 @@ class NotificationNew extends StatelessWidget {
                               final pdfUrl = notification['pdfUrl'];
                               _notificationService.marcarNotificacionLeida(notification.id);
                               if (pdfUrl != null && pdfUrl.isNotEmpty) {
+                                // ignore: deprecated_member_use
                                 if (await canLaunch(pdfUrl)) {
+                                  // ignore: deprecated_member_use
                                   await launch(pdfUrl);
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
+                                  if (context.mounted) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text('No se puede abrir el archivo PDF')),
                                   );
+                                  } 
+                                  
                                 }
                               }
                             },
@@ -179,7 +183,7 @@ class NotificationNew extends StatelessWidget {
                   Navigator.of(context).pop();
                   await _notificationService.marcarCursoCompletado(userId, cursoId, evidenciaUrl);
                   await _notificationService.marcarNotificacionInactiva(notificationId);
-                  await _notificationService.Aprobado(notificationId);
+                  await _notificationService.aprobado(notificationId);
                   if(context.mounted) {
                     showCustomSnackBar(context,
                         'Curso marcado como completado y notificación eliminada.',

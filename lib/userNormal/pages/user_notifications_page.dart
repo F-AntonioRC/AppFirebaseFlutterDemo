@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:testwithfirebase/components/formPatrts/actions_form_check.dart';
+
+/// The line `import 'package:testwithfirebase/components/formPatrts/ink_component.dart';` is importing
+/// a custom Dart file named `ink_component.dart` from the `formPatrts` directory within the
+/// `components` directory of the `testwithfirebase` package. This allows the current Dart file to
+/// access and use any classes, functions, or constants defined in the `ink_component.dart` file.
 import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/util/responsive.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:url_launcher/url_launcher.dart';
 import 'package:testwithfirebase/userNormal/serviceuser/firebase_service.dart';
 
 class UserNotificationsPage extends StatelessWidget {
@@ -73,7 +77,7 @@ class UserNotificationsPage extends StatelessWidget {
                     }
 
                     if (snapshot.hasError) {
-                      return const Center(child: Text('Error al cargar notificaciones.'));
+                      return const Center(child: Text('No tienes notificaciones.'));
                     }
 
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -158,13 +162,7 @@ class UserNotificationsPage extends StatelessWidget {
             onCancel: () => Navigator.of(context).pop(),
             onUpdate: () async {
               Navigator.of(context).pop();
-              _firebaseService.deleteNotification(notificationId);
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Notificacion eliminada correctamente")),
-                );
-              }
-
+              _firebaseService.deleteNotification(notificationId);              
             },
 
             )

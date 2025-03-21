@@ -19,6 +19,7 @@ class FirebaseStorageService {
     required String dependency,
     required String course,
     required String idCurso,
+    
     String? subCourse,
     required Function(double) onProgress,
   }) async {
@@ -28,13 +29,15 @@ class FirebaseStorageService {
     );
 
     if (result == null) {
+      if (!context.mounted) return;
       showDialog(
+         
         context: context,
-        builder: (context) => AlertDialog(
-          title: Text('No se seleccionó archivo'),
-          content: Text('Debes seleccionar un archivo para continuar.'),
+        builder: ( context) => AlertDialog(
+          title: const Text('No se seleccionó archivo'),
+          content: const Text('Debes seleccionar un archivo para continuar.'),
           actions: [
-            MyButton(text: "Aceptar", icon: Icon(Icons.check_circle_outline), buttonColor: greenColorLight, onPressed: () => Navigator.pop(context),),
+            MyButton(text: "Aceptar", icon: const Icon(Icons.check_circle_outline), buttonColor: greenColorLight, onPressed: () => Navigator.pop(context),),
           ],
         ),
       );
@@ -61,15 +64,16 @@ class FirebaseStorageService {
         .get();
 
     if (querySnapshot.docs.isNotEmpty) {
+      if (!context.mounted) return;
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Archivo ya existente'),
-          content: Text('Ya has subido un archivo para este curso. No puedes subir otro.'),
+          title: const Text('Archivo ya existente'),
+          content: const Text('Ya has subido un archivo para este curso. No puedes subir otro.'),
           actions: [
             MyButton(
               text: "Aceptar",
-              icon: Icon(Icons.check_circle_outline),
+              icon: const Icon(Icons.check_circle_outline),
               buttonColor: greenColorLight,
               onPressed: () => Navigator.pop(context),
             ),
@@ -81,12 +85,13 @@ class FirebaseStorageService {
 
       try {
         await storageRef.getDownloadURL();
+        if (!context.mounted) return;
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Archivo existente'),
-            content: Text('El archivo ya existe en el almacenamiento.'),
-            actions: [MyButton(text: "Aceptar", icon: Icon(Icons.check_circle_outline), buttonColor: greenColorLight, onPressed: () => Navigator.pop(context),)],
+            title: const Text('Archivo existente'),
+            content: const Text('El archivo ya existe en el almacenamiento.'),
+            actions: [MyButton(text: "Aceptar", icon: const Icon(Icons.check_circle_outline), buttonColor: greenColorLight, onPressed: () => Navigator.pop(context),)],
           ),
         );
         return;
@@ -99,12 +104,13 @@ class FirebaseStorageService {
         File file = File(result.files.single.path!);
         uploadTask = storageRef.putFile(file, metadata);
       } else {
+        if (!context.mounted) return;
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Error'),
-            content: Text('No se pudo obtener los datos del archivo.'),
-            actions: [MyButton(text: "Aceptar", icon: Icon(Icons.check_circle_outline), buttonColor: greenColorLight, onPressed: () => Navigator.pop(context),)],
+            title: const Text('Error'),
+            content: const Text('No se pudo obtener los datos del archivo.'),
+            actions: [MyButton(text: "Aceptar", icon: const Icon(Icons.check_circle_outline), buttonColor: greenColorLight, onPressed: () => Navigator.pop(context),)],
           ),
         );
         return;
@@ -135,26 +141,27 @@ class FirebaseStorageService {
         'statusUser':'activo',
         'mensajeAdmin': '',
       });
-
+      if (!context.mounted) return;
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Éxito'),
-          content: Text('El archivo se subió correctamente.'),
+          title: const Text('Éxito'),
+          content: const Text('El archivo se subió correctamente.'),
           actions: [
-            MyButton(text: "Aceptar", icon: Icon(Icons.check_circle_outline), buttonColor: greenColorLight, onPressed: () => Navigator.pop(context),)
+            MyButton(text: "Aceptar", icon: const Icon(Icons.check_circle_outline), buttonColor: greenColorLight, onPressed: () => Navigator.pop(context),)
 
           ],
         ),
       );
     } catch (e) {
+      if (!context.mounted) return;
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Error al subir'),
+          title: const Text('Error al subir'),
           content: Text('Error al subir el archivo: $e'),
           actions: [
-            MyButton(text: "Aceptar", icon: Icon(Icons.check_circle_outline), buttonColor: greenColorLight, onPressed: () => Navigator.pop(context),)
+            MyButton(text: "Aceptar", icon: const Icon(Icons.check_circle_outline), buttonColor: greenColorLight, onPressed: () => Navigator.pop(context),)
             ],
         ),
       );

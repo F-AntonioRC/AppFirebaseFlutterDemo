@@ -4,7 +4,7 @@ import 'package:testwithfirebase/pages/documents/firebaseservice.dart';
 
 class DependenciesView extends StatefulWidget {
   final String trimester;
-  const DependenciesView({Key? key, required this.trimester}) : super(key: key);
+  const DependenciesView({super.key, required this.trimester});
 
   @override
   State<DependenciesView> createState() => _DependenciesViewState();

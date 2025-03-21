@@ -9,6 +9,7 @@ class PaginatedTableService {
 
     try {
 
+      // ignore: no_leading_underscores_for_local_identifiers
       final _auth = FirebaseAuth.instance;
 
       String uid = _auth.currentUser?.uid ?? '';

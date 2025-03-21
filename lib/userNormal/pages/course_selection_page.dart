@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:testwithfirebase/auth/auth_service.dart';
 import 'package:testwithfirebase/userNormal/serviceuser/firebase_service.dart';
 import 'package:testwithfirebase/util/responsive.dart';
@@ -7,9 +9,10 @@ import 'cursos_normal.dart';
 class DynamicCourseSelectionPage extends StatefulWidget {
   final String cupo;
 
-  const DynamicCourseSelectionPage({Key? key, required this.cupo}) : super(key: key);
+  const DynamicCourseSelectionPage({super.key, required this.cupo});
 
   @override
+  // ignore: library_private_types_in_public_api
   _DynamicCourseSelectionPageState createState() => _DynamicCourseSelectionPageState();
 }
 
@@ -25,29 +28,46 @@ class _DynamicCourseSelectionPageState extends State<DynamicCourseSelectionPage>
   }
 
   Future<void> cargarCursosPendientes() async {
-    try {
-      final userId = AuthService().getCurrentUserUid();
-      if (userId == null) {
-        throw Exception('Usuario no autenticado');
-      }
-
-      final cursos = await _firebaseService.obtenerCursosPendientes(userId, widget.cupo);
-
-      setState(() {
-        cursosPendientes = cursos;
-        isLoading = false;
-      });
-
-      if (cursos.isEmpty) {
-        print('El usuario no tiene cursos pendientes.');
-      }
-    } catch (e) {
-      print('Error al cargar cursos pendientes: $e');
-      setState(() {
-        isLoading = false;
-      });
+  try {
+    final userId = AuthService().getCurrentUserUid();
+    if (userId == null) {
+      throw Exception('Usuario no autenticado');
     }
+
+    final cursos = await _firebaseService.obtenerCursosPendientes(userId, widget.cupo);
+
+    setState(() {
+      cursosPendientes = cursos;
+      isLoading = false;
+    });
+
+    if (cursos.isEmpty) {
+    }
+  } on FirebaseException catch (exception, stackTrace) {
+    await Sentry.captureException(
+      exception,
+      stackTrace: stackTrace,
+      withScope: (scope) {
+        scope.setTag('firebase_error_code', exception.code);
+      },
+    );
+    setState(() {
+      isLoading = false;
+    });
+  } catch (exception, stackTrace) {
+    await Sentry.captureException(
+      exception,
+      stackTrace: stackTrace,
+      withScope: (scope) {
+        scope.setTag('error_type', 'unknown_exception');
+      },
+    );
+    setState(() {
+      isLoading = false;
+    });
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +80,9 @@ class _DynamicCourseSelectionPageState extends State<DynamicCourseSelectionPage>
                   padding: const EdgeInsets.all(16.0),
                   child: LayoutBuilder(
                     builder: (context, constraints) {
+                      // ignore: unused_local_variable
                       int crossAxisCount = 2;
+                      // ignore: unused_local_variable
                       double childAspectRatio = 1.2;
 
                       if (constraints.maxWidth > 600) {
@@ -118,13 +140,13 @@ class CourseCard extends StatelessWidget {
   final String imagePath;
 
   const CourseCard({
-    Key? key,
+    super.key,
     required this.courseName,
     required this.trimester,
     this.startDate,
     required this.onTap,
     required this.imagePath,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

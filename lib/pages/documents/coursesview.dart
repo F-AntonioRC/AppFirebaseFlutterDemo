@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testwithfirebase/pages/documents/filesview.dart';
-import 'package:testwithfirebase/pages/documents/firebaseservice.dart';
+
 
 class CoursesView extends StatelessWidget {
   final String trimester;
@@ -9,15 +9,15 @@ class CoursesView extends StatelessWidget {
   final String dependencyName;
 
   const CoursesView({
-    Key? key,
+    super.key,
     required this.trimester,
     required this.dependecyId,
     required this.dependencyName,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseService _firebaseService = FirebaseService();
+    
 
     return Scaffold(
       appBar: AppBar(title: Text('Cursos de $dependencyName')),

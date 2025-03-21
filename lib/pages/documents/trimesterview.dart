@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/formPatrts/custom_snackbar.dart';
+import 'package:testwithfirebase/dataConst/constand.dart';
 import 'package:testwithfirebase/pages/documents/dependenciesview.dart';
 import 'package:testwithfirebase/pages/documents/firebaseservice.dart';
+import 'package:testwithfirebase/service/report_excel.dart';
 
 class TrimesterView extends StatefulWidget {
-  const TrimesterView({Key? key}) : super(key: key);
+  const TrimesterView({super.key});
 
   @override
   State<TrimesterView> createState() => _TrimesterViewState();
@@ -108,6 +111,21 @@ class _TrimesterViewState extends State<TrimesterView> {
                     },
                   ),
                 ),
+                floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+          try {
+            await generarExcelCursosCompletados();
+            if (!mounted) return;
+            showCustomSnackBar(context, 'Archivo descargado correctamente', greenColorLight);
+          } catch (e) {
+            if (!mounted) return;
+            showCustomSnackBar(context, 'Error al descargar el archivo', Colors.red);
+          }
+        },
+        icon: const Icon(Icons.download),
+        label: const Text("Descargar Reporte"),
+        backgroundColor: greenColorLight,
+      ),
     );
   }
 }
