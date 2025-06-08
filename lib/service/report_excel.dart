@@ -14,6 +14,7 @@ Future<void> generarExcelCursosCompletados() async {
 
   Set<String> dependenciasSet = {};
 
+  // Recoger todas las dependencias únicas
   for (var doc in cursosCompletadosSnapshot.docs) {
     List<String> idCursos = List<String>.from(doc['IdCursosCompletados']);
 
@@ -30,6 +31,7 @@ Future<void> generarExcelCursosCompletados() async {
 
   List<String> dependenciasOrdenadas = dependenciasSet.toList()..sort();
 
+  // Encabezados principales
   List<CellValue?> encabezadoDependencias = [
     TextCellValue('CUPO'),
     TextCellValue('Nombre del Empleado')
@@ -41,6 +43,7 @@ Future<void> generarExcelCursosCompletados() async {
   }
   sheetObject.appendRow(encabezadoDependencias);
 
+  // Subencabezados
   List<CellValue?> subEncabezados = [TextCellValue(''), TextCellValue('')];
   for (String dependencia in dependenciasOrdenadas) {
     subEncabezados.add(TextCellValue('Curso'));
@@ -49,6 +52,7 @@ Future<void> generarExcelCursosCompletados() async {
   }
   sheetObject.appendRow(subEncabezados);
 
+  // Procesar cada empleado
   for (var doc in cursosCompletadosSnapshot.docs) {
     String uid = doc['uid'];
     List<String> idCursos = List<String>.from(doc['IdCursosCompletados']);
@@ -72,70 +76,76 @@ Future<void> generarExcelCursosCompletados() async {
       }
     }
 
-    List<List<CellValue?>> filaExpandida = [];
-    filaExpandida.add([TextCellValue(cupon), TextCellValue(empleadoNombre)]);
+    // Mapa para organizar los cursos por dependencia
+    Map<String, List<List<String>>> datosPorDependencia = {};
 
-    for (String dependencia in dependenciasOrdenadas) {
-      List<String> cursos = [];
-      List<String> trimestres = [];
-      List<String> fechas = [];
+    for (int i = 0; i < idCursos.length; i++) {
+      String cursoId = idCursos[i];
+      String fechaCurso = fechasCursos[i];
 
-      for (int i = 0; i < idCursos.length; i++) {
-        String cursoId = idCursos[i];
-        String fechaCurso = fechasCursos[i];
+      DocumentSnapshot cursoSnapshot =
+          await firestore.collection('Cursos').doc(cursoId).get();
 
-        DocumentSnapshot cursoSnapshot =
-            await firestore.collection('Cursos').doc(cursoId).get();
+      if (cursoSnapshot.exists) {
+        String nombreCurso = cursoSnapshot['NombreCurso'] ?? 'Desconocido';
+        String trimestre = cursoSnapshot['Trimestre'] ?? '0';
+        String dependenciaCurso = cursoSnapshot['Dependencia'] ?? 'S/D';
 
-        if (cursoSnapshot.exists) {
-          String nombreCurso = cursoSnapshot['NombreCurso'] ?? 'Desconocido';
-          String trimestre = cursoSnapshot['Trimestre'] ?? '0';
-          String dependenciaCurso = cursoSnapshot['Dependencia'] ?? 'S/D';
-
-          if (dependenciaCurso == dependencia) {
-            cursos.add(nombreCurso);
-            trimestres.add(trimestre);
-            fechas.add(fechaCurso.split("T")[0]);
-          }
+        if (!datosPorDependencia.containsKey(dependenciaCurso)) {
+          datosPorDependencia[dependenciaCurso] = [];
         }
+        datosPorDependencia[dependenciaCurso]!.add([
+          nombreCurso,
+          trimestre,
+          fechaCurso.split("T")[0]
+        ]);
+      }
+    }
+
+    // Encontrar la cantidad máxima de filas que se necesitarán
+    int maxCursosPorEmpleado = datosPorDependencia.values
+        .map((lista) => lista.length)
+        .fold(0, (prev, curr) => curr > prev ? curr : prev);
+
+    // Crear filas dinámicamente según el número de cursos
+    for (int i = 0; i < maxCursosPorEmpleado; i++) {
+      List<CellValue?> fila = [];
+
+      if (i == 0) {
+        // Solo en la primera fila escribimos los datos del empleado
+        fila.add(TextCellValue(cupon));
+        fila.add(TextCellValue(empleadoNombre));
+      } else {
+        // Filas adicionales dejan vacío CUPO y Nombre
+        fila.add(TextCellValue(''));
+        fila.add(TextCellValue(''));
       }
 
-      int maxFilas = cursos.length;
-      for (int i = 0; i < maxFilas; i++) {
-        if (filaExpandida.length <= i) {
-          filaExpandida.add([TextCellValue(''), TextCellValue('')]);
-        }
-        filaExpandida[i].add(TextCellValue(cursos[i]));
-        filaExpandida[i].add(TextCellValue(trimestres[i]));
-        filaExpandida[i].add(TextCellValue(fechas[i]));
-      }
-
-      if (maxFilas == 0) {
-        if (filaExpandida.length == 1) {
-          filaExpandida[0].addAll([
+      // Agregar los cursos en la misma fila
+      for (String dependencia in dependenciasOrdenadas) {
+        if (datosPorDependencia.containsKey(dependencia) &&
+            datosPorDependencia[dependencia]!.length > i) {
+          var datos = datosPorDependencia[dependencia]![i];
+          fila.add(TextCellValue(datos[0])); // Curso
+          fila.add(TextCellValue(datos[1])); // Trimestre
+          fila.add(TextCellValue(datos[2])); // Fecha
+        } else {
+          fila.addAll([
             TextCellValue(''),
             TextCellValue(''),
             TextCellValue('')
           ]);
-        } else {
-          for (var row in filaExpandida) {
-            row.addAll([
-              TextCellValue(''),
-              TextCellValue(''),
-              TextCellValue('')
-            ]);
-          }
         }
       }
-    }
 
-    for (var row in filaExpandida) {
-      sheetObject.appendRow(row);
+      sheetObject.appendRow(fila);
     }
   }
 
   await guardarYAbrirExcel(excel);
 }
+
+
 
 Future<void> guardarYAbrirExcel(Excel excel) async {
   var bytes = excel.encode();
