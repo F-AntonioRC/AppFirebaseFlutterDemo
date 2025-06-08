@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:testwithfirebase/components/employee/uploadDocument.dart';
 import 'package:testwithfirebase/components/table/MyPaginatedTable.dart';
 import 'package:testwithfirebase/providers/edit_provider.dart';
 import 'package:testwithfirebase/service/employeeService/database_methods_employee.dart';
@@ -148,6 +149,22 @@ class TableViewEmployee extends StatelessWidget {
                   Icons.engineering,
                   color: Colors.blue,
                 ),
+                UploadDocument: (String id) {
+                  final selectedRow = data.firstWhere((row) => row[idKey] == id);
+                  final name = selectedRow["Nombre"];
+                  final idAdd = selectedRow[idKey];
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Uploaddocument(
+                        dataChange: name,
+                        idChange: idAdd,
+                      );
+                    },
+                  );
+                },
+                iconUploadDocument: const Icon(Icons.upload_file, color: Colors.black,),
+                tooltipUploadDocument: "Subir Documento",
               );
             }
           },

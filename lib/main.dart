@@ -12,8 +12,8 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await SentryFlutter.init((options) {
     options.dsn = 'https://fc5884625a402f576572138cf77ae88c@o4508671006867456.ingest.us.sentry.io/4508671015649280';
-    options.tracesSampleRate = 1.0; //CAPTURA EL 100% DE LAS TRANSACCIONES EN PRODUCCION
-    options.profilesSampleRate = 1.0; //CAPURA EL 100% DE LAS TRANSACCIONES RASTREADAS
+    options.tracesSampleRate = 0.1; //CAPTURA EL 1% DE LAS TRANSACCIONES EN PRODUCCION
+    options.profilesSampleRate = 0.1; //CAPURA EL 1% DE LAS TRANSACCIONES RASTREADAS
   });
 
   runApp(

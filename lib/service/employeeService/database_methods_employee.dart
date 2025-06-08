@@ -252,4 +252,115 @@ class DatabaseMethodsEmployee {
       rethrow;
     }
   }
+
+/// Obtiene el valor del campo 'CUPO' de un empleado dado su ID.
+///
+/// Esta función busca en la colección 'Empleados' de Firestore el documento correspondiente 
+/// al ID de empleado proporcionado y devuelve el valor de su campo 'CUPO' como un `String`,
+/// si existe. Si el documento no existe o el campo no está presente, devuelve `null`.
+///
+/// En caso de error al interactuar con Firestore, captura las excepciones específicas de Firebase 
+/// (`FirebaseException`) y las generales (`Exception`), registrándolas en Sentry para su 
+/// seguimiento, y luego relanza la excepción.
+///
+/// Parámetros:
+/// - [idEmpleado]: ID del documento del empleado a consultar.
+///
+/// Retorna:
+/// - Un `Future<String?>` que contiene el valor del campo 'CUPO' si existe, o `null` si no.
+///
+/// Manejo de errores:
+/// - En caso de error de Firebase (como permisos insuficientes o documento no encontrado),
+///   se captura la excepción y se registra en Sentry con la etiqueta 'firebase_error_code'.
+/// - Para cualquier otro error, se captura y se registra en Sentry.
+///
+/// Excepciones:
+/// - Relanza cualquier excepción capturada para que el código que llame a esta función
+///   pueda manejarla apropiadamente.
+
+  Future<String?> obtenerCupoEmpleado(String idEmpleado) async {
+  try {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('Empleados')
+        .doc(idEmpleado)
+        .get();
+
+    if (snapshot.exists) {
+      final data = snapshot.data();
+      return data?['CUPO'] as String?;
+    } else {
+      
+      return null;
+    }
+  } on FirebaseException catch (exception, stackTrace) {
+      // Maneja excepciones específicas de Firebase
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+        withScope: (scope) {
+          scope.setTag('firebase_error_code', exception.code);
+        },
+      );
+      rethrow; // Relanzar la excepción
+  } catch (exception, stackTrace) {
+          // Maneja otras excepciones
+      await Sentry.captureException(exception, stackTrace: stackTrace);
+      rethrow;
+  }
+}
+
+/// Obtiene el ID de usuario (`uid`) asociado a un valor específico de 'CUPO'.
+///
+/// Esta función realiza una consulta en la colección 'User' de Firestore, buscando el primer 
+/// documento cuyo campo 'CUPO' sea igual al valor especificado. Si se encuentra un documento 
+/// coincidente, devuelve el valor del campo 'uid' como un `String`. Si no hay coincidencias, devuelve `null`.
+///
+/// Parámetros:
+/// - [cupo]: El valor del campo 'CUPO' a buscar.
+///
+/// Retorna:
+/// - Un `Future<String?>` que contiene el valor del campo 'uid' si se encuentra
+///   un documento coincidente, o `null` si no.
+///
+/// Manejo de errores:
+/// - En caso de error de Firebase (como permisos insuficientes o consulta incorrecta),
+///   se captura la excepción y se registra en Sentry con la etiqueta 'firebase_error_code'.
+/// - Para cualquier otro error, se captura y se registra en Sentry.
+///
+/// Excepciones:
+/// - Relanza cualquier excepción capturada para que el código que llame a esta función
+///   pueda manejarla adecuadamente.
+Future<String?> obtenerUserIdPorCupo(String cupo) async {
+  try {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('User')
+        .where('CUPO', isEqualTo: cupo)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      final userData = querySnapshot.docs.first.data();
+      return userData['uid'] as String?;
+    } else {
+      
+      return null;
+    }
+  } on FirebaseException catch (exception, stackTrace) {
+      // Maneja excepciones específicas de Firebase
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+        withScope: (scope) {
+          scope.setTag('firebase_error_code', exception.code);
+        },
+      );
+      rethrow; // Relanzar la excepción
+  } catch (exception, stackTrace) {
+          // Maneja otras excepciones
+      await Sentry.captureException(exception, stackTrace: stackTrace);
+      rethrow;
+  }
+}
+
+
+
 }
