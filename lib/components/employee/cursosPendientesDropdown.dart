@@ -1,27 +1,27 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 
-/// Un widget personalizado que muestra un `DropdownButtonFormField` para
+/// Un widget personalizado que muestra un DropdownButtonFormField para
 /// seleccionar un curso pendiente de una lista de cursos obtenida de Firestore.
 
-/// Este widget utiliza un `FutureBuilder` para esperar la lista de cursos, mostrando un indicador 
+/// Este widget utiliza un FutureBuilder para esperar la lista de cursos, mostrando un indicador 
 /// de carga mientras se obtienen los datos. Si hay un error o la lista está vacía, muestra un 
 /// mensaje de error o un texto indicativo respectivamente.
 
 /// Parámetros:
-/// - [cursosFuture]: Un `Future` que devuelve una lista de mapas, cada uno
+/// - [cursosFuture]: Un Future que devuelve una lista de mapas, cada uno
 ///   representando un curso con los campos 'IdCurso' y 'NombreCurso'.
 /// - [onChanged]: Un callback opcional que se invoca cuando el usuario selecciona
-///   un curso. Recibe el ID del curso seleccionado como `String?`.
+///   un curso. Recibe el ID del curso seleccionado como String?.
 /// 
 /// Notas:
 /// - Los datos del curso deben incluir las claves 'IdCurso' y 'NombreCurso' como
-///   `String?`.
+///   String?.
 /// - Los cursos con datos faltantes o nulos serán filtrados y no aparecerán
 ///   en la lista desplegable.
 
-class CursosPendientesDropdown extends StatelessWidget {
+class CursosPendientesDropdown extends StatefulWidget {
   final Future<List<Map<String, dynamic>>> cursosFuture;
-  final Function(String?)? onChanged;
+  final Function(Map<String, dynamic>?)? onChanged;
 
   const CursosPendientesDropdown({
     super.key,
@@ -30,9 +30,17 @@ class CursosPendientesDropdown extends StatelessWidget {
   });
 
   @override
+  State<CursosPendientesDropdown> createState() => _CursosPendientesDropdownState();
+}
+
+class _CursosPendientesDropdownState extends State<CursosPendientesDropdown> {
+  String? selectedIdCurso;
+  List<Map<String, dynamic>> cursos = [];
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Map<String, dynamic>>>(
-      future: cursosFuture,
+      future: widget.cursosFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
@@ -44,7 +52,9 @@ class CursosPendientesDropdown extends StatelessWidget {
           return const Text('No hay cursos pendientes');
         }
 
-        final cursos = snapshot.data!;
+        cursos = snapshot.data!
+            .where((curso) => curso['IdCurso'] != null && curso['NombreCurso'] != null)
+            .toList();
 
         return DropdownButtonFormField<String>(
           decoration: InputDecoration(
@@ -53,18 +63,23 @@ class CursosPendientesDropdown extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.0),
             ),
           ),
+          value: selectedIdCurso,
           items: cursos.map((curso) {
-            final idCurso = curso['IdCurso'] as String?;
-            final nombreCurso = curso['NombreCurso'] as String?;
-            if (idCurso == null || nombreCurso == null) {
-              return null;
-            }
             return DropdownMenuItem<String>(
-              value: idCurso,
-              child: Text(nombreCurso),
+              value: curso['IdCurso'],
+              child: Text(curso['NombreCurso']),
             );
-          }).whereType<DropdownMenuItem<String>>().toList(),
-          onChanged: onChanged,
+          }).toList(),
+          onChanged: (idCurso) {
+            setState(() {
+              selectedIdCurso = idCurso;
+            });
+            final cursoSeleccionado =
+                cursos.firstWhere((curso) => curso['IdCurso'] == idCurso);
+            if (widget.onChanged != null) {
+              widget.onChanged!(cursoSeleccionado);
+            }
+          },
         );
       },
     );
