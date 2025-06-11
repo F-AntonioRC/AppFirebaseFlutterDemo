@@ -148,7 +148,12 @@ class FirebaseStorageService {
           title: const Text('Éxito'),
           content: const Text('El archivo se subió correctamente.'),
           actions: [
-            MyButton(text: "Aceptar", icon: const Icon(Icons.check_circle_outline), buttonColor: greenColorLight, onPressed: () => Navigator.pop(context),)
+            MyButton(text: "Aceptar", icon: const Icon(Icons.check_circle_outline), 
+            buttonColor: greenColorLight, 
+            onPressed: () {
+            Navigator.pop(context); // Cierra el diálogo
+            Navigator.pop(context); // Cierra CursosNormal
+            },)
 
           ],
         ),
@@ -167,4 +172,23 @@ class FirebaseStorageService {
       );
     }
   }
+
+Future<bool> tieneArchivoPendiente({
+  required String idCurso,
+  required String uid,
+}) async {
+  final snapshot = await _firestore
+      .collection('notifications')
+      .where('uid', isEqualTo: uid)
+      .where('IdCurso', isEqualTo: idCurso)
+      .where('estado', isEqualTo: 'pendiente')
+      .get();
+
+  return snapshot.docs.isNotEmpty;
+}
+
+
+
+
+
 }

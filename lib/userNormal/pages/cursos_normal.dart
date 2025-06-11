@@ -28,11 +28,25 @@ class _CursosNormalState extends State<CursosNormal> {
   User? user;
   bool isUploading = false;
   double uploadProgress = 0.0;
+  bool hasPendingFile = false;
 
   @override
   void initState() {
     super.initState();
     user = FirebaseAuth.instance.currentUser;
+    _checkPendingFile();
+  }
+
+    Future<void> _checkPendingFile() async {
+    if (user != null) {
+      bool pending = await _storageService.tieneArchivoPendiente(
+        idCurso: widget.idCurso,
+        uid: user!.uid,
+      );
+      setState(() {
+        hasPendingFile = pending;
+      });
+    }
   }
 
   Future<void> _uploadPDF() async {
@@ -58,6 +72,9 @@ class _CursosNormalState extends State<CursosNormal> {
     setState(() {
       isUploading = false;
     });
+
+       // Después de subir, volvemos a verificar si hay archivos pendientes
+    await _checkPendingFile();
   }
 
   @override
@@ -95,9 +112,9 @@ class _CursosNormalState extends State<CursosNormal> {
 
             // Botón de subida
             ElevatedButton.icon(
-              onPressed: isUploading ? null : _uploadPDF, // Deshabilita si está subiendo
+              onPressed: (isUploading || hasPendingFile) ? null : _uploadPDF, // Deshabilita si está subiendo
               icon: const Icon(Icons.upload_file),
-              label: const Text('Seleccionar y Subir PDF'),
+              label: Text( hasPendingFile ? 'En revisión' : 'Seleccionar y Subir PDF' ),
             ),
           ],
         ),

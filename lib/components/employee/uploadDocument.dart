@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:path/path.dart' as path;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -161,8 +160,10 @@ class _UploaddocumentState extends State<Uploaddocument> {
             );
 
             if (result == null) {
-              showCustomSnackBar(
-                  context, "No se seleccionó ningún archivo.", Colors.orange);
+              if(context.mounted) {
+                showCustomSnackBar(
+                  context, "No se seleccionó ningún archivo.", Colors.red);
+              }
               return;
             }
 
@@ -171,7 +172,9 @@ class _UploaddocumentState extends State<Uploaddocument> {
             final fileBytes = pickedFile.bytes;
 
             if (fileBytes == null) {
+              if(context.mounted) {
               showCustomSnackBar(context, "No se pudo leer el archivo.", wineLight);
+              }
               return;
             }
 
@@ -192,7 +195,6 @@ class _UploaddocumentState extends State<Uploaddocument> {
                 SettableMetadata(contentType: 'application/pdf'),
               );
 
-              showCustomSnackBar(context, "Subiendo archivo...", greenColorLight);
               final snapshot = await uploadTask.whenComplete(() => null);
               final downloadUrl = await snapshot.ref.getDownloadURL();
 
