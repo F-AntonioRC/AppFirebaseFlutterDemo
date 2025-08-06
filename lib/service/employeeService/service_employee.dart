@@ -227,14 +227,11 @@ Future<void> assignCupo(
     String idChange,
     Function refreshTable) async {
   try {
-    // Intentar actualiza la colección
+    // Intentar actualizar la colección
     await DatabaseMethodsEmployee.addEmployeeCupo(
-        idChange, controllerCupo.text);
-    if (context.mounted) {
-      showCustomSnackBar(context, 'CUPO Asignado correctamente', greenColorLight);
-      Navigator.pop(context);
-    }
-    refreshTable();
+        idChange, controllerCupo.text, context);
+    
+      refreshTable();
   } on FirebaseException catch (e, stackTrace) {
     // Reporta el error a Sentry con contexto adicional
     if (context.mounted) {

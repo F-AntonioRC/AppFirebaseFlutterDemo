@@ -32,7 +32,7 @@ class MyTextfileld extends StatelessWidget {
     return TextFormField(
       keyboardType: keyboardType,
       controller: controller,
-      //validator: validator,
+      validator: validator,
       decoration: InputDecoration(
           hintText: hindText,
           prefixIcon: icon,

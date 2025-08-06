@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 
 class PaginatedTableService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -54,14 +56,45 @@ class PaginatedTableService {
             .where('IdCurso', whereIn: batch)
             .get();
 
-        tempRows.addAll(cursosSnapshot.docs.map((doc) {
-          dynamic idCurso = doc["IdCurso"];
-          return {
-            "Nombre del curso": doc['NombreCurso'] ?? 'N/A',
-            "Trimestre": doc['Trimestre'] ?? 'N/A',
-            "Fecha de envio de Constancia": idCursoFechaMap[idCurso] ?? "Fecha no disponible",
-          };
-        }).toList());
+tempRows.addAll(cursosSnapshot.docs.map((doc) {
+  dynamic idCurso = doc["IdCurso"];
+  String nombreCurso = doc['NombreCurso'] ?? 'N/A';
+  String trimestre = doc['Trimestre'] ?? 'N/A';
+  String fechaEnvio = idCursoFechaMap[idCurso] ?? "Fecha no disponible";
+
+  // Buscar evidencia correspondiente
+  String? linkEvidencia;
+
+  for (var cursoDoc in cursosCompletadosSnapshot.docs) {
+    List<dynamic> ids = cursoDoc['IdCursosCompletados'] ?? [];
+    List<dynamic> evidencias = cursoDoc['Evidencias'] ?? [];
+
+    for (int i = 0; i < ids.length; i++) {
+      if (ids[i] == idCurso && i < evidencias.length) {
+        linkEvidencia = evidencias[i];
+        break;
+      }
+    }
+
+    if (linkEvidencia != null) break;
+  }
+
+  return {
+    "Nombre del curso": nombreCurso,
+    "Trimestre": trimestre,
+    "Fecha de envio de Constancia": fechaEnvio,
+    "Descargar documento": linkEvidencia != null
+        ? IconButton(
+            icon: const Icon(Icons.download),
+            tooltip: "Descargar constancia",
+            onPressed: () {
+              // Acción de descarga (No sabo como hacerla XD)
+              print("Descargar desde: $linkEvidencia");
+            },
+          )
+        : const Text("No disponible"),
+  };
+}).toList());
       }
 
       return tempRows;

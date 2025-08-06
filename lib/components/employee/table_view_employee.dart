@@ -113,12 +113,14 @@ class TableViewEmployee extends StatelessWidget {
                   final selectedRow = data.firstWhere((row) => row[idKey] == id);
                   final name = selectedRow["Nombre"];
                   final idAdd = selectedRow[idKey];
+                  final cupo = selectedRow["CUPO"]?.toString();
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return AssignCupoDialog(
                         dataChange: name,
                         idChange: idAdd,
+                        cupoOld: cupo,
                         refreshTable: refreshTable,
                       );
                     },
@@ -165,6 +167,9 @@ class TableViewEmployee extends StatelessWidget {
                 },
                 iconUploadDocument: const Icon(Icons.upload_file, color: Colors.black,),
                 tooltipUploadDocument: "Subir Documento",
+                addDate: (String id) {},
+                iconAddDate: const Icon(Icons.calendar_month),
+                tooltipAddDate: "Asignar fecha",
               );
             }
           },

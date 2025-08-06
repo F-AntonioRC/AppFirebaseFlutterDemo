@@ -15,6 +15,8 @@ import 'package:testwithfirebase/pages/courses/screen_cursos.dart';
 import 'package:testwithfirebase/pages/documents/trimesterview.dart';
 import 'package:testwithfirebase/pages/employee/screen_employee.dart';
 import 'package:testwithfirebase/pages/notification/notification_new.dart';
+import 'package:testwithfirebase/pages/usersView/card_users.dart';
+import 'package:testwithfirebase/pages/usersView/table_users.dart';
 
 /// Pantalla principal de la aplicación.
 ///
@@ -167,7 +169,9 @@ class _HomePageState extends State<HomePage> {
       case NavItem.emailView:
         return const PageDetailCourses();
       case NavItem.documentView:
-        return const TrimesterView(); //nuevo cambio en la vista
+        return const TrimesterView();
+      case NavItem.usersView:
+        return const CardUsers(); //nuevo cambio en la vista
       case NavItem.logout:
         return const CerrarSesion();
       case NavItem.configuration:
@@ -187,6 +191,8 @@ class _HomePageState extends State<HomePage> {
         return "Asignar Cursos";
       case NavItem.documentView:
         return "Evidencia por Trimestre";
+      case NavItem.usersView:
+        return "Usuarios registrados";
       case NavItem.configuration:
         return "Configuración";
       case NavItem.logout:

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/components/formPatrts/custom_snackbar.dart';
 import 'package:testwithfirebase/components/formPatrts/my_button.dart';
 import 'package:testwithfirebase/components/formPatrts/my_textfileld.dart';
 import 'package:testwithfirebase/components/formPatrts/password_input.dart';
@@ -24,6 +25,7 @@ class RegisterPage extends StatelessWidget {
       TextEditingController(); // Controlador para la contraseña.
   final TextEditingController _confirmPasswordController =
       TextEditingController(); // Controlador para verificar la contraseña.
+  final _formKey = GlobalKey<FormState>(); //Controlador del Formulario
 
   // Callback opcional que se ejecuta cuando el usuario pulsa el enlace para iniciar sesión.
   final void Function()? onTap;
@@ -38,6 +40,8 @@ class RegisterPage extends StatelessWidget {
     return BackgruondMain(
         // Se utiliza SingleChildScrollView para evitar desbordamientos en pantallas pequeñas.
         formInit: SingleChildScrollView(
+            child: Form(
+      key: _formKey,
       child: Column(
         children: [
           // Título principal de la pantalla de registro.
@@ -59,7 +63,16 @@ class RegisterPage extends StatelessWidget {
             hindText: 'CUPO',
             icon: const Icon(Icons.person),
             controller: _cupoController,
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.number,
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return 'El CUPO es obligatorio';
+              }
+              if (value.trim().length != 6) {
+                return 'El CUPO debe tener 6 dígitos';
+              }
+              return null;
+            },
           ),
           const SizedBox(height: 10),
           MyTextfileld(
@@ -67,6 +80,15 @@ class RegisterPage extends StatelessWidget {
             icon: const Icon(Icons.email_outlined),
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return 'El correo es obligatorio';
+              }
+              if (!value.trim().endsWith('@becasbenitojuarez.gob.mx')) {
+                return 'Debe usar un correo institucional: @becasbenitojuarez.gob.mx';
+              }
+              return null;
+            },
           ),
           const SizedBox(height: 10),
           PasswordInput(
@@ -82,12 +104,15 @@ class RegisterPage extends StatelessWidget {
           // Botón para enviar la solicitud de registro.
           MyButton(
             text: 'Registrar',
-            onPressed: () => register(
-                context,
-                _cupoController.text,
-                _emailController.text,
-                _passwordController.text,
-                _confirmPasswordController.text),
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                register(context, _cupoController.text, _emailController.text,
+                    _passwordController.text, _confirmPasswordController.text);
+              } else {
+                showCustomSnackBar(
+                    context, 'Revisa los campos marcados', Colors.red);
+              }
+            },
             icon: const Icon(Icons.add_task),
             buttonColor: greenColorLight,
           ),
@@ -113,7 +138,7 @@ class RegisterPage extends StatelessWidget {
                       style: TextStyle(
                           fontSize: responsiveFontSize(context, 18),
                           fontWeight: FontWeight.bold,
-                          color: theme.brightness ==  Brightness.dark
+                          color: theme.brightness == Brightness.dark
                               ? Colors.white
                               : wineLight,
                           decoration: TextDecoration.underline,
@@ -126,6 +151,6 @@ class RegisterPage extends StatelessWidget {
           )
         ],
       ),
-    ));
+    )));
   }
 }

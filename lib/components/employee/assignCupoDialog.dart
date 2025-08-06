@@ -12,12 +12,15 @@ class AssignCupoDialog extends StatefulWidget {
   final String idChange; //Un `String` que representa el Id único del empleado.
   final Function() refreshTable; //Una función (`Function()`) que se ejecuta para refrescar
   //la tabla de datos después de asignar el CUPO.
+  final String? cupoOld; // Un `String` que guarda el valor del CUPO en caso de actualización
 
   const AssignCupoDialog(
       {super.key,
       required this.dataChange,
       required this.idChange,
-      required this.refreshTable});
+      required this.refreshTable, 
+      this.cupoOld
+      });
 
   @override
   State<AssignCupoDialog> createState() => _AssignCupoDialogState();
@@ -27,7 +30,7 @@ class _AssignCupoDialogState extends State<AssignCupoDialog> {
   // Controladores para los campos del diálogo
   late TextEditingController _textController;
   late TextEditingController _idController;
-  final TextEditingController _controllerCupo = TextEditingController();
+  late TextEditingController _controllerCupo;
 
   /// Inicialización de los controladores para los campos de texto
   /// Los valores iniciales de los controladores se asignan desde las propiedades 
@@ -37,6 +40,7 @@ class _AssignCupoDialogState extends State<AssignCupoDialog> {
     super.initState();
     _textController = TextEditingController(text: widget.dataChange);
     _idController = TextEditingController(text: widget.idChange);
+    _controllerCupo = TextEditingController(text: widget.cupoOld ?? '');
   }
 
   /// Limpieza de recursos: Libera los controladores para evitar fugas de memoria.
@@ -44,6 +48,7 @@ class _AssignCupoDialogState extends State<AssignCupoDialog> {
   void dispose() {
     _textController.dispose();
     _idController.dispose();
+    _controllerCupo.dispose();
     super.dispose();
   }
 

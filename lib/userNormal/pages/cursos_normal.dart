@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:testwithfirebase/components/formPatrts/date_textflied.dart';
 
 import 'package:testwithfirebase/userNormal/serviceuser/firebase_storage_service.dart';
+import 'package:testwithfirebase/util/responsive.dart';
 
 class CursosNormal extends StatefulWidget {
   final String course;
@@ -24,6 +26,10 @@ class CursosNormal extends StatefulWidget {
 }
 
 class _CursosNormalState extends State<CursosNormal> {
+
+    late TextEditingController
+      dateController; // Controlador de la fecha de inicio del curso.
+
   final FirebaseStorageService _storageService = FirebaseStorageService();
   User? user;
   bool isUploading = false;
@@ -34,8 +40,15 @@ class _CursosNormalState extends State<CursosNormal> {
   void initState() {
     super.initState();
     user = FirebaseAuth.instance.currentUser;
+    dateController = TextEditingController(); 
     _checkPendingFile();
   }
+
+  @override
+void dispose() {
+  dateController.dispose(); 
+  super.dispose();
+}
 
     Future<void> _checkPendingFile() async {
     if (user != null) {
@@ -109,6 +122,24 @@ class _CursosNormalState extends State<CursosNormal> {
               ),
 
             const SizedBox(height: 20),
+
+                        
+                Padding(padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Seleccione la Fecha en la que completo el curso",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          fontSize: responsiveFontSize(context, 16),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10.0),
+                    DateTextField(controller: dateController),
+                  ],
+                ),
+                ),
 
             // Botón de subida
             ElevatedButton.icon(

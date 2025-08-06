@@ -15,7 +15,7 @@ class _TableNormalState extends State<TableNormal> {
   bool isLoading = true;
   List<Map<String, dynamic>> rows = [];
   final List<String> columns = ['NOMBRE DEL CURSO', 'TRIMESTRE',
-    'FECHA DE FINALIZACIÓN'];
+    'FECHA DE FINALIZACIÓN', 'DESCARGAR DOCUMENTO'];
 
   @override
   void initState() {

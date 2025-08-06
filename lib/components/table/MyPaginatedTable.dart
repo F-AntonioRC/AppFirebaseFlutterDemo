@@ -18,7 +18,7 @@ class MyPaginatedTable extends StatefulWidget {
   /// Estado del botón dinámico: si es verdadero se muestra la acción de eliminar,
   /// si es falso se muestra la acción de activar.
   final bool onActive;
-  final Function(String id) activateFunction; //Función que se ejecuta para activar un registro.
+  final Function(String id)? activateFunction; //Función que se ejecuta para activar un registro.
   final Function(String id)? onAssign; // Función opcional para asignar CUPO
   final Icon? iconAssign; // Icono del metodo opcional para CUPO
   final String? tooltipAssign; // Texto opcional para el tooltip de la acción de asignación.
@@ -26,6 +26,14 @@ class MyPaginatedTable extends StatefulWidget {
   final Function(String id)? UploadDocument; // Función opcional para cargar documentos
   final Icon? iconUploadDocument; //Icono para la función opcional de cargar documentos
   final String? tooltipUploadDocument; // Texto opcional
+  //----------------------NUEVA CELDA
+  final Map<String, Widget Function(dynamic)>? customCellsIcon; //Celda que muestra un Icono dependiento de un valor.
+
+
+//--------------- NUEVA FUNCIÓN
+final Function(String id)? addDate;  // Función opcional para añadir fecha
+final Icon? iconAddDate; //Icono para la función opcional de añadir fecha
+final String? tooltipAddDate; // Texto opcional de la función
 
   const MyPaginatedTable({
     super.key,
@@ -37,12 +45,16 @@ class MyPaginatedTable extends StatefulWidget {
     this.onAssign,
     required this.idKey,
     required this.onActive,
-    required this.activateFunction,
+    this.activateFunction,
     this.iconAssign,
     this.tooltipAssign,
     this.UploadDocument,
     this.iconUploadDocument,
-    this.tooltipUploadDocument
+    this.tooltipUploadDocument, 
+    this.customCellsIcon, 
+    this.addDate, 
+    this.iconAddDate, 
+    this.tooltipAddDate
   });
 
   @override
@@ -93,7 +105,12 @@ class _MyPaginatedTableState extends State<MyPaginatedTable> {
                 tooltipAssign: widget.tooltipAssign,
                 uploadDocument: widget.UploadDocument,
                 iconUploadDocument: widget.iconUploadDocument,
-                tooltipUploadDocument: widget.tooltipUploadDocument
+                tooltipUploadDocument: widget.tooltipUploadDocument,
+                customCellsIcon: widget.customCellsIcon,
+                addDate: widget.addDate,
+                iconAddDate: widget.iconAddDate,
+                tooltipAddDate: widget.tooltipAddDate
+
               ),
               rowsPerPage: _rowsPerPage, // Número de filas por pagina.
               availableRowsPerPage: const [5, 10], // Valores para cambiar el numero de registros por pagina.
@@ -123,7 +140,7 @@ class _TableDataSource extends DataTableSource {
   /// Estado del botón dinámico: si es verdadero se muestra la acción de eliminar,
   /// si es falso se muestra la acción de activar.
   final bool onActive;
-  final Function(String id) activateFunction; //Función que se ejecuta para activar un registro.
+  final Function(String id)? activateFunction; //Función que se ejecuta para activar un registro.
   final Function(String id)? onAssign; // Función opcional
   final Icon? iconAssign; // Icono del metodo opcional
   final String? tooltipAssign; // Texto opcional para el tooltip de la acción de asignación.
@@ -131,6 +148,13 @@ class _TableDataSource extends DataTableSource {
   final Function(String id)? uploadDocument; // Función opcional para cargar documentos
   final Icon? iconUploadDocument; //Icono para la función opcional de cargar documentos
   final String? tooltipUploadDocument; // Texto opcional
+    //----------------------NUEVA CELDA
+  final Map<String, Widget Function(dynamic)>? customCellsIcon; //Celda que muestra un Icono dependiento de un valor.
+
+//--------------- NUEVA FUNCIÓN
+final Function(String id)? addDate;  // Función opcional para añadir fecha
+final Icon? iconAddDate; //Icono para la función opcional de añadir fecha
+final String? tooltipAddDate; // Texto opcional de la función
 
   // Constructor para inicializar la fuente de datos.
   _TableDataSource({
@@ -146,7 +170,11 @@ class _TableDataSource extends DataTableSource {
     this.tooltipAssign,
     this.uploadDocument,
     this.iconUploadDocument,
-    this.tooltipUploadDocument
+    this.tooltipUploadDocument,
+    this.customCellsIcon,
+    this.addDate,
+    this.iconAddDate,
+    this.tooltipAddDate
   });
 
   // Configuración de filas y datos de celda para un DataTable.
@@ -172,15 +200,12 @@ class _TableDataSource extends DataTableSource {
           return DataCell(
             SizedBox(
               width: 150, // Ancho estándar para las demás celdas
-              child: Text(
-                rowData[key]?.toString() ?? '',
-                style: const TextStyle(fontSize: 15),
-                overflow: TextOverflow.ellipsis,
-              ),
+//child: Text(rowData[key]?.toString() ?? '',style: const TextStyle(fontSize: 15), overflow: TextOverflow.ellipsis,),
+  child: _buildCell(key, rowData),          
             ),
           );
         }),
-        // Celda de acciones que contiene botones para editar, eliminar/activar y asignar.
+        // Celda de acciones que contiene botones para editar, eliminar/activar,  asignar cupo (opcional) y subir documento (opcional).
         DataCell(
           Row(
             children: [
@@ -208,7 +233,7 @@ class _TableDataSource extends DataTableSource {
                       }
                     } else {
                       try {
-                        activateFunction(rowData[idKey].toString());
+                        activateFunction!(rowData[idKey].toString());
                       } catch (e, stackTrace) {
                         Sentry.captureException(e, stackTrace: stackTrace,
                         withScope: (scope) {
@@ -229,10 +254,26 @@ class _TableDataSource extends DataTableSource {
                     tooltip: tooltipUploadDocument!,
                     iconInk: iconUploadDocument ?? const Icon(Icons.assignment),
                     inkFunction: () => uploadDocument!(rowData[idKey].toString())),
+                if (addDate != null)
+                    InkComponent(
+                    tooltip: tooltipAddDate!,
+                    iconInk: iconAddDate ?? const Icon(Icons.assignment),
+                    inkFunction: () => addDate!(rowData[idKey].toString())),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildCell(String key, Map<String, dynamic> rowData) {
+    if (customCellsIcon != null && customCellsIcon!.containsKey(key)) {
+      return customCellsIcon![key]!(rowData[key]);
+    }
+    return Text(
+      rowData[key]?.toString() ?? '',
+      style: const TextStyle(fontSize: 15),
+      overflow: TextOverflow.ellipsis,
     );
   }
 

@@ -47,13 +47,17 @@ class _TableData extends DataTableSource {
     final row = rows[index];
 
     return DataRow(
-      cells: row.values
-          .map((value) => DataCell(Text(
-                value.toString(),
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              )))
-          .toList(),
-    );
+    cells: row.values.map((value) {
+      if (value is Widget) {
+        return DataCell(value);
+      } else {
+        return DataCell(Text(
+          value.toString(),
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ));
+      }
+    }).toList(),
+  );
   }
 
   @override

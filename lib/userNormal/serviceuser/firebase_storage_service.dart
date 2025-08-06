@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
+import 'package:testwithfirebase/auth/auth_gate.dart';
 import 'package:testwithfirebase/components/formPatrts/my_button.dart';
 import 'package:testwithfirebase/dataConst/constand.dart';
 
@@ -153,6 +154,13 @@ class FirebaseStorageService {
             onPressed: () {
             Navigator.pop(context); // Cierra el diálogo
             Navigator.pop(context); // Cierra CursosNormal
+              Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) => const AuthGate() 
+      )
+  ); 
+
             },)
 
           ],
@@ -166,7 +174,9 @@ class FirebaseStorageService {
           title: const Text('Error al subir'),
           content: Text('Error al subir el archivo: $e'),
           actions: [
-            MyButton(text: "Aceptar", icon: const Icon(Icons.check_circle_outline), buttonColor: greenColorLight, onPressed: () => Navigator.pop(context),)
+            MyButton(text: "Aceptar", icon: const Icon(Icons.check_circle_outline), 
+            buttonColor: greenColorLight, 
+            onPressed: () => Navigator.pop(context),)
             ],
         ),
       );
@@ -181,14 +191,10 @@ Future<bool> tieneArchivoPendiente({
       .collection('notifications')
       .where('uid', isEqualTo: uid)
       .where('IdCurso', isEqualTo: idCurso)
-      .where('estado', isEqualTo: 'pendiente')
+      .where('estado', whereIn: ['Aprobado', 'pendiente'])
       .get();
 
   return snapshot.docs.isNotEmpty;
 }
-
-
-
-
 
 }

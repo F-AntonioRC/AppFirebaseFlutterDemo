@@ -66,6 +66,10 @@ class _NavigationItem {
         title: "Documentos",
         icon: const Icon(Icons.article_rounded)),
     _NavigationItem(
+        item: NavItem.usersView,
+        title: "Usuarios",
+        icon: const Icon(Icons.account_circle_sharp)),
+    _NavigationItem(
         item: NavItem.configuration,
         title: "Configuración",
         icon: const Icon(
