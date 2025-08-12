@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class PaginatedTableService {
@@ -84,15 +86,28 @@ tempRows.addAll(cursosSnapshot.docs.map((doc) {
     "Trimestre": trimestre,
     "Fecha de envio de Constancia": fechaEnvio,
     "Descargar documento": linkEvidencia != null
-        ? IconButton(
-            icon: const Icon(Icons.download),
-            tooltip: "Descargar constancia",
-            onPressed: () {
-              // Acción de descarga (No sabo como hacerla XD)
-              print("Descargar desde: $linkEvidencia");
-            },
-          )
-        : const Text("No disponible"),
+    ? IconButton(
+        icon: const Icon(Icons.download),
+        tooltip: "Descargar constancia",
+        onPressed: () async {
+          final pdfUrl = linkEvidencia;
+          if (pdfUrl != null && pdfUrl.isNotEmpty) {
+            final uri = Uri.parse(pdfUrl);
+            if (await canLaunchUrl(uri)) {
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
+            } else {
+              // ignore: unnecessary_null_comparison
+              if (context != null) {
+                ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+                                    const SnackBar(content: Text('No se puede abrir el archivo PDF')),
+                                  );
+              }
+            }
+          }
+        },
+      )
+    : const Text("No disponible"),
+
   };
 }).toList());
       }
